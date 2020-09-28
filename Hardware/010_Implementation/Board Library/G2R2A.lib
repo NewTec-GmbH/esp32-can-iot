@@ -1,0 +1,45 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#(c) SnapEDA 2016 (snapeda.com)
+#This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA) with Design Exception 1.0
+#
+# G2R2A
+#
+DEF G2R2A K 0 40 Y N 3 L N
+F0 "K" 0 0 50 H I L BNN
+F1 "G2R2A" 50 115 50 H V L BNN
+F2 "G2R2A" 0 0 50 H I L BNN
+F3 "36M5257" 0 0 50 H I L BNN
+F4 "G2R-2A-DC24" 0 0 50 H I L BNN
+F5 "" 0 0 50 H I L BNN
+F6 "6985269" 0 0 50 H I L BNN
+DRAW
+P 2 1 0 10 -150 -75 -75 -75 N
+P 2 1 0 10 150 -75 150 75 N
+P 2 1 0 10 150 75 75 75 N
+P 2 1 0 10 -150 75 -150 -75 N
+P 2 1 0 6 0 -100 0 -75 N
+P 2 1 0 10 0 -75 150 -75 N
+P 2 1 0 6 0 100 0 75 N
+P 2 1 0 10 0 75 -150 75 N
+P 2 1 0 6 -75 -75 75 75 N
+P 2 1 0 10 -75 -75 0 -75 N
+P 2 1 0 10 75 75 0 75 N
+X ~ 2 0 -200 100 U 40 40 1 0 P 
+X ~ 1 0 200 100 D 40 40 1 0 P 
+P 2 2 0 10 0 125 0 75 N
+P 2 2 0 10 0 -125 0 -75 N
+P 2 2 0 10 0 -75 -50 75 N
+C 0 -75 5 2 0 16 N
+X ~ P1 0 -200 100 U 40 40 2 0 P 
+X ~ S1 0 200 100 D 40 40 2 0 P 
+P 2 3 0 10 0 125 0 75 N
+P 2 3 0 10 0 -125 0 -75 N
+P 2 3 0 10 0 -75 -50 75 N
+C 0 -75 5 3 0 16 N
+X ~ P2 0 -200 100 U 40 40 3 0 P 
+X ~ S2 0 200 100 D 40 40 3 0 P 
+ENDDRAW
+ENDDEF
+#
+# End Library

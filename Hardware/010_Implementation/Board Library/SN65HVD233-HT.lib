@@ -1,0 +1,28 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#(c) SnapEDA 2016 (snapeda.com)
+#This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA) with Design Exception 1.0
+#
+# SN65HVD233-HT
+#
+DEF SN65HVD233-HT IC 0 40 Y Y 1 L N
+F0 "IC" -215 550 50 H V L BNN
+F1 "SN65HVD233-HT" -113 -725 50 H V L BNN
+F2 "SOIC127P600X175" 0 0 50 H I L BNN
+DRAW
+P 2 0 0 16 -500 500 -500 -600 N
+P 2 0 0 16 -500 -600 500 -600 N
+P 2 0 0 16 500 -600 500 500 N
+P 2 0 0 16 500 500 -500 500 N
+X VCC 3 -700 300 200 R 40 40 0 0 W 
+X R 4 -700 100 200 R 40 40 0 0 I 
+X D 1 -700 0 200 R 40 40 0 0 I 
+X LBK 5 -700 -100 200 R 40 40 0 0 P 
+X RS 8 -700 -200 200 R 40 40 0 0 I 
+X GND 2 -700 -400 200 R 40 40 0 0 P 
+X CANL 6 700 300 200 L 40 40 0 0 O 
+X CANH 7 700 200 200 L 40 40 0 0 O 
+ENDDRAW
+ENDDEF
+#
+# End Library
