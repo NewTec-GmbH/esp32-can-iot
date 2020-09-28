@@ -1,0 +1,42 @@
+@startuml
+
+title Hierarchy Diagram
+
+
+
+    interface Webserver
+    interface Lawicel_Serial
+
+node {
+package Application{
+    component ESP_CAN
+    component ESPAsyncServer
+}
+
+package HAL{
+    component Arduino_h
+    component Wifi_h 
+    component ESP32SJA1000
+}
+
+package Hardware{
+    component USB_Serial
+    component GPIO
+    component Wifi_Antenna
+    component CAN_Controller
+}
+
+Arduino_h --> USB_Serial
+Arduino_h --> GPIO
+Wifi_h --> Wifi_Antenna
+ESP32SJA1000 --> CAN_Controller
+Lawicel_Serial --> ESP_CAN
+Webserver --> ESP_CAN
+ESPAsyncServer --> Webserver
+ESP_CAN --> ESP32SJA1000
+ESPAsyncServer --> Wifi_h
+ESP_CAN --> Arduino_h
+
+}
+
+@enduml

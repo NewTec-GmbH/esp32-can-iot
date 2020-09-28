@@ -1,0 +1,75 @@
+@startuml
+
+title ESP32 CAN-Analyzer
+
+Interface Webserver {
+
+}
+note top
+    List of last 50 messages
+    Creation and sending of frames (trigg and cyclic) 
+    Filters
+    Bit Timing
+    Bus Termination
+    Changing of AP SSID and Password
+    Changing of Webserver Username and Password
+    reset on demand
+end note
+
+Interface Serial{
+}
+
+note top
+    LAWICEL Commands should be read
+    from serial using interrupts, 
+    so they can be read at any time.
+end note 
+
+Class Server_Management{
+    -m_STA_SSID: const char*
+    -m_STA_Password: const char* 
+    -m_AP_SSID: const char*
+    -m_AP_Password: const char*
+    -m_Webserver_Username: const char*
+    -m_Webserver_Password: const char*
+    -m_wifiMode: wifi_mode_t
+    +init():bool
+    +stop():bool
+    +wifiMode(mode: wifi_mode_t):void
+}
+
+Class IO{
+    -m_GPIO[4]: uint8_t
+    -m_Error_LED: uint8_t
+    -m_AP_Mode_LED: uint8_t
+    -m_STA_Mode_LED: uint8_t
+    +switch(LED: uint8_t&):void
+    +readButton(): bool;
+    +error():void
+    +init(): void
+}
+
+Class ESP_CAN{
+    -m_rawData[8]: uint8_t
+    -m_messageLog: LinkedList<Message*>
+    +append(headOfList:_Message**,id: uint64_t, extended: bool, dlc: int, rtr: bool, data[]: uint8_t): void
+    +printList():void
+}
+
+Class LAWICEL_Protocol{
+
+}
+
+package External_Libs{
+    Class ESPAsyncWebServer
+    Class ESP32SJA1000
+}
+
+Serial --> LAWICEL_Protocol
+LAWICEL_Protocol --> ESP_CAN
+ESP32SJA1000 --> ESP_CAN
+ESPAsyncWebServer --> Server_Management
+Webserver --> Server_Management
+IO --> Server_Management
+
+@enduml
