@@ -11,7 +11,7 @@ void Lawicel::readSerial()
     if (Serial.available())
     {
         int availableBytes = Serial.available();
-        //        Serial.println(availableBytes);   //Prints the amount of symbols in Buffer
+                Serial.println(availableBytes);   //Prints the amount of symbols in Buffer
         for (int i = 0; i < availableBytes; i++)
         {
             buffer[i] = Serial.read();
@@ -23,7 +23,8 @@ void Lawicel::readSerial()
         }
         Serial.println("");
 
-        this->receiveCommand(buffer, availableBytes);
+        _length = availableBytes;
+        this->receiveCommand();
 
         Serial.println("");
     }
@@ -71,13 +72,13 @@ Function: receiveCommand(const char buffer[], const int length)
 Description: Receives and Interprets Buffer with Serial Command
 ********************************************/
 
-uint8_t Lawicel::receiveCommand(const char buffer[], const int length)
+uint8_t Lawicel::receiveCommand()
 {
-    switch (buffer[0])
+    switch (this->buffer[0])
     {
     case SET_BAUDRATE:
     {
-        return 0;
+        return CMD_Set_Bitrate();
     }
 
     case SET_BTR:
@@ -189,20 +190,96 @@ uint8_t Lawicel::receiveCommand(const char buffer[], const int length)
 }
 
 /*******************************************
-Function: getOpen()
+Function: CMD_Set_Bitrate(const char buffer[])
 Description: Opens CAN Channel
 ********************************************/
 
-void Lawicel::getOpen()
+uint8_t Lawicel::CMD_Set_Bitrate()
+{
+    if(this->_length > 2)
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+
+    switch (this->buffer[1])
+    {
+    case '0':
+    {
+        Serial.println("Bitrate not supported!");
+        return 1;
+    }
+    case '1':
+    {
+        Serial.println("Bitrate not supported!");
+        return 1;
+    }
+    case '2':
+    {
+        Serial.println("Bitrate 50Kbps set!");
+        _baudrate = 50E3;
+        return 0;
+    }
+    case '3':
+    {
+        Serial.println("Bitrate 100Kbps set!");
+        _baudrate = 100E3;
+        return 0;
+    }
+    case '4':
+    {
+        Serial.println("Bitrate 125Kbps set!");
+        _baudrate = 125E3;
+        return 0;
+    }
+    case '5':
+    {
+        Serial.println("Bitrate 250Kbps set!");
+        _baudrate = 250E3;
+        return 0;
+    }
+    case '6':
+    {
+        Serial.println("Bitrate 500Kbps set!");
+        _baudrate = 500E3;
+        return 0;
+    }
+    case '7':
+    {
+        Serial.println("Bitrate not supported!");
+        return 1;
+    }
+    case '8':
+    {
+        Serial.println("Bitrate 1 Mbps set!");
+        _baudrate = 1000E3;
+        return 0;
+    }
+    default:
+    {
+        Serial.println("Bitrate not recognized!");
+        return 1;
+    }
+    }
+}
+
+/*******************************************
+Function: CMD_Open()
+Description: Opens CAN Channel
+********************************************/
+
+uint8_t Lawicel::CMD_Open()
 {
     if (!SJA1000.begin(_baudrate))
     {
         Serial.println("Failed! Restarting...");
         delay(5000);
         ESP.restart();
+        return 1;
     }
     else
     {
         Serial.println("CAN Ready!");
+        return 0;
     }
 }
