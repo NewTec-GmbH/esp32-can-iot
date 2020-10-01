@@ -11,7 +11,7 @@ uint8_t Lawicel::readSerial()
     if (Serial.available())
     {
         int availableBytes = Serial.available() - 1;
-        Serial.println(availableBytes); //Prints the amount of symbols in Buffer
+        //Serial.println(availableBytes); //Prints the amount of symbols in Buffer
 
         int counter = 0;
         while (buffer[counter] != CR)
@@ -75,7 +75,7 @@ uint8_t Lawicel::charToByte(char MSB, char LSB)
 }
 
 /*******************************************
-Function: receiveCommand(const char buffer[], const int length)
+Function: receiveCommand()
 Description: Receives and Interprets Buffer with Serial Command
 ********************************************/
 
@@ -85,12 +85,12 @@ uint8_t Lawicel::receiveCommand()
     {
     case SET_BAUDRATE:
     {
-        return CMD_Set_Bitrate();
+        return CMD_Set_Baudrate();
     }
 
     case SET_BTR:
     {
-        return 0;
+        return CMD_Set_BTR();;
     }
 
     case OPEN_NORMAL:
@@ -197,11 +197,11 @@ uint8_t Lawicel::receiveCommand()
 }
 
 /*******************************************
-Function: CMD_Set_Bitrate(const char buffer[])
-Description: Opens CAN Channel
+Function: CMD_Set_Baudrate()
+Description: Sets Baudrate through presets
 ********************************************/
 
-uint8_t Lawicel::CMD_Set_Bitrate()
+uint8_t Lawicel::CMD_Set_Baudrate()
 {
     if (this->_length > 2)
     {
@@ -270,12 +270,24 @@ uint8_t Lawicel::CMD_Set_Bitrate()
     }
 }
 
+
 /*******************************************
-Function: CMD_Open()
-Description: Opens CAN Channel
+Function: CMD_Set_BTR()
+Description: Sets Baudrate through Registers
 ********************************************/
 
-uint8_t Lawicel::CMD_Open()
+uint8_t Lawicel::CMD_Set_BTR()
+{
+    Serial.println("Function not yet implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Open_Normal()
+Description: Opens CAN Channel in Normal Mode
+********************************************/
+
+uint8_t Lawicel::CMD_Open_Normal()
 {
     if (!SJA1000.begin(_baudrate))
     {
