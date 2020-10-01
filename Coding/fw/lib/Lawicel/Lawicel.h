@@ -57,11 +57,11 @@ private:                       //Private Variables
 private:                                    //Private Functions
     uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
     uint8_t receiveCommand();               //Receives and Interprets Buffer with Serial Command
-
     uint8_t CMD_Set_Baudrate(); //Sets Baudrate through presets
     uint8_t CMD_Set_BTR();      //Sets Baudrate through Registers
     uint8_t CMD_Open_Normal();         //Opens CAN Channel in Normal Mode
     uint8_t CMD_Open_Listen_Only();     //Opens CAN Channel in Listen-Only Mode
+    uint8_t CMD_Close();                //Closes CAN Channel
 };
 
 #endif

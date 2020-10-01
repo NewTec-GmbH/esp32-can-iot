@@ -7,6 +7,9 @@ void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
+  Serial.println("");
+  Serial.println("Welcome to NT ESP32 CAN Analyzer");
+  Serial.println("Initializing...");
 }
 
 void loop()

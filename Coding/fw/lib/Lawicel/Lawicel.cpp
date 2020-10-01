@@ -19,13 +19,12 @@ uint8_t Lawicel::readSerial()
             buffer[counter] = Serial.read();
             counter++;
         }
-
+        Serial.println("");
         for (int i = 0; i < availableBytes; i++)
         {
             Serial.printf("%c", buffer[i]);
         }
 
-        Serial.println("");
         Serial.println("");
 
         _length = availableBytes;
@@ -106,7 +105,7 @@ uint8_t Lawicel::receiveCommand()
 
     case CLOSE:
     {
-        return 0;
+        return CMD_Close();
     }
 
     case TX_STD:
@@ -209,6 +208,17 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         Serial.println("Too many Arguments!");
         return 1;
     }
+    else if (this->_length < 2)
+    {
+        Serial.println("Not enough Arguments!");
+        return 1;
+    }
+
+    if (_channelState != CLOSED)
+    {
+        Serial.println("Not Allowed! Channel is Open");
+        return 1;
+    }
 
     switch (this->buffer[1])
     {
@@ -278,6 +288,22 @@ Description: Sets Baudrate through Registers
 
 uint8_t Lawicel::CMD_Set_BTR()
 {
+    if (this->_length > 5)
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }else if (this->_length < 5)
+    {
+        Serial.println("Not enough Arguments!");
+        return 1;
+    }
+
+    if (_channelState != CLOSED)
+    {
+        Serial.println("Not Allowed! Channel is Open");
+        return 1;
+    }
+
     Serial.println("Function not yet implemented!");
     return 1;
 }
@@ -295,7 +321,7 @@ uint8_t Lawicel::CMD_Open_Normal()
         return 1;
     }
 
-    switch (this ->_channelState)
+    switch (this->_channelState)
     {
     case CLOSED:
     {
@@ -308,21 +334,21 @@ uint8_t Lawicel::CMD_Open_Normal()
         }
         else
         {
-            Serial.println("CAN Ready!");
-            this ->_channelState = NORMAL;
+            Serial.println("CAN Channel opened in Normal Mode!");
+            this->_channelState = NORMAL;
             return 0;
         }
     }
 
     case NORMAL:
     {
-        Serial.println("CAN Channel is already OPEN in NORMAL Mode");
+        Serial.println("CAN Channel is ALREADY opened in NORMAL Mode");
         return 1;
     }
 
     case LISTEN_ONLY:
     {
-        Serial.println("CAN Channel is already OPEN in LISTEN-ONLY Mode");
+        Serial.println("CAN Channel is ALREADY opened in LISTEN-ONLY Mode");
         return 1;
     }
     default:
@@ -343,7 +369,7 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
         return 1;
     }
 
-    switch (this ->_channelState)
+    switch (this->_channelState)
     {
     case CLOSED:
     {
@@ -356,24 +382,63 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
         }
         else
         {
-            Serial.println("CAN Ready!");
-            this ->_channelState = LISTEN_ONLY;
+            Serial.println("CAN Channel opened in Listen-Only Mode!");
+            this->_channelState = LISTEN_ONLY;
             return 0;
         }
     }
 
     case NORMAL:
     {
-        Serial.println("CAN Channel is already OPEN in NORMAL Mode");
+        Serial.println("CAN Channel is ALREADY opened in NORMAL Mode");
         return 1;
     }
 
     case LISTEN_ONLY:
     {
-        Serial.println("CAN Channel is already OPEN in LISTEN-ONLY Mode");
+        Serial.println("CAN Channel is ALREADY opened in LISTEN-ONLY Mode");
         return 1;
     }
     default:
-        return -1;
+        return 1;
+    }
+}
+
+/*******************************************
+Function: CMD_Close()
+Description: Closes CAN Channel
+********************************************/
+
+uint8_t Lawicel::CMD_Close()
+{
+    if (this->_length > 1)
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+
+    switch (this->_channelState)
+    {
+    case CLOSED:
+    {
+        Serial.println("CAN Channel is already CLOSED");
+        return 1;
+    }
+
+    case NORMAL:
+    {
+        Serial.println("CAN Channel Closed");
+        this->_channelState = CLOSED;
+        return 0;
+    }
+
+    case LISTEN_ONLY:
+    {
+        Serial.println("CAN Channel Closed");
+        this->_channelState = CLOSED;
+        return 0;
+    }
+    default:
+        return 1;
     }
 }
