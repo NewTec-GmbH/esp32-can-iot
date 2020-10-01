@@ -361,6 +361,7 @@ uint8_t Lawicel::CMD_Open_Normal()
         else
         {
             Serial.println("CAN Channel opened in Normal Mode!");
+            Serial.printf("Baudrate: %ld Kbps\n",_baudrate);
             this->_channelState = NORMAL;
             return 0;
         }
@@ -409,6 +410,7 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
         else
         {
             Serial.println("CAN Channel opened in Listen-Only Mode!");
+            Serial.printf("Baudrate: %ld Kbps\n",_baudrate);
             this->_channelState = LISTEN_ONLY;
             return 0;
         }
