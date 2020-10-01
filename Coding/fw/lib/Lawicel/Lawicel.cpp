@@ -299,7 +299,6 @@ uint8_t Lawicel::CMD_Open_Normal()
     {
     case CLOSED:
     {
-        Serial.println("CASE CLOSED");
         if (!SJA1000.begin(_baudrate))
         {
             Serial.println("Failed! Restarting...");
@@ -327,7 +326,6 @@ uint8_t Lawicel::CMD_Open_Normal()
         return 1;
     }
     default:
-    Serial.println("Default");
         return 1;
     }
 }

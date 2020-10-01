@@ -47,10 +47,10 @@ private:                       //Private Variables
         LISTEN_ONLY
     };
 
+    BUS_STATE _channelState = CLOSED; //Channel State
     long _baudrate = 500E3;     //Standard Baudrate 500Kbps
     char buffer[32];            //Buffer for Serial-Message
     int _length = 0;            //Length of Serial-Message
-    int _channelState = CLOSED; //Channel State
     const char CR = 13;         //Serial-Message Termination
     const char BEL = 7;         //Warning Response
     /* ------------------------------------------------------------------------------*/
