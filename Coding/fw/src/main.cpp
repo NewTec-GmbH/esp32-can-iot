@@ -1,7 +1,13 @@
 #include <Arduino.h>
+#include <Lawicel.h>
+
+Lawicel ESPCAN;
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(115200);
+  ESPCAN.getBegin();
+
 }
 
 void loop() {
