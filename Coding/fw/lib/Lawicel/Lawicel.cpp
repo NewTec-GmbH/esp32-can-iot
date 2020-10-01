@@ -90,17 +90,18 @@ uint8_t Lawicel::receiveCommand()
 
     case SET_BTR:
     {
-        return CMD_Set_BTR();;
+        return CMD_Set_BTR();
+        ;
     }
 
     case OPEN_NORMAL:
     {
-        return 0;
+        return CMD_Open_Normal();
     }
 
     case OPEN_LISTEN_ONLY:
     {
-        return 0;
+        return CMD_Open_Listen_Only();
     }
 
     case CLOSE:
@@ -270,7 +271,6 @@ uint8_t Lawicel::CMD_Set_Baudrate()
     }
 }
 
-
 /*******************************************
 Function: CMD_Set_BTR()
 Description: Sets Baudrate through Registers
@@ -289,16 +289,93 @@ Description: Opens CAN Channel in Normal Mode
 
 uint8_t Lawicel::CMD_Open_Normal()
 {
-    if (!SJA1000.begin(_baudrate))
+    if (this->_length > 1)
     {
-        Serial.println("Failed! Restarting...");
-        delay(5000);
-        ESP.restart();
+        Serial.println("Too many Arguments!");
         return 1;
     }
-    else
+
+    switch (this ->_channelState)
     {
-        Serial.println("CAN Ready!");
-        return 0;
+    case CLOSED:
+    {
+        Serial.println("CASE CLOSED");
+        if (!SJA1000.begin(_baudrate))
+        {
+            Serial.println("Failed! Restarting...");
+            delay(5000);
+            ESP.restart();
+            return 1;
+        }
+        else
+        {
+            Serial.println("CAN Ready!");
+            this ->_channelState = NORMAL;
+            return 0;
+        }
+    }
+
+    case NORMAL:
+    {
+        Serial.println("CAN Channel is already OPEN in NORMAL Mode");
+        return 1;
+    }
+
+    case LISTEN_ONLY:
+    {
+        Serial.println("CAN Channel is already OPEN in LISTEN-ONLY Mode");
+        return 1;
+    }
+    default:
+    Serial.println("Default");
+        return 1;
+    }
+}
+
+/*******************************************
+Function: CMD_Open_Listen_Only()
+Description: Opens CAN Channel in Listen-Only Mode
+********************************************/
+
+uint8_t Lawicel::CMD_Open_Listen_Only()
+{
+    if (this->_length > 1)
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+
+    switch (this ->_channelState)
+    {
+    case CLOSED:
+    {
+        if (!SJA1000.begin(_baudrate))
+        {
+            Serial.println("Failed! Restarting...");
+            delay(5000);
+            ESP.restart();
+            return 1;
+        }
+        else
+        {
+            Serial.println("CAN Ready!");
+            this ->_channelState = LISTEN_ONLY;
+            return 0;
+        }
+    }
+
+    case NORMAL:
+    {
+        Serial.println("CAN Channel is already OPEN in NORMAL Mode");
+        return 1;
+    }
+
+    case LISTEN_ONLY:
+    {
+        Serial.println("CAN Channel is already OPEN in LISTEN-ONLY Mode");
+        return 1;
+    }
+    default:
+        return -1;
     }
 }

@@ -47,12 +47,12 @@ private:                       //Private Variables
         LISTEN_ONLY
     };
 
-    long _baudrate = 500E3;    //Standard Baudrate 500Kbps
-    char buffer[32];           //Buffer for Serial Messages
-    int _length = 0;           //Length of Serial-message
-    int channelState = CLOSED; //Channel State
-    const char CR = 13;
-    const char BEL = 7;
+    long _baudrate = 500E3;     //Standard Baudrate 500Kbps
+    char buffer[32];            //Buffer for Serial-Message
+    int _length = 0;            //Length of Serial-Message
+    int _channelState = CLOSED; //Channel State
+    const char CR = 13;         //Serial-Message Termination
+    const char BEL = 7;         //Warning Response
     /* ------------------------------------------------------------------------------*/
 private:                                    //Private Functions
     uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
@@ -61,6 +61,7 @@ private:                                    //Private Functions
     uint8_t CMD_Set_Baudrate(); //Sets Baudrate through presets
     uint8_t CMD_Set_BTR();      //Sets Baudrate through Registers
     uint8_t CMD_Open_Normal();         //Opens CAN Channel in Normal Mode
+    uint8_t CMD_Open_Listen_Only();     //Opens CAN Channel in Listen-Only Mode
 };
 
 #endif
