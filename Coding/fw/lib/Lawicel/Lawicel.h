@@ -10,10 +10,12 @@ class Lawicel
     /* ------------------------------------------------------------------------------*/
 public:
     uint8_t readSerial(); //Read Serial input and calls receiveCommand()
+    uint8_t getState();        //Returns State of the CAN Channel
+    ESP32SJA1000Class SJA1000; //CAN Controller 
 
     /* ------------------------------------------------------------------------------*/
 private:                       //Private Variables
-    ESP32SJA1000Class SJA1000; //CAN Controller
+    
 
     enum ASCII_COMMANDS : char
     {

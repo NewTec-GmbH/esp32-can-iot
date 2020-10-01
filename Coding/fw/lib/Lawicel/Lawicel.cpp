@@ -37,6 +37,31 @@ uint8_t Lawicel::readSerial()
 }
 
 /*******************************************
+Function: getState()
+Description: Returns State of the CAN Channel
+********************************************/
+uint8_t Lawicel::getState()
+{
+    switch (this->_channelState)
+    {
+    case CLOSED:
+    {
+        return 0;
+    }
+    case NORMAL:
+    {
+        return 1;
+    }
+    case LISTEN_ONLY:
+    {
+        return 2;
+    }
+    default:
+        return -1;
+    }
+}
+
+/*******************************************
 Function: charToByte(char MSB, char LSB)
 Description: Translates char symbols into hex values
 ********************************************/
@@ -292,7 +317,8 @@ uint8_t Lawicel::CMD_Set_BTR()
     {
         Serial.println("Too many Arguments!");
         return 1;
-    }else if (this->_length < 5)
+    }
+    else if (this->_length < 5)
     {
         Serial.println("Not enough Arguments!");
         return 1;
@@ -427,8 +453,9 @@ uint8_t Lawicel::CMD_Close()
 
     case NORMAL:
     {
-        Serial.println("CAN Channel Closed");
+        Serial.println("CAN Channel Closed");        
         this->_channelState = CLOSED;
+        SJA1000.end();
         return 0;
     }
 
