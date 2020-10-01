@@ -4,29 +4,36 @@
 Function: readSerial()
 Description: Read Serial input and calls receiveCommand()
 ********************************************/
-void Lawicel::readSerial()
+uint8_t Lawicel::readSerial()
 {
     memset(buffer, '0', 32);
 
     if (Serial.available())
     {
-        int availableBytes = Serial.available();
-                Serial.println(availableBytes);   //Prints the amount of symbols in Buffer
-        for (int i = 0; i < availableBytes; i++)
+        int availableBytes = Serial.available() - 1;
+        Serial.println(availableBytes); //Prints the amount of symbols in Buffer
+
+        int counter = 0;
+        while (buffer[counter] != CR)
         {
-            buffer[i] = Serial.read();
-            buffer[i + 1] = '\n';
+            buffer[counter] = Serial.read();
+            counter++;
         }
+
         for (int i = 0; i < availableBytes; i++)
         {
             Serial.printf("%c", buffer[i]);
         }
+
+        Serial.println("");
         Serial.println("");
 
         _length = availableBytes;
-        this->receiveCommand();
-
-        Serial.println("");
+        return this->receiveCommand();
+    }
+    else
+    {
+        return 0;
     }
 }
 
@@ -196,7 +203,7 @@ Description: Opens CAN Channel
 
 uint8_t Lawicel::CMD_Set_Bitrate()
 {
-    if(this->_length > 2)
+    if (this->_length > 2)
     {
         Serial.println("Too many Arguments!");
         return 1;

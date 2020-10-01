@@ -9,7 +9,7 @@ class Lawicel
 {
     /* ------------------------------------------------------------------------------*/
 public:
-    void readSerial(); //Read Serial input and calls receiveCommand()
+    uint8_t readSerial(); //Read Serial input and calls receiveCommand()
 
     /* ------------------------------------------------------------------------------*/
 private:                       //Private Variables
