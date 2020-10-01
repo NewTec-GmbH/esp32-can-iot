@@ -11,3 +11,29 @@ void Lawicel::getBegin(){
         Serial.println("CAN Ready!");
     }
 }
+
+void Lawicel::readSerial()
+{
+    memset(buffer, '0', 32);
+
+    
+    if(Serial.available())
+    {
+        int availableBytes = Serial.available();
+        Serial.println(availableBytes);
+        for (int i = 0; i < availableBytes; i++)
+        {
+            buffer[i] = Serial.read();
+            buffer[i + 1] = '\n';
+        }
+        for (int i = 0; i < availableBytes; i++)
+        {
+            Serial.printf("%c", buffer[i]);
+        }
+        Serial.println("");
+
+        this->receiveCommand(buffer, availableBytes);
+
+        Serial.println("");
+    }
+}

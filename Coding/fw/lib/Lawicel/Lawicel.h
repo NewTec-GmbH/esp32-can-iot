@@ -5,12 +5,21 @@
 
 class Lawicel
 {
+    /* ------------------------------------------------------------------------------*/
 public:
-    void getBegin();
+    void readSerial();         //Read Serial input and calls receiveCommand()
+    uint8_t receiveCommand(const char buffer[], const int length);
 
-private:
-    ESP32SJA1000Class SJA1000;
-    long _baudrate = 500E3;       //Standard Baudrate 500Kbps
+    /* ------------------------------------------------------------------------------*/
+private:                       //Private Variables
+    ESP32SJA1000Class SJA1000; //CAN Controller
+
+    long _baudrate = 500E3;    //Standard Baudrate 500Kbps
+    char buffer[32];           //Buffer for Serial Messages
+    /* ------------------------------------------------------------------------------*/
+
+private: //Private Functions
+    void getBegin();
 };
 
 #endif
