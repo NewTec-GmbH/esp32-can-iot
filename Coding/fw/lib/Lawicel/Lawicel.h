@@ -10,13 +10,12 @@ class Lawicel
     /* ------------------------------------------------------------------------------*/
 public:
     void readSerial(); //Read Serial input and calls receiveCommand()
-    uint8_t receiveCommand(const char buffer[], const int length);
 
     /* ------------------------------------------------------------------------------*/
-private:                        //Private Variables
-    ESP32SJA1000Class SJA1000;  //CAN Controller
+private:                       //Private Variables
+    ESP32SJA1000Class SJA1000; //CAN Controller
 
-    enum ASCII_Commands : char
+    enum ASCII_COMMANDS : char
     {
         SET_BAUDRATE = 'S',     //Setup with standard CAN bit-rates
         SET_BTR = 's',          //Setup with modified BTR0/BTR1 Registers for different bit-rates
@@ -38,10 +37,10 @@ private:                        //Private Variables
         VERSION = 'V',          //Gets Version of Software and Hardware
         SERIAL_NUMBER = 'N',    //Gets Serial Number of the Hardware
         SET_TIMESTAMP = 'Z',    //Sets Time Stamp ON/OFF
-        AUTO_START = 'Q'       //Auto-Startup with CAN Channel open and filters
+        AUTO_START = 'Q'        //Auto-Startup with CAN Channel open and filters
     };
 
-    enum State : int
+    enum BUS_STATE : int
     {
         CLOSED,
         NORMAL,
@@ -54,8 +53,11 @@ private:                        //Private Variables
     const char CR = 13;
     const char BEL = 7;
     /* ------------------------------------------------------------------------------*/
-private: //Private Functions
-    void getBegin();
+private:                                                           //Private Functions
+    uint8_t charToByte(char MSB, char LSB);                        //Translates char symbols into hex values
+    uint8_t receiveCommand(const char buffer[], const int length); //Receives and Interprets Buffer with Serial Command
+
+    void getOpen(); //Opens CAN Channel
 };
 
 #endif
