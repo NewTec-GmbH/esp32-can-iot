@@ -4,3 +4,4 @@
 .vscode/launch.json
 .vscode/ipch
 *.map
+Coding/fw/firmware.map
