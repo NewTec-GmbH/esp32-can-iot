@@ -68,7 +68,7 @@ Description: Translates char symbols into hex byte
 
 uint8_t Lawicel::charToByte(char MSB, char LSB)
 {
-    uint8_t result = 0;
+    uint8_t result = -10;
     if (MSB >= 48 && MSB <= 57)
     {
         result = (MSB - 48) * 16;
@@ -105,13 +105,63 @@ Description: Translates char symbols of numbers into int values
 uint8_t Lawicel::charToInt(char num_symbol)
 {
     uint8_t result = 0;
-    if(num_symbol < 48 || num_symbol > 57){
-        Serial.println("Error");
+    if (num_symbol < 48 || num_symbol > 57)
+    {
         return -10;
     }
 
     result = num_symbol;
-    result -= 48; 
+    result -= 48;
+
+    return result;
+}
+
+/*******************************************
+Function: stdIdDecode(char B2, char B1, char B0)
+Description: Translates char std ID int value
+********************************************/
+uint16_t Lawicel::stdIdDecode(char Byte2, char Byte1, char Byte0)
+{
+    uint16_t result = 0;
+
+    if (Byte2 >= 48 && Byte2 <= 55)
+    {
+        result = result + (Byte2 - 48) * 16 * 16;
+    }
+    else if (Byte2 >= 65 && Byte2 <= 70)
+    {
+        result = result + (Byte2 - 55) * 16 * 16;
+    }
+    else if (Byte2 >= 97 && Byte2 <= 102)
+    {
+        result = result + (Byte2 - 87) * 16 * 16;
+    }
+
+    if (Byte1 >= 48 && Byte1 <= 57)
+    {
+        result = result + (Byte1 - 48) * 16;
+    }
+    else if (Byte1 >= 65 && Byte1 <= 70)
+    {
+        result = result + (Byte1 - 55) * 16;
+    }
+    else if (Byte1 >= 97 && Byte1 <= 102)
+    {
+        result = result + (Byte1 - 87) * 16;
+    }
+
+    if (Byte0 >= 48 && Byte0 <= 57)
+    {
+        result = result + (Byte0 - 48);
+    }
+    else if (Byte0 >= 65 && Byte0 <= 70)
+    {
+        result = result + (Byte0 - 55);
+    }
+    else if (Byte0 >= 97 && Byte0 <= 102)
+    {
+        result = result + (Byte0 - 87);
+    }
 
     return result;
 }
@@ -497,15 +547,14 @@ Description: Transmits standard CAN Frame (11-bit ID)
 
 uint8_t Lawicel::CMD_Tx_Std()
 {
+    uint8_t _dlc = charToInt(buffer[4]);
 
-
-    Serial.println((2 * charToInt(buffer[4]))+5);
-    if (this->_length > ((2 * charToInt(buffer[4]))+5))
+    if (this->_length > ((2 * _dlc) + 5))
     {
         Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < ((2 * charToInt(buffer[4]))+5))
+    else if (this->_length < ((2 * _dlc) + 5))
     {
         Serial.println("Not enough Arguments!");
         return 1;
@@ -522,6 +571,24 @@ uint8_t Lawicel::CMD_Tx_Std()
         return 1;
     }
 
-    Serial.println("Function not yet implemented!");
+    int16_t _id = stdIdDecode(buffer[1], buffer[2], buffer[3]);
+
+    if(!SJA1000.beginPacket(_id))
+    {
+        return 1;
+    }
+
+    for (int bytesCounter = 0; bytesCounter < _dlc; bytesCounter++)
+    {
+        for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2)
+        {
+            SJA1000.write(charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
+        }
+    }
+
+    if(SJA1000.endPacket()){
+        Serial.printf("Message Sent with Standard ID 0x%3x", _id);
+        return 0;
+    }
     return 1;
 }

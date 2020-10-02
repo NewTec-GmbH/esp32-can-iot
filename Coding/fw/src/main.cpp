@@ -55,7 +55,11 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:
-  ESPCAN.readSerial();
+  if(ESPCAN.readSerial()){
+    Serial.println("Error");
+  }
+
+
   if (ESPCAN.getState() == 1 || ESPCAN.getState() == 2)
   {
     receiver();
