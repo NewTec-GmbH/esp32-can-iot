@@ -52,17 +52,18 @@ private: //Private Variables
     const char CR = 13;               //Serial-Message Termination
     const char BEL = 7;               //Warning Response
     /* ------------------------------------------------------------------------------*/
-private:                                                      //Private Functions
-    uint8_t charToByte(char MSB, char LSB);                   //Translates char symbols into hex values
-    uint8_t charToInt(char symbol);                           //Translates char symbols of numbers into int values
-    uint16_t stdIdDecode(char Byte2, char Byte1, char Byte0); //Translates char std ID int value
-    uint8_t receiveCommand();                                 //Receives and Interprets Buffer with Serial Command
-    uint8_t CMD_Set_Baudrate();                               //Sets Baudrate through presets
-    uint8_t CMD_Set_BTR();                                    //Sets Baudrate through Registers
-    uint8_t CMD_Open_Normal();                                //Opens CAN Channel in Normal Mode
-    uint8_t CMD_Open_Listen_Only();                           //Opens CAN Channel in Listen-Only Mode
-    uint8_t CMD_Close();                                      //Closes CAN Channel
-    uint8_t CMD_Tx_Std();                                     //Transmits standard CAN Frame (11-bit ID)
+private:                                    //Private Functions
+    uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
+    uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
+    uint32_t IdDecode(bool extended);                 //Translates char std ID int value
+    uint8_t receiveCommand();               //Receives and Interprets Buffer with Serial Command
+    uint8_t CMD_Set_Baudrate();             //Sets Baudrate through presets
+    uint8_t CMD_Set_BTR();                  //Sets Baudrate through Registers
+    uint8_t CMD_Open_Normal();              //Opens CAN Channel in Normal Mode
+    uint8_t CMD_Open_Listen_Only();         //Opens CAN Channel in Listen-Only Mode
+    uint8_t CMD_Close();                    //Closes CAN Channel
+    uint8_t CMD_Tx_Std();                   //Transmits standard CAN Frame (11-bit ID)
+    uint8_t CMD_Tx_Ext();                   //Transmits extended CAN Frame (29-bit ID)
 };
 
 #endif

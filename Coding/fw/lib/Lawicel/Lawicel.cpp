@@ -120,47 +120,44 @@ uint8_t Lawicel::charToInt(char num_symbol)
 Function: stdIdDecode(char B2, char B1, char B0)
 Description: Translates char std ID int value
 ********************************************/
-uint16_t Lawicel::stdIdDecode(char Byte2, char Byte1, char Byte0)
+uint32_t Lawicel::IdDecode(bool extended)
 {
     uint16_t result = 0;
+    char _IdBuffer[8];
 
-    if (Byte2 >= 48 && Byte2 <= 55)
-    {
-        result = result + (Byte2 - 48) * 16 * 16;
-    }
-    else if (Byte2 >= 65 && Byte2 <= 70)
-    {
-        result = result + (Byte2 - 55) * 16 * 16;
-    }
-    else if (Byte2 >= 97 && Byte2 <= 102)
-    {
-        result = result + (Byte2 - 87) * 16 * 16;
-    }
+    uint8_t _IdLength = 3;
 
-    if (Byte1 >= 48 && Byte1 <= 57)
+    _IdBuffer[0] = this->buffer[3];
+    _IdBuffer[1] = this->buffer[2];
+    _IdBuffer[2] = this->buffer[1];
+
+    if (extended)
     {
-        result = result + (Byte1 - 48) * 16;
-    }
-    else if (Byte1 >= 65 && Byte1 <= 70)
-    {
-        result = result + (Byte1 - 55) * 16;
-    }
-    else if (Byte1 >= 97 && Byte1 <= 102)
-    {
-        result = result + (Byte1 - 87) * 16;
+        _IdLength = 8;
+        _IdBuffer[0] = this->buffer[8];
+        _IdBuffer[1] = this->buffer[7];
+        _IdBuffer[2] = this->buffer[6];
+        _IdBuffer[3] = this->buffer[5];
+        _IdBuffer[4] = this->buffer[4];
+        _IdBuffer[5] = this->buffer[3];
+        _IdBuffer[6] = this->buffer[2];
+        _IdBuffer[7] = this->buffer[1];
     }
 
-    if (Byte0 >= 48 && Byte0 <= 57)
+    for (int counter = 0; counter < _IdLength; counter++)
     {
-        result = result + (Byte0 - 48);
-    }
-    else if (Byte0 >= 65 && Byte0 <= 70)
-    {
-        result = result + (Byte0 - 55);
-    }
-    else if (Byte0 >= 97 && Byte0 <= 102)
-    {
-        result = result + (Byte0 - 87);
+        if (_IdBuffer[counter] >= 48 && _IdBuffer[counter] <= 57)
+        {
+            result = result + (_IdBuffer[counter] - 48) * pow(16.0,counter);
+        }
+        else if (_IdBuffer[counter] >= 65 && _IdBuffer[counter] <= 70)
+        {
+            result = result + (_IdBuffer[counter] - 55) * pow(16.0,counter);
+        }
+        else if (_IdBuffer[counter] >= 97 && _IdBuffer[counter] <= 102)
+        {
+            result = result + (_IdBuffer[counter] - 87) * pow(16.0,counter);
+        }
     }
 
     return result;
@@ -208,7 +205,7 @@ uint8_t Lawicel::receiveCommand()
 
     case TX_EXT:
     {
-        return 0;
+        return CMD_Tx_Ext();
     }
 
     case TX_STD_RTR:
@@ -571,24 +568,59 @@ uint8_t Lawicel::CMD_Tx_Std()
         return 1;
     }
 
-    int16_t _id = stdIdDecode(buffer[1], buffer[2], buffer[3]);
+    int32_t _id = IdDecode(0);
 
-    if(!SJA1000.beginPacket(_id))
+    if (!SJA1000.beginPacket(_id))
     {
         return 1;
     }
 
-    for (int bytesCounter = 0; bytesCounter < _dlc; bytesCounter++)
-    {
+    
         for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2)
         {
             SJA1000.write(charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
         }
-    }
+    
 
-    if(SJA1000.endPacket()){
-        Serial.printf("Message Sent with Standard ID 0x%3x", _id);
+    if (SJA1000.endPacket())
+    {
+        Serial.printf("Message Sent with Standard ID 0x%x \n\n", _id);
         return 0;
     }
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Tx_Ext()
+Description: Transmits extended CAN Frame (29-bit ID)
+********************************************/
+
+uint8_t Lawicel::CMD_Tx_Ext()
+{
+    uint8_t _dlc = charToInt(buffer[9]);
+
+    if (this->_length > ((2 * _dlc) + 10))
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+    else if (this->_length < ((2 * _dlc) + 10))
+    {
+        Serial.println("Not enough Arguments!");
+        return 1;
+    }
+
+    if (_channelState == CLOSED)
+    {
+        Serial.println("Not Allowed! Channel is Closed");
+        return 1;
+    }
+    else if (_channelState == LISTEN_ONLY)
+    {
+        Serial.println("Not Allowed! Channel is on Listen-only Mode");
+        return 1;
+    }
+
+    Serial.println("Function not yet implemented!");
     return 1;
 }
