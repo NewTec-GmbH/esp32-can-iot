@@ -63,7 +63,7 @@ uint8_t Lawicel::getState()
 
 /*******************************************
 Function: charToByte(char MSB, char LSB)
-Description: Translates char symbols into hex values
+Description: Translates char symbols into hex byte
 ********************************************/
 
 uint8_t Lawicel::charToByte(char MSB, char LSB)
@@ -94,6 +94,24 @@ uint8_t Lawicel::charToByte(char MSB, char LSB)
     {
         result = result + (LSB - 87);
     }
+
+    return result;
+}
+
+/*******************************************
+Function: charToInt(char symbol)
+Description: Translates char symbols of numbers into int values
+********************************************/
+uint8_t Lawicel::charToInt(char num_symbol)
+{
+    uint8_t result = 0;
+    if(num_symbol < 48 || num_symbol > 57){
+        Serial.println("Error");
+        return -10;
+    }
+
+    result = num_symbol;
+    result -= 48; 
 
     return result;
 }
@@ -135,7 +153,7 @@ uint8_t Lawicel::receiveCommand()
 
     case TX_STD:
     {
-        return 0;
+        return CMD_Tx_Std();
     }
 
     case TX_EXT:
@@ -361,7 +379,7 @@ uint8_t Lawicel::CMD_Open_Normal()
         else
         {
             Serial.println("CAN Channel opened in Normal Mode!");
-            Serial.printf("Baudrate: %ld Kbps\n",_baudrate);
+            Serial.printf("Baudrate: %ld Kbps\n", _baudrate);
             this->_channelState = NORMAL;
             return 0;
         }
@@ -410,7 +428,7 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
         else
         {
             Serial.println("CAN Channel opened in Listen-Only Mode!");
-            Serial.printf("Baudrate: %ld Kbps\n",_baudrate);
+            Serial.printf("Baudrate: %ld Kbps\n", _baudrate);
             this->_channelState = LISTEN_ONLY;
             return 0;
         }
@@ -455,7 +473,7 @@ uint8_t Lawicel::CMD_Close()
 
     case NORMAL:
     {
-        Serial.println("CAN Channel Closed");        
+        Serial.println("CAN Channel Closed");
         this->_channelState = CLOSED;
         SJA1000.end();
         return 0;
@@ -470,4 +488,40 @@ uint8_t Lawicel::CMD_Close()
     default:
         return 1;
     }
+}
+
+/*******************************************
+Function: CMD_Tx_Std()
+Description: Transmits standard CAN Frame (11-bit ID)
+********************************************/
+
+uint8_t Lawicel::CMD_Tx_Std()
+{
+
+
+    Serial.println((2 * charToInt(buffer[4]))+5);
+    if (this->_length > ((2 * charToInt(buffer[4]))+5))
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+    else if (this->_length < ((2 * charToInt(buffer[4]))+5))
+    {
+        Serial.println("Not enough Arguments!");
+        return 1;
+    }
+
+    if (_channelState == CLOSED)
+    {
+        Serial.println("Not Allowed! Channel is Closed");
+        return 1;
+    }
+    else if (_channelState == LISTEN_ONLY)
+    {
+        Serial.println("Not Allowed! Channel is on Listen-only Mode");
+        return 1;
+    }
+
+    Serial.println("Function not yet implemented!");
+    return 1;
 }
