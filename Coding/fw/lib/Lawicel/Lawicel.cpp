@@ -122,14 +122,10 @@ Description: Translates char std ID int value
 ********************************************/
 uint32_t Lawicel::IdDecode(bool extended)
 {
-    uint16_t result = 0;
+    uint32_t result = 0;
     char _IdBuffer[8];
 
     uint8_t _IdLength = 3;
-
-    _IdBuffer[0] = this->buffer[3];
-    _IdBuffer[1] = this->buffer[2];
-    _IdBuffer[2] = this->buffer[1];
 
     if (extended)
     {
@@ -143,20 +139,26 @@ uint32_t Lawicel::IdDecode(bool extended)
         _IdBuffer[6] = this->buffer[2];
         _IdBuffer[7] = this->buffer[1];
     }
+    else
+    {
+        _IdBuffer[0] = this->buffer[3];
+        _IdBuffer[1] = this->buffer[2];
+        _IdBuffer[2] = this->buffer[1];
+    }
 
     for (int counter = 0; counter < _IdLength; counter++)
     {
         if (_IdBuffer[counter] >= 48 && _IdBuffer[counter] <= 57)
         {
-            result = result + (_IdBuffer[counter] - 48) * pow(16.0,counter);
+            result = result + (_IdBuffer[counter] - 48) * pow(16.0, counter);
         }
         else if (_IdBuffer[counter] >= 65 && _IdBuffer[counter] <= 70)
         {
-            result = result + (_IdBuffer[counter] - 55) * pow(16.0,counter);
+            result = result + (_IdBuffer[counter] - 55) * pow(16.0, counter);
         }
         else if (_IdBuffer[counter] >= 97 && _IdBuffer[counter] <= 102)
         {
-            result = result + (_IdBuffer[counter] - 87) * pow(16.0,counter);
+            result = result + (_IdBuffer[counter] - 87) * pow(16.0, counter);
         }
     }
 
@@ -575,16 +577,18 @@ uint8_t Lawicel::CMD_Tx_Std()
         return 1;
     }
 
-    
-        for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2)
-        {
-            SJA1000.write(charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
-        }
-    
+    for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2)
+    {
+        SJA1000.write(charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
+    }
 
     if (SJA1000.endPacket())
     {
-        Serial.printf("Message Sent with Standard ID 0x%x \n\n", _id);
+        Serial.printf("Message Sent with Standard ID 0x%x and Data Bytes ", _id);
+        for (int i = 0; i < _dlc; i ++)
+        {
+            Serial.printf("%c%c ",buffer[i+4],buffer[i+5]);
+        }
         return 0;
     }
     return 1;
@@ -621,6 +625,27 @@ uint8_t Lawicel::CMD_Tx_Ext()
         return 1;
     }
 
-    Serial.println("Function not yet implemented!");
+    int32_t _id = IdDecode(1);
+
+    if (!SJA1000.beginExtendedPacket(_id))
+    {
+        return 1;
+    }
+
+    for (int bufferPosition = 10; bufferPosition < (_dlc * 2 + 9); bufferPosition += 2)
+    {
+        SJA1000.write(charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
+    }
+
+    if (SJA1000.endPacket())
+    {
+        Serial.printf("Message Sent with Extended ID 0x%x and Data Bytes ", _id);
+        for (int i = 0; i < _dlc; i ++)
+        {
+            Serial.printf("%c%c ",buffer[i+10],buffer[i+11]);
+        }
+        return 0;
+    }
+
     return 1;
 }
