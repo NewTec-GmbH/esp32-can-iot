@@ -337,7 +337,10 @@ uint8_t Lawicel::CMD_Set_Baudrate()
     }
 
     cmd.Baudrate = _baudrate;
-    m_selectedCAN->send(cmd);
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(cmd);
+    }
     return 0;
 }
 
@@ -364,7 +367,10 @@ uint8_t Lawicel::CMD_Set_BTR()
     cmd.BTR0 = charToByte(buffer[1], buffer[2]);
     cmd.BTR1 = charToByte(buffer[3], buffer[4]);
 
-    m_selectedCAN->send(cmd);
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(cmd);
+    }
     return 0;
 }
 
@@ -382,30 +388,12 @@ uint8_t Lawicel::CMD_Open_Normal()
         Serial.println("Too many Arguments!");
         return 1;
     }
-
-    switch (_channelState)
+    cmd.State = NORMAL;
+    if (m_selectedCAN != nullptr)
     {
-    case CLOSED:
-    {
-        cmd.State = NORMAL;
         m_selectedCAN->send(cmd);
-        return 0;
     }
-
-    case NORMAL:
-    {
-        Serial.println("CAN Channel is ALREADY opened in NORMAL Mode");
-        return 1;
-    }
-
-    case LISTEN_ONLY:
-    {
-        Serial.println("CAN Channel is ALREADY opened in LISTEN-ONLY Mode");
-        return 1;
-    }
-    default:
-        return 1;
-    }
+    return 0;
 }
 
 /*******************************************
@@ -422,29 +410,12 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
         return 1;
     }
 
-    switch (this->_channelState)
+    cmd.State = LISTEN_ONLY;
+    if (m_selectedCAN != nullptr)
     {
-    case CLOSED:
-    {
-        cmd.State = LISTEN_ONLY;
         m_selectedCAN->send(cmd);
-        return 0;
     }
-
-    case NORMAL:
-    {
-        Serial.println("CAN Channel is ALREADY opened in NORMAL Mode");
-        return 1;
-    }
-
-    case LISTEN_ONLY:
-    {
-        Serial.println("CAN Channel is ALREADY opened in LISTEN-ONLY Mode");
-        return 1;
-    }
-    default:
-        return 1;
-    }
+    return 0;
 }
 
 /*******************************************
@@ -461,30 +432,12 @@ uint8_t Lawicel::CMD_Close()
         return 1;
     }
 
-    switch (this->_channelState)
+    cmd.State = CLOSED;
+    if (m_selectedCAN != nullptr)
     {
-    case CLOSED:
-    {
-        Serial.println("CAN Channel is already CLOSED");
-        return 1;
-    }
-
-    case NORMAL:
-    {
-        cmd.State = CLOSED;
         m_selectedCAN->send(cmd);
-        return 0;
     }
-
-    case LISTEN_ONLY:
-    {
-        cmd.State = CLOSED;
-        m_selectedCAN->send(cmd);
-        return 0;
-    }
-    default:
-        return 1;
-    }
+    return 0;
 }
 
 /*******************************************
@@ -496,6 +449,12 @@ uint8_t Lawicel::CMD_Tx_Std()
 {
     Frame frame;
     uint8_t _dlc = charToInt(buffer[4]);
+    int32_t _id = IdDecode(0);
+    int frameposition = 0;
+
+    frame.ID = _id;
+    frame.DLC = _dlc;
+    frame.Data = new uint8_t[_dlc];
 
     if (this->_length > ((2 * _dlc) + 5))
     {
@@ -508,29 +467,15 @@ uint8_t Lawicel::CMD_Tx_Std()
         return 1;
     }
 
-    if (_channelState == CLOSED)
-    {
-        Serial.println("Not Allowed! Channel is Closed");
-        return 1;
-    }
-    else if (_channelState == LISTEN_ONLY)
-    {
-        Serial.println("Not Allowed! Channel is on Listen-only Mode");
-        return 1;
-    }
-
-    int32_t _id = IdDecode(0);
-    frame.ID = _id;
-    frame.DLC = _dlc;
-
-    frame.Data=new uint8_t[_dlc];
-    int frameposition = 0;
-    for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2)
+    for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2, frameposition++)
     {
         frame.Data[frameposition] = (charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
     }
 
-    m_selectedCAN->send(frame);
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(frame);
+    }
 
     return 0;
 }
@@ -544,6 +489,13 @@ uint8_t Lawicel::CMD_Tx_Ext()
 {
     Frame frame;
     uint8_t _dlc = charToInt(buffer[9]);
+    int32_t _id = IdDecode(1);
+    int frameposition = 0;
+
+    frame.ID = _id;
+    frame.DLC = _dlc;
+    frame.Extended = true;
+    frame.Data = new uint8_t[_dlc];
 
     if (this->_length > ((2 * _dlc) + 10))
     {
@@ -556,31 +508,82 @@ uint8_t Lawicel::CMD_Tx_Ext()
         return 1;
     }
 
-    if (_channelState == CLOSED)
+    for (int bufferPosition = 10; bufferPosition < (_dlc * 2 + 9); bufferPosition += 2,frameposition++)
     {
-        Serial.println("Not Allowed! Channel is Closed");
+        frame.Data[frameposition] = (charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
+    }
+
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(frame);
+    }
+    return 0;
+}
+
+/*******************************************
+Function: CMD_Tx_Std_RTR()
+Description: Transmits standard RTR CAN Frame (11-bit ID)
+********************************************/
+
+uint8_t Lawicel::CMD_Tx_Std_RTR()
+{
+   Frame frame;
+    uint8_t _dlc = charToInt(buffer[4]);
+    int32_t _id = IdDecode(0);
+
+    frame.ID = _id;
+    frame.DLC = _dlc;
+    frame.RTR = true;
+
+    if (this->_length > ((2 * _dlc) + 5))
+    {
+        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (_channelState == LISTEN_ONLY)
+    else if (this->_length < ((2 * _dlc) + 5))
     {
-        Serial.println("Not Allowed! Channel is on Listen-only Mode");
+        Serial.println("Not enough Arguments!");
         return 1;
     }
 
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(frame);
+    }
+
+    return 0;
+}
+
+/*******************************************
+Function: CMD_Tx_Ext_RTR()
+Description: Transmits extended RTR CAN Frame (29-bit ID)
+********************************************/
+
+uint8_t Lawicel::CMD_Tx_Ext_RTR()
+{
+    Frame frame;
+    uint8_t _dlc = charToInt(buffer[9]);
     int32_t _id = IdDecode(1);
+
     frame.ID = _id;
     frame.DLC = _dlc;
     frame.Extended = true;
+    frame.RTR = true;
 
-    frame.Data=new uint8_t[_dlc];
-    int frameposition = 0;
-
-    for (int bufferPosition = 10; bufferPosition < (_dlc * 2 + 9); bufferPosition += 2)
+    if (this->_length > ((2 * _dlc) + 10))
     {
-       frame.Data[frameposition] = (charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+    else if (this->_length < ((2 * _dlc) + 10))
+    {
+        Serial.println("Not enough Arguments!");
+        return 1;
     }
 
-    m_selectedCAN->send(frame);
-
-    return 1;
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(frame);
+    }
+    return 0;
 }

@@ -109,6 +109,8 @@ private:                                    //Private Functions
     uint8_t CMD_Close();                    //Closes CAN Channel
     uint8_t CMD_Tx_Std();                   //Transmits standard CAN Frame (11-bit ID)
     uint8_t CMD_Tx_Ext();                   //Transmits extended CAN Frame (29-bit ID)
+    uint8_t CMD_Tx_Std_RTR();               //Transmits standard RTR CAN Frame (11-bit ID)
+    uint8_t CMD_Tx_Ext_RTR();               //Transmits extended RTR CAN Frame (29-bit ID)
 
     CANInterface *m_selectedCAN;
 };
