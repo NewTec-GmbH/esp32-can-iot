@@ -7,6 +7,53 @@ class Lawicel
 {
     /* ------------------------------------------------------------------------------*/
 public:
+    enum BUS_STATE : int
+    {
+        CLOSED,
+        NORMAL,
+        LISTEN_ONLY
+    };
+
+    struct Frame
+    {
+        uint32_t ID;         //CAN ID
+        bool RTR;            //Identifies a RTR Frame
+        bool Extended;       //Identifies an Extended Frame
+        uint8_t DLC;         //Data Length
+        const uint8_t *Data; //Data of the Frame
+
+        Frame() : ID(0U),
+                  RTR(false),
+                  Extended(false),
+                  DLC(0U),
+                  Data(nullptr)
+        {
+        }
+    };
+
+    struct CANCommand
+    {
+        BUS_STATE State;    //Sets Channel State
+        long Baudrate;      //Sets Baudrate
+        bool FilterMode;    //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
+        const uint32_t ACn; //Sets Acceptance Code Register
+        const uint32_t AMn; //Sets Acceptance Mask Register
+
+        CANCommand() : State(CLOSED),
+                       Baudrate(500E3),
+                       FilterMode(0),
+                       ACn(0x00000000),
+                       AMn(0xFFFFFFFF)
+        {
+        }
+    };
+
+    struct SerialCommand
+    {
+        long Baudrate;  //Sets Serial Baudrate
+        bool Timestamp; //Toggles Timestamp
+    };
+
     uint8_t readSerial();      //Read Serial input and calls receiveCommand()
     uint8_t getState();        //Returns State of the CAN Channel
     ESP32SJA1000Class SJA1000; //CAN Controller
@@ -38,13 +85,6 @@ private: //Private Variables
         AUTO_START = 'Q'        //Auto-Startup with CAN Channel open and filters
     };
 
-    enum BUS_STATE : int
-    {
-        CLOSED,
-        NORMAL,
-        LISTEN_ONLY
-    };
-
     BUS_STATE _channelState = CLOSED; //Channel State
     long _baudrate = 500E3;           //Standard Baudrate 500Kbps
     char buffer[32];                  //Buffer for Serial-Message
@@ -55,7 +95,7 @@ private: //Private Variables
 private:                                    //Private Functions
     uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
     uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
-    uint32_t IdDecode(bool extended);                 //Translates char std ID int value
+    uint32_t IdDecode(bool extended);       //Translates char std ID int value
     uint8_t receiveCommand();               //Receives and Interprets Buffer with Serial Command
     uint8_t CMD_Set_Baudrate();             //Sets Baudrate through presets
     uint8_t CMD_Set_BTR();                  //Sets Baudrate through Registers
