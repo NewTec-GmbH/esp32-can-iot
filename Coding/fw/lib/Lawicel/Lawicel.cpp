@@ -176,72 +176,72 @@ uint8_t Lawicel::receiveCommand()
 
     case TX_STD_RTR:
     {
-        return 0;
+        return CMD_Tx_Std_RTR();
     }
 
     case TX_EXT_RTR:
     {
-        return 0;
+        return CMD_Tx_Ext_RTR();
     }
 
     case POLL_SINGLE:
     {
-        return 0;
+        return CMD_Poll_Single();
     }
 
     case POLL_ALL:
     {
-        return 0;
+        return CMD_Poll_All();
     }
 
     case POLL_AUTO:
     {
-        return 0;
+        return CMD_Poll_Auto();
     }
 
     case STATUS_FLAGS:
     {
-        return 0;
+        return CMD_Flags();
     }
 
     case FILTER_MODE:
     {
-        return 0;
+        return CMD_Set_Filter_Mode();
     }
 
     case ACN_REGISTER:
     {
-        return 0;
+        return CMD_Set_ACn();
     }
 
     case AMN_REGISTER:
     {
-        return 0;
+        return CMD_Set_AMn();
     }
 
     case SERIAL_BAUDRATE:
     {
-        return 0;
+        return CMD_Set_Serial_Baudrate();
     }
 
     case VERSION:
     {
-        return 0;
+        return CMD_Version();
     }
 
     case SERIAL_NUMBER:
     {
-        return 0;
+        return CMD_Serial_Number();
     }
 
-    case SET_TIMESTAMP:
+    case TOGGLE_TIMESTAMP:
     {
-        return 0;
+        return CMD_Timestamp();
     }
 
     case AUTO_START:
     {
-        return 0;
+        return CMD_Auto_Start();
     }
 
     default:
@@ -340,8 +340,9 @@ uint8_t Lawicel::CMD_Set_Baudrate()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(cmd);
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -370,8 +371,9 @@ uint8_t Lawicel::CMD_Set_BTR()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(cmd);
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -392,8 +394,9 @@ uint8_t Lawicel::CMD_Open_Normal()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(cmd);
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -414,8 +417,9 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(cmd);
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -436,8 +440,9 @@ uint8_t Lawicel::CMD_Close()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(cmd);
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -475,9 +480,10 @@ uint8_t Lawicel::CMD_Tx_Std()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(frame);
+        return 0;
     }
 
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -494,7 +500,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
 
     frame.ID = _id;
     frame.DLC = _dlc;
-    frame.Extended = true;
+    frame.Extended = YES;
     frame.Data = new uint8_t[_dlc];
 
     if (this->_length > ((2 * _dlc) + 10))
@@ -508,7 +514,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
         return 1;
     }
 
-    for (int bufferPosition = 10; bufferPosition < (_dlc * 2 + 9); bufferPosition += 2,frameposition++)
+    for (int bufferPosition = 10; bufferPosition < (_dlc * 2 + 9); bufferPosition += 2, frameposition++)
     {
         frame.Data[frameposition] = (charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
     }
@@ -516,8 +522,9 @@ uint8_t Lawicel::CMD_Tx_Ext()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(frame);
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -527,13 +534,13 @@ Description: Transmits standard RTR CAN Frame (11-bit ID)
 
 uint8_t Lawicel::CMD_Tx_Std_RTR()
 {
-   Frame frame;
+    Frame frame;
     uint8_t _dlc = charToInt(buffer[4]);
     int32_t _id = IdDecode(0);
 
     frame.ID = _id;
     frame.DLC = _dlc;
-    frame.RTR = true;
+    frame.RTR = YES;
 
     if (this->_length > ((2 * _dlc) + 5))
     {
@@ -549,9 +556,10 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(frame);
+        return 0;
     }
 
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -567,8 +575,8 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
 
     frame.ID = _id;
     frame.DLC = _dlc;
-    frame.Extended = true;
-    frame.RTR = true;
+    frame.Extended = YES;
+    frame.RTR = YES;
 
     if (this->_length > ((2 * _dlc) + 10))
     {
@@ -584,6 +592,186 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
     if (m_selectedCAN != nullptr)
     {
         m_selectedCAN->send(frame);
+        return 0;
     }
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Poll_Single()
+Description: 
+********************************************/
+
+uint8_t Lawicel::CMD_Poll_Single()
+{
+    Serial.println("Function not Implemented");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Poll_All(); 
+Description: Polls incomming FIFO for CAN frames (all pending frames)
+********************************************/
+
+uint8_t Lawicel::CMD_Poll_All()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Poll_Auto()
+Description: Toggles Auto Poll for inconming Frames
+********************************************/
+
+uint8_t Lawicel::CMD_Poll_Auto()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Flags()
+Description: Read Status Flags
+********************************************/
+
+uint8_t Lawicel::CMD_Flags()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Set_Filter_Mode()
+Description: Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
+********************************************/
+
+uint8_t Lawicel::CMD_Set_Filter_Mode()
+{
+    CANCommand cmd;
+
+    if (this->_length > 2)
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+    else if (this->_length < 2)
+    {
+        Serial.println("Not Enough Arguments!");
+        return 1;
+    }
+
+    if (buffer[1] == '1')
+    {
+        cmd.FilterMode = true;
+    }
+
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(cmd);
+        return 0;
+    }
+
     return 0;
+}
+
+/*******************************************
+Function: CMD_Set_ACn()
+Description: Sets Acceptance Code Register
+********************************************/
+
+uint8_t Lawicel::CMD_Set_ACn()
+{
+    CANCommand cmd;
+
+    if (this->_length > 9)
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+    else if (this->_length < 9)
+    {
+        Serial.println("Not Enough Arguments!");
+        return 1;
+    }
+
+    cmd.AC0 = charToByte(buffer[1],buffer[2]);
+    cmd.AC1 = charToByte(buffer[3],buffer[4]);
+    cmd.AC2 = charToByte(buffer[5],buffer[6]);
+    cmd.AC3 = charToByte(buffer[7],buffer[8]);
+
+
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(cmd);
+        return 0;
+    }
+
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Set_AMn()
+Description: Sets Acceptance Mask Register
+********************************************/
+
+uint8_t Lawicel::CMD_Set_AMn()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Set_Serial_Baudrate()
+Description: Sets UART Baudrate (and saves setting on EEPROM)
+********************************************/
+
+uint8_t Lawicel::CMD_Set_Serial_Baudrate()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Version()
+Description: Sends Hardware and Software Version
+********************************************/
+
+uint8_t Lawicel::CMD_Version()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Serial_Number()
+Description: Sends Serial Number of Hardware
+********************************************/
+
+uint8_t Lawicel::CMD_Serial_Number()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Activate_Timestamp()
+Description: Toggles Timestamp (and saves setting on EEPROM)
+********************************************/
+
+uint8_t Lawicel::CMD_Timestamp()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
+}
+
+/*******************************************
+Function: CMD_Auto_Start()
+Description: Auto Startup feature (from power on)
+********************************************/
+
+uint8_t Lawicel::CMD_Auto_Start()
+{
+    Serial.println("Function Not Implemented!");
+    return 1;
 }

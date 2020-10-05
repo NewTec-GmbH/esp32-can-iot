@@ -2,13 +2,15 @@
 #define LAWICEL_H_
 #include <Arduino.h>
 
+#define MAX_TIMESTAMP 0x5A5F
+
 class CANInterface;
 
 class Lawicel
 {
     /* ------------------------------------------------------------------------------*/
 public:
-    enum BUS_STATE : int
+    enum BUS_STATE 
     {
         CLOSED,
         NORMAL,
@@ -16,18 +18,25 @@ public:
         UNDEFINED = -1
     };
 
+    enum FRAME_MOD  
+    {
+        NO,         //Frame is not RTR/Ext
+        YES,        //Frame is RTR/Ext
+        DC = -1     //Do not Care
+    };
+
     struct Frame
     {
-        uint32_t ID;         //CAN ID
-        bool RTR;            //Identifies a RTR Frame
-        bool Extended;       //Identifies an Extended Frame
-        uint8_t DLC;         //Data Length
+        uint32_t ID;   //CAN ID
+        FRAME_MOD RTR;      //Identifies a RTR Frame
+        FRAME_MOD Extended; //Identifies an Extended Frame
+        uint8_t DLC;   //Data Length
         uint8_t *Data; //Data of the Frame
 
-        Frame() : ID(0U),
-                  RTR(false),
-                  Extended(false),
-                  DLC(0U),
+        Frame() : ID(-1),
+                  RTR(DC),
+                  Extended(DC),
+                  DLC(-1),
                   Data(nullptr)
         {
         }
@@ -35,23 +44,35 @@ public:
 
     struct CANCommand
     {
-        BUS_STATE State;      //Sets Channel State
-        long Baudrate;        //Sets Baudrate
-        uint8_t BTR0; //Sets BTR registers
+        BUS_STATE State; //Sets Channel State
+        long Baudrate;   //Sets Baudrate
+        uint8_t BTR0;    //Sets BTR registers
         uint8_t BTR1;
-        bool FilterMode;      //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
-        uint32_t ACn;   //Sets Acceptance Code Register
-        uint32_t AMn;   //Sets Acceptance Mask Register
+        bool FilterMode; //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
+        uint8_t AC0;    //Sets Acceptance Code Register
+        uint8_t AC1;
+        uint8_t AC2;
+        uint8_t AC3;
+        uint8_t AM0;    //Sets Acceptance Mask Register
+        uint8_t AM1;
+        uint8_t AM2;
+        uint8_t AM3;
 
-        CANCommand() 
+        CANCommand()
         {
-            State=(UNDEFINED);
-            Baudrate = 0;
-            BTR0 = 0;
-            BTR1 = 0;
+            State = (UNDEFINED);
+            Baudrate = -1;
+            BTR0 = -1;
+            BTR1 = -1;
             FilterMode = false;
-            ACn = 0U;
-            AMn = 0U;
+            AC0 = -1;
+            AC1 = -1;
+            AC2 = -1;
+            AC3 = -1;
+            AM0 = -1;
+            AM1 = -1;
+            AM2 = -1;
+            AM3 = -1;
         }
     };
 
@@ -87,17 +108,10 @@ private: //Private Variables
         SERIAL_BAUDRATE = 'U',  //Setup Serial Communication Baudrate
         VERSION = 'V',          //Gets Version of Software and Hardware
         SERIAL_NUMBER = 'N',    //Gets Serial Number of the Hardware
-        SET_TIMESTAMP = 'Z',    //Sets Time Stamp ON/OFF
+        TOGGLE_TIMESTAMP = 'Z',    //Sets Time Stamp ON/OFF
         AUTO_START = 'Q'        //Auto-Startup with CAN Channel open and filters
     };
 
-    BUS_STATE _channelState = CLOSED; //Channel State
-    char buffer[32];                  //Buffer for Serial-Message
-    int _length = 0;                  //Length of Serial-Message
-    const char CR = 13;               //Serial-Message Termination
-    const char BEL = 7;               //Warning Response
-    /* ------------------------------------------------------------------------------*/
-private:                                    //Private Functions
     uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
     uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
     uint32_t IdDecode(bool extended);       //Translates char std ID int value
@@ -111,6 +125,25 @@ private:                                    //Private Functions
     uint8_t CMD_Tx_Ext();                   //Transmits extended CAN Frame (29-bit ID)
     uint8_t CMD_Tx_Std_RTR();               //Transmits standard RTR CAN Frame (11-bit ID)
     uint8_t CMD_Tx_Ext_RTR();               //Transmits extended RTR CAN Frame (29-bit ID)
+    uint8_t CMD_Poll_Single();              //Poll incomming FIFO for CAN frames (single poll)
+    uint8_t CMD_Poll_All();                 //Polls incomming FIFO for CAN frames (all pending frames)
+    uint8_t CMD_Poll_Auto();                //Toggles Auto Poll for inconming Frames
+    uint8_t CMD_Flags();                    //Read Status Flags
+    uint8_t CMD_Set_Filter_Mode();          //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
+    uint8_t CMD_Set_ACn();                  //Sets Acceptance Code Register
+    uint8_t CMD_Set_AMn();                  //Sets Acceptance Mask Register
+    uint8_t CMD_Set_Serial_Baudrate();      //Sets UART Baudrate (and saves setting on EEPROM)
+    uint8_t CMD_Version();                  //Sends Hardware and Software Version
+    uint8_t CMD_Serial_Number();            //Sends Serial Number of Hardware
+    uint8_t CMD_Timestamp();       //Toggles Timestamp (and saves setting on EEPROM)
+    uint8_t CMD_Auto_Start();               //Auto Startup feature (from power on)
+
+    BUS_STATE _channelState = CLOSED; //Channel State
+
+    char buffer[32];                  //Buffer for Serial-Message
+    int _length = 0;                  //Length of Serial-Message
+    const char CR = 13;               //Serial-Message Termination
+    const char BEL = 7;               //Warning Response
 
     CANInterface *m_selectedCAN;
 };
@@ -120,6 +153,7 @@ class CANInterface
 public:
     virtual void send(Lawicel::Frame &Frame) = 0;
     virtual void send(Lawicel::CANCommand &CANCommand) = 0;
+    virtual int getChannelState() = 0;
 
 private:
 };
