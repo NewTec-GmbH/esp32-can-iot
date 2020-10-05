@@ -1,42 +1,6 @@
 #include <Lawicel.h>
 
 /*******************************************
-Function: readSerial()
-Description: Read Serial input and calls receiveCommand()
-********************************************/
-uint8_t Lawicel::readSerial()
-{
-    memset(buffer, '0', 32);
-
-    if (Serial.available())
-    {
-        int availableBytes = Serial.available() - 1;
-        //Serial.println(availableBytes); //Prints the amount of symbols in Buffer
-
-        int counter = 0;
-        while (buffer[counter] != CR)
-        {
-            buffer[counter] = Serial.read();
-            counter++;
-        }
-        Serial.println("");
-        for (int i = 0; i < availableBytes; i++)
-        {
-            Serial.printf("%c", buffer[i]);
-        }
-
-        Serial.println("");
-
-        _length = availableBytes;
-        return this->receiveCommand();
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-/*******************************************
 Function: getState()
 Description: Returns State of the CAN Channel
 ********************************************/
@@ -295,20 +259,17 @@ Description: Sets Baudrate through presets
 
 uint8_t Lawicel::CMD_Set_Baudrate()
 {
-    if (this->_length > 2)
+    CANCommand cmd;
+    long _baudrate = 0;
+
+    if (_length > 2)
     {
         Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < 2)
+    else if (_length < 2)
     {
         Serial.println("Not enough Arguments!");
-        return 1;
-    }
-
-    if (_channelState != CLOSED)
-    {
-        Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
 
@@ -316,54 +277,57 @@ uint8_t Lawicel::CMD_Set_Baudrate()
     {
     case '0':
     {
-        Serial.println("Bitrate not supported!");
-        return 1;
+        Serial.println("Bitrate 10Kbps set!");
+        _baudrate = 10E3;
+        break;
     }
     case '1':
     {
-        Serial.println("Bitrate not supported!");
-        return 1;
+        Serial.println("Bitrate 20Kbps set!");
+        _baudrate = 20E3;
+        break;
     }
     case '2':
     {
         Serial.println("Bitrate 50Kbps set!");
         _baudrate = 50E3;
-        return 0;
+        break;
     }
     case '3':
     {
         Serial.println("Bitrate 100Kbps set!");
         _baudrate = 100E3;
-        return 0;
+        break;
     }
     case '4':
     {
         Serial.println("Bitrate 125Kbps set!");
         _baudrate = 125E3;
-        return 0;
+        break;
     }
     case '5':
     {
         Serial.println("Bitrate 250Kbps set!");
         _baudrate = 250E3;
-        return 0;
+        break;
     }
     case '6':
     {
         Serial.println("Bitrate 500Kbps set!");
         _baudrate = 500E3;
-        return 0;
+        break;
     }
     case '7':
     {
-        Serial.println("Bitrate not supported!");
-        return 1;
+        Serial.println("Bitrate 800Kbps set!");
+        _baudrate = 800E3;
+        break;
     }
     case '8':
     {
         Serial.println("Bitrate 1 Mbps set!");
         _baudrate = 1000E3;
-        return 0;
+        break;
     }
     default:
     {
@@ -371,6 +335,10 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         return 1;
     }
     }
+
+    cmd.Baudrate = _baudrate;
+    m_selectedCAN->send(cmd);
+    return 0;
 }
 
 /*******************************************
@@ -380,6 +348,8 @@ Description: Sets Baudrate through Registers
 
 uint8_t Lawicel::CMD_Set_BTR()
 {
+    CANCommand cmd;
+
     if (this->_length > 5)
     {
         Serial.println("Too many Arguments!");
@@ -391,14 +361,11 @@ uint8_t Lawicel::CMD_Set_BTR()
         return 1;
     }
 
-    if (_channelState != CLOSED)
-    {
-        Serial.println("Not Allowed! Channel is Open");
-        return 1;
-    }
+    cmd.BTR0 = charToByte(buffer[1], buffer[2]);
+    cmd.BTR1 = charToByte(buffer[3], buffer[4]);
 
-    Serial.println("Function not yet implemented!");
-    return 1;
+    m_selectedCAN->send(cmd);
+    return 0;
 }
 
 /*******************************************
@@ -408,30 +375,21 @@ Description: Opens CAN Channel in Normal Mode
 
 uint8_t Lawicel::CMD_Open_Normal()
 {
+    CANCommand cmd;
+
     if (this->_length > 1)
     {
         Serial.println("Too many Arguments!");
         return 1;
     }
 
-    switch (this->_channelState)
+    switch (_channelState)
     {
     case CLOSED:
     {
-        if (!SJA1000.begin(_baudrate))
-        {
-            Serial.println("Failed! Restarting...");
-            delay(5000);
-            ESP.restart();
-            return 1;
-        }
-        else
-        {
-            Serial.println("CAN Channel opened in Normal Mode!");
-            Serial.printf("Baudrate: %ld Kbps\n", _baudrate);
-            this->_channelState = NORMAL;
-            return 0;
-        }
+        cmd.State = NORMAL;
+        m_selectedCAN->send(cmd);
+        return 0;
     }
 
     case NORMAL:
@@ -457,6 +415,7 @@ Description: Opens CAN Channel in Listen-Only Mode
 
 uint8_t Lawicel::CMD_Open_Listen_Only()
 {
+    CANCommand cmd;
     if (this->_length > 1)
     {
         Serial.println("Too many Arguments!");
@@ -467,20 +426,9 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
     {
     case CLOSED:
     {
-        if (!SJA1000.begin(_baudrate))
-        {
-            Serial.println("Failed! Restarting...");
-            delay(5000);
-            ESP.restart();
-            return 1;
-        }
-        else
-        {
-            Serial.println("CAN Channel opened in Listen-Only Mode!");
-            Serial.printf("Baudrate: %ld Kbps\n", _baudrate);
-            this->_channelState = LISTEN_ONLY;
-            return 0;
-        }
+        cmd.State = LISTEN_ONLY;
+        m_selectedCAN->send(cmd);
+        return 0;
     }
 
     case NORMAL:
@@ -506,6 +454,7 @@ Description: Closes CAN Channel
 
 uint8_t Lawicel::CMD_Close()
 {
+    CANCommand cmd;
     if (this->_length > 1)
     {
         Serial.println("Too many Arguments!");
@@ -522,16 +471,15 @@ uint8_t Lawicel::CMD_Close()
 
     case NORMAL:
     {
-        Serial.println("CAN Channel Closed");
-        this->_channelState = CLOSED;
-        SJA1000.end();
+        cmd.State = CLOSED;
+        m_selectedCAN->send(cmd);
         return 0;
     }
 
     case LISTEN_ONLY:
     {
-        Serial.println("CAN Channel Closed");
-        this->_channelState = CLOSED;
+        cmd.State = CLOSED;
+        m_selectedCAN->send(cmd);
         return 0;
     }
     default:
@@ -546,6 +494,7 @@ Description: Transmits standard CAN Frame (11-bit ID)
 
 uint8_t Lawicel::CMD_Tx_Std()
 {
+    Frame frame;
     uint8_t _dlc = charToInt(buffer[4]);
 
     if (this->_length > ((2 * _dlc) + 5))
@@ -571,27 +520,19 @@ uint8_t Lawicel::CMD_Tx_Std()
     }
 
     int32_t _id = IdDecode(0);
+    frame.ID = _id;
+    frame.DLC = _dlc;
 
-    if (!SJA1000.beginPacket(_id))
-    {
-        return 1;
-    }
-
+    frame.Data=new uint8_t[_dlc];
+    int frameposition = 0;
     for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2)
     {
-        SJA1000.write(charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
+        frame.Data[frameposition] = (charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
     }
 
-    if (SJA1000.endPacket())
-    {
-        Serial.printf("Message Sent with Standard ID 0x%x and Data Bytes ", _id);
-        for (int i = 0; i < _dlc; i ++)
-        {
-            Serial.printf("%c%c ",buffer[i+4],buffer[i+5]);
-        }
-        return 0;
-    }
-    return 1;
+    m_selectedCAN->send(frame);
+
+    return 0;
 }
 
 /*******************************************
@@ -601,6 +542,7 @@ Description: Transmits extended CAN Frame (29-bit ID)
 
 uint8_t Lawicel::CMD_Tx_Ext()
 {
+    Frame frame;
     uint8_t _dlc = charToInt(buffer[9]);
 
     if (this->_length > ((2 * _dlc) + 10))
@@ -626,26 +568,19 @@ uint8_t Lawicel::CMD_Tx_Ext()
     }
 
     int32_t _id = IdDecode(1);
+    frame.ID = _id;
+    frame.DLC = _dlc;
+    frame.Extended = true;
 
-    if (!SJA1000.beginExtendedPacket(_id))
-    {
-        return 1;
-    }
+    frame.Data=new uint8_t[_dlc];
+    int frameposition = 0;
 
     for (int bufferPosition = 10; bufferPosition < (_dlc * 2 + 9); bufferPosition += 2)
     {
-        SJA1000.write(charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
+       frame.Data[frameposition] = (charToByte(buffer[bufferPosition], buffer[bufferPosition + 1]));
     }
 
-    if (SJA1000.endPacket())
-    {
-        Serial.printf("Message Sent with Extended ID 0x%x and Data Bytes ", _id);
-        for (int i = 0; i < _dlc; i ++)
-        {
-            Serial.printf("%c%c ",buffer[i+10],buffer[i+11]);
-        }
-        return 0;
-    }
+    m_selectedCAN->send(frame);
 
     return 1;
 }

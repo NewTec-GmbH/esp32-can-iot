@@ -2,7 +2,7 @@
 #include <Lawicel.h>
 
 Lawicel ESPCAN;
-
+/*
 void receiver()
 {
   // try to parse packet
@@ -42,7 +42,7 @@ void receiver()
     Serial.println();
   }
 }
-
+*/
 void setup()
 {
   // put your setup code here, to run once:
@@ -54,6 +54,7 @@ void setup()
 
 void loop()
 {
+  /*
   // put your main code here, to run repeatedly:
   if(ESPCAN.readSerial()){
     Serial.println("Error");
@@ -62,6 +63,7 @@ void loop()
 
   if (ESPCAN.getState() == 1 || ESPCAN.getState() == 2)
   {
-    receiver();
+    //receiver();
   }
+  */
 }

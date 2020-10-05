@@ -1,7 +1,8 @@
 #ifndef LAWICEL_H_
 #define LAWICEL_H_
+#include <Arduino.h>
 
-#include <CAN.h>
+class CANInterface;
 
 class Lawicel
 {
@@ -11,7 +12,8 @@ public:
     {
         CLOSED,
         NORMAL,
-        LISTEN_ONLY
+        LISTEN_ONLY,
+        UNDEFINED = -1
     };
 
     struct Frame
@@ -20,7 +22,7 @@ public:
         bool RTR;            //Identifies a RTR Frame
         bool Extended;       //Identifies an Extended Frame
         uint8_t DLC;         //Data Length
-        const uint8_t *Data; //Data of the Frame
+        uint8_t *Data; //Data of the Frame
 
         Frame() : ID(0U),
                   RTR(false),
@@ -33,18 +35,23 @@ public:
 
     struct CANCommand
     {
-        BUS_STATE State;    //Sets Channel State
-        long Baudrate;      //Sets Baudrate
-        bool FilterMode;    //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
-        const uint32_t ACn; //Sets Acceptance Code Register
-        const uint32_t AMn; //Sets Acceptance Mask Register
+        BUS_STATE State;      //Sets Channel State
+        long Baudrate;        //Sets Baudrate
+        uint8_t BTR0; //Sets BTR registers
+        uint8_t BTR1;
+        bool FilterMode;      //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
+        uint32_t ACn;   //Sets Acceptance Code Register
+        uint32_t AMn;   //Sets Acceptance Mask Register
 
-        CANCommand() : State(CLOSED),
-                       Baudrate(500E3),
-                       FilterMode(0),
-                       ACn(0x00000000),
-                       AMn(0xFFFFFFFF)
+        CANCommand() 
         {
+            State=(UNDEFINED);
+            Baudrate = 0;
+            BTR0 = 0;
+            BTR1 = 0;
+            FilterMode = false;
+            ACn = 0U;
+            AMn = 0U;
         }
     };
 
@@ -54,9 +61,8 @@ public:
         bool Timestamp; //Toggles Timestamp
     };
 
-    uint8_t readSerial();      //Read Serial input and calls receiveCommand()
-    uint8_t getState();        //Returns State of the CAN Channel
-    ESP32SJA1000Class SJA1000; //CAN Controller
+    uint8_t readSerial(); //Read Serial input and calls receiveCommand()
+    uint8_t getState();   //Returns State of the CAN Channel
 
     /* ------------------------------------------------------------------------------*/
 private: //Private Variables
@@ -86,7 +92,6 @@ private: //Private Variables
     };
 
     BUS_STATE _channelState = CLOSED; //Channel State
-    long _baudrate = 500E3;           //Standard Baudrate 500Kbps
     char buffer[32];                  //Buffer for Serial-Message
     int _length = 0;                  //Length of Serial-Message
     const char CR = 13;               //Serial-Message Termination
@@ -104,6 +109,17 @@ private:                                    //Private Functions
     uint8_t CMD_Close();                    //Closes CAN Channel
     uint8_t CMD_Tx_Std();                   //Transmits standard CAN Frame (11-bit ID)
     uint8_t CMD_Tx_Ext();                   //Transmits extended CAN Frame (29-bit ID)
+
+    CANInterface *m_selectedCAN;
+};
+
+class CANInterface
+{
+public:
+    virtual void send(Lawicel::Frame &Frame) = 0;
+    virtual void send(Lawicel::CANCommand &CANCommand) = 0;
+
+private:
 };
 
 #endif
