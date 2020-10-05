@@ -717,7 +717,31 @@ Description: Sets Acceptance Mask Register
 
 uint8_t Lawicel::CMD_Set_AMn()
 {
-    Serial.println("Function Not Implemented!");
+    CANCommand cmd;
+
+    if (this->_length > 9)
+    {
+        Serial.println("Too many Arguments!");
+        return 1;
+    }
+    else if (this->_length < 9)
+    {
+        Serial.println("Not Enough Arguments!");
+        return 1;
+    }
+
+    cmd.AM0 = charToByte(buffer[1],buffer[2]);
+    cmd.AM1 = charToByte(buffer[3],buffer[4]);
+    cmd.AM2 = charToByte(buffer[5],buffer[6]);
+    cmd.AM3 = charToByte(buffer[7],buffer[8]);
+
+
+    if (m_selectedCAN != nullptr)
+    {
+        m_selectedCAN->send(cmd);
+        return 0;
+    }
+
     return 1;
 }
 
