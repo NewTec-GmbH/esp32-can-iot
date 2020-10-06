@@ -3,10 +3,13 @@
 #include <Arduino.h>
 
 #define MAX_TIMESTAMP 0x5A5F
-#define X_VERSION "0101\r"
-#define X_SERIAL_NUMBER "NT32\r"
+#define X_VERSION "V0101"
+#define X_SERIAL_NUMBER "NNT32"
+#define CR 13
+#define BELL 7
 
 class CANInterface;
+class SerialInterface;
 
 class Lawicel
 {
@@ -112,7 +115,9 @@ private: //Private Variables
     uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
     uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
     uint32_t IdDecode(bool extended);       //Translates char std ID int value
-    uint8_t receiveCommand();               //Receives and Interprets Buffer with Serial Command
+
+    uint8_t receiveCommand();               //Receives and Interprets Buffer with Serial Command#
+
     uint8_t CMD_Set_Baudrate();             //Sets Baudrate through presets
     uint8_t CMD_Set_BTR();                  //Sets Baudrate through Registers
     uint8_t CMD_Open_Normal();              //Opens CAN Channel in Normal Mode
@@ -135,16 +140,15 @@ private: //Private Variables
     uint8_t CMD_Timestamp();                //Toggles Timestamp (and saves setting on EEPROM)
     uint8_t CMD_Auto_Start();               //Auto Startup feature (from power on)
 
-    BUS_STATE _channelState = CLOSED; //Channel State
+    bool SerialHandler(uint8_t CMD);         //Handles the Serial Messages
 
-    char buffer[32];             //Buffer for Serial-Message
+    char buffer[32];             //Input Buffer for Serial-Message
     int _length = 0;             //Length of Serial-Message
-    const char CR = 13;          //Serial-Message Termination
-    const char BEL = 7;          //Warning Response
     bool _timestamp = false;     //Toggle timestamp
     int serialBaudrate = 115200; //Serial Baudrate default to 115200   HAS TO BE CHANGED TO EEPROM.Read(0) or SPIFFS
 
     CANInterface *m_selectedCAN;
+    SerialInterface *m_selectedSerial;
 };
 
 class CANInterface
@@ -169,7 +173,7 @@ public:
     virtual ~SerialInterface();
 
     virtual void send(String) = 0;
-    virtual int read(String) = 0;
+    virtual uint8_t read(char *Buffer) = 0;
 
 private:
 };

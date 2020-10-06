@@ -896,17 +896,14 @@ uint8_t Lawicel::CMD_Version()
 {
     if (this->_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
     if (this->_length < 1)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
-    Serial.println("Function Not Implemented!");
-    return 1;
+    return 0;
 }
 
 /*******************************************
@@ -926,7 +923,7 @@ uint8_t Lawicel::CMD_Serial_Number()
         Serial.println("Not Enough Arguments!");
         return 1;
     }
-    
+
     Serial.println("Function Not Implemented!");
     return 1;
 }
@@ -954,7 +951,7 @@ uint8_t Lawicel::CMD_Timestamp()
         Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
-    
+
     Serial.println("Function Not Implemented!");
     return 1;
 }
@@ -982,7 +979,57 @@ uint8_t Lawicel::CMD_Auto_Start()
         Serial.println("Not Allowed! Channel is Closed");
         return 1;
     }
-    
+
     Serial.println("Function Not Implemented!");
     return 1;
+}
+
+/*******************************************
+Function: SerialHandler(uint8_t CMD)
+Description: Handles the Serial Messages
+********************************************/
+
+bool Lawicel::SerialHandler(uint8_t CMD)
+{
+    char *str = nullptr;
+
+    if (m_selectedCAN == nullptr)
+    {
+        return false;
+    }
+
+    m_selectedSerial->read(buffer);
+
+    int CMD_status = receiveCommand();
+
+    if (CMD_status == 1)
+    {
+        sprintf(str, "%c", BELL);
+        return true;
+    }
+    else if (CMD_status != 0)
+    {
+        return false;
+    }
+
+    if (buffer[0] == POLL_SINGLE || buffer[0] == POLL_ALL)
+    {
+    }
+    else if (buffer[0] == STATUS_FLAGS)
+    {
+    }
+    else if (buffer[0] == VERSION)
+    {
+        sprintf(str, "%s", X_VERSION);
+    }
+    else if (buffer[0] == SERIAL_NUMBER)
+    {
+        sprintf(str, "%s", X_VERSION);
+    }
+
+    sprintf(str, "%c", CR);
+
+    m_selectedSerial->send(str);
+
+    return true;
 }
