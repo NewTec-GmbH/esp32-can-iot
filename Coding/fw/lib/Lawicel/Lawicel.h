@@ -106,10 +106,9 @@ private: //Private Variables
         AUTO_START = 'Q'        //Auto-Startup with CAN Channel open and filters
     };
 
-    uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
-    uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
-    void intToChar(char *tmp, uint8_t byte);               //Translates a Byte into char symbols
-    uint32_t IdDecode(bool extended);       //Translates char std ID int value
+    uint8_t charToByte(char MSB, char LSB);  //Translates char symbols into hex values
+    uint8_t charToInt(char symbol);          //Translates char symbols of numbers into int values
+    uint32_t IdDecode(bool extended);        //Translates char ID into value
 
     uint8_t receiveCommand(); //Receives and Interprets Buffer with Serial Command#
 

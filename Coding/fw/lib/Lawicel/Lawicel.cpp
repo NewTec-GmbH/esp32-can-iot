@@ -56,8 +56,8 @@ uint8_t Lawicel::charToInt(char num_symbol)
 }
 
 /*******************************************
-Function: stdIdDecode(char B2, char B1, char B0)
-Description: Translates char std ID int value
+Function: IdDecode(bool extended)
+Description: Translates char ID into value
 ********************************************/
 uint32_t Lawicel::IdDecode(bool extended)
 {
@@ -701,10 +701,8 @@ uint8_t Lawicel::CMD_Flags()
         statusCode += flags[position] * pow(16.0, position);
     }
 
-    char temp[2] = {};
 
-    intToChar(temp, statusCode);
-    sprintf(str, "%c%s%c", 'F', temp, CR);
+    sprintf(str, "F%X%c", statusCode, CR);
 
     if (m_selectedSerial != nullptr)
     {
