@@ -23,14 +23,13 @@ public:
         LISTEN_ONLY,
     };
 
-
     struct Frame
     {
-        uint32_t ID;        //CAN ID
+        uint32_t ID;   //CAN ID
         bool RTR;      //Identifies a RTR Frame
         bool Extended; //Identifies an Extended Frame
-        uint8_t DLC;        //Data Length
-        uint8_t *Data;      //Data of the Frame
+        uint8_t DLC;   //Data Length
+        uint8_t *Data; //Data of the Frame
 
         Frame() : ID(0),
                   RTR(false),
@@ -49,7 +48,7 @@ public:
     void unregisterSerialInterface(SerialInterface *_serial);
     bool selectSerialinterface(const String &name);
 
-private: 
+private:
     enum ASCII_COMMANDS : char
     {
         SET_BAUDRATE = 'S',     //Setup with standard CAN bit-rates
@@ -131,24 +130,12 @@ public:
     virtual void setFilterMode(const bool Filter) = 0;
     virtual void setACn(const uint8_t *ACn) = 0;
     virtual void setAMn(const uint8_t *AMn) = 0;
-    virtual int getChannelState() = 0;
+
+    virtual uint8_t getChannelState() = 0;
     virtual void getStatusFlags(bool *_flags) = 0;
 
 private:
 };
 
-class SerialInterface
-{
-public:
-    SerialInterface();
-
-    virtual ~SerialInterface();
-
-    virtual void send(char *str) = 0;
-    virtual void setBaudrate(long *_baudrate) = 0;
-    virtual uint8_t read(char *Buffer) = 0;
-
-private:
-};
 
 #endif
