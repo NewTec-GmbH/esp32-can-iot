@@ -80,12 +80,6 @@ public:
         }
     };
 
-    struct SerialCommand
-    {
-        long Baudrate;  //Sets Serial Baudrate
-        bool Timestamp; //Toggles Timestamp
-    };
-
 private: //Private Variables
     enum ASCII_COMMANDS : char
     {
@@ -145,7 +139,6 @@ private: //Private Variables
     char buffer[32];             //Input Buffer for Serial-Message
     int _length = 0;             //Length of Serial-Message
     bool _timestamp = false;     //Toggle timestamp
-    int serialBaudrate = 115200; //Serial Baudrate default to 115200   HAS TO BE CHANGED TO EEPROM.Read(0) or SPIFFS
 
     CANInterface *m_selectedCAN;
     SerialInterface *m_selectedSerial;
@@ -173,6 +166,7 @@ public:
     virtual ~SerialInterface();
 
     virtual void send(String) = 0;
+    virtual void setBaudrate(long) = 0;
     virtual uint8_t read(char *Buffer) = 0;
 
 private:

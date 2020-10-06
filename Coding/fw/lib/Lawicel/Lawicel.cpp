@@ -866,6 +866,8 @@ Description: Sets UART Baudrate (and saves setting on EEPROM)
 
 uint8_t Lawicel::CMD_Set_Serial_Baudrate()
 {
+    long _baudrate = 0;
+
     if (_length > 2)
     {
         Serial.println("Too many Arguments!");
@@ -883,8 +885,62 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
         return 1;
     }
 
-    Serial.println("Function Not Implemented!");
-    return 1;
+    switch (buffer[1])
+    {
+    case '0':
+    {
+        Serial.println("Bitrate 10Kbps set!");
+        _baudrate = 230400;
+        break;
+    }
+    case '1':
+    {
+        Serial.println("Bitrate 20Kbps set!");
+        _baudrate = 115200;
+        break;
+    }
+    case '2':
+    {
+        Serial.println("Bitrate 50Kbps set!");
+        _baudrate = 57600;
+        break;
+    }
+    case '3':
+    {
+        Serial.println("Bitrate 100Kbps set!");
+        _baudrate = 38400;
+        break;
+    }
+    case '4':
+    {
+        Serial.println("Bitrate 125Kbps set!");
+        _baudrate = 19200;
+        break;
+    }
+    case '5':
+    {
+        Serial.println("Bitrate 250Kbps set!");
+        _baudrate = 9600;
+        break;
+    }
+    case '6':
+    {
+        Serial.println("Bitrate 500Kbps set!");
+        _baudrate = 2400;
+        break;
+    }
+    default:
+    {
+        Serial.println("Bitrate not recognized!");
+        return 1;
+    }
+    }
+
+    if(m_selectedSerial != nullptr){
+        m_selectedSerial->setBaudrate(_baudrate);
+    }
+
+    return 0;
 }
 
 /*******************************************
@@ -1014,6 +1070,10 @@ bool Lawicel::SerialHandler(uint8_t CMD)
 
     if (buffer[0] == POLL_SINGLE || buffer[0] == POLL_ALL)
     {
+        if (_timestamp)
+        {
+            // sprintf(str, timestamp);??
+        }
     }
     else if (buffer[0] == STATUS_FLAGS)
     {
@@ -1024,7 +1084,7 @@ bool Lawicel::SerialHandler(uint8_t CMD)
     }
     else if (buffer[0] == SERIAL_NUMBER)
     {
-        sprintf(str, "%s", X_VERSION);
+        sprintf(str, "%s", X_SERIAL_NUMBER);
     }
 
     sprintf(str, "%c", CR);
