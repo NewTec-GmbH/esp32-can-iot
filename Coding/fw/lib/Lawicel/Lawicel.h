@@ -166,8 +166,8 @@ public:
 
     virtual ~SerialInterface();
 
-    virtual void send(String) = 0;
-    virtual void setBaudrate(long) = 0;
+    virtual void send(char *str) = 0;
+    virtual void setBaudrate(long *_baudrate) = 0;
     virtual uint8_t read(char *Buffer) = 0;
 
 private:
