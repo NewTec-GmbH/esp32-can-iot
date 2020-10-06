@@ -2,6 +2,8 @@
 #define LAWICEL_H_
 #include <Arduino.h>
 
+#define MAX_CANS 2U
+#define MAX_SERIALS 2U
 #define MAX_TIMESTAMP 0x5A5F
 #define X_VERSION "V0101"
 #define X_SERIAL_NUMBER "NNT32"
@@ -80,7 +82,15 @@ public:
         }
     };
 
-private: //Private Variables
+    bool registerCANInterface(CANInterface *_can);
+    void unregisterCANInterface(CANInterface *_can);
+    bool selectCANInterface(const String &name);
+    
+    bool registerSerialInterface(SerialInterface *_serial);
+    void unregisterSerialInterface(SerialInterface *_serial);
+    bool selectSerialinterface(const String &name);
+
+private: 
     enum ASCII_COMMANDS : char
     {
         SET_BAUDRATE = 'S',     //Setup with standard CAN bit-rates
@@ -106,9 +116,9 @@ private: //Private Variables
         AUTO_START = 'Q'        //Auto-Startup with CAN Channel open and filters
     };
 
-    uint8_t charToByte(char MSB, char LSB);  //Translates char symbols into hex values
-    uint8_t charToInt(char symbol);          //Translates char symbols of numbers into int values
-    uint32_t IdDecode(bool extended);        //Translates char ID into value
+    uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
+    uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
+    uint32_t IdDecode(bool extended);       //Translates char ID into value
 
     uint8_t receiveCommand(); //Receives and Interprets Buffer with Serial Command#
 
@@ -141,7 +151,10 @@ private: //Private Variables
     bool _timestamp = false; //Toggle timestamp
     uint8_t _autostart;
 
+    CANInterface *m_CANinterfaces[MAX_CANS];
     CANInterface *m_selectedCAN;
+
+    SerialInterface *m_SerialInterfaces[MAX_SERIALS];
     SerialInterface *m_selectedSerial;
 };
 
