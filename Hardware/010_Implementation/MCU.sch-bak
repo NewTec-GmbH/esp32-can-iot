@@ -176,7 +176,6 @@ Text Notes 8565 1215 2    50   ~ 0
 Status LEDs
 Text Notes 3350 4650 2    50   ~ 0
 WiFi-Mode Button
-NoConn ~ 4225 1675
 NoConn ~ 4225 1775
 Wire Wire Line
 	4225 2475 4950 2475
@@ -531,4 +530,8 @@ Connection ~ 1025 3750
 Wire Wire Line
 	1025 3950 1025 3750
 Connection ~ 1025 3950
+Text HLabel 4850 1675 2    50   Input ~ 0
+EN_CAN
+Wire Wire Line
+	4850 1675 4225 1675
 $EndSCHEMATC

@@ -68,8 +68,6 @@ Connection ~ 4125 2250
 Wire Wire Line
 	4125 1850 3725 1850
 Connection ~ 4125 1850
-Text GLabel 9550 3450 2    50   Output ~ 0
-VCC
 Wire Wire Line
 	5725 2150 5725 2250
 Wire Wire Line
@@ -118,8 +116,6 @@ Wire Notes Line
 Wire Notes Line
 	8075 4725 3200 4725
 Connection ~ 6200 3450
-Text GLabel 9550 3850 2    50   Output ~ 0
-GND
 Wire Wire Line
 	8475 5325 8475 3450
 Connection ~ 8475 3450
@@ -191,20 +187,6 @@ F4 "EN_2" I L 6750 5525 50
 F5 "GND" I L 6750 5625 50 
 F6 "V_OUT" O R 7600 5325 50 
 $EndSheet
-$Comp
-L power:PWR_FLAG #FLG02
-U 1 1 5F5B0BF0
-P 9100 3450
-F 0 "#FLG02" H 9100 3525 50  0001 C CNN
-F 1 "PWR_FLAG" H 9100 3623 50  0000 C CNN
-F 2 "" H 9100 3450 50  0001 C CNN
-F 3 "~" H 9100 3450 50  0001 C CNN
-	1    9100 3450
-	1    0    0    -1  
-$EndComp
-Connection ~ 9100 3450
-Wire Wire Line
-	9100 3450 9550 3450
 Wire Wire Line
 	7875 3850 8900 3850
 Wire Notes Line
@@ -230,12 +212,10 @@ Wire Wire Line
 	8900 3450 8900 3510
 Connection ~ 8900 3450
 Wire Wire Line
-	8900 3450 9100 3450
-Wire Wire Line
 	8900 3810 8900 3850
 Connection ~ 8900 3850
 Wire Wire Line
-	8900 3850 9550 3850
+	8900 3850 9450 3850
 Text Notes 10490 3690 2    50   ~ 0
 3.3V Main Supply
 Wire Wire Line
@@ -342,4 +322,42 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm1085.pdf" H 5725 3450 50  0001 C CNN
 	1    5725 3450
 	1    0    0    -1  
 $EndComp
+$Comp
+L power:GND #PWR02
+U 1 1 5F7C816E
+P 9450 3850
+F 0 "#PWR02" H 9450 3600 50  0001 C CNN
+F 1 "GND" H 9455 3677 50  0000 C CNN
+F 2 "" H 9450 3850 50  0001 C CNN
+F 3 "" H 9450 3850 50  0001 C CNN
+	1    9450 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8900 3450 9125 3450
+$Comp
+L power:+3.3V #PWR01
+U 1 1 5F7FF608
+P 9450 3450
+F 0 "#PWR01" H 9450 3300 50  0001 C CNN
+F 1 "+3.3V" H 9465 3623 50  0000 C CNN
+F 2 "" H 9450 3450 50  0001 C CNN
+F 3 "" H 9450 3450 50  0001 C CNN
+	1    9450 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:PWR_FLAG #FLG0101
+U 1 1 5F8BED6A
+P 9125 3450
+F 0 "#FLG0101" H 9125 3525 50  0001 C CNN
+F 1 "PWR_FLAG" H 9125 3623 50  0000 C CNN
+F 2 "" H 9125 3450 50  0001 C CNN
+F 3 "~" H 9125 3450 50  0001 C CNN
+	1    9125 3450
+	1    0    0    -1  
+$EndComp
+Connection ~ 9125 3450
+Wire Wire Line
+	9125 3450 9450 3450
 $EndSCHEMATC
