@@ -21,71 +21,30 @@ public:
         CLOSED,
         NORMAL,
         LISTEN_ONLY,
-        UNDEFINED = -1
     };
 
-    enum FRAME_MOD
-    {
-        NO,     //Frame is not RTR/Ext
-        YES,    //Frame is RTR/Ext
-        DC = -1 //Do not Care
-    };
 
     struct Frame
     {
         uint32_t ID;        //CAN ID
-        FRAME_MOD RTR;      //Identifies a RTR Frame
-        FRAME_MOD Extended; //Identifies an Extended Frame
+        bool RTR;      //Identifies a RTR Frame
+        bool Extended; //Identifies an Extended Frame
         uint8_t DLC;        //Data Length
         uint8_t *Data;      //Data of the Frame
 
-        Frame() : ID(-1),
-                  RTR(DC),
-                  Extended(DC),
-                  DLC(-1),
+        Frame() : ID(0),
+                  RTR(false),
+                  Extended(false),
+                  DLC(0),
                   Data(nullptr)
         {
-        }
-    };
-
-    struct CANCommand
-    {
-        BUS_STATE State; //Sets Channel State
-        long Baudrate;   //Sets Baudrate
-        uint8_t BTR0;    //Sets BTR registers
-        uint8_t BTR1;
-        bool FilterMode; //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
-        uint8_t AC0;     //Sets Acceptance Code Register
-        uint8_t AC1;
-        uint8_t AC2;
-        uint8_t AC3;
-        uint8_t AM0; //Sets Acceptance Mask Register
-        uint8_t AM1;
-        uint8_t AM2;
-        uint8_t AM3;
-
-        CANCommand()
-        {
-            State = (UNDEFINED);
-            Baudrate = -1;
-            BTR0 = -1;
-            BTR1 = -1;
-            FilterMode = false;
-            AC0 = -1;
-            AC1 = -1;
-            AC2 = -1;
-            AC3 = -1;
-            AM0 = -1;
-            AM1 = -1;
-            AM2 = -1;
-            AM3 = -1;
         }
     };
 
     bool registerCANInterface(CANInterface *_can);
     void unregisterCANInterface(CANInterface *_can);
     bool selectCANInterface(const String &name);
-    
+
     bool registerSerialInterface(SerialInterface *_serial);
     void unregisterSerialInterface(SerialInterface *_serial);
     bool selectSerialinterface(const String &name);
@@ -165,8 +124,13 @@ public:
 
     virtual ~CANInterface();
 
-    virtual void send(Lawicel::Frame &Frame) = 0;
-    virtual void send(Lawicel::CANCommand &CANCommand) = 0;
+    virtual void send(const Lawicel::Frame &Frame) = 0;
+    virtual void setState(const int state) = 0;
+    virtual void setBaudrate(const long baudrate) = 0;
+    virtual void setBTR(const uint8_t BTR0, const uint8_t BTR1) = 0;
+    virtual void setFilterMode(const bool Filter) = 0;
+    virtual void setACn(const uint8_t *ACn) = 0;
+    virtual void setAMn(const uint8_t *AMn) = 0;
     virtual int getChannelState() = 0;
     virtual void getStatusFlags(bool *_flags) = 0;
 

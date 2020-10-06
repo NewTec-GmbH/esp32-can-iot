@@ -232,7 +232,6 @@ Description: Sets Baudrate through presets
 
 uint8_t Lawicel::CMD_Set_Baudrate()
 {
-    CANCommand cmd;
     long _baudrate = 0;
 
     if (_length > 2)
@@ -302,10 +301,9 @@ uint8_t Lawicel::CMD_Set_Baudrate()
     }
     }
 
-    cmd.Baudrate = _baudrate;
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(cmd);
+        m_selectedCAN->setBaudrate(_baudrate);
         return 0;
     }
 
@@ -319,8 +317,6 @@ Description: Sets Baudrate through Registers
 
 uint8_t Lawicel::CMD_Set_BTR()
 {
-    CANCommand cmd;
-
     if (_length > 5)
     {
         return 1;
@@ -335,12 +331,12 @@ uint8_t Lawicel::CMD_Set_BTR()
         return 1;
     }
 
-    cmd.BTR0 = charToByte(buffer[1], buffer[2]);
-    cmd.BTR1 = charToByte(buffer[3], buffer[4]);
+    uint8_t BTR0 = charToByte(buffer[1], buffer[2]);
+    uint8_t BTR1 = charToByte(buffer[3], buffer[4]);
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(cmd);
+        m_selectedCAN->setBTR(BTR0, BTR1);
         return 0;
     }
 
@@ -354,8 +350,6 @@ Description: Opens CAN Channel in Normal Mode
 
 uint8_t Lawicel::CMD_Open_Normal()
 {
-    CANCommand cmd;
-
     if (_length > 1)
     {
         return 1;
@@ -366,10 +360,10 @@ uint8_t Lawicel::CMD_Open_Normal()
         return 1;
     }
 
-    cmd.State = NORMAL;
+    BUS_STATE state = NORMAL;
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(cmd);
+        m_selectedCAN->setState(state);
         return 0;
     }
 
@@ -383,7 +377,6 @@ Description: Opens CAN Channel in Listen-Only Mode
 
 uint8_t Lawicel::CMD_Open_Listen_Only()
 {
-    CANCommand cmd;
     if (_length > 1)
     {
         return 1;
@@ -394,10 +387,10 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
         return 1;
     }
 
-    cmd.State = LISTEN_ONLY;
+    BUS_STATE state = LISTEN_ONLY;
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(cmd);
+        m_selectedCAN->setState(state);
         return 0;
     }
 
@@ -411,7 +404,6 @@ Description: Closes CAN Channel
 
 uint8_t Lawicel::CMD_Close()
 {
-    CANCommand cmd;
     if (_length > 1)
     {
         return 1;
@@ -422,10 +414,10 @@ uint8_t Lawicel::CMD_Close()
         return 1;
     }
 
-    cmd.State = CLOSED;
+    BUS_STATE state = CLOSED;
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(cmd);
+        m_selectedCAN->setState(state);
         return 0;
     }
 
@@ -490,7 +482,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
 
     frame.ID = _id;
     frame.DLC = _dlc;
-    frame.Extended = YES;
+    frame.Extended = true;
     frame.Data = new uint8_t[_dlc];
 
     if (_length > ((2 * _dlc) + 10))
@@ -534,7 +526,7 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
 
     frame.ID = _id;
     frame.DLC = _dlc;
-    frame.RTR = YES;
+    frame.RTR = true;
 
     if (_length > ((2 * _dlc) + 5))
     {
@@ -572,8 +564,8 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
 
     frame.ID = _id;
     frame.DLC = _dlc;
-    frame.Extended = YES;
-    frame.RTR = YES;
+    frame.Extended = true;
+    frame.RTR = true;
 
     if (_length > ((2 * _dlc) + 10))
     {
@@ -701,7 +693,6 @@ uint8_t Lawicel::CMD_Flags()
         statusCode += flags[position] * pow(16.0, position);
     }
 
-
     sprintf(str, "F%X%c", statusCode, CR);
 
     if (m_selectedSerial != nullptr)
@@ -719,8 +710,6 @@ Description: Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
 
 uint8_t Lawicel::CMD_Set_Filter_Mode()
 {
-    CANCommand cmd;
-
     if (_length > 2)
     {
         return 1;
@@ -734,15 +723,15 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
     {
         return 1;
     }
-
+    bool filterMode = false;
     if (buffer[1] == '1')
     {
-        cmd.FilterMode = true;
+        filterMode = true;
     }
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(cmd);
+        m_selectedCAN->setFilterMode(filterMode);
         return 0;
     }
 
@@ -756,8 +745,6 @@ Description: Sets Acceptance Code Register
 
 uint8_t Lawicel::CMD_Set_ACn()
 {
-    CANCommand cmd;
-
     if (_length > 9)
     {
         return 1;
@@ -772,14 +759,16 @@ uint8_t Lawicel::CMD_Set_ACn()
         return 1;
     }
 
-    cmd.AC0 = charToByte(buffer[1], buffer[2]);
-    cmd.AC1 = charToByte(buffer[3], buffer[4]);
-    cmd.AC2 = charToByte(buffer[5], buffer[6]);
-    cmd.AC3 = charToByte(buffer[7], buffer[8]);
+    uint8_t ACn[4];
+
+    ACn[0] = charToByte(buffer[1], buffer[2]);
+    ACn[1] = charToByte(buffer[3], buffer[4]);
+    ACn[2] = charToByte(buffer[5], buffer[6]);
+    ACn[3] = charToByte(buffer[7], buffer[8]);
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(cmd);
+        m_selectedCAN->setACn(ACn);
         return 0;
     }
 
@@ -793,8 +782,6 @@ Description: Sets Acceptance Mask Register
 
 uint8_t Lawicel::CMD_Set_AMn()
 {
-    CANCommand cmd;
-
     if (_length > 9)
     {
         return 1;
@@ -809,14 +796,17 @@ uint8_t Lawicel::CMD_Set_AMn()
         return 1;
     }
 
-    cmd.AM0 = charToByte(buffer[1], buffer[2]);
-    cmd.AM1 = charToByte(buffer[3], buffer[4]);
-    cmd.AM2 = charToByte(buffer[5], buffer[6]);
-    cmd.AM3 = charToByte(buffer[7], buffer[8]);
+
+    uint8_t AMn[4];
+
+    AMn[0] = charToByte(buffer[1], buffer[2]);
+    AMn[1] = charToByte(buffer[3], buffer[4]);
+    AMn[2] = charToByte(buffer[5], buffer[6]);
+    AMn[3] = charToByte(buffer[7], buffer[8]);
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(cmd);
+        m_selectedCAN->setAMn(AMn);
         return 0;
     }
 
