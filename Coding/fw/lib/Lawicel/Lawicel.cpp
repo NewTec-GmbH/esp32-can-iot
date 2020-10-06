@@ -69,20 +69,20 @@ uint32_t Lawicel::IdDecode(bool extended)
     if (extended)
     {
         _IdLength = 8;
-        _IdBuffer[0] = this->buffer[8];
-        _IdBuffer[1] = this->buffer[7];
-        _IdBuffer[2] = this->buffer[6];
-        _IdBuffer[3] = this->buffer[5];
-        _IdBuffer[4] = this->buffer[4];
-        _IdBuffer[5] = this->buffer[3];
-        _IdBuffer[6] = this->buffer[2];
-        _IdBuffer[7] = this->buffer[1];
+        _IdBuffer[0] = buffer[8];
+        _IdBuffer[1] = buffer[7];
+        _IdBuffer[2] = buffer[6];
+        _IdBuffer[3] = buffer[5];
+        _IdBuffer[4] = buffer[4];
+        _IdBuffer[5] = buffer[3];
+        _IdBuffer[6] = buffer[2];
+        _IdBuffer[7] = buffer[1];
     }
     else
     {
-        _IdBuffer[0] = this->buffer[3];
-        _IdBuffer[1] = this->buffer[2];
-        _IdBuffer[2] = this->buffer[1];
+        _IdBuffer[0] = buffer[3];
+        _IdBuffer[1] = buffer[2];
+        _IdBuffer[2] = buffer[1];
     }
 
     for (int counter = 0; counter < _IdLength; counter++)
@@ -111,7 +111,7 @@ Description: Receives and Interprets Buffer with Serial Command
 
 uint8_t Lawicel::receiveCommand()
 {
-    switch (this->buffer[0])
+    switch (buffer[0])
     {
     case SET_BAUDRATE:
     {
@@ -121,7 +121,6 @@ uint8_t Lawicel::receiveCommand()
     case SET_BTR:
     {
         return CMD_Set_BTR();
-        ;
     }
 
     case OPEN_NORMAL:
@@ -221,7 +220,6 @@ uint8_t Lawicel::receiveCommand()
 
     default:
     {
-        Serial.println("Command not Recognized");
         return 1;
     }
     }
@@ -239,80 +237,67 @@ uint8_t Lawicel::CMD_Set_Baudrate()
 
     if (_length > 2)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
     else if (_length < 2)
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
 
-    switch (this->buffer[1])
+    switch (buffer[1])
     {
     case '0':
     {
-        Serial.println("Bitrate 10Kbps set!");
         _baudrate = 10E3;
         break;
     }
     case '1':
     {
-        Serial.println("Bitrate 20Kbps set!");
         _baudrate = 20E3;
         break;
     }
     case '2':
     {
-        Serial.println("Bitrate 50Kbps set!");
         _baudrate = 50E3;
         break;
     }
     case '3':
     {
-        Serial.println("Bitrate 100Kbps set!");
         _baudrate = 100E3;
         break;
     }
     case '4':
     {
-        Serial.println("Bitrate 125Kbps set!");
         _baudrate = 125E3;
         break;
     }
     case '5':
     {
-        Serial.println("Bitrate 250Kbps set!");
         _baudrate = 250E3;
         break;
     }
     case '6':
     {
-        Serial.println("Bitrate 500Kbps set!");
         _baudrate = 500E3;
         break;
     }
     case '7':
     {
-        Serial.println("Bitrate 800Kbps set!");
         _baudrate = 800E3;
         break;
     }
     case '8':
     {
-        Serial.println("Bitrate 1 Mbps set!");
         _baudrate = 1000E3;
         break;
     }
     default:
     {
-        Serial.println("Bitrate not recognized!");
         return 1;
     }
     }
@@ -323,6 +308,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         m_selectedCAN->send(cmd);
         return 0;
     }
+
     return 1;
 }
 
@@ -335,20 +321,17 @@ uint8_t Lawicel::CMD_Set_BTR()
 {
     CANCommand cmd;
 
-    if (this->_length > 5)
+    if (_length > 5)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < 5)
+    else if (_length < 5)
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
 
@@ -360,6 +343,7 @@ uint8_t Lawicel::CMD_Set_BTR()
         m_selectedCAN->send(cmd);
         return 0;
     }
+
     return 1;
 }
 
@@ -372,15 +356,13 @@ uint8_t Lawicel::CMD_Open_Normal()
 {
     CANCommand cmd;
 
-    if (this->_length > 1)
+    if (_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is already Open");
         return 1;
     }
 
@@ -390,6 +372,7 @@ uint8_t Lawicel::CMD_Open_Normal()
         m_selectedCAN->send(cmd);
         return 0;
     }
+
     return 1;
 }
 
@@ -401,15 +384,13 @@ Description: Opens CAN Channel in Listen-Only Mode
 uint8_t Lawicel::CMD_Open_Listen_Only()
 {
     CANCommand cmd;
-    if (this->_length > 1)
+    if (_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is already Open");
         return 1;
     }
 
@@ -419,6 +400,7 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
         m_selectedCAN->send(cmd);
         return 0;
     }
+
     return 1;
 }
 
@@ -430,15 +412,13 @@ Description: Closes CAN Channel
 uint8_t Lawicel::CMD_Close()
 {
     CANCommand cmd;
-    if (this->_length > 1)
+    if (_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() == CLOSED)
     {
-        Serial.println("Not Allowed! Channel is already Closed");
         return 1;
     }
 
@@ -448,6 +428,7 @@ uint8_t Lawicel::CMD_Close()
         m_selectedCAN->send(cmd);
         return 0;
     }
+
     return 1;
 }
 
@@ -467,20 +448,17 @@ uint8_t Lawicel::CMD_Tx_Std()
     frame.DLC = _dlc;
     frame.Data = new uint8_t[_dlc];
 
-    if (this->_length > ((2 * _dlc) + 5))
+    if (_length > ((2 * _dlc) + 5))
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < ((2 * _dlc) + 5))
+    else if (_length < ((2 * _dlc) + 5))
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != NORMAL)
     {
-        Serial.println("Not Allowed! Channel is not in Normal Mode");
         return 1;
     }
 
@@ -515,20 +493,17 @@ uint8_t Lawicel::CMD_Tx_Ext()
     frame.Extended = YES;
     frame.Data = new uint8_t[_dlc];
 
-    if (this->_length > ((2 * _dlc) + 10))
+    if (_length > ((2 * _dlc) + 10))
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < ((2 * _dlc) + 10))
+    else if (_length < ((2 * _dlc) + 10))
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != NORMAL)
     {
-        Serial.println("Not Allowed! Channel is not in Normal Mode");
         return 1;
     }
 
@@ -542,6 +517,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
         m_selectedCAN->send(frame);
         return 0;
     }
+
     return 1;
 }
 
@@ -560,20 +536,17 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
     frame.DLC = _dlc;
     frame.RTR = YES;
 
-    if (this->_length > ((2 * _dlc) + 5))
+    if (_length > ((2 * _dlc) + 5))
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < ((2 * _dlc) + 5))
+    else if (_length < ((2 * _dlc) + 5))
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != NORMAL)
     {
-        Serial.println("Not Allowed! Channel is not in Normal Mode");
         return 1;
     }
 
@@ -602,20 +575,17 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
     frame.Extended = YES;
     frame.RTR = YES;
 
-    if (this->_length > ((2 * _dlc) + 10))
+    if (_length > ((2 * _dlc) + 10))
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < ((2 * _dlc) + 10))
+    else if (_length < ((2 * _dlc) + 10))
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != NORMAL)
     {
-        Serial.println("Not Allowed! Channel is not in Normal Mode");
         return 1;
     }
 
@@ -634,24 +604,20 @@ Description:
 
 uint8_t Lawicel::CMD_Poll_Single()
 {
-    if (this->_length > 1)
+    if (_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    if (this->_length < 1)
+    if (_length < 1)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() == CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Closed");
         return 1;
     }
 
-    Serial.println("Function not Implemented");
     return 1;
 }
 
@@ -662,24 +628,20 @@ Description: Polls incomming FIFO for CAN frames (all pending frames)
 
 uint8_t Lawicel::CMD_Poll_All()
 {
-    if (this->_length > 1)
+    if (_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    if (this->_length < 1)
+    if (_length < 1)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() == CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Closed");
         return 1;
     }
 
-    Serial.println("Function Not Implemented!");
     return 1;
 }
 
@@ -690,24 +652,20 @@ Description: Toggles Auto Poll for inconming Frames
 
 uint8_t Lawicel::CMD_Poll_Auto()
 {
-    if (this->_length > 1)
+    if (_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    if (this->_length < 1)
+    if (_length < 1)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() == CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Closed");
         return 1;
     }
 
-    Serial.println("Function Not Implemented!");
     return 1;
 }
 
@@ -718,24 +676,20 @@ Description: Read Status Flags
 
 uint8_t Lawicel::CMD_Flags()
 {
-    if (this->_length > 1)
+    if (_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    if (this->_length < 1)
+    if (_length < 1)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() == CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Closed");
         return 1;
     }
 
-    Serial.println("Function Not Implemented!");
     return 1;
 }
 
@@ -748,20 +702,17 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
 {
     CANCommand cmd;
 
-    if (this->_length > 2)
+    if (_length > 2)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < 2)
+    else if (_length < 2)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
 
@@ -776,7 +727,7 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
         return 0;
     }
 
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -788,20 +739,17 @@ uint8_t Lawicel::CMD_Set_ACn()
 {
     CANCommand cmd;
 
-    if (this->_length > 9)
+    if (_length > 9)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < 9)
+    else if (_length < 9)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
 
@@ -828,20 +776,17 @@ uint8_t Lawicel::CMD_Set_AMn()
 {
     CANCommand cmd;
 
-    if (this->_length > 9)
+    if (_length > 9)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    else if (this->_length < 9)
+    else if (_length < 9)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
 
@@ -870,18 +815,15 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
 
     if (_length > 2)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
     else if (_length < 2)
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
 
@@ -889,58 +831,52 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
     {
     case '0':
     {
-        Serial.println("Bitrate 10Kbps set!");
         _baudrate = 230400;
         break;
     }
     case '1':
     {
-        Serial.println("Bitrate 20Kbps set!");
         _baudrate = 115200;
         break;
     }
     case '2':
     {
-        Serial.println("Bitrate 50Kbps set!");
         _baudrate = 57600;
         break;
     }
     case '3':
     {
-        Serial.println("Bitrate 100Kbps set!");
         _baudrate = 38400;
         break;
     }
     case '4':
     {
-        Serial.println("Bitrate 125Kbps set!");
         _baudrate = 19200;
         break;
     }
     case '5':
     {
-        Serial.println("Bitrate 250Kbps set!");
         _baudrate = 9600;
         break;
     }
     case '6':
     {
-        Serial.println("Bitrate 500Kbps set!");
         _baudrate = 2400;
         break;
     }
     default:
     {
-        Serial.println("Bitrate not recognized!");
         return 1;
     }
     }
 
-    if(m_selectedSerial != nullptr){
+    if (m_selectedSerial != nullptr)
+    {
         m_selectedSerial->setBaudrate(_baudrate);
+        return 0;
     }
 
-    return 0;
+    return 1;
 }
 
 /*******************************************
@@ -950,11 +886,11 @@ Description: Sends Hardware and Software Version
 
 uint8_t Lawicel::CMD_Version()
 {
-    if (this->_length > 1)
+    if (_length > 1)
     {
         return 1;
     }
-    if (this->_length < 1)
+    if (_length < 1)
     {
         return 1;
     }
@@ -969,19 +905,16 @@ Description: Sends Serial Number of Hardware
 
 uint8_t Lawicel::CMD_Serial_Number()
 {
-    if (this->_length > 1)
+    if (_length > 1)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
-    if (this->_length < 1)
+    if (_length < 1)
     {
-        Serial.println("Not Enough Arguments!");
         return 1;
     }
 
-    Serial.println("Function Not Implemented!");
-    return 1;
+    return 0;
 }
 
 /*******************************************
@@ -993,22 +926,31 @@ uint8_t Lawicel::CMD_Timestamp()
 {
     if (_length > 2)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
     else if (_length < 2)
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() != CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Open");
         return 1;
     }
 
-    Serial.println("Function Not Implemented!");
+    uint8_t var = charToInt(buffer[1]);
+
+    if (var == 0)
+    {
+        _timestamp = false;
+        return 0;
+    }
+    else if (var == 1)
+    {
+        _timestamp = true;
+        return 0;
+    }
+
     return 1;
 }
 
@@ -1021,22 +963,26 @@ uint8_t Lawicel::CMD_Auto_Start()
 {
     if (_length > 2)
     {
-        Serial.println("Too many Arguments!");
         return 1;
     }
     else if (_length < 2)
     {
-        Serial.println("Not enough Arguments!");
         return 1;
     }
 
     if (m_selectedCAN->getChannelState() == CLOSED)
     {
-        Serial.println("Not Allowed! Channel is Closed");
         return 1;
     }
 
-    Serial.println("Function Not Implemented!");
+    int var = charToInt(buffer[1]);
+
+    if (var <= 2)
+    {
+        _autostart = var;
+        return 0;
+    }
+
     return 1;
 }
 
@@ -1056,7 +1002,7 @@ bool Lawicel::SerialHandler(uint8_t CMD)
 
     m_selectedSerial->read(buffer);
 
-    int CMD_status = receiveCommand();
+    uint8_t CMD_status = receiveCommand();
 
     if (CMD_status == 1)
     {

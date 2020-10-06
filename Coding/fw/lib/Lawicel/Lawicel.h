@@ -110,35 +110,36 @@ private: //Private Variables
     uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
     uint32_t IdDecode(bool extended);       //Translates char std ID int value
 
-    uint8_t receiveCommand();               //Receives and Interprets Buffer with Serial Command#
+    uint8_t receiveCommand(); //Receives and Interprets Buffer with Serial Command#
 
-    uint8_t CMD_Set_Baudrate();             //Sets Baudrate through presets
-    uint8_t CMD_Set_BTR();                  //Sets Baudrate through Registers
-    uint8_t CMD_Open_Normal();              //Opens CAN Channel in Normal Mode
-    uint8_t CMD_Open_Listen_Only();         //Opens CAN Channel in Listen-Only Mode
-    uint8_t CMD_Close();                    //Closes CAN Channel
-    uint8_t CMD_Tx_Std();                   //Transmits standard CAN Frame (11-bit ID)
-    uint8_t CMD_Tx_Ext();                   //Transmits extended CAN Frame (29-bit ID)
-    uint8_t CMD_Tx_Std_RTR();               //Transmits standard RTR CAN Frame (11-bit ID)
-    uint8_t CMD_Tx_Ext_RTR();               //Transmits extended RTR CAN Frame (29-bit ID)
-    uint8_t CMD_Poll_Single();              //Poll incomming FIFO for CAN frames (single poll)
-    uint8_t CMD_Poll_All();                 //Polls incomming FIFO for CAN frames (all pending frames)
-    uint8_t CMD_Poll_Auto();                //Toggles Auto Poll for inconming Frames
-    uint8_t CMD_Flags();                    //Read Status Flags
-    uint8_t CMD_Set_Filter_Mode();          //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
-    uint8_t CMD_Set_ACn();                  //Sets Acceptance Code Register
-    uint8_t CMD_Set_AMn();                  //Sets Acceptance Mask Register
-    uint8_t CMD_Set_Serial_Baudrate();      //Sets UART Baudrate (and saves setting on EEPROM)
-    uint8_t CMD_Version();                  //Sends Hardware and Software Version
-    uint8_t CMD_Serial_Number();            //Sends Serial Number of Hardware
-    uint8_t CMD_Timestamp();                //Toggles Timestamp (and saves setting on EEPROM)
-    uint8_t CMD_Auto_Start();               //Auto Startup feature (from power on)
+    uint8_t CMD_Set_Baudrate();        //Sets Baudrate through presets
+    uint8_t CMD_Set_BTR();             //Sets Baudrate through Registers
+    uint8_t CMD_Open_Normal();         //Opens CAN Channel in Normal Mode
+    uint8_t CMD_Open_Listen_Only();    //Opens CAN Channel in Listen-Only Mode
+    uint8_t CMD_Close();               //Closes CAN Channel
+    uint8_t CMD_Tx_Std();              //Transmits standard CAN Frame (11-bit ID)
+    uint8_t CMD_Tx_Ext();              //Transmits extended CAN Frame (29-bit ID)
+    uint8_t CMD_Tx_Std_RTR();          //Transmits standard RTR CAN Frame (11-bit ID)
+    uint8_t CMD_Tx_Ext_RTR();          //Transmits extended RTR CAN Frame (29-bit ID)
+    uint8_t CMD_Poll_Single();         //Poll incomming FIFO for CAN frames (single poll)
+    uint8_t CMD_Poll_All();            //Polls incomming FIFO for CAN frames (all pending frames)
+    uint8_t CMD_Poll_Auto();           //Toggles Auto Poll for inconming Frames
+    uint8_t CMD_Flags();               //Read Status Flags
+    uint8_t CMD_Set_Filter_Mode();     //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
+    uint8_t CMD_Set_ACn();             //Sets Acceptance Code Register
+    uint8_t CMD_Set_AMn();             //Sets Acceptance Mask Register
+    uint8_t CMD_Set_Serial_Baudrate(); //Sets UART Baudrate (and saves setting on EEPROM)
+    uint8_t CMD_Version();             //Sends Hardware and Software Version
+    uint8_t CMD_Serial_Number();       //Sends Serial Number of Hardware
+    uint8_t CMD_Timestamp();           //Toggles Timestamp (and saves setting on EEPROM)
+    uint8_t CMD_Auto_Start();          //Auto Startup feature (from power on)
 
-    bool SerialHandler(uint8_t CMD);         //Handles the Serial Messages
+    bool SerialHandler(uint8_t CMD); //Handles the Serial Messages
 
-    char buffer[32];             //Input Buffer for Serial-Message
-    int _length = 0;             //Length of Serial-Message
-    bool _timestamp = false;     //Toggle timestamp
+    char buffer[32];         //Input Buffer for Serial-Message
+    uint8_t _length = 0;     //Length of Serial-Message
+    bool _timestamp = false; //Toggle timestamp
+    uint8_t _autostart;
 
     CANInterface *m_selectedCAN;
     SerialInterface *m_selectedSerial;
