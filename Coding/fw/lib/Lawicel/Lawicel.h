@@ -1,6 +1,8 @@
 #ifndef LAWICEL_H_
 #define LAWICEL_H_
 #include <Arduino.h>
+#include <CANInterface.h>
+#include <SerialInterface.h>
 
 #define MAX_CANS 2U
 #define MAX_SERIALS 2U
@@ -10,19 +12,9 @@
 #define CR 13
 #define BELL 7
 
-class CANInterface;
-class SerialInterface;
-
 class Lawicel
 {
 public:
-    enum BUS_STATE
-    {
-        CLOSED,
-        NORMAL,
-        LISTEN_ONLY,
-    };
-
     struct Frame
     {
         uint32_t ID;   //CAN ID
@@ -40,6 +32,13 @@ public:
         }
     };
 
+    enum BUS_STATE
+    {
+        CLOSED,
+        NORMAL,
+        LISTEN_ONLY,
+    };
+    
     bool registerCANInterface(CANInterface *_can);
     void unregisterCANInterface(CANInterface *_can);
     bool selectCANInterface(const String &name);
@@ -115,27 +114,5 @@ private:
     SerialInterface *m_SerialInterfaces[MAX_SERIALS];
     SerialInterface *m_selectedSerial;
 };
-
-class CANInterface
-{
-public:
-    CANInterface();
-
-    virtual ~CANInterface();
-
-    virtual void send(const Lawicel::Frame &Frame) = 0;
-    virtual void setState(const int state) = 0;
-    virtual void setBaudrate(const long baudrate) = 0;
-    virtual void setBTR(const uint8_t BTR0, const uint8_t BTR1) = 0;
-    virtual void setFilterMode(const bool Filter) = 0;
-    virtual void setACn(const uint8_t *ACn) = 0;
-    virtual void setAMn(const uint8_t *AMn) = 0;
-
-    virtual uint8_t getChannelState() = 0;
-    virtual void getStatusFlags(bool *_flags) = 0;
-
-private:
-};
-
 
 #endif
