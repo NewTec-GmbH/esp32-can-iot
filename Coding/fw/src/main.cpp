@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Lawicel.h>
 
+
 Lawicel ESPCAN;
 /*
 void receiver()
@@ -50,6 +51,7 @@ void setup()
   Serial.println("");
   Serial.println("Welcome to NT ESP32 CAN Analyzer");
   Serial.println("Initializing...");
+
 }
 
 void loop()

@@ -3,14 +3,15 @@
 #include <Arduino.h>
 
 #define MAX_TIMESTAMP 0x5A5F
+#define X_VERSION "0101\r"
+#define X_SERIAL_NUMBER "NT32\r"
 
 class CANInterface;
 
 class Lawicel
 {
-    /* ------------------------------------------------------------------------------*/
 public:
-    enum BUS_STATE 
+    enum BUS_STATE
     {
         CLOSED,
         NORMAL,
@@ -18,20 +19,20 @@ public:
         UNDEFINED = -1
     };
 
-    enum FRAME_MOD  
+    enum FRAME_MOD
     {
-        NO,         //Frame is not RTR/Ext
-        YES,        //Frame is RTR/Ext
-        DC = -1     //Do not Care
+        NO,     //Frame is not RTR/Ext
+        YES,    //Frame is RTR/Ext
+        DC = -1 //Do not Care
     };
 
     struct Frame
     {
-        uint32_t ID;   //CAN ID
+        uint32_t ID;        //CAN ID
         FRAME_MOD RTR;      //Identifies a RTR Frame
         FRAME_MOD Extended; //Identifies an Extended Frame
-        uint8_t DLC;   //Data Length
-        uint8_t *Data; //Data of the Frame
+        uint8_t DLC;        //Data Length
+        uint8_t *Data;      //Data of the Frame
 
         Frame() : ID(-1),
                   RTR(DC),
@@ -49,11 +50,11 @@ public:
         uint8_t BTR0;    //Sets BTR registers
         uint8_t BTR1;
         bool FilterMode; //Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
-        uint8_t AC0;    //Sets Acceptance Code Register
+        uint8_t AC0;     //Sets Acceptance Code Register
         uint8_t AC1;
         uint8_t AC2;
         uint8_t AC3;
-        uint8_t AM0;    //Sets Acceptance Mask Register
+        uint8_t AM0; //Sets Acceptance Mask Register
         uint8_t AM1;
         uint8_t AM2;
         uint8_t AM3;
@@ -82,10 +83,6 @@ public:
         bool Timestamp; //Toggles Timestamp
     };
 
-    uint8_t readSerial(); //Read Serial input and calls receiveCommand()
-    uint8_t getState();   //Returns State of the CAN Channel
-
-    /* ------------------------------------------------------------------------------*/
 private: //Private Variables
     enum ASCII_COMMANDS : char
     {
@@ -108,7 +105,7 @@ private: //Private Variables
         SERIAL_BAUDRATE = 'U',  //Setup Serial Communication Baudrate
         VERSION = 'V',          //Gets Version of Software and Hardware
         SERIAL_NUMBER = 'N',    //Gets Serial Number of the Hardware
-        TOGGLE_TIMESTAMP = 'Z',    //Sets Time Stamp ON/OFF
+        TOGGLE_TIMESTAMP = 'Z', //Sets Time Stamp ON/OFF
         AUTO_START = 'Q'        //Auto-Startup with CAN Channel open and filters
     };
 
@@ -135,15 +132,17 @@ private: //Private Variables
     uint8_t CMD_Set_Serial_Baudrate();      //Sets UART Baudrate (and saves setting on EEPROM)
     uint8_t CMD_Version();                  //Sends Hardware and Software Version
     uint8_t CMD_Serial_Number();            //Sends Serial Number of Hardware
-    uint8_t CMD_Timestamp();       //Toggles Timestamp (and saves setting on EEPROM)
+    uint8_t CMD_Timestamp();                //Toggles Timestamp (and saves setting on EEPROM)
     uint8_t CMD_Auto_Start();               //Auto Startup feature (from power on)
 
     BUS_STATE _channelState = CLOSED; //Channel State
 
-    char buffer[32];                  //Buffer for Serial-Message
-    int _length = 0;                  //Length of Serial-Message
-    const char CR = 13;               //Serial-Message Termination
-    const char BEL = 7;               //Warning Response
+    char buffer[32];             //Buffer for Serial-Message
+    int _length = 0;             //Length of Serial-Message
+    const char CR = 13;          //Serial-Message Termination
+    const char BEL = 7;          //Warning Response
+    bool _timestamp = false;     //Toggle timestamp
+    int serialBaudrate = 115200; //Serial Baudrate default to 115200   HAS TO BE CHANGED TO EEPROM.Read(0) or SPIFFS
 
     CANInterface *m_selectedCAN;
 };
@@ -151,9 +150,26 @@ private: //Private Variables
 class CANInterface
 {
 public:
+    CANInterface();
+
+    virtual ~CANInterface();
+
     virtual void send(Lawicel::Frame &Frame) = 0;
     virtual void send(Lawicel::CANCommand &CANCommand) = 0;
     virtual int getChannelState() = 0;
+
+private:
+};
+
+class SerialInterface
+{
+public:
+    SerialInterface();
+
+    virtual ~SerialInterface();
+
+    virtual void send(String) = 0;
+    virtual int read(String) = 0;
 
 private:
 };
