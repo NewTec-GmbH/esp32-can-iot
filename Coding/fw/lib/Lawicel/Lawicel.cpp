@@ -676,6 +676,7 @@ Description: Read Status Flags
 
 uint8_t Lawicel::CMD_Flags()
 {
+    char *str = nullptr;
     if (_length > 1)
     {
         return 1;
@@ -688,6 +689,26 @@ uint8_t Lawicel::CMD_Flags()
     if (m_selectedCAN->getChannelState() == CLOSED)
     {
         return 1;
+    }
+
+    bool flags[8] = {};
+    m_selectedCAN->getStatusFlags(flags);
+
+    uint8_t statusCode = 0;
+
+    for (int position = 0; position < 8; position++)
+    {
+        statusCode += flags[position] * pow(16.0, position);
+    }
+
+    char temp[2] = {};
+
+    intToChar(temp, statusCode);
+    sprintf(str, "%c%s%c", 'F', temp, CR);
+
+    if (m_selectedSerial != nullptr)
+    {
+        m_selectedSerial->send(str);
     }
 
     return 1;
@@ -1000,6 +1021,11 @@ bool Lawicel::SerialHandler(uint8_t CMD)
         return false;
     }
 
+    if (m_selectedSerial == nullptr)
+    {
+        return false;
+    }
+
     m_selectedSerial->read(buffer);
 
     uint8_t CMD_status = receiveCommand();
@@ -1020,9 +1046,6 @@ bool Lawicel::SerialHandler(uint8_t CMD)
         {
             // sprintf(str, timestamp);??
         }
-    }
-    else if (buffer[0] == STATUS_FLAGS)
-    {
     }
     else if (buffer[0] == VERSION)
     {

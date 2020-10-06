@@ -108,6 +108,7 @@ private: //Private Variables
 
     uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
     uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
+    void intToChar(char *tmp, uint8_t byte);               //Translates a Byte into char symbols
     uint32_t IdDecode(bool extended);       //Translates char std ID int value
 
     uint8_t receiveCommand(); //Receives and Interprets Buffer with Serial Command#
@@ -155,6 +156,7 @@ public:
     virtual void send(Lawicel::Frame &Frame) = 0;
     virtual void send(Lawicel::CANCommand &CANCommand) = 0;
     virtual int getChannelState() = 0;
+    virtual void getStatusFlags(bool *_flags) = 0;
 
 private:
 };
