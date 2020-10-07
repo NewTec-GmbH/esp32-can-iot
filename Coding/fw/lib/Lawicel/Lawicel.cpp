@@ -431,7 +431,7 @@ Description: Transmits standard CAN Frame (11-bit ID)
 
 uint8_t Lawicel::CMD_Tx_Std()
 {
-    Frame frame;
+    CANInterface::Frame frame;
     uint8_t _dlc = charToInt(buffer[4]);
     int32_t _id = IdDecode(0);
     int frameposition = 0;
@@ -475,7 +475,7 @@ Description: Transmits extended CAN Frame (29-bit ID)
 
 uint8_t Lawicel::CMD_Tx_Ext()
 {
-    Frame frame;
+    CANInterface::Frame frame;
     uint8_t _dlc = charToInt(buffer[9]);
     int32_t _id = IdDecode(1);
     int frameposition = 0;
@@ -520,7 +520,7 @@ Description: Transmits standard RTR CAN Frame (11-bit ID)
 
 uint8_t Lawicel::CMD_Tx_Std_RTR()
 {
-    Frame frame;
+    CANInterface::Frame frame;
     uint8_t _dlc = charToInt(buffer[4]);
     int32_t _id = IdDecode(0);
 
@@ -558,7 +558,7 @@ Description: Transmits extended RTR CAN Frame (29-bit ID)
 
 uint8_t Lawicel::CMD_Tx_Ext_RTR()
 {
-    Frame frame;
+    CANInterface::Frame frame;
     uint8_t _dlc = charToInt(buffer[9]);
     int32_t _id = IdDecode(1);
 

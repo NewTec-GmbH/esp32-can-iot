@@ -15,23 +15,6 @@
 class Lawicel
 {
 public:
-    struct Frame
-    {
-        uint32_t ID;   //CAN ID
-        bool RTR;      //Identifies a RTR Frame
-        bool Extended; //Identifies an Extended Frame
-        uint8_t DLC;   //Data Length
-        uint8_t *Data; //Data of the Frame
-
-        Frame() : ID(0),
-                  RTR(false),
-                  Extended(false),
-                  DLC(0),
-                  Data(nullptr)
-        {
-        }
-    };
-
     enum BUS_STATE
     {
         CLOSED,

@@ -18,7 +18,6 @@ Enter detailed description here.
 #define CAN_INTERFACE_H
 
 /* INCLUDES ***************************************************************************************/
-#include <Lawicel.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -30,75 +29,90 @@ extern "C"
 class CANInterface
 {
 public:
-    /* CONSTANTS ******************************************************************************/
+     /* CONSTANTS ******************************************************************************/
 
-    /* TYPES **********************************************************************************/
+     /* TYPES **********************************************************************************/
+     struct Frame
+     {
+          uint32_t ID;   //CAN ID
+          bool RTR;      //Identifies a RTR Frame
+          bool Extended; //Identifies an Extended Frame
+          uint8_t DLC;   //Data Length
+          uint8_t *Data; //Data of the Frame
 
-    /**
+          Frame() : ID(0),
+                    RTR(false),
+                    Extended(false),
+                    DLC(0),
+                    Data(nullptr)
+          {
+          }
+     };
+     /**
          * Default constructor.
          */
 
-    CANInterface();
+     CANInterface();
 
-    /**
+     /**
          * Default destructor.
          */
 
-    virtual ~CANInterface();
+     virtual ~CANInterface();
 
-    /**
+     /**
          * Send a Data String.
          */
 
-    virtual void send(const Lawicel::Frame &Frame) = 0;
+     virtual void send(const Frame &Frame) = 0;
 
-    /**
+     /**
          * Set the State of the CAN Channel.
          */
 
-    virtual void setState(const int state) = 0;
+     virtual void setState(const int state) = 0;
 
-    /**
+     /**
          * Set the Baudrate of the CAN Channel.
          */
 
-    virtual void setBaudrate(const long baudrate) = 0;
+     virtual void setBaudrate(const long baudrate) = 0;
 
-    /**
+     /**
          * Sent the BTR Registers of the CAN Channel.
          */
 
-    virtual void setBTR(const uint8_t BTR0, const uint8_t BTR1) = 0;
+     virtual void setBTR(const uint8_t BTR0, const uint8_t BTR1) = 0;
 
-    /**
+     /**
          * Set the Filter Mode of the CAN Channel.
          */
 
-    virtual void setFilterMode(const bool Filter) = 0;
+     virtual void setFilterMode(const bool Filter) = 0;
 
-    /**
+     /**
          * Set the Acceptance Code Register.
          */
 
-    virtual void setACn(const uint8_t *ACn) = 0;
+     virtual void setACn(const uint8_t *ACn) = 0;
 
-    /**
+     /**
          * Set the Acceptance Mask Register.
          */
 
-    virtual void setAMn(const uint8_t *AMn) = 0;
+     virtual void setAMn(const uint8_t *AMn) = 0;
 
-    /**
+     /**
          * Gets the Channel State from the CAN Controller.
          */
 
-    virtual uint8_t getChannelState() = 0;
+     virtual uint8_t getChannelState() = 0;
 
-    /**
+     /**
          * Gets the Status and Error Flags from the CAN Controller.
          */
 
-    virtual void getStatusFlags(bool *_flags) = 0;
+     virtual void getStatusFlags(bool *_flags) = 0;
 
 private:
 };
