@@ -1,0 +1,126 @@
+@startuml
+
+Title Application Diagram
+
+Class Application
+
+package Lawicel_Library <<Folder>>{
+    Class Lawicel{
+        -enum ASCII_COMMANDS
+        -uint8_t charToByte(char MSB, char LSB)
+        -uint8_t charToInt(char symbol)
+        -uint32_t IdDecode(bool extended)
+        -uint8_t receiveCommand()
+        -uint8_t CMD_...()
+        -CANInterface* m_CANInterfaces[MAX_CANS]
+        -CANInterface* m_selectedCAN
+        -SerialInterface* m_SerialInterfaces[MAX_SERIALS]
+        -SerialInterface* m_selectedSerial
+        -char buffer[32]
+        -uint8_t _length
+        -bool timestamp
+        -uint8_t _autostart
+        +bool registerCANInterface(CANInterface *_can);
+        +void unregisterCANInterface(CANInterface *_can);
+        +bool selectCANInterface(const String &name);
+        +bool registerSerialInterface(SerialInterface *_serial);
+        +void unregisterSerialInterface(SerialInterface *_serial);
+        +bool selectSerialinterface(const String &name);
+
+
+    }
+    Application ..> Lawicel : <<use>>
+
+    Interface SerialInterface
+    Interface CANInterface {
+        +enum BUS_STATE
+        +struct Frame
+    }
+
+    Lawicel o--> SerialInterface : <<interface>>
+    Lawicel o--> CANInterface : <<interface>>
+}
+
+Class SerialAdapter{
+    -String m_name
+    -long m_baudrate
+    +SerialAdapter(const String name, long baudrate)
+    +~SerialAdapter()
+    +void send(char* str)
+    +void setBaudrate(long _baudrate)
+    +uint8_t read (char* Buffer)
+}
+
+Class CANAdapter{
+    -String m_name
+    -long m_baudrate
+    -BUS_STATE m_currentstate
+    +CANInterface(String name, long baudrate)
+    +~CANinterface()
+    +uint8_t getChannelState()
+    +String getName()
+    +uint8_t getStatusFlags(bool*)
+    +uint8_t send(const Frame&)
+    +uint8_t setACn(const uint8_t*)
+    +uint8_t setAMn(const uint8_t*)
+    +uint8_t setBaudrate(const long)
+    +uint8_t setBTR(const uint8_t, const uint8_t)
+    +uint8_t setFiltermode(const bool)
+    +uint8_t set State(const int)
+}
+SerialInterface <|.down. SerialAdapter : <<realize>>
+CANInterface <|.down. CANAdapter : <<realize>>
+
+package Espressif_ESP32_Library{
+    Class EEPROM_h{
+        +begin(EEPROM_SIZE)
+        +write(address, value)
+        +commit()
+        +read(address)
+    }
+    CANAdapter ..|> EEPROM_h : <<use>>
+}
+
+package Arduino_Library{
+    Class Arduino_h
+    Arduino_h  <|.up. SerialAdapter : <<use>>
+}
+
+package CAN_Library <<Folder>>{
+    Class CAN_h
+    Class ESP32SJA1000_h{
+        +begin(long baudrate)
+        +beginPacket(id,dlc,rtr)
+        +beginExtendedPacket(id,dlc,rtr)
+        +write(char* buffer,int length)
+        +endPacket()
+        +parsePacket()
+        +onReceive()
+        +packetId()
+        +packetExtended()
+        +packetDLC()
+        +packetRTR()
+        +available()
+        +read()
+        +filter(id,mask)
+        +filterExtended(id,mask)
+        +end()
+    }
+    Class CANController_h
+    CAN_h  <|.up. CANAdapter: <<use>>
+    ESP32SJA1000_h  <|.up. CAN_h: <<use>>
+    CANController_h  <|.up. ESP32SJA1000_h: <<use>>
+    Arduino_h  <|.up. CANController_h: <<use>>
+}
+
+package Web <<Node>>{
+    Class Webpages
+    Class Websocket
+    Interface WebInterface
+    Webpages ..|> Websocket : <<use>>
+    WebInterface <|.. CANAdapter : <<realize>>
+    Websocket o--> WebInterface
+    Application ..> Webpages : <<use>>
+}
+
+@enduml
