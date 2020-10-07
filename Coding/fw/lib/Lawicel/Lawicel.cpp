@@ -601,7 +601,19 @@ uint8_t Lawicel::CMD_Poll_Single()
         return 1;
     }
 
-    return 1;
+    CANInterface::Frame *frame = nullptr;
+
+    if (m_selectedCAN->pollSingle(frame))
+    {
+        return 1;
+    }
+
+    /*
+
+*******SEND FRAME TO SERIAL*******
+
+    */
+   return 1;
 }
 
 /*******************************************
@@ -625,7 +637,16 @@ uint8_t Lawicel::CMD_Poll_All()
         return 1;
     }
 
-    return 1;
+    CANInterface::Frame *frame = nullptr;
+
+    uint8_t toRead = m_selectedCAN->pollAll(frame);
+
+    /*
+
+*******SEND FRAME TO SERIAL*******
+
+    */
+   return 1;
 }
 
 /*******************************************
@@ -649,7 +670,19 @@ uint8_t Lawicel::CMD_Poll_Auto()
         return 1;
     }
 
-    return 1;
+    autoPolling = !autoPolling;
+
+    if (m_selectedCAN->pollAuto(autoPolling))
+    {
+        return 1;
+    }
+
+    /*
+
+*******SEND FRAME TO SERIAL*******
+
+    */
+   return 1;
 }
 
 /*******************************************

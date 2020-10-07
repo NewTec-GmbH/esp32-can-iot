@@ -122,10 +122,24 @@ public:
     virtual uint8_t getChannelState() = 0;
 
     /**
-         * Gets the Status and Error Flags from the CAN Controller.
-         */
-
+    * Gets the Status and Error Flags from the CAN Controller.
+    */
     virtual uint8_t getStatusFlags(bool *_flags) = 0;
+
+    /**
+    * Polls one Message from the FIFO Buffer.
+    */
+    virtual uint8_t pollSingle(CANInterface::Frame *frame) = 0;
+
+    /**
+    * Polls all Messages from the FIFO Buffer.
+    */
+    virtual uint8_t pollAll(CANInterface::Frame *frame) = 0;
+
+    /*
+    * Toggles Auto Polling
+    */
+    virtual uint8_t pollAuto(bool autoPoll) = 0;
 
 private:
 };

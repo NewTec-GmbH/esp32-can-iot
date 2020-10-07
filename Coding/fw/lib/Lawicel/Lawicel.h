@@ -83,6 +83,7 @@ private:
     uint8_t _length = 0;     //Length of Serial-Message
     bool _timestamp = false; //Toggle timestamp
     uint8_t _autostart;
+    bool autoPolling = true;
 
     CANInterface *m_CANinterfaces[MAX_CANS];
     CANInterface *m_selectedCAN;
