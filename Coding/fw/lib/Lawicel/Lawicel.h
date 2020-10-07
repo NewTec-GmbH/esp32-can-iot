@@ -14,14 +14,7 @@
 
 class Lawicel
 {
-public:
-    enum BUS_STATE
-    {
-        CLOSED,
-        NORMAL,
-        LISTEN_ONLY,
-    };
-    
+public:   
     bool registerCANInterface(CANInterface *_can);
     void unregisterCANInterface(CANInterface *_can);
     bool selectCANInterface(const String &name);

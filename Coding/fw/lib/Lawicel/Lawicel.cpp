@@ -243,7 +243,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
@@ -303,8 +303,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->setBaudrate(_baudrate);
-        return 0;
+        return m_selectedCAN->setBaudrate(_baudrate);
     }
 
     return 1;
@@ -326,7 +325,7 @@ uint8_t Lawicel::CMD_Set_BTR()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
@@ -336,8 +335,7 @@ uint8_t Lawicel::CMD_Set_BTR()
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->setBTR(BTR0, BTR1);
-        return 0;
+        return m_selectedCAN->setBTR(BTR0, BTR1);
     }
 
     return 1;
@@ -355,16 +353,15 @@ uint8_t Lawicel::CMD_Open_Normal()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
 
-    BUS_STATE state = NORMAL;
+    CANInterface::BUS_STATE state = CANInterface::NORMAL;
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->setState(state);
-        return 0;
+        return m_selectedCAN->setState(state);
     }
 
     return 1;
@@ -382,16 +379,15 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
 
-    BUS_STATE state = LISTEN_ONLY;
+    CANInterface::BUS_STATE state = CANInterface::LISTEN_ONLY;
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->setState(state);
-        return 0;
+        return m_selectedCAN->setState(state);
     }
 
     return 1;
@@ -409,16 +405,15 @@ uint8_t Lawicel::CMD_Close()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() == CLOSED)
+    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
         return 1;
     }
 
-    BUS_STATE state = CLOSED;
+    CANInterface::BUS_STATE state = CANInterface::CLOSED;
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->setState(state);
-        return 0;
+        return m_selectedCAN->setState(state);
     }
 
     return 1;
@@ -449,7 +444,7 @@ uint8_t Lawicel::CMD_Tx_Std()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != NORMAL)
+    if (m_selectedCAN->getChannelState() != CANInterface::NORMAL)
     {
         return 1;
     }
@@ -461,8 +456,7 @@ uint8_t Lawicel::CMD_Tx_Std()
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(frame);
-        return 0;
+        return m_selectedCAN->send(frame);
     }
 
     return 1;
@@ -494,7 +488,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != NORMAL)
+    if (m_selectedCAN->getChannelState() != CANInterface::NORMAL)
     {
         return 1;
     }
@@ -506,8 +500,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(frame);
-        return 0;
+        return m_selectedCAN->send(frame);
     }
 
     return 1;
@@ -537,15 +530,14 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != NORMAL)
+    if (m_selectedCAN->getChannelState() != CANInterface::NORMAL)
     {
         return 1;
     }
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(frame);
-        return 0;
+        return m_selectedCAN->send(frame);
     }
 
     return 1;
@@ -576,15 +568,14 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != NORMAL)
+    if (m_selectedCAN->getChannelState() != CANInterface::NORMAL)
     {
         return 1;
     }
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->send(frame);
-        return 0;
+        return m_selectedCAN->send(frame);
     }
     return 1;
 }
@@ -605,7 +596,7 @@ uint8_t Lawicel::CMD_Poll_Single()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() == CLOSED)
+    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
         return 1;
     }
@@ -629,7 +620,7 @@ uint8_t Lawicel::CMD_Poll_All()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() == CLOSED)
+    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
         return 1;
     }
@@ -653,7 +644,7 @@ uint8_t Lawicel::CMD_Poll_Auto()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() == CLOSED)
+    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
         return 1;
     }
@@ -678,13 +669,16 @@ uint8_t Lawicel::CMD_Flags()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() == CLOSED)
+    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
         return 1;
     }
 
     bool flags[8] = {};
-    m_selectedCAN->getStatusFlags(flags);
+    if (m_selectedCAN->getStatusFlags(flags) == 1)
+    {
+        return 1;
+    }
 
     uint8_t statusCode = 0;
 
@@ -719,7 +713,7 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
@@ -731,8 +725,7 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->setFilterMode(filterMode);
-        return 0;
+        return m_selectedCAN->setFilterMode(filterMode);
     }
 
     return 1;
@@ -754,7 +747,7 @@ uint8_t Lawicel::CMD_Set_ACn()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
@@ -768,8 +761,7 @@ uint8_t Lawicel::CMD_Set_ACn()
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->setACn(ACn);
-        return 0;
+        return m_selectedCAN->setACn(ACn);
     }
 
     return 1;
@@ -791,11 +783,10 @@ uint8_t Lawicel::CMD_Set_AMn()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
-
 
     uint8_t AMn[4];
 
@@ -806,8 +797,7 @@ uint8_t Lawicel::CMD_Set_AMn()
 
     if (m_selectedCAN != nullptr)
     {
-        m_selectedCAN->setAMn(AMn);
-        return 0;
+        return m_selectedCAN->setAMn(AMn);
     }
 
     return 1;
@@ -831,7 +821,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
@@ -942,7 +932,7 @@ uint8_t Lawicel::CMD_Timestamp()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() != CLOSED)
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
         return 1;
     }
@@ -979,7 +969,7 @@ uint8_t Lawicel::CMD_Auto_Start()
         return 1;
     }
 
-    if (m_selectedCAN->getChannelState() == CLOSED)
+    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
         return 1;
     }

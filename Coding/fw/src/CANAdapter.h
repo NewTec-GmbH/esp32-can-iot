@@ -14,10 +14,12 @@ Enter detailed description here.
 @version    %$Id: CppTemplate.h 8740 2018-05-05 12:46:37Z link $
 * @}
 ***************************************************************************************************/
-#ifndef CAN_INTERFACE_H
-#define CAN_INTERFACE_H
+#ifndef CAN_ADAPTER_H
+#define CAN_ADAPTER_H
 
 /* INCLUDES ***************************************************************************************/
+#include <CANInterface.h>
+#include <CAN.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -26,102 +28,153 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-class CANInterface
+class CANAdapter : public CANInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
 
     /* TYPES **********************************************************************************/
-    enum BUS_STATE
-    {
-        CLOSED,
-        NORMAL,
-        LISTEN_ONLY,
-    };
 
-    struct Frame
+    /**
+    * Constructs a empty Serial Adapter.
+    **/
+    CANAdapter() : m_name(), m_baudrate(), m_currentstate()
     {
-        uint32_t ID;   //CAN ID
-        bool RTR;      //Identifies a RTR Frame
-        bool Extended; //Identifies an Extended Frame
-        uint8_t DLC;   //Data Length
-        uint8_t *Data; //Data of the Frame
+    }
 
-        Frame() : ID(0),
-                  RTR(false),
-                  Extended(false),
-                  DLC(0),
-                  Data(nullptr)
-        {
-        }
-    };
     /**
          * Default constructor.
          */
 
-    CANInterface();
+    CANAdapter(const String name, long baudrate) : m_name(name), m_baudrate(baudrate), m_currentstate(CLOSED)
+    {
+    }
 
     /**
          * Default destructor.
          */
 
-    virtual ~CANInterface();
+    ~CANAdapter();
 
     /**
          * Send a Data String.
          */
 
-    virtual uint8_t send(const Frame &Frame) = 0;
+    uint8_t send(const Frame &Frame)
+    {
+        if (Frame.Extended)
+        {
+            CAN.beginExtendedPacket(Frame.ID, Frame.DLC, Frame.RTR);
+        }
+        else
+        {
+            CAN.beginPacket(Frame.ID, Frame.DLC, Frame.RTR);
+        }
+
+        CAN.write(Frame.Data, Frame.DLC);
+
+        if (CAN.endPacket())
+        {
+            return 0;
+        }
+
+        return 1;
+    }
 
     /**
          * Set the State of the CAN Channel.
          */
 
-    virtual uint8_t setState(const int state) = 0;
+    uint8_t setState(const int state)
+    {
+        switch (state)
+        {
+        case CLOSED:
+            CAN.end();
+            m_currentstate = CLOSED;
+            return 0;
+
+        case NORMAL:
+            CAN.begin(m_baudrate);
+            m_currentstate = NORMAL;
+            return 0;
+
+        case LISTEN_ONLY:
+            CAN.begin(m_baudrate);
+            m_currentstate = LISTEN_ONLY;
+            return 0;
+
+        default:
+            return 1;
+        }
+    }
 
     /**
          * Set the Baudrate of the CAN Channel.
          */
 
-    virtual uint8_t setBaudrate(const long baudrate) = 0;
+    uint8_t setBaudrate(const long baudrate)
+    {
+        m_baudrate = baudrate;
+        return 0;
+    }
 
     /**
          * Sent the BTR Registers of the CAN Channel.
          */
 
-    virtual uint8_t setBTR(const uint8_t BTR0, const uint8_t BTR1) = 0;
+    uint8_t setBTR(const uint8_t BTR0, const uint8_t BTR1)
+    {
+        return 1; //Must write to register
+    }
 
     /**
          * Set the Filter Mode of the CAN Channel.
          */
 
-    virtual uint8_t setFilterMode(const bool Filter) = 0;
+    uint8_t setFilterMode(const bool Filter)
+    {
+        return 1; //Must write to register
+    }
 
     /**
          * Set the Acceptance Code Register.
          */
 
-    virtual uint8_t setACn(const uint8_t *ACn) = 0;
+    uint8_t setACn(const uint8_t *ACn)
+    {
+    }
 
     /**
          * Set the Acceptance Mask Register.
          */
 
-    virtual uint8_t setAMn(const uint8_t *AMn) = 0;
+    uint8_t setAMn(const uint8_t *AMn)
+    {
+    }
 
     /**
          * Gets the Channel State from the CAN Controller.
          */
 
-    virtual uint8_t getChannelState() = 0;
+    uint8_t getChannelState()
+    {
+        return m_currentstate;
+    }
 
     /**
          * Gets the Status and Error Flags from the CAN Controller.
          */
 
-    virtual uint8_t getStatusFlags(bool *_flags) = 0;
+    uint8_t getStatusFlags(bool *_flags)
+    {
+        return 1; //Must read register
+    }
 
 private:
+    String m_name;
+    long m_baudrate;
+    BUS_STATE m_currentstate;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

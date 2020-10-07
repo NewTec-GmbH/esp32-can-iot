@@ -18,7 +18,6 @@ Enter detailed description here.
 #define SERIAL_INTERFACE_H
 
 /* INCLUDES ***************************************************************************************/
-#include <Lawicel.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
