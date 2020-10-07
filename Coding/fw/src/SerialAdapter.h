@@ -18,7 +18,7 @@ Enter detailed description here.
 #define SERIAL_ADAPTER_H
 
 /* INCLUDES ***************************************************************************************/
-#include <Lawicel.h>
+#include <Serialinterface.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -30,32 +30,85 @@ extern "C"
 class SerialAdapter : public SerialInterface
 {
 public:
-    /* CONSTANTS ******************************************************************************/
+  /* CONSTANTS ******************************************************************************/
 
-    /* TYPES **********************************************************************************/
+  /* TYPES **********************************************************************************/
 
-    /**
-         * Default constructor.
-         */
-    SerialAdapter() : m_name() 
+  /**
+  * Constructs a empty Serial Adapter.
+  **/
+  SerialAdapter() : m_name(), m_baudrate()
+  {
+  }
+
+  /**
+  * Default Serial Adapter constructor.
+  */
+  SerialAdapter(const String name, long baudrate) : m_name(name), m_baudrate(baudrate)
+  {
+    Serial.begin(m_baudrate);
+  }
+
+  /**
+  * Default Serial Adapter destructor.
+  */
+  ~SerialAdapter();
+
+  /**
+  * Send String to output.
+  */
+  const String& getName() const
+  {
+    return m_name;
+  }
+
+  /**
+  * Send String to output.
+  */
+  void send(char *str)
+  {
+    Serial.print(str);
+  }
+
+  /**
+  * Send String to output.
+  */
+  void setBaudrate(long _baudrate)
+  {
+    m_baudrate = _baudrate;
+    Serial.updateBaudRate(m_baudrate);
+  }
+
+  /**
+  * Send String to output.
+  */
+  uint8_t read(char *Buffer)
+  {
+    memset(Buffer, '0', 32);
+
+    if (Serial.available())
     {
-
+      int availableBytes = Serial.available();
+      Serial.println(availableBytes);
+      for (int i = 0; i < availableBytes; i++)
+      {
+        Buffer[i] = Serial.read();
+        Buffer[i + 1] = '\n';
+      }
+      for (int i = 0; i < availableBytes; i++)
+      {
+        Serial.printf("%c", Buffer[i]);
+      }
+      return availableBytes;
     }
 
-    /**
-         * Default destructor.
-         */
-    ~SerialAdapter();
-
-    void send(char *str);
-
-    void setBaudrate(long *_baudrate);
-
-    uint8_t read(char *Buffer);
+    return 1;
+  }
 
 protected:
 private:
-    String  m_name;
+  String m_name;
+  long m_baudrate;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

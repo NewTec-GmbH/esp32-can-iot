@@ -881,7 +881,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
 
     if (m_selectedSerial != nullptr)
     {
-        m_selectedSerial->setBaudrate(&_baudrate);
+        m_selectedSerial->setBaudrate(_baudrate);
         return 0;
     }
 

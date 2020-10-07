@@ -35,32 +35,38 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-         * Default constructor.
-         */
+     * Default constructor.
+     */
 
     SerialInterface();
 
     /**
-         * Default destructor.
-         */
+    * Default destructor
+    */
 
     virtual ~SerialInterface();
 
     /**
-         * Send a Data String.
-         */
+    * Gets Interface name.
+    */
+
+     virtual const String& getName() const = 0;
+
+    /**
+    * Send a Data String.
+    */
 
     virtual void send(char *str) = 0;
 
     /**
-         * Sets the Baudrate for Serial Communication.
-         */
+    * Sets the Baudrate for Serial Communication.
+    */
 
-    virtual void setBaudrate(long *_baudrate) = 0;
+    virtual void setBaudrate(long _baudrate) = 0;
 
     /**
-         * Reads the Serial Adapter into a buffer.
-         */
+    * Reads the Serial Adapter into a buffer.
+    */
         
     virtual uint8_t read(char *Buffer) = 0;
 
