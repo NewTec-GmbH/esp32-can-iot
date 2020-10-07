@@ -55,9 +55,9 @@ public:
   ~SerialAdapter();
 
   /**
-  * Send String to output.
+  * Get Adapter name
   */
-  const String& getName() const
+  const String &getName() const
   {
     return m_name;
   }

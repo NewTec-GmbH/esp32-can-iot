@@ -29,45 +29,45 @@ extern "C"
 class SerialInterface
 {
 public:
-    /* CONSTANTS ******************************************************************************/
+  /* CONSTANTS ******************************************************************************/
 
-    /* TYPES **********************************************************************************/
+  /* TYPES **********************************************************************************/
 
-    /**
+  /**
      * Default constructor.
      */
 
-    SerialInterface();
+  SerialInterface();
 
-    /**
+  /**
     * Default destructor
     */
 
-    virtual ~SerialInterface();
+  virtual ~SerialInterface();
 
-    /**
+  /**
     * Gets Interface name.
     */
 
-     virtual const String& getName() const = 0;
+  virtual const String &getName() const = 0;
 
-    /**
+  /**
     * Send a Data String.
     */
 
-    virtual void send(char *str) = 0;
+  virtual void send(char *str) = 0;
 
-    /**
+  /**
     * Sets the Baudrate for Serial Communication.
     */
 
-    virtual void setBaudrate(long _baudrate) = 0;
+  virtual void setBaudrate(long _baudrate) = 0;
 
-    /**
+  /**
     * Reads the Serial Adapter into a buffer.
     */
-        
-    virtual uint8_t read(char *Buffer) = 0;
+
+  virtual uint8_t read(char *Buffer) = 0;
 
 private:
 };

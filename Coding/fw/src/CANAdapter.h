@@ -57,6 +57,14 @@ public:
     ~CANAdapter();
 
     /**
+  * Get Adapter name
+  */
+    const String &getName() const
+    {
+        return m_name;
+    }
+
+    /**
          * Send a Data String.
          */
 
