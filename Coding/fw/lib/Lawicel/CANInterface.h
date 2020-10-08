@@ -72,12 +72,6 @@ public:
     }
 
     /**
-    * Gets Interface name.
-    */
-
-    virtual const String &getName() const = 0;
-
-    /**
          * Send a Data String.
          */
 

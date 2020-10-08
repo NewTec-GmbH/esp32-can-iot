@@ -36,17 +36,10 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-    * Constructs a empty Serial Adapter.
-    **/
-    CANAdapter() : CANInterface(), m_name(), m_baudrate(), m_currentstate()
-    {
-    }
-
-    /**
          * Default constructor.
          */
 
-    CANAdapter(const String& name, long baudrate) : CANInterface(), m_name(name), m_baudrate(baudrate), m_currentstate(CLOSED)
+    CANAdapter() : CANInterface(), m_baudrate(0), m_currentstate(CLOSED)
     {
     }
 
@@ -56,14 +49,6 @@ public:
 
     ~CANAdapter()
     {
-    }
-
-    /**
-  * Get Adapter name
-  */
-    const String &getName() const
-    {
-        return m_name;
     }
 
     /**
@@ -105,11 +90,19 @@ public:
             return 0;
 
         case NORMAL:
+            if (m_baudrate == 0)
+            {
+                return 1;
+            }
             CAN.begin(m_baudrate);
             m_currentstate = NORMAL;
             return 0;
 
         case LISTEN_ONLY:
+            if (m_baudrate == 0)
+            {
+                return 1;
+            }
             CAN.begin(m_baudrate);
             m_currentstate = LISTEN_ONLY;
             return 0;
@@ -210,7 +203,7 @@ public:
 
         frame = new CANInterface::Frame[30];
 
-        while(CAN.parsePacket() != 0)
+        while (CAN.parsePacket() != 0)
         {
             frame[msgCount].ID = CAN.packetId();
             frame[msgCount].Extended = CAN.packetExtended();
@@ -223,7 +216,6 @@ public:
     }
 
 private:
-    String m_name;
     long m_baudrate;
     BUS_STATE m_currentstate;
 };
