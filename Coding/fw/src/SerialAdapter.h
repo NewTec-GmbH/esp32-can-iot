@@ -34,19 +34,12 @@ public:
 
   /* TYPES **********************************************************************************/
 
-  /**
-  * Constructs a empty Serial Adapter.
-  **/
-  SerialAdapter() : m_name(), m_baudrate()
-  {
-  }
 
   /**
   * Default Serial Adapter constructor.
   */
-  SerialAdapter(const String name, long baudrate) : m_name(name), m_baudrate(baudrate)
+  SerialAdapter() : SerialInterface(), m_baudrate(0)
   {
-    Serial.begin(m_baudrate);
   }
 
   /**
@@ -55,11 +48,19 @@ public:
   ~SerialAdapter();
 
   /**
-  * Get Adapter name
+  * Initialize Module.
   */
-  const String &getName() const
+  void begin()
   {
-    return m_name;
+    Serial.begin(m_baudrate);
+  }
+
+  /**
+  * Terminate Module
+  */
+  void end()
+  {
+    Serial.end();
   }
 
   /**
@@ -107,7 +108,6 @@ public:
 
 protected:
 private:
-  String m_name;
   long m_baudrate;
 };
 

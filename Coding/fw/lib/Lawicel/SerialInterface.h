@@ -50,10 +50,14 @@ public:
   }
 
   /**
-    * Gets Interface name.
+    * Initialize Module
     */
+  virtual void begin() = 0;
 
-  virtual const String &getName() const = 0;
+  /**
+  * Terminate Module
+  */
+ virtual void end() = 0;
 
   /**
     * Send a Data String.
