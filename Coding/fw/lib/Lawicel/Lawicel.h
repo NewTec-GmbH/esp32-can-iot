@@ -1,5 +1,6 @@
 #ifndef LAWICEL_H_
 #define LAWICEL_H_
+
 #include <Arduino.h>
 #include <CANInterface.h>
 #include <SerialInterface.h>
@@ -16,12 +17,8 @@
 class Lawicel
 {
 public:
-
-    Lawicel(SerialInterface* _serialInt, CANInterface* _canInt, NVMInterface* _nvmInt)
+    Lawicel(SerialInterface* _serialInt, CANInterface* _canInt, NVMInterface* _nvmInt) : m_selectedSerial(_serialInt), m_selectedCAN(_canInt), m_selectedNVM(_nvmInt)
     {
-        m_selectedSerial = _serialInt;
-        m_selectedCAN = _canInt;
-        m_selectedNVM = _nvmInt;
     }
 
     ~Lawicel()
@@ -29,10 +26,12 @@ public:
     }
 
     bool handler(); //Handles the Serial Messages
-    bool begin();
-    bool end();
+    void begin();
+    void end();
 
 private:
+    Lawicel(const Lawicel &Lawicel);
+
     enum ASCII_COMMANDS : char
     {
         SET_BAUDRATE = 'S',     //Setup with standard CAN bit-rates
@@ -95,9 +94,10 @@ private:
     uint8_t _autostart;
     bool autoPolling = true;
 
-    CANInterface *m_selectedCAN;
+    
     SerialInterface *m_selectedSerial;
-    NVMInterface *m_selectedNVM ;
+    CANInterface *m_selectedCAN;
+    NVMInterface *m_selectedNVM;
 };
 
 #endif
