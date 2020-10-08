@@ -780,7 +780,9 @@ uint8_t Lawicel::CMD_Poll_Single()
 
     if (m_selectedCAN->pollSingle(frame))
     {
-        return 1;
+        sprintf(str, "%c", BELL);
+        m_selectedSerial->send(str);
+        return 0;
     }
 
     if (frame->Extended == true && frame->RTR == false)
@@ -801,7 +803,7 @@ uint8_t Lawicel::CMD_Poll_Single()
     sprintf(str, "%c%X%d", cmd, frame->ID, frame->DLC);
     for (int i = 0; i < _dlc; i++)
     {
-        sprintf(str, "%X", frame->Data[i]);
+        sprintf(str, "%02X", frame->Data[i]);
     }
 
     if (_timestamp)
@@ -846,6 +848,14 @@ uint8_t Lawicel::CMD_Poll_All()
 
     int toRead = m_selectedCAN->pollAll(frame);
 
+    if (toRead == 0)
+    {
+        char *str = nullptr;
+        sprintf(str, "A%c", BELL);
+        m_selectedSerial->send(str);
+        return 0;
+    }
+
     for (int i = 0; i < toRead; i++)
     {
         char *str = nullptr;
@@ -868,7 +878,7 @@ uint8_t Lawicel::CMD_Poll_All()
         sprintf(str, "%c%X%d", cmd, frame[i].ID, frame[i].DLC);
         for (int j = 0; j < _dlc; j++)
         {
-            sprintf(str, "%X", frame[i].Data[j]);
+            sprintf(str, "%02X", frame[i].Data[j]);
         }
 
         if (_timestamp)
@@ -883,7 +893,10 @@ uint8_t Lawicel::CMD_Poll_All()
             m_selectedSerial->send(str);
         }
     }
-
+    
+    char *str = nullptr;
+    sprintf(str, "A%c", BELL);
+    m_selectedSerial->send(str);
     return 0;
 }
 
@@ -1308,4 +1321,3 @@ bool Lawicel::SerialHandler(uint8_t CMD)
 
     return true;
 }
-
