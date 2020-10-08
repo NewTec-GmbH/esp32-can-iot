@@ -61,12 +61,12 @@ public:
   /**
   * Save Data in NVM
   */
-  virtual uint8_t save(uint8_t address, uint32_t data) = 0;
+  virtual void save(const char *name,int32_t value) = 0;
 
   /**
   * Read Data from NVM
   */
-  virtual uint8_t read(uint8_t address) = 0;
+  virtual uint32_t read(const char *name) = 0;
 
 private:
 };

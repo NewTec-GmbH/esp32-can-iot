@@ -18,6 +18,7 @@ Enter detailed description here.
 #define NVM_ADAPTER_H
 
 /* INCLUDES ***************************************************************************************/
+#include <NVMInterface.h>
 #include <Preferences.h>
 
 /* C-Interface ************************************************************************************/
@@ -27,7 +28,7 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-class NVMAdapter
+class NVMAdapter : public NVMInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
@@ -38,7 +39,7 @@ public:
      * Default constructor.
      */
 
-    NVMAdapter()
+    NVMAdapter() : NVMInterface()
     {
     }
 
@@ -67,22 +68,22 @@ public:
     /**
     * Save Data in NVM
     */
-    void save(const char *key,int32_t value)
+    void save(const char *name,int32_t value)
     {
         nvm.begin("Startup", false);
-        nvm.putULong(key, value);
+        nvm.putULong(name, value);
         nvm.end();
     }
 
     /**
     * Read Data from NVM
     */
-    uint32_t read(const char *key)
+    uint32_t read(const char *name)
     {
         nvm.begin("Startup", false);
-        uint32_t value = nvm.putULong(key, value);
+        uint32_t value = nvm.getULong(name);
         nvm.end();
-        
+
         return value;
     }
 
