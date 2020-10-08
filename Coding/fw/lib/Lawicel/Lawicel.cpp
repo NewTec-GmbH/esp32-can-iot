@@ -6,7 +6,10 @@ Description: Initialize Protocol
 ********************************************/
 void Lawicel::begin()
 {
-
+    String str = m_selectedNVM->readString(INIT_SERIAL_BAUD);
+    strcpy(buffer,str.c_str());
+    receiveCommand();
+    
 }
 
 /*******************************************

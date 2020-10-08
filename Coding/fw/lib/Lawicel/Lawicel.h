@@ -14,6 +14,16 @@
 #define CR 13
 #define BELL 7
 
+
+#define INIT_FILTER_MODE "FilterMode"
+#define INIT_SERIAL_BAUD "SerialBaud"
+#define INIT_TIMESTAMP "ToggleTime"
+#define INIT_AUTO_START "AutoStart"
+#define INIT_FILTERS "Filters"
+#define INIT_AUTO_POLL "AutoPoll"
+
+
+
 class Lawicel
 {
 public:
@@ -96,7 +106,7 @@ private:
     uint8_t _autostart;
     bool autoPolling = true;
 
-    
+        
     SerialInterface *m_selectedSerial;
     CANInterface *m_selectedCAN;
     NVMInterface *m_selectedNVM;

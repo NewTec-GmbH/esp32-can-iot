@@ -68,10 +68,20 @@ public:
     /**
     * Save Data in NVM
     */
-    void save(const char *name,int32_t value)
+    void save(const char *name, int32_t value)
     {
         nvm.begin("Startup", false);
         nvm.putULong(name, value);
+        nvm.end();
+    }
+
+    /**
+    * Save String in NVM
+    */
+    void saveString(const char *name, String value)
+    {
+        nvm.begin("Startup", false);
+        nvm.putString(name, value);
         nvm.end();
     }
 
@@ -86,6 +96,18 @@ public:
 
         return value;
     }
+
+    /**
+     * Read String from NVM
+    */
+    String readString(const char *name)
+    {
+        nvm.begin("Startup", false);
+        String value = nvm.getString(name);
+        nvm.end();
+        return value;
+    }
+
 
 private:
     Preferences nvm;
