@@ -38,7 +38,7 @@ public:
     /**
     * Constructs a empty Serial Adapter.
     **/
-    CANAdapter() : m_name(), m_baudrate(), m_currentstate()
+    CANAdapter() : CANInterface(), m_name(), m_baudrate(), m_currentstate()
     {
     }
 
@@ -46,7 +46,7 @@ public:
          * Default constructor.
          */
 
-    CANAdapter(const String name, long baudrate) : m_name(name), m_baudrate(baudrate), m_currentstate(CLOSED)
+    CANAdapter(const String& name, long baudrate) : CANInterface(), m_name(name), m_baudrate(baudrate), m_currentstate(CLOSED)
     {
     }
 
@@ -54,7 +54,9 @@ public:
          * Default destructor.
          */
 
-    ~CANAdapter();
+    ~CANAdapter()
+    {
+    }
 
     /**
   * Get Adapter name
@@ -151,6 +153,7 @@ public:
 
     uint8_t setACn(const uint8_t *ACn)
     {
+        return 1;
     }
 
     /**
@@ -159,6 +162,7 @@ public:
 
     uint8_t setAMn(const uint8_t *AMn)
     {
+        return 1;
     }
 
     /**
@@ -177,6 +181,53 @@ public:
     uint8_t getStatusFlags(bool *_flags)
     {
         return 1; //Must read register
+    }
+
+    /**
+    * Polls one Message from the FIFO Buffer.
+    */
+    uint8_t pollSingle(CANInterface::Frame *frame)
+    {
+        if (CAN.parsePacket() == 0)
+        {
+            return 1;
+        }
+
+        frame->ID = CAN.packetId();
+        frame->Extended = CAN.packetExtended();
+        frame->RTR = CAN.packetRtr();
+        frame->Data = CAN.getRxBuf();
+
+        return 0;
+    }
+
+    /**
+    * Polls all Messages from the FIFO Buffer.
+    */
+    uint8_t pollAll(CANInterface::Frame *frame)
+    {
+        uint8_t msgCount = 0;
+
+        frame = new CANInterface::Frame[30];
+
+        while(CAN.parsePacket() != 0)
+        {
+            frame[msgCount].ID = CAN.packetId();
+            frame[msgCount].Extended = CAN.packetExtended();
+            frame[msgCount].RTR = CAN.packetRtr();
+            frame[msgCount].Data = CAN.getRxBuf();
+            msgCount++;
+        }
+
+        return msgCount;
+    }
+
+    /*
+    * Toggles Auto Polling
+    */
+    uint8_t pollAuto(bool autoPoll)
+    {
+        return 1;
     }
 
 private:

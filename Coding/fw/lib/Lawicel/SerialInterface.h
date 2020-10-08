@@ -37,13 +37,17 @@ public:
      * Default constructor.
      */
 
-  SerialInterface();
+  SerialInterface()
+  {
+  }
 
   /**
     * Default destructor
     */
 
-  virtual ~SerialInterface();
+  virtual ~SerialInterface()
+  {
+  }
 
   /**
     * Gets Interface name.

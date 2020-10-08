@@ -59,13 +59,17 @@ public:
          * Default constructor.
          */
 
-    CANInterface();
+    CANInterface()
+    {
+    }
 
     /**
          * Default destructor.
          */
 
-    virtual ~CANInterface();
+    virtual ~CANInterface()
+    {
+    }
 
     /**
     * Gets Interface name.
