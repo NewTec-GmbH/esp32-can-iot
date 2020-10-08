@@ -1,6 +1,25 @@
 #include <Lawicel.h>
 
 /*******************************************
+Function: begin()
+Description: Initialize Protocol
+********************************************/
+void Lawicel::begin()
+{
+
+}
+
+/*******************************************
+Function: end()
+Description: Terminate Protocol
+********************************************/
+void Lawicel::end()
+{
+
+}
+
+
+/*******************************************
 Function: charToByte(char MSB, char LSB)
 Description: Translates char symbols into hex byte
 ********************************************/

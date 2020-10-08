@@ -14,10 +14,11 @@ Enter detailed description here.
 @version    %$Id: CppTemplate.h 8740 2018-05-05 12:46:37Z link $
 * @}
 ***************************************************************************************************/
-#ifndef NVM_INTERFACE_H
-#define NVM_INTERFACE_H
+#ifndef NVM_ADAPTER_H
+#define NVM_ADAPTER_H
 
 /* INCLUDES ***************************************************************************************/
+#include <Preferences.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -26,53 +27,71 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-class NVMInterface
+class NVMAdapter
 {
 public:
-  /* CONSTANTS ******************************************************************************/
+    /* CONSTANTS ******************************************************************************/
 
-  /* TYPES **********************************************************************************/
+    /* TYPES **********************************************************************************/
 
-  /**
-  * Default constructor.
-  */
+    /**
+     * Default constructor.
+     */
 
-  NVMInterface()
-  {
-  }
+    NVMAdapter()
+    {
+    }
 
-  /**
-  * Default destructor
-  */
+    /**
+    * Default destructor
+    */
 
-  virtual ~NVMInterface()
-  {
-  }
+    ~NVMAdapter()
+    {
+    }
 
-  /**
+    /**
     * Initialize Module
     */
-  virtual void begin() = 0;
+    void begin()
+    {
+    }
 
-  /**
-  * Terminate Module
-  */
-  virtual void end() = 0;
-  /**
-  * Save Data in NVM
-  */
-  virtual uint8_t save(uint8_t address, uint32_t data) = 0;
+    /**
+    * Terminate Module
+    */
+    void end()
+    {
+    }
 
-  /**
-  * Read Data from NVM
-  */
-  virtual uint8_t read(uint8_t address) = 0;
+    /**
+    * Save Data in NVM
+    */
+    void save(const char *key,int32_t value)
+    {
+        nvm.begin("Startup", false);
+        nvm.putULong(key, value);
+        nvm.end();
+    }
+
+    /**
+    * Read Data from NVM
+    */
+    uint32_t read(const char *key)
+    {
+        nvm.begin("Startup", false);
+        uint32_t value = nvm.putULong(key, value);
+        nvm.end();
+        
+        return value;
+    }
 
 private:
+    Preferences nvm;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/
 
 /* PROTOTYPES *********************************************************************************/
 
-#endif /* NVM_INTERFACE_H */
+#endif /* NVM_ADAPTER_H */
