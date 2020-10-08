@@ -16,6 +16,18 @@
 class Lawicel
 {
 public:
+
+    Lawicel(SerialInterface* _serialInt, CANInterface* _canInt, NVMInterface* _nvmInt)
+    {
+        m_selectedSerial = _serialInt;
+        m_selectedCAN = _canInt;
+        m_selectedNVM = _nvmInt;
+    }
+
+    ~Lawicel()
+    {
+    }
+
     bool handler(); //Handles the Serial Messages
     bool begin();
     bool end();
@@ -83,9 +95,9 @@ private:
     uint8_t _autostart;
     bool autoPolling = true;
 
-    CANInterface *m_selectedCAN = nullptr;
-    SerialInterface *m_selectedSerial = nullptr;
-    NVMInterface *m_selectedNVM = nullptr;
+    CANInterface *m_selectedCAN;
+    SerialInterface *m_selectedSerial;
+    NVMInterface *m_selectedNVM ;
 };
 
 #endif
