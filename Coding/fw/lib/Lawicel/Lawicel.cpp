@@ -1084,7 +1084,7 @@ Function: Handler(uint8_t CMD)
 Description: Handles the Serial Messages
 ********************************************/
 
-bool Lawicel::Handler(uint8_t CMD)
+bool Lawicel::handler()
 {
     char *str = nullptr;
 

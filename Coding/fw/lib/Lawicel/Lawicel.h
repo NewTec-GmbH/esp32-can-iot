@@ -16,7 +16,7 @@
 class Lawicel
 {
 public:
-    bool Handler(uint8_t CMD); //Handles the Serial Messages
+    bool handler(); //Handles the Serial Messages
     bool begin();
     bool end();
 
