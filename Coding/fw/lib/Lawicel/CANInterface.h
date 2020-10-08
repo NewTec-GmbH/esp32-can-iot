@@ -140,10 +140,6 @@ public:
     */
     virtual uint8_t pollAll(CANInterface::Frame *frame) = 0;
 
-    /*
-    * Toggles Auto Polling
-    */
-    virtual uint8_t pollAuto(bool autoPoll) = 0;
 
 private:
 };

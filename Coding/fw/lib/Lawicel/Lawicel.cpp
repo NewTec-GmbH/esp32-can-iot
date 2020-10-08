@@ -114,174 +114,9 @@ int Lawicel::getTimestamp()
 }
 
 /*******************************************
-Function: registerCANInterface(CANInterface *_can)
-Description: Registers CAN Interface to List of Interfaces
-********************************************/
-bool Lawicel::registerCANInterface(CANInterface *_can)
-{
-    bool status = false;
-
-    if (nullptr != _can)
-    {
-        uint8_t index = 0U;
-
-        while ((MAX_CANS > index) && (false == status))
-        {
-            if (nullptr == m_CANInterfaces[index])
-            {
-                m_CANInterfaces[index] = _can;
-                status = true;
-            }
-            else
-            {
-                ++index;
-            }
-        }
-    }
-
-    return status;
-}
-
-/*******************************************
-Function: unregisterCANInterface(CANInterface *_can)
-Description: Removes CAN Interface to List of Interfaces
-********************************************/
-void Lawicel::unregisterCANInterface(CANInterface *_can)
-{
-    uint8_t index = 0U;
-
-    while ((MAX_CANS > index) && (nullptr != _can))
-    {
-        if (_can == m_CANInterfaces[index])
-        {
-            m_CANInterfaces[index] = nullptr;
-
-            if (_can == m_selectedCAN)
-            {
-                m_selectedCAN = nullptr;
-            }
-
-            _can = nullptr;
-        }
-        else
-        {
-            ++index;
-        }
-    }
-}
-
-/*******************************************
-Function: selectCANInterface(const String &name)
-Description: Chooses a CAN Interface from List of Interfaces
-********************************************/
-bool Lawicel::selectCANInterface(const String &name)
-{
-    bool status = false;
-    uint8_t index = 0U;
-
-    while ((MAX_CANS > index) && (false == status))
-    {
-        if (m_CANInterfaces[index]->getName() == name)
-        {
-            m_selectedCAN = m_CANInterfaces[index];
-            status = true;
-        }
-        else
-        {
-            ++index;
-        }
-    }
-
-    return status;
-}
-
-/*******************************************
-Function: registerSerialInterface(SerialInterface *_serial)
-Description: Registers Serial Interface to List of Interfaces
-********************************************/
-bool Lawicel::registerSerialInterface(SerialInterface *_serial)
-{
-    bool status = false;
-
-    if (nullptr != _serial)
-    {
-        uint8_t index = 0U;
-
-        while ((MAX_SERIALS > index) && (false == status))
-        {
-            if (nullptr == m_SerialInterfaces[index])
-            {
-                m_SerialInterfaces[index] = _serial;
-                status = true;
-            }
-            else
-            {
-                ++index;
-            }
-        }
-    }
-
-    return status;
-}
-
-/*******************************************
-Function: unregisterSerialInterface(SerialInterface *_serial)
-Description: Removes Serial Interface to List of Interfaces
-********************************************/
-void Lawicel::unregisterSerialInterface(SerialInterface *_serial)
-{
-    uint8_t index = 0U;
-
-    while ((MAX_SERIALS > index) && (nullptr != _serial))
-    {
-        if (_serial == m_SerialInterfaces[index])
-        {
-            m_SerialInterfaces[index] = nullptr;
-
-            if (_serial == m_selectedSerial)
-            {
-                m_selectedSerial = nullptr;
-            }
-
-            _serial = nullptr;
-        }
-        else
-        {
-            ++index;
-        }
-    }
-}
-
-/*******************************************
-Function: selectSerialInterface(const String &name)
-Description: Chooses a Serial Interface from List of Interfaces
-********************************************/
-bool Lawicel::selectSerialinterface(const String &name)
-{
-    bool status = false;
-    uint8_t index = 0U;
-
-    while ((MAX_SERIALS > index) && (false == status))
-    {
-        if (m_SerialInterfaces[index]->getName() == name)
-        {
-            m_selectedSerial = m_SerialInterfaces[index];
-            status = true;
-        }
-        else
-        {
-            ++index;
-        }
-    }
-
-    return status;
-}
-
-/*******************************************
 Function: receiveCommand()
 Description: Receives and Interprets Buffer with Serial Command
 ********************************************/
-
 uint8_t Lawicel::receiveCommand()
 {
     switch (buffer[0])
@@ -893,7 +728,7 @@ uint8_t Lawicel::CMD_Poll_All()
             m_selectedSerial->send(str);
         }
     }
-    
+
     char *str = nullptr;
     sprintf(str, "A%c", BELL);
     m_selectedSerial->send(str);
@@ -907,33 +742,8 @@ Description: Toggles Auto Poll for inconming Frames
 
 uint8_t Lawicel::CMD_Poll_Auto()
 {
-    if (_length > 1)
-    {
-        return 1;
-    }
-    if (_length < 1)
-    {
-        return 1;
-    }
-
-    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
-    {
-        return 1;
-    }
-
     autoPolling = !autoPolling;
-
-    if (m_selectedCAN->pollAuto(autoPolling))
-    {
-        return 1;
-    }
-
-    /*
-
-*******SEND FRAME TO SERIAL*******
-
-    */
-    return 1;
+    return 0;
 }
 
 /*******************************************
@@ -1270,11 +1080,11 @@ uint8_t Lawicel::CMD_Auto_Start()
 }
 
 /*******************************************
-Function: SerialHandler(uint8_t CMD)
+Function: Handler(uint8_t CMD)
 Description: Handles the Serial Messages
 ********************************************/
 
-bool Lawicel::SerialHandler(uint8_t CMD)
+bool Lawicel::Handler(uint8_t CMD)
 {
     char *str = nullptr;
 
@@ -1319,5 +1129,72 @@ bool Lawicel::SerialHandler(uint8_t CMD)
 
     m_selectedSerial->send(str);
 
+    if (autoPolling)
+    {
+        Autopoll();
+    }
+
     return true;
+}
+
+/*******************************************
+Function: Autopoll()
+Description: Frame Polling without any extra tags
+********************************************/
+
+uint8_t Lawicel::Autopoll()
+{
+    CANInterface::Frame *frame = nullptr;
+
+    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
+    {
+        return 1;
+    }
+
+    int toRead = m_selectedCAN->pollAll(frame);
+
+    if (toRead == 0)
+    {
+        return 0;
+    }
+
+    for (int i = 0; i < toRead; i++)
+    {
+        char *str = nullptr;
+        char cmd = 't';
+        if (frame[i].Extended == true && frame[i].RTR == false)
+        {
+            cmd = 'T';
+        }
+        else if (frame[i].Extended == false && frame[i].RTR == true)
+        {
+            cmd = 'r';
+        }
+        else if (frame[i].Extended == true && frame[i].RTR == true)
+        {
+            cmd = 'R';
+        }
+
+        int _dlc = frame[i].DLC;
+
+        sprintf(str, "%c%X%d", cmd, frame[i].ID, frame[i].DLC);
+        for (int j = 0; j < _dlc; j++)
+        {
+            sprintf(str, "%02X", frame[i].Data[j]);
+        }
+
+        if (_timestamp)
+        {
+            sprintf(str, "%04X", getTimestamp());
+        }
+
+        sprintf(str, "%c", CR);
+
+        if (m_selectedSerial != nullptr)
+        {
+            m_selectedSerial->send(str);
+        }
+    }
+
+    return 0;
 }

@@ -222,14 +222,6 @@ public:
         return msgCount;
     }
 
-    /*
-    * Toggles Auto Polling
-    */
-    uint8_t pollAuto(bool autoPoll)
-    {
-        return 1;
-    }
-
 private:
     String m_name;
     long m_baudrate;

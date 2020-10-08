@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <CANInterface.h>
 #include <SerialInterface.h>
+#include <NVMInterface.h>
 
 #define MAX_CANS 2U
 #define MAX_SERIALS 2U
@@ -15,13 +16,9 @@
 class Lawicel
 {
 public:
-    bool registerCANInterface(CANInterface *_can);
-    void unregisterCANInterface(CANInterface *_can);
-    bool selectCANInterface(const String &name);
-
-    bool registerSerialInterface(SerialInterface *_serial);
-    void unregisterSerialInterface(SerialInterface *_serial);
-    bool selectSerialinterface(const String &name);
+    bool Handler(uint8_t CMD); //Handles the Serial Messages
+    bool begin();
+    bool end();
 
 private:
     enum ASCII_COMMANDS : char
@@ -53,7 +50,7 @@ private:
     uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
     uint32_t IdDecode(bool extended);       //Translates char ID into value
     int getTimestamp();
-    
+
     uint8_t receiveCommand(); //Receives and Interprets Buffer with Serial Command#
 
     uint8_t CMD_Set_Baudrate();        //Sets Baudrate through presets
@@ -78,7 +75,7 @@ private:
     uint8_t CMD_Timestamp();           //Toggles Timestamp (and saves setting on EEPROM)
     uint8_t CMD_Auto_Start();          //Auto Startup feature (from power on)
 
-    bool SerialHandler(uint8_t CMD); //Handles the Serial Messages
+    uint8_t Autopoll(); //Frame Polling without any extra tags
 
     char buffer[32];         //Input Buffer for Serial-Message
     uint8_t _length = 0;     //Length of Serial-Message
@@ -86,11 +83,9 @@ private:
     uint8_t _autostart;
     bool autoPolling = true;
 
-    CANInterface *m_CANInterfaces[MAX_CANS];
-    CANInterface *m_selectedCAN;
-
-    SerialInterface *m_SerialInterfaces[MAX_SERIALS];
-    SerialInterface *m_selectedSerial;
+    CANInterface *m_selectedCAN = nullptr;
+    SerialInterface *m_selectedSerial = nullptr;
+    NVMInterface *m_selectedNVM = nullptr;
 };
 
 #endif
