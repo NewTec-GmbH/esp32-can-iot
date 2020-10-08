@@ -6,7 +6,7 @@
 
 #define MAX_CANS 2U
 #define MAX_SERIALS 2U
-#define MAX_TIMESTAMP 0x5A5F
+#define MAX_TIMESTAMP 0xEA5F
 #define X_VERSION "V0101"
 #define X_SERIAL_NUMBER "NNT32"
 #define CR 13
@@ -52,7 +52,8 @@ private:
     uint8_t charToByte(char MSB, char LSB); //Translates char symbols into hex values
     uint8_t charToInt(char symbol);         //Translates char symbols of numbers into int values
     uint32_t IdDecode(bool extended);       //Translates char ID into value
-
+    int getTimestamp();
+    
     uint8_t receiveCommand(); //Receives and Interprets Buffer with Serial Command#
 
     uint8_t CMD_Set_Baudrate();        //Sets Baudrate through presets

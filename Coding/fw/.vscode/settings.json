@@ -16,6 +16,7 @@
         "memory": "cpp",
         "random": "cpp",
         "initializer_list": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "cstdio": "cpp"
     }
 }

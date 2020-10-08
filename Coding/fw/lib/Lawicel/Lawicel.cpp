@@ -105,6 +105,15 @@ uint32_t Lawicel::IdDecode(bool extended)
 }
 
 /*******************************************
+Function: getTimestamp()
+Description: Returns Timestamp
+********************************************/
+int Lawicel::getTimestamp()
+{
+    return millis() % MAX_TIMESTAMP;
+}
+
+/*******************************************
 Function: registerCANInterface(CANInterface *_can)
 Description: Registers CAN Interface to List of Interfaces
 ********************************************/
@@ -751,6 +760,10 @@ Description:
 
 uint8_t Lawicel::CMD_Poll_Single()
 {
+    char *str = nullptr;
+    char cmd = 't';
+    CANInterface::Frame *frame = nullptr;
+
     if (_length > 1)
     {
         return 1;
@@ -765,18 +778,45 @@ uint8_t Lawicel::CMD_Poll_Single()
         return 1;
     }
 
-    CANInterface::Frame *frame = nullptr;
-
     if (m_selectedCAN->pollSingle(frame))
     {
         return 1;
     }
 
-    /*
+    if (frame->Extended == true && frame->RTR == false)
+    {
+        cmd = 'T';
+    }
+    else if (frame->Extended == false && frame->RTR == true)
+    {
+        cmd = 'r';
+    }
+    else if (frame->Extended == true && frame->RTR == true)
+    {
+        cmd = 'R';
+    }
 
-*******SEND FRAME TO SERIAL*******
+    int _dlc = frame->DLC;
 
-    */
+    sprintf(str, "%c%X%d", cmd, frame->ID, frame->DLC);
+    for (int i = 0; i < _dlc; i++)
+    {
+        sprintf(str, "%X", frame->Data[i]);
+    }
+
+    if (_timestamp)
+    {
+        sprintf(str, "%04X", getTimestamp());
+    }
+
+    sprintf(str, "%c", CR);
+
+    if (m_selectedSerial != nullptr)
+    {
+        m_selectedSerial->send(str);
+        return 0;
+    }
+
     return 1;
 }
 
@@ -787,6 +827,9 @@ Description: Polls incomming FIFO for CAN frames (all pending frames)
 
 uint8_t Lawicel::CMD_Poll_All()
 {
+
+    CANInterface::Frame *frame = nullptr;
+
     if (_length > 1)
     {
         return 1;
@@ -801,16 +844,47 @@ uint8_t Lawicel::CMD_Poll_All()
         return 1;
     }
 
-    CANInterface::Frame *frame = nullptr;
+    int toRead = m_selectedCAN->pollAll(frame);
 
-    uint8_t toRead = m_selectedCAN->pollAll(frame);
+    for (int i = 0; i < toRead; i++)
+    {
+        char *str = nullptr;
+        char cmd = 't';
+        if (frame[i].Extended == true && frame[i].RTR == false)
+        {
+            cmd = 'T';
+        }
+        else if (frame[i].Extended == false && frame[i].RTR == true)
+        {
+            cmd = 'r';
+        }
+        else if (frame[i].Extended == true && frame[i].RTR == true)
+        {
+            cmd = 'R';
+        }
 
-    /*
+        int _dlc = frame[i].DLC;
 
-*******SEND FRAME TO SERIAL*******
+        sprintf(str, "%c%X%d", cmd, frame[i].ID, frame[i].DLC);
+        for (int j = 0; j < _dlc; j++)
+        {
+            sprintf(str, "%X", frame[i].Data[j]);
+        }
 
-    */
-    return 1;
+        if (_timestamp)
+        {
+            sprintf(str, "%04X", getTimestamp());
+        }
+
+        sprintf(str, "%c", CR);
+
+        if (m_selectedSerial != nullptr)
+        {
+            m_selectedSerial->send(str);
+        }
+    }
+
+    return 0;
 }
 
 /*******************************************
@@ -1215,12 +1289,9 @@ bool Lawicel::SerialHandler(uint8_t CMD)
         return false;
     }
 
-    if (buffer[0] == POLL_SINGLE || buffer[0] == POLL_ALL)
+    if (buffer[0] == POLL_SINGLE || buffer[0] == POLL_ALL || buffer[0] == POLL_AUTO)
     {
-        if (_timestamp)
-        {
-            // sprintf(str, timestamp);??
-        }
+        return true;
     }
     else if (buffer[0] == VERSION)
     {
@@ -1237,3 +1308,4 @@ bool Lawicel::SerialHandler(uint8_t CMD)
 
     return true;
 }
+
