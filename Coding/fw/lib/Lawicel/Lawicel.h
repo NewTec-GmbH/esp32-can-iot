@@ -30,7 +30,9 @@ public:
     void end();
 
 private:
-    Lawicel(const Lawicel &Lawicel);
+    Lawicel();
+    Lawicel(const Lawicel& prot);
+    Lawicel& operator=(const Lawicel& prot);
 
     enum ASCII_COMMANDS : char
     {

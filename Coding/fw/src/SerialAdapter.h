@@ -45,7 +45,9 @@ public:
   /**
   * Default Serial Adapter destructor.
   */
-  ~SerialAdapter();
+  ~SerialAdapter()
+  {
+  }
 
   /**
   * Initialize Module.
