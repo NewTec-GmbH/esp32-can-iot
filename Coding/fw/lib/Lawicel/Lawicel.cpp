@@ -105,6 +105,170 @@ uint32_t Lawicel::IdDecode(bool extended)
 }
 
 /*******************************************
+Function: registerCANInterface(CANInterface *_can)
+Description: Registers CAN Interface to List of Interfaces
+********************************************/
+bool Lawicel::registerCANInterface(CANInterface *_can)
+{
+    bool status = false;
+
+    if (nullptr != _can)
+    {
+        uint8_t index = 0U;
+
+        while ((MAX_CANS > index) && (false == status))
+        {
+            if (nullptr == m_CANInterfaces[index])
+            {
+                m_CANInterfaces[index] = _can;
+                status = true;
+            }
+            else
+            {
+                ++index;
+            }
+        }
+    }
+
+    return status;
+}
+
+/*******************************************
+Function: unregisterCANInterface(CANInterface *_can)
+Description: Removes CAN Interface to List of Interfaces
+********************************************/
+void Lawicel::unregisterCANInterface(CANInterface *_can)
+{
+    uint8_t index = 0U;
+
+    while ((MAX_CANS > index) && (nullptr != _can))
+    {
+        if (_can == m_CANInterfaces[index])
+        {
+            m_CANInterfaces[index] = nullptr;
+
+            if (_can == m_selectedCAN)
+            {
+                m_selectedCAN = nullptr;
+            }
+
+            _can = nullptr;
+        }
+        else
+        {
+            ++index;
+        }
+    }
+}
+
+/*******************************************
+Function: selectCANInterface(const String &name)
+Description: Chooses a CAN Interface from List of Interfaces
+********************************************/
+bool Lawicel::selectCANInterface(const String &name)
+{
+    bool status = false;
+    uint8_t index = 0U;
+
+    while ((MAX_CANS > index) && (false == status))
+    {
+        if (m_CANInterfaces[index]->getName() == name)
+        {
+            m_selectedCAN = m_CANInterfaces[index];
+            status = true;
+        }
+        else
+        {
+            ++index;
+        }
+    }
+
+    return status;
+}
+
+/*******************************************
+Function: registerSerialInterface(SerialInterface *_serial)
+Description: Registers Serial Interface to List of Interfaces
+********************************************/
+bool Lawicel::registerSerialInterface(SerialInterface *_serial)
+{
+    bool status = false;
+
+    if (nullptr != _serial)
+    {
+        uint8_t index = 0U;
+
+        while ((MAX_SERIALS > index) && (false == status))
+        {
+            if (nullptr == m_SerialInterfaces[index])
+            {
+                m_SerialInterfaces[index] = _serial;
+                status = true;
+            }
+            else
+            {
+                ++index;
+            }
+        }
+    }
+
+    return status;
+}
+
+/*******************************************
+Function: unregisterSerialInterface(SerialInterface *_serial)
+Description: Removes Serial Interface to List of Interfaces
+********************************************/
+void Lawicel::unregisterSerialInterface(SerialInterface *_serial)
+{
+    uint8_t index = 0U;
+
+    while ((MAX_SERIALS > index) && (nullptr != _serial))
+    {
+        if (_serial == m_SerialInterfaces[index])
+        {
+            m_SerialInterfaces[index] = nullptr;
+
+            if (_serial == m_selectedSerial)
+            {
+                m_selectedSerial = nullptr;
+            }
+
+            _serial = nullptr;
+        }
+        else
+        {
+            ++index;
+        }
+    }
+}
+
+/*******************************************
+Function: selectSerialInterface(const String &name)
+Description: Chooses a Serial Interface from List of Interfaces
+********************************************/
+bool Lawicel::selectSerialinterface(const String &name)
+{
+    bool status = false;
+    uint8_t index = 0U;
+
+    while ((MAX_SERIALS > index) && (false == status))
+    {
+        if (m_SerialInterfaces[index]->getName() == name)
+        {
+            m_selectedSerial = m_SerialInterfaces[index];
+            status = true;
+        }
+        else
+        {
+            ++index;
+        }
+    }
+
+    return status;
+}
+
+/*******************************************
 Function: receiveCommand()
 Description: Receives and Interprets Buffer with Serial Command
 ********************************************/
@@ -613,7 +777,7 @@ uint8_t Lawicel::CMD_Poll_Single()
 *******SEND FRAME TO SERIAL*******
 
     */
-   return 1;
+    return 1;
 }
 
 /*******************************************
@@ -646,7 +810,7 @@ uint8_t Lawicel::CMD_Poll_All()
 *******SEND FRAME TO SERIAL*******
 
     */
-   return 1;
+    return 1;
 }
 
 /*******************************************
@@ -682,7 +846,7 @@ uint8_t Lawicel::CMD_Poll_Auto()
 *******SEND FRAME TO SERIAL*******
 
     */
-   return 1;
+    return 1;
 }
 
 /*******************************************

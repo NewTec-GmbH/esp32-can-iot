@@ -14,7 +14,7 @@
 
 class Lawicel
 {
-public:   
+public:
     bool registerCANInterface(CANInterface *_can);
     void unregisterCANInterface(CANInterface *_can);
     bool selectCANInterface(const String &name);
@@ -85,7 +85,7 @@ private:
     uint8_t _autostart;
     bool autoPolling = true;
 
-    CANInterface *m_CANinterfaces[MAX_CANS];
+    CANInterface *m_CANInterfaces[MAX_CANS];
     CANInterface *m_selectedCAN;
 
     SerialInterface *m_SerialInterfaces[MAX_SERIALS];
