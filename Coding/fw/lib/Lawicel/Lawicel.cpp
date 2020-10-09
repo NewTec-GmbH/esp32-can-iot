@@ -1,9 +1,94 @@
+/***************************************************************************************************
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+***************************************************************************************************/
+/**
+@addtogroup Lawicel
+@{
+@file       Lawicel.cpp
+
+Driver for Lawicel Protocol @ref Lawicel.h
+
+* @}
+***************************************************************************************************/
+/* INCLUDES ***************************************************************************************/
 #include <Lawicel.h>
 
-/*******************************************
-Function: begin()
-Description: Initialize Protocol
-********************************************/
+/* C-Interface ************************************************************************************/
+extern "C"
+{
+}
+
+/* CONSTANTS **************************************************************************************/
+
+/* MACROS *****************************************************************************************/
+
+/* TYPES ******************************************************************************************/
+
+/* PROTOTYPES *************************************************************************************/
+
+/* VARIABLES **************************************************************************************/
+
+/* PUBLIC METHODES ********************************************************************************/
+
+/**************************************************************************************************/
+bool Lawicel::handler()
+{
+    serialReturn = "";
+
+    if (m_selectedCAN == nullptr)
+    {
+        return false;
+    }
+
+    if (m_selectedSerial == nullptr)
+    {
+        return false;
+    }
+
+    String imp = m_selectedSerial->read();
+    _length = imp.length();
+    imp.toCharArray(buffer, 32);
+
+    if (_length == 0)
+    {
+        return true;
+    }
+
+    uint8_t CMD_status = receiveCommand();
+
+    if (CMD_status == 1)
+    {
+        serialReturn += (char)BELL;
+        return true;
+    }
+    else if (CMD_status != 0)
+    {
+        return false;
+    }
+
+    if (buffer[0] == VERSION)
+    {
+        serialReturn += X_VERSION;
+    }
+    else if (buffer[0] == SERIAL_NUMBER)
+    {
+        serialReturn += X_SERIAL_NUMBER;
+    }
+
+    serialReturn += (char)CR;
+
+    m_selectedSerial->print(serialReturn);
+
+    if (autoPolling)
+    {
+        Autopoll();
+    }
+
+    return true;
+}
+
+/**************************************************************************************************/
 void Lawicel::begin()
 {
     String var;
@@ -59,19 +144,16 @@ void Lawicel::begin()
     m_selectedSerial->print("System initated Correctly");
 }
 
-/*******************************************
-Function: end()
-Description: Terminate Protocol
-********************************************/
+/**************************************************************************************************/
 void Lawicel::end()
 {
 }
 
-/*******************************************
-Function: charToByte(char MSB, char LSB)
-Description: Translates char symbols into hex byte
-********************************************/
+/* PROTECTED METHODES *****************************************************************************/
 
+/* PRIVATE METHODES *******************************************************************************/
+
+/**************************************************************************************************/
 uint8_t Lawicel::charToByte(char MSB, char LSB)
 {
     uint8_t result = -10;
@@ -104,10 +186,7 @@ uint8_t Lawicel::charToByte(char MSB, char LSB)
     return result;
 }
 
-/*******************************************
-Function: charToInt(char symbol)
-Description: Translates char symbols of numbers into int values
-********************************************/
+/**************************************************************************************************/
 uint8_t Lawicel::charToInt(char num_symbol)
 {
     uint8_t result = 0;
@@ -122,10 +201,7 @@ uint8_t Lawicel::charToInt(char num_symbol)
     return result;
 }
 
-/*******************************************
-Function: IdDecode(bool extended)
-Description: Translates char ID into value
-********************************************/
+/**************************************************************************************************/
 uint32_t Lawicel::IdDecode(bool extended)
 {
     uint32_t result = 0;
@@ -171,19 +247,7 @@ uint32_t Lawicel::IdDecode(bool extended)
     return result;
 }
 
-/*******************************************
-Function: getTimestamp()
-Description: Returns Timestamp
-********************************************/
-int Lawicel::getTimestamp()
-{
-    return millis() % MAX_TIMESTAMP;
-}
-
-/*******************************************
-Function: receiveCommand()
-Description: Receives and Interprets Buffer with Serial Command
-********************************************/
+/**************************************************************************************************/
 uint8_t Lawicel::receiveCommand()
 {
     m_selectedSerial->print(buffer[0]);
@@ -301,11 +365,7 @@ uint8_t Lawicel::receiveCommand()
     }
 }
 
-/*******************************************
-Function: CMD_Set_Baudrate()
-Description: Sets Baudrate through presets
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_Baudrate()
 {
     long _baudrate = 0;
@@ -387,11 +447,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Set_BTR()
-Description: Sets Baudrate through Registers
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_BTR()
 {
     if (_length > 5)
@@ -419,11 +475,7 @@ uint8_t Lawicel::CMD_Set_BTR()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Open_Normal()
-Description: Opens CAN Channel in Normal Mode
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Open_Normal()
 {
     if (_length > 1)
@@ -445,11 +497,7 @@ uint8_t Lawicel::CMD_Open_Normal()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Open_Listen_Only()
-Description: Opens CAN Channel in Listen-Only Mode
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Open_Listen_Only()
 {
     if (_length > 1)
@@ -471,11 +519,7 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Close()
-Description: Closes CAN Channel
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Close()
 {
     if (_length > 1)
@@ -497,11 +541,7 @@ uint8_t Lawicel::CMD_Close()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Tx_Std()
-Description: Transmits standard CAN Frame (11-bit ID)
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Tx_Std()
 {
     CANInterface::Frame frame;
@@ -540,11 +580,7 @@ uint8_t Lawicel::CMD_Tx_Std()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Tx_Ext()
-Description: Transmits extended CAN Frame (29-bit ID)
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Tx_Ext()
 {
     CANInterface::Frame frame;
@@ -584,11 +620,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Tx_Std_RTR()
-Description: Transmits standard RTR CAN Frame (11-bit ID)
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Tx_Std_RTR()
 {
     CANInterface::Frame frame;
@@ -621,11 +653,7 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Tx_Ext_RTR()
-Description: Transmits extended RTR CAN Frame (29-bit ID)
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Tx_Ext_RTR()
 {
     CANInterface::Frame frame;
@@ -658,15 +686,11 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Poll_Single()
-Description: 
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Poll_Single()
 {
     char cmd = 't';
-    CANInterface::Frame *frame =  nullptr;
+    CANInterface::Frame *frame = nullptr;
 
     if (_length > 1)
     {
@@ -718,11 +742,7 @@ uint8_t Lawicel::CMD_Poll_Single()
     return 0;
 }
 
-/*******************************************
-Function: CMD_Poll_All(); 
-Description: Polls incomming FIFO for CAN frames (all pending frames)
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Poll_All()
 {
 
@@ -786,22 +806,14 @@ uint8_t Lawicel::CMD_Poll_All()
     return 0;
 }
 
-/*******************************************
-Function: CMD_Poll_Auto()
-Description: Toggles Auto Poll for inconming Frames
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Poll_Auto()
 {
     autoPolling = !autoPolling;
     return 0;
 }
 
-/*******************************************
-Function: CMD_Flags()
-Description: Read Status Flags
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Flags()
 {
     if (_length > 1)
@@ -834,11 +846,7 @@ uint8_t Lawicel::CMD_Flags()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Set_Filter_Mode()
-Description: Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_Filter_Mode()
 {
     if (_length > 2)
@@ -870,11 +878,7 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Set_ACn()
-Description: Sets Acceptance Code Register
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_ACn()
 {
     if (_length > 9)
@@ -908,11 +912,7 @@ uint8_t Lawicel::CMD_Set_ACn()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Set_AMn()
-Description: Sets Acceptance Mask Register
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_AMn()
 {
     if (_length > 9)
@@ -946,11 +946,7 @@ uint8_t Lawicel::CMD_Set_AMn()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Set_Serial_Baudrate()
-Description: Sets UART Baudrate (and saves setting on EEPROM)
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_Serial_Baudrate()
 {
     long _baudrate = 0;
@@ -1023,11 +1019,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Version()
-Description: Sends Hardware and Software Version
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Version()
 {
     if (_length > 1)
@@ -1042,11 +1034,7 @@ uint8_t Lawicel::CMD_Version()
     return 0;
 }
 
-/*******************************************
-Function: CMD_Serial_Number()
-Description: Sends Serial Number of Hardware
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Serial_Number()
 {
     if (_length > 1)
@@ -1061,11 +1049,7 @@ uint8_t Lawicel::CMD_Serial_Number()
     return 0;
 }
 
-/*******************************************
-Function: CMD_Activate_Timestamp()
-Description: Toggles Timestamp (and saves setting on EEPROM)
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Timestamp()
 {
     if (_length > 2)
@@ -1100,11 +1084,7 @@ uint8_t Lawicel::CMD_Timestamp()
     return 1;
 }
 
-/*******************************************
-Function: CMD_Auto_Start()
-Description: Auto Startup feature (from power on)
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::CMD_Auto_Start()
 {
     if (_length > 2)
@@ -1133,70 +1113,7 @@ uint8_t Lawicel::CMD_Auto_Start()
     return 1;
 }
 
-/*******************************************
-Function: Handler(uint8_t CMD)
-Description: Handles the Serial Messages
-********************************************/
-
-bool Lawicel::handler()
-{
-    serialReturn = "";
-
-    if (m_selectedCAN == nullptr)
-    {
-        return false;
-    }
-
-    if (m_selectedSerial == nullptr)
-    {
-        return false;
-    }
-
-    _length = m_selectedSerial->read(buffer);
-
-    if (_length == 0)
-    {
-        return true;
-    }
-
-    uint8_t CMD_status = receiveCommand();
-
-    if (CMD_status == 1)
-    {
-        serialReturn += (char)BELL;
-        return true;
-    }
-    else if (CMD_status != 0)
-    {
-        return false;
-    }
-
-    if (buffer[0] == VERSION)
-    {
-        serialReturn += X_VERSION;
-    }
-    else if (buffer[0] == SERIAL_NUMBER)
-    {
-        serialReturn += X_SERIAL_NUMBER;
-    }
-
-    serialReturn += (char)CR;
-
-    m_selectedSerial->print(serialReturn);
-
-    if (autoPolling)
-    {
-        Autopoll();
-    }
-
-    return true;
-}
-
-/*******************************************
-Function: Autopoll()
-Description: Frame Polling without any extra tags
-********************************************/
-
+/**************************************************************************************************/
 uint8_t Lawicel::Autopoll()
 {
     CANInterface::Frame *frame = nullptr;
@@ -1247,3 +1164,13 @@ uint8_t Lawicel::Autopoll()
 
     return 0;
 }
+
+/**************************************************************************************************/
+int Lawicel::getTimestamp()
+{
+    return millis() % MAX_TIMESTAMP;
+}
+
+/* EXTERNAL FUNCTIONS *****************************************************************************/
+
+/* INTERNAL FUNCTIONS *****************************************************************************/

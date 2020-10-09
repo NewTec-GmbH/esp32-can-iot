@@ -51,7 +51,7 @@ public:
     /* CONSTANTS ******************************************************************************/
 
     /* TYPES **********************************************************************************/
-    
+
     /**
     * Constructor
     */
@@ -99,7 +99,7 @@ private:
         AUTO_START = 'Q'        /**< Auto-Startup with CAN Channel open and filters */
     };
 
-    uint8_t charToByte(char MSB, char LSB); /**< Translates char symbols into hex values */
+    uint8_t charToByte(char MSB, char LSB); /**< Translates char symbols of a Byte into hex values */
     uint8_t charToInt(char symbol);         /**< Translates char symbols of numbers into int values */
     uint32_t IdDecode(bool extended);       /**< Translates char ID into value */
 
