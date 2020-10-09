@@ -191,7 +191,6 @@ uint8_t Lawicel::receiveCommand()
     {
     case SET_BAUDRATE:
     {
-        m_selectedSerial->print("Command Set Baudrate");
         return CMD_Set_Baudrate();
     }
 
@@ -311,8 +310,6 @@ uint8_t Lawicel::CMD_Set_Baudrate()
 {
     long _baudrate = 0;
 
-    m_selectedSerial->print(_length);
-
     if (_length > 2)
     {
         return 1;
@@ -327,7 +324,6 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         return 1;
     }
 
-    m_selectedSerial->print(buffer[1]);
     switch (buffer[1])
     {
     case '0':
@@ -380,7 +376,6 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         return 1;
     }
     }
-    m_selectedSerial->print((int)_baudrate);
 
     m_selectedNVM->saveString(INIT_CAN_BAUD, buffer);
 
@@ -670,9 +665,8 @@ Description:
 
 uint8_t Lawicel::CMD_Poll_Single()
 {
-    char *str = nullptr;
     char cmd = 't';
-    CANInterface::Frame *frame = nullptr;
+    CANInterface::Frame *frame =  nullptr;
 
     if (_length > 1)
     {
@@ -690,8 +684,7 @@ uint8_t Lawicel::CMD_Poll_Single()
 
     if (m_selectedCAN->pollSingle(frame))
     {
-        sprintf(str, "%c", BELL);
-        m_selectedSerial->send(str);
+        serialReturn += (char)BELL;
         return 0;
     }
 
@@ -709,27 +702,20 @@ uint8_t Lawicel::CMD_Poll_Single()
     }
 
     int _dlc = frame->DLC;
-
-    sprintf(str, "%c%X%d", cmd, frame->ID, frame->DLC);
+    serialReturn += cmd;
+    serialReturn += String(frame->ID, HEX);
+    serialReturn += frame->DLC;
     for (int i = 0; i < _dlc; i++)
     {
-        sprintf(str, "%02X", frame->Data[i]);
+        serialReturn += String(frame->Data[i], HEX);
     }
 
     if (_timestamp)
     {
-        sprintf(str, "%04X", getTimestamp());
+        serialReturn += String(getTimestamp(), HEX);
     }
 
-    sprintf(str, "%c", CR);
-
-    if (m_selectedSerial != nullptr)
-    {
-        m_selectedSerial->send(str);
-        return 0;
-    }
-
-    return 1;
+    return 0;
 }
 
 /*******************************************
@@ -760,15 +746,12 @@ uint8_t Lawicel::CMD_Poll_All()
 
     if (toRead == 0)
     {
-        char *str = nullptr;
-        sprintf(str, "A%c", BELL);
-        m_selectedSerial->send(str);
+        serialReturn += 'A';
         return 0;
     }
 
     for (int i = 0; i < toRead; i++)
     {
-        char *str = nullptr;
         char cmd = 't';
         if (frame[i].Extended == true && frame[i].RTR == false)
         {
@@ -784,29 +767,22 @@ uint8_t Lawicel::CMD_Poll_All()
         }
 
         int _dlc = frame[i].DLC;
+        serialReturn += cmd;
+        serialReturn += String(frame[i].ID, HEX);
+        serialReturn += frame[i].DLC;
 
-        sprintf(str, "%c%X%d", cmd, frame[i].ID, frame[i].DLC);
         for (int j = 0; j < _dlc; j++)
         {
-            sprintf(str, "%02X", frame[i].Data[j]);
+            serialReturn += String(frame[i].Data[j], HEX);
         }
 
         if (_timestamp)
         {
-            sprintf(str, "%04X", getTimestamp());
-        }
-
-        sprintf(str, "%c", CR);
-
-        if (m_selectedSerial != nullptr)
-        {
-            m_selectedSerial->send(str);
+            serialReturn += String(getTimestamp(), HEX);
         }
     }
 
-    char *str = nullptr;
-    sprintf(str, "A%c", BELL);
-    m_selectedSerial->send(str);
+    serialReturn += 'A';
     return 0;
 }
 
@@ -828,7 +804,6 @@ Description: Read Status Flags
 
 uint8_t Lawicel::CMD_Flags()
 {
-    char *str = nullptr;
     if (_length > 1)
     {
         return 1;
@@ -854,13 +829,6 @@ uint8_t Lawicel::CMD_Flags()
     for (int position = 0; position < 8; position++)
     {
         statusCode += flags[position] * pow(16.0, position);
-    }
-
-    sprintf(str, "F%X%c", statusCode, CR);
-
-    if (m_selectedSerial != nullptr)
-    {
-        m_selectedSerial->send(str);
     }
 
     return 1;
@@ -1172,7 +1140,7 @@ Description: Handles the Serial Messages
 
 bool Lawicel::handler()
 {
-    char str[100];
+    serialReturn = "";
 
     if (m_selectedCAN == nullptr)
     {
@@ -1195,7 +1163,7 @@ bool Lawicel::handler()
 
     if (CMD_status == 1)
     {
-        sprintf(str, "%c", BELL);
+        serialReturn += (char)BELL;
         return true;
     }
     else if (CMD_status != 0)
@@ -1203,22 +1171,18 @@ bool Lawicel::handler()
         return false;
     }
 
-    if (buffer[0] == POLL_SINGLE || buffer[0] == POLL_ALL || buffer[0] == POLL_AUTO)
+    if (buffer[0] == VERSION)
     {
-        return true;
-    }
-    else if (buffer[0] == VERSION)
-    {
-        sprintf(str, "%s", X_VERSION);
+        serialReturn += X_VERSION;
     }
     else if (buffer[0] == SERIAL_NUMBER)
     {
-        sprintf(str, "%s", X_SERIAL_NUMBER);
+        serialReturn += X_SERIAL_NUMBER;
     }
 
-    sprintf(str, "%c", CR);
+    serialReturn += (char)CR;
 
-    m_selectedSerial->send(str);
+    m_selectedSerial->print(serialReturn);
 
     if (autoPolling)
     {
@@ -1251,7 +1215,6 @@ uint8_t Lawicel::Autopoll()
 
     for (int i = 0; i < toRead; i++)
     {
-        char str[100];
         char cmd = 't';
         if (frame[i].Extended == true && frame[i].RTR == false)
         {
@@ -1267,23 +1230,18 @@ uint8_t Lawicel::Autopoll()
         }
 
         int _dlc = frame[i].DLC;
+        serialReturn += cmd;
+        serialReturn += String(frame[i].ID, HEX);
+        serialReturn += frame[i].DLC;
 
-        sprintf(str, "%c%X%d", cmd, frame[i].ID, frame[i].DLC);
         for (int j = 0; j < _dlc; j++)
         {
-            sprintf(str, "%02X", frame[i].Data[j]);
+            serialReturn += String(frame[i].Data[j], HEX);
         }
 
         if (_timestamp)
         {
-            sprintf(str, "%04X", getTimestamp());
-        }
-
-        sprintf(str, "%c", CR);
-
-        if (m_selectedSerial != nullptr)
-        {
-            m_selectedSerial->send(str);
+            serialReturn += String(getTimestamp(), HEX);
         }
     }
 

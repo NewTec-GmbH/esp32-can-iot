@@ -60,12 +60,6 @@ public:
   virtual void end() = 0;
 
   /**
-    * Send a Data String.
-    */
-
-  virtual void send(char *str) = 0;
-
-  /**
     * Sets the Baudrate for Serial Communication.
     */
 

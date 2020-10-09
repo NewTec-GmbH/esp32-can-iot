@@ -67,14 +67,6 @@ public:
   /**
   * Send String to output.
   */
-  void send(char *str)
-  {
-    Serial.print(str);
-  }
-
-  /**
-  * Send String to output.
-  */
   void setBaudrate(long _baudrate)
   {
     m_baudrate = _baudrate;

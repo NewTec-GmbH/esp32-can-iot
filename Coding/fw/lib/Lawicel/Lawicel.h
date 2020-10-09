@@ -104,6 +104,7 @@ private:
     uint8_t Autopoll(); //Frame Polling without any extra tags
 
     char buffer[32];         //Input Buffer for Serial-Message
+    String serialReturn = ""; //String Snet back to SerialAdapter
     uint8_t _length = 0;     //Length of Serial-Message
     bool _timestamp = false; //Toggle timestamp
     uint8_t _autostart;
