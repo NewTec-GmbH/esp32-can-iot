@@ -57,7 +57,7 @@ public:
   /**
   * Terminate Module
   */
- virtual void end() = 0;
+  virtual void end() = 0;
 
   /**
     * Send a Data String.
@@ -76,6 +76,15 @@ public:
     */
 
   virtual uint8_t read(char *Buffer) = 0;
+
+  /**
+    * Prints a Line to Serial Adapter.
+    */
+  virtual void print(String string) = 0;
+
+  virtual void print(int num) = 0;
+
+  virtual void print(char c) = 0;
 
 private:
 };

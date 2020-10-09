@@ -2,6 +2,7 @@
 #define LAWICEL_H_
 
 #include <Arduino.h>
+#include <string.h>
 #include <CANInterface.h>
 #include <SerialInterface.h>
 #include <NVMInterface.h>

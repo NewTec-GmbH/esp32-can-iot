@@ -34,11 +34,10 @@ public:
 
   /* TYPES **********************************************************************************/
 
-
   /**
   * Default Serial Adapter constructor.
   */
-  SerialAdapter() : SerialInterface(), m_baudrate(0)
+  SerialAdapter() : SerialInterface(), m_baudrate(115200)
   {
   }
 
@@ -88,24 +87,35 @@ public:
   uint8_t read(char *Buffer)
   {
     memset(Buffer, '0', 32);
+    int availableBytes = 0;
 
     if (Serial.available())
     {
-      int availableBytes = Serial.available();
-      Serial.println(availableBytes);
+      availableBytes = Serial.available();
       for (int i = 0; i < availableBytes; i++)
       {
         Buffer[i] = Serial.read();
-        Buffer[i + 1] = '\n';
       }
-      for (int i = 0; i < availableBytes; i++)
-      {
-        Serial.printf("%c", Buffer[i]);
-      }
-      return availableBytes;
     }
+    return availableBytes;
+  }
 
-    return 1;
+  /**
+    * Prints a Line to Serial Adapter.
+    */
+  void print(String string)
+  {
+    Serial.println(string);
+  }
+
+  void print(int num)
+  {
+    Serial.println(num);
+  }
+
+  void print(char c)
+  {
+    Serial.println(c);
   }
 
 protected:

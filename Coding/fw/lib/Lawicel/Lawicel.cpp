@@ -9,10 +9,14 @@ void Lawicel::begin()
     String var;
     uint32_t val;
 
+    m_selectedNVM->begin();
+
     var = m_selectedNVM->readString(INIT_SERIAL_BAUD);
     strcpy(buffer, var.c_str());
     receiveCommand();
-    
+
+    m_selectedSerial->begin();
+
     val = m_selectedNVM->read(INIT_TIMESTAMP);
     _timestamp = val;
 
@@ -51,6 +55,8 @@ void Lawicel::begin()
         strcpy(buffer, var.c_str());
         receiveCommand();
     }
+
+    m_selectedSerial->print("System initated Correctly");
 }
 
 /*******************************************
@@ -180,10 +186,12 @@ Description: Receives and Interprets Buffer with Serial Command
 ********************************************/
 uint8_t Lawicel::receiveCommand()
 {
+    m_selectedSerial->print(buffer[0]);
     switch (buffer[0])
     {
     case SET_BAUDRATE:
     {
+        m_selectedSerial->print("Command Set Baudrate");
         return CMD_Set_Baudrate();
     }
 
@@ -303,6 +311,8 @@ uint8_t Lawicel::CMD_Set_Baudrate()
 {
     long _baudrate = 0;
 
+    m_selectedSerial->print(_length);
+
     if (_length > 2)
     {
         return 1;
@@ -317,6 +327,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         return 1;
     }
 
+    m_selectedSerial->print(buffer[1]);
     switch (buffer[1])
     {
     case '0':
@@ -369,8 +380,9 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         return 1;
     }
     }
+    m_selectedSerial->print((int)_baudrate);
 
-    m_selectedNVM->saveString(INIT_CAN_BAUD,buffer);
+    m_selectedNVM->saveString(INIT_CAN_BAUD, buffer);
 
     if (m_selectedCAN != nullptr)
     {
@@ -880,7 +892,7 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
         filterMode = true;
     }
 
-    m_selectedNVM->saveString(INIT_FILTER_MODE,buffer);
+    m_selectedNVM->saveString(INIT_FILTER_MODE, buffer);
 
     if (m_selectedCAN != nullptr)
     {
@@ -918,7 +930,7 @@ uint8_t Lawicel::CMD_Set_ACn()
     ACn[2] = charToByte(buffer[5], buffer[6]);
     ACn[3] = charToByte(buffer[7], buffer[8]);
 
-    m_selectedNVM->saveString(INIT_FILTER_ACN,buffer);
+    m_selectedNVM->saveString(INIT_FILTER_ACN, buffer);
 
     if (m_selectedCAN != nullptr)
     {
@@ -956,7 +968,7 @@ uint8_t Lawicel::CMD_Set_AMn()
     AMn[2] = charToByte(buffer[5], buffer[6]);
     AMn[3] = charToByte(buffer[7], buffer[8]);
 
-    m_selectedNVM->saveString(INIT_FILTER_AMN,buffer);
+    m_selectedNVM->saveString(INIT_FILTER_AMN, buffer);
 
     if (m_selectedCAN != nullptr)
     {
@@ -1032,7 +1044,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
     }
     }
 
-    m_selectedNVM->saveString(INIT_SERIAL_BAUD,buffer);
+    m_selectedNVM->saveString(INIT_SERIAL_BAUD, buffer);
 
     if (m_selectedSerial != nullptr)
     {
@@ -1160,7 +1172,7 @@ Description: Handles the Serial Messages
 
 bool Lawicel::handler()
 {
-    char *str = nullptr;
+    char str[100];
 
     if (m_selectedCAN == nullptr)
     {
@@ -1172,7 +1184,12 @@ bool Lawicel::handler()
         return false;
     }
 
-    m_selectedSerial->read(buffer);
+    _length = m_selectedSerial->read(buffer);
+
+    if (_length == 0)
+    {
+        return true;
+    }
 
     uint8_t CMD_status = receiveCommand();
 
@@ -1234,7 +1251,7 @@ uint8_t Lawicel::Autopoll()
 
     for (int i = 0; i < toRead; i++)
     {
-        char *str = nullptr;
+        char str[100];
         char cmd = 't';
         if (frame[i].Extended == true && frame[i].RTR == false)
         {
