@@ -14,13 +14,15 @@
 #define CR 13
 #define BELL 7
 
+//Keys for NVM
 
-#define INIT_FILTER_MODE "FilterMode"
 #define INIT_SERIAL_BAUD "SerialBaud"
 #define INIT_TIMESTAMP "ToggleTime"
 #define INIT_AUTO_START "AutoStart"
-#define INIT_FILTERS "Filters"
-#define INIT_AUTO_POLL "AutoPoll"
+#define INIT_CAN_BAUD "CanBaud"
+#define INIT_FILTER_MODE "FilterMode"
+#define INIT_FILTER_ACN "FilterACn"
+#define INIT_FILTER_AMN "FilterAMn"
 
 
 

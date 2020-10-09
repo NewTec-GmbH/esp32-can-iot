@@ -56,6 +56,15 @@ public:
     */
     void begin()
     {
+        nvm.begin("Startup", false);
+        nvm.putString("SerialBaud", "");
+        nvm.putULong("ToggleTime", 0);
+        nvm.putULong("AutoStart", 0);
+        nvm.putString("CanBaud", "");
+        nvm.putString("FilterMode", "");
+        nvm.putString("FilterACn", "");
+        nvm.putString("FilterAMn", "");
+        nvm.end();
     }
 
     /**
@@ -63,6 +72,8 @@ public:
     */
     void end()
     {
+        nvm.clear();
+        nvm.end();
     }
 
     /**

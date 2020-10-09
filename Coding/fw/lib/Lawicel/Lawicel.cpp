@@ -6,10 +6,51 @@ Description: Initialize Protocol
 ********************************************/
 void Lawicel::begin()
 {
-    String str = m_selectedNVM->readString(INIT_SERIAL_BAUD);
-    strcpy(buffer,str.c_str());
+    String var;
+    uint32_t val;
+
+    var = m_selectedNVM->readString(INIT_SERIAL_BAUD);
+    strcpy(buffer, var.c_str());
     receiveCommand();
     
+    val = m_selectedNVM->read(INIT_TIMESTAMP);
+    _timestamp = val;
+
+    _autostart = m_selectedNVM->read(INIT_AUTO_START);
+
+    if (_autostart != 0)
+    {
+        autoPolling = true;
+
+        var = m_selectedNVM->readString(INIT_CAN_BAUD);
+        strcpy(buffer, var.c_str());
+        receiveCommand();
+
+        var = m_selectedNVM->readString(INIT_FILTER_MODE);
+        strcpy(buffer, var.c_str());
+        receiveCommand();
+
+        var = m_selectedNVM->readString(INIT_FILTER_ACN);
+        strcpy(buffer, var.c_str());
+        receiveCommand();
+
+        var = m_selectedNVM->readString(INIT_FILTER_AMN);
+        strcpy(buffer, var.c_str());
+        receiveCommand();
+    }
+
+    if (_autostart == 1)
+    {
+        var = "O";
+        strcpy(buffer, var.c_str());
+        receiveCommand();
+    }
+    else if (_autostart == 2)
+    {
+        var = "L";
+        strcpy(buffer, var.c_str());
+        receiveCommand();
+    }
 }
 
 /*******************************************
@@ -18,9 +59,7 @@ Description: Terminate Protocol
 ********************************************/
 void Lawicel::end()
 {
-
 }
-
 
 /*******************************************
 Function: charToByte(char MSB, char LSB)
@@ -330,6 +369,8 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         return 1;
     }
     }
+
+    m_selectedNVM->saveString(INIT_CAN_BAUD,buffer);
 
     if (m_selectedCAN != nullptr)
     {
@@ -839,6 +880,8 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
         filterMode = true;
     }
 
+    m_selectedNVM->saveString(INIT_FILTER_MODE,buffer);
+
     if (m_selectedCAN != nullptr)
     {
         return m_selectedCAN->setFilterMode(filterMode);
@@ -875,6 +918,8 @@ uint8_t Lawicel::CMD_Set_ACn()
     ACn[2] = charToByte(buffer[5], buffer[6]);
     ACn[3] = charToByte(buffer[7], buffer[8]);
 
+    m_selectedNVM->saveString(INIT_FILTER_ACN,buffer);
+
     if (m_selectedCAN != nullptr)
     {
         return m_selectedCAN->setACn(ACn);
@@ -910,6 +955,8 @@ uint8_t Lawicel::CMD_Set_AMn()
     AMn[1] = charToByte(buffer[3], buffer[4]);
     AMn[2] = charToByte(buffer[5], buffer[6]);
     AMn[3] = charToByte(buffer[7], buffer[8]);
+
+    m_selectedNVM->saveString(INIT_FILTER_AMN,buffer);
 
     if (m_selectedCAN != nullptr)
     {
@@ -985,6 +1032,8 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
     }
     }
 
+    m_selectedNVM->saveString(INIT_SERIAL_BAUD,buffer);
+
     if (m_selectedSerial != nullptr)
     {
         m_selectedSerial->setBaudrate(_baudrate);
@@ -1055,6 +1104,8 @@ uint8_t Lawicel::CMD_Timestamp()
 
     uint8_t var = charToInt(buffer[1]);
 
+    m_selectedNVM->save(INIT_TIMESTAMP, var);
+
     if (var == 0)
     {
         _timestamp = false;
@@ -1095,6 +1146,7 @@ uint8_t Lawicel::CMD_Auto_Start()
     if (var <= 2)
     {
         _autostart = var;
+        m_selectedNVM->save(INIT_AUTO_START, var);
         return 0;
     }
 
