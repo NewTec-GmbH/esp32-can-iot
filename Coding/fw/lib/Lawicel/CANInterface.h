@@ -3,15 +3,12 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup gggggModule_group gggggModule
+@addtogroup Lawicel
 @{
-@file       Xxxxx.h
+@file       CANInterface.h
 
-Enter short description here.
+CAN-Controller Interface for Lawicel Protocol
 
-Enter detailed description here.
-
-@version    %$Id: CppTemplate.h 8740 2018-05-05 12:46:37Z link $
 * @}
 ***************************************************************************************************/
 #ifndef CAN_INTERFACE_H
@@ -32,6 +29,9 @@ public:
     /* CONSTANTS ******************************************************************************/
 
     /* TYPES **********************************************************************************/
+
+    /** Enum of Possible States of the CAN Channel
+     */
     enum BUS_STATE
     {
         CLOSED,
@@ -39,6 +39,9 @@ public:
         LISTEN_ONLY,
     };
 
+    /**
+     * Format of a CAN Frame with an empty constructor
+     */
     struct Frame
     {
         uint32_t ID;   //CAN ID
@@ -55,85 +58,85 @@ public:
         {
         }
     };
-    /**
-         * Default constructor.
-         */
 
+    /**
+     * Default constructor.
+     */
     CANInterface()
     {
     }
 
     /**
-         * Default destructor.
-         */
-
+     * Default destructor.
+     */
     virtual ~CANInterface()
     {
     }
 
     /**
-         * Send a Data String.
-         */
-
+    * Send a Data String.
+    * @param[in] Frame         Frame to be sended via CAN BUS
+    */
     virtual uint8_t send(const Frame &Frame) = 0;
 
     /**
-         * Set the State of the CAN Channel.
-         */
-
+    * Set the State of the CAN Channel.
+    * @param[in] state         Channel State to be set
+    */
     virtual uint8_t setState(const int state) = 0;
 
     /**
-         * Set the Baudrate of the CAN Channel.
-         */
-
+    * Set the Baudrate of the CAN Channel.
+    * @param[in] baudrate      Channel Baudrate to be set
+    */
     virtual uint8_t setBaudrate(const long baudrate) = 0;
 
     /**
-         * Sent the BTR Registers of the CAN Channel.
-         */
-
+    * Sent the BTR Registers of the CAN Channel.
+    * @param[in] BTR0, BTR1       Registers that set a Channel Baudrate directly
+    */
     virtual uint8_t setBTR(const uint8_t BTR0, const uint8_t BTR1) = 0;
 
     /**
-         * Set the Filter Mode of the CAN Channel.
-         */
-
+    * Set the Filter Mode of the CAN Channel.
+    * @param[in] Filter        When FALSE (default), set to Dual Filter Mode. When TRUE, Single Filter Mode
+    */
     virtual uint8_t setFilterMode(const bool Filter) = 0;
 
     /**
-         * Set the Acceptance Code Register.
-         */
-
+    * Set the Acceptance Code Register.
+    * @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
+    */
     virtual uint8_t setACn(const uint8_t *ACn) = 0;
 
     /**
-         * Set the Acceptance Mask Register.
-         */
-
+    * Set the Acceptance Mask Register.
+    * @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
+    */
     virtual uint8_t setAMn(const uint8_t *AMn) = 0;
 
     /**
-         * Gets the Channel State from the CAN Controller.
-         */
-
+    * Gets the Channel State from the CAN Controller.
+    */
     virtual uint8_t getChannelState() = 0;
 
     /**
     * Gets the Status and Error Flags from the CAN Controller.
+    * @param[in] _flags         Array that contains the state of each Flag
     */
     virtual uint8_t getStatusFlags(bool *_flags) = 0;
 
     /**
     * Polls one Message from the FIFO Buffer.
+    * @todo
     */
     virtual uint8_t pollSingle(CANInterface::Frame *frame) = 0;
 
     /**
     * Polls all Messages from the FIFO Buffer.
+    * @todo
     */
     virtual uint8_t pollAll(CANInterface::Frame *frame) = 0;
-
 
 private:
 };
@@ -143,3 +146,5 @@ private:
 /* PROTOTYPES *********************************************************************************/
 
 #endif /* SERIAL_INTERFACE_H */
+
+/** @} */

@@ -3,15 +3,12 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup gggggModule_group gggggModule
+@addtogroup Lawicel
 @{
-@file       Xxxxx.h
+@file       SerialInterface.h
 
-Enter short description here.
+Serial Interface for Lawicel Protocol
 
-Enter detailed description here.
-
-@version    %$Id: CppTemplate.h 8740 2018-05-05 12:46:37Z link $
 * @}
 ***************************************************************************************************/
 #ifndef SERIAL_INTERFACE_H
@@ -29,56 +26,63 @@ extern "C"
 class SerialInterface
 {
 public:
-  /* CONSTANTS ******************************************************************************/
+    /* CONSTANTS ******************************************************************************/
 
-  /* TYPES **********************************************************************************/
+    /* TYPES **********************************************************************************/
 
-  /**
-     * Default constructor.
-     */
+   /** 
+   * Default constructor. 
+   */
+    SerialInterface()
+    {
+    }
 
-  SerialInterface()
-  {
-  }
+   /** 
+   * Default destructor. 
+   */
+    virtual ~SerialInterface()
+    {
+    }
 
-  /**
-    * Default destructor
-    */
+   /** 
+   * Initialize Module.
+   */
+    virtual void begin() = 0;
 
-  virtual ~SerialInterface()
-  {
-  }
+   /** 
+   * Terminate Module. 
+   */
+    virtual void end() = 0;
 
-  /**
-    * Initialize Module
-    */
-  virtual void begin() = 0;
+   /** 
+   * Sets the Baudrate for Serial Communication.
+   * @param[in] _baudrate      Baudrate for Serial Communication
+   */
+    virtual void setBaudrate(long _baudrate) = 0;
 
-  /**
-  * Terminate Module
-  */
-  virtual void end() = 0;
+   /** 
+   * Reads the Serial Adapter into a buffer.
+   * @return Serial input 
+   */
+    virtual String read() = 0;
 
-  /**
-    * Sets the Baudrate for Serial Communication.
-    */
+   /** 
+   * Prints a String to Serial Adapter.
+   * @param[in] string     String to be printed
+   */
+    virtual void print(String string) = 0;
 
-  virtual void setBaudrate(long _baudrate) = 0;
+   /** 
+   * Prints a Integer to Serial Adapter.
+   * @param[in] num     Integer to be printed
+   */
+    virtual void print(int num) = 0;
 
-  /**
-    * Reads the Serial Adapter into a buffer.
-    */
-
-  virtual uint8_t read(char *Buffer) = 0;
-
-  /**
-    * Prints a Line to Serial Adapter.
-    */
-  virtual void print(String string) = 0;
-
-  virtual void print(int num) = 0;
-
-  virtual void print(char c) = 0;
+   /** 
+   * Prints a Character to Serial Adapter.
+   * @param[in] c     Character to be printed
+   */
+    virtual void print(char c) = 0;
 
 private:
 };
