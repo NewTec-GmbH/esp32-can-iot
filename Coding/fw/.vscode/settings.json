@@ -17,6 +17,8 @@
         "random": "cpp",
         "initializer_list": "cpp",
         "regex": "cpp",
-        "cstdio": "cpp"
+        "cstdio": "cpp",
+        "exception": "cpp",
+        "new": "cpp"
     }
 }

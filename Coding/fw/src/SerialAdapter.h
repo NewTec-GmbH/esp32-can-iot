@@ -78,7 +78,13 @@ public:
   */
   String read()
   {
-    return Serial.readStringUntil('\r');
+    if (Serial.available() > 0){
+      return Serial.readStringUntil('\r');
+    }
+    else
+    {
+      return "";
+    }        
   }
 
   /**

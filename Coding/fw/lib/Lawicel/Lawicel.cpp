@@ -34,9 +34,18 @@ extern "C"
 /**************************************************************************************************/
 bool Lawicel::handler()
 {
+
+    if (autoPolling)
+    {
+        if (Autopoll() == 0)
+        {
+            m_selectedSerial->print(serialReturn);
+        }
+        serialReturn = "";
+    }
+
     serialReturn = "";
     serialInput = "";
-
     serialInput = m_selectedSerial->read();
     _length = serialInput.length();
 
@@ -44,19 +53,24 @@ bool Lawicel::handler()
     {
         return true;
     }
+
     m_selectedSerial->print(_length);
     m_selectedSerial->print(serialInput);
 
     uint8_t CMD_status = receiveCommand();
 
-    if (CMD_status == 1)
+    if (serialInput.charAt(0) == POLL_SINGLE)
+    {
+        if(CMD_status == 2){
+        CMD_status = 0;
+        }
+    }
+
+    if (CMD_status != 0)
     {
         serialReturn += (char)BELL;
+        m_selectedSerial->print(serialReturn);
         return true;
-    }
-    else if (CMD_status != 0)
-    {
-        return false;
     }
 
     if (serialInput.charAt(0) == VERSION)
@@ -71,11 +85,6 @@ bool Lawicel::handler()
     serialReturn += (char)CR;
 
     m_selectedSerial->print(serialReturn);
-
-    if (autoPolling)
-    {
-        Autopoll();
-    }
 
     return true;
 }
@@ -647,8 +656,7 @@ uint8_t Lawicel::CMD_Poll_Single()
 
     if (frame.ID == 0xFFF)
     {
-        serialReturn += (char)BELL;
-        return 0;
+        return 2;
     }
 
     if (frame.Extended == true && frame.RTR == false)
@@ -686,8 +694,6 @@ uint8_t Lawicel::CMD_Poll_Single()
 uint8_t Lawicel::CMD_Poll_All()
 {
 
-    CANInterface::Frame *frame;
-
     if (_length > 1)
     {
         return 1;
@@ -702,44 +708,10 @@ uint8_t Lawicel::CMD_Poll_All()
         return 1;
     }
 
-    int toRead = m_selectedCAN->pollAll(frame);
-
-    if (toRead == 0)
+    while (CMD_Poll_Single() == 0)
     {
-        serialReturn += 'A';
-        return 0;
-    }
-
-    for (int i = 0; i < toRead; i++)
-    {
-        char cmd = 't';
-        if (frame[i].Extended == true && frame[i].RTR == false)
-        {
-            cmd = 'T';
-        }
-        else if (frame[i].Extended == false && frame[i].RTR == true)
-        {
-            cmd = 'r';
-        }
-        else if (frame[i].Extended == true && frame[i].RTR == true)
-        {
-            cmd = 'R';
-        }
-
-        int _dlc = frame[i].DLC;
-        serialReturn += cmd;
-        serialReturn += String(frame[i].ID, HEX);
-        serialReturn += frame[i].DLC;
-
-        for (int j = 0; j < _dlc; j++)
-        {
-            serialReturn += String(frame[i].Data[j], HEX);
-        }
-
-        if (_timestamp)
-        {
-            serialReturn += String(getTimestamp(), HEX);
-        }
+        m_selectedSerial->print(serialReturn);
+        serialReturn = "";
     }
 
     serialReturn += 'A';
@@ -749,7 +721,33 @@ uint8_t Lawicel::CMD_Poll_All()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Poll_Auto()
 {
-    autoPolling = !autoPolling;
+    if (_length > 2)
+    {
+        return 1;
+    }
+    if (_length < 2)
+    {
+        return 1;
+    }
+
+    if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
+    {
+        return 1;
+    }
+
+    if (serialInput.charAt(1) == '0')
+    {
+        autoPolling = false;
+    }
+    else if (serialInput.charAt(1) == '1')
+    {
+        autoPolling = true;
+    }
+    else
+    {
+        return 1;
+    }
+
     return 0;
 }
 
@@ -1037,54 +1035,49 @@ uint8_t Lawicel::CMD_Auto_Start()
 /**************************************************************************************************/
 uint8_t Lawicel::Autopoll()
 {
-    /*
-        CANInterface::Frame *frame;
+    if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
+    {
+        return 1;
+    }
+    else
+    {
+        CANInterface::Frame frame = m_selectedCAN->pollSingle();
+        char cmd = 't';
 
-        if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
+        if (frame.ID == 0xFFF)
         {
             return 1;
         }
 
-        int toRead = m_selectedCAN->pollAll(frame);
-
-        if (toRead == 0)
+        if (frame.Extended == true && frame.RTR == false)
         {
-            return 0;
+            cmd = 'T';
+        }
+        else if (frame.Extended == false && frame.RTR == true)
+        {
+            cmd = 'r';
+        }
+        else if (frame.Extended == true && frame.RTR == true)
+        {
+            cmd = 'R';
         }
 
-        for (int i = 0; i < toRead; i++)
+        int _dlc = frame.DLC;
+        serialReturn += cmd;
+        serialReturn += String(frame.ID, HEX);
+        serialReturn += frame.DLC;
+
+        for (int i = 0; i < _dlc; i++)
         {
-            char cmd = 't';
-            if (frame[i].Extended == true && frame[i].RTR == false)
-            {
-                cmd = 'T';
-            }
-            else if (frame[i].Extended == false && frame[i].RTR == true)
-            {
-                cmd = 'r';
-            }
-            else if (frame[i].Extended == true && frame[i].RTR == true)
-            {
-                cmd = 'R';
-            }
-
-            int _dlc = frame[i].DLC;
-            serialReturn += cmd;
-            serialReturn += String(frame[i].ID, HEX);
-            serialReturn += frame[i].DLC;
-
-            for (int j = 0; j < _dlc; j++)
-            {
-                serialReturn += String(frame[i].Data[j], HEX);
-            }
-
-            if (_timestamp)
-            {
-                serialReturn += String(getTimestamp(), HEX);
-            }
+            serialReturn += String(frame.Data[i], HEX);
         }
-    */
-    return 0;
+
+        if (_timestamp)
+        {
+            serialReturn += String(getTimestamp(), HEX);
+        }
+        return 0;
+    }
 }
 
 /**************************************************************************************************/
