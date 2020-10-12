@@ -61,8 +61,9 @@ bool Lawicel::handler()
 
     if (serialInput.charAt(0) == POLL_SINGLE)
     {
-        if(CMD_status == 2){
-        CMD_status = 0;
+        if (CMD_status == 2)
+        {
+            CMD_status = 0;
         }
     }
 
@@ -637,6 +638,7 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
 uint8_t Lawicel::CMD_Poll_Single()
 {
     char cmd = 't';
+    int _id_length = 3;
 
     if (_length > 1)
     {
@@ -662,6 +664,7 @@ uint8_t Lawicel::CMD_Poll_Single()
     if (frame.Extended == true && frame.RTR == false)
     {
         cmd = 'T';
+        _id_length = 8;
     }
     else if (frame.Extended == false && frame.RTR == true)
     {
@@ -670,16 +673,27 @@ uint8_t Lawicel::CMD_Poll_Single()
     else if (frame.Extended == true && frame.RTR == true)
     {
         cmd = 'R';
+        _id_length = 8;
     }
 
-    int _dlc = frame.DLC;
     serialReturn += cmd;
-    serialReturn += String(frame.ID, HEX);
+
+    String _ID = String(frame.ID, HEX);
+    for (int i = 0; i < _id_length - _ID.length(); i++)
+    {
+        serialReturn += '0';
+    }
+    serialReturn += _ID;
+
+    int _dlc = frame.DLC;
     serialReturn += frame.DLC;
 
-    for (int i = 0; i < _dlc; i++)
+    if (frame.RTR == false)
     {
-        serialReturn += String(frame.Data[i], HEX);
+        for (int i = 0; i < _dlc; i++)
+        {
+            serialReturn += String(frame.Data[i], HEX);
+        }
     }
 
     if (_timestamp)
@@ -1043,6 +1057,7 @@ uint8_t Lawicel::Autopoll()
     {
         CANInterface::Frame frame = m_selectedCAN->pollSingle();
         char cmd = 't';
+        int _id_length = 3;
 
         if (frame.ID == 0xFFF)
         {
@@ -1052,6 +1067,7 @@ uint8_t Lawicel::Autopoll()
         if (frame.Extended == true && frame.RTR == false)
         {
             cmd = 'T';
+            _id_length = 8;
         }
         else if (frame.Extended == false && frame.RTR == true)
         {
@@ -1060,16 +1076,26 @@ uint8_t Lawicel::Autopoll()
         else if (frame.Extended == true && frame.RTR == true)
         {
             cmd = 'R';
+            _id_length = 8;
         }
 
-        int _dlc = frame.DLC;
         serialReturn += cmd;
-        serialReturn += String(frame.ID, HEX);
+        String _ID = String(frame.ID, HEX);
+        for (int i = 0; i < _id_length - _ID.length(); i++)
+        {
+            serialReturn += '0';
+        }
+        serialReturn += _ID;
+
+        long _dlc = frame.DLC;
         serialReturn += frame.DLC;
 
-        for (int i = 0; i < _dlc; i++)
+        if (frame.RTR == false)
         {
-            serialReturn += String(frame.Data[i], HEX);
+            for (int i = 0; i < _dlc; i++)
+            {
+                serialReturn += String(frame.Data[i], HEX);
+            }
         }
 
         if (_timestamp)
