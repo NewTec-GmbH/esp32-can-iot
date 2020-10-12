@@ -73,7 +73,7 @@ public:
     virtual void print(String string) = 0;
 
    /** 
-   * Prints a Integer to Serial Adapter.
+   * Prints an Integer to Serial Adapter.
    * @param[in] num     Integer to be printed
    */
     virtual void print(int num) = 0;

@@ -65,7 +65,7 @@ public:
   }
 
   /**
-  * Send String to output.
+  * Sets the Baudrate for Serial Communication.
   */
   void setBaudrate(long _baudrate)
   {
@@ -74,37 +74,32 @@ public:
   }
 
   /**
-  * Send String to output.
+  * Reads the Serial Adapter into a buffer.
   */
-  uint8_t read(char *Buffer)
+  String read()
   {
-    memset(Buffer, '0', 32);
-    int availableBytes = 0;
-
-    if (Serial.available())
-    {
-      availableBytes = Serial.available();
-      for (int i = 0; i < availableBytes; i++)
-      {
-        Buffer[i] = Serial.read();
-      }
-    }
-    return availableBytes;
+    return Serial.readStringUntil('\r');
   }
 
   /**
-    * Prints a Line to Serial Adapter.
-    */
+  * Prints a Line to Serial Adapter.
+  */
   void print(String string)
   {
     Serial.println(string);
   }
 
+  /**
+  * Prints an Integer to Serial Adapter.
+  */
   void print(int num)
   {
     Serial.println(num);
   }
 
+  /**
+  * Prints a Character to Serial Adapter.
+  */
   void print(char c)
   {
     Serial.println(c);
