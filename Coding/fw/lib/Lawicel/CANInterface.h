@@ -40,8 +40,8 @@ public:
     };
 
     /**
-     * Format of a CAN Frame with an empty constructor
-     */
+    * Format of a CAN Frame with an empty constructor
+    */
     struct Frame
     {
         uint32_t ID;   //CAN ID
@@ -60,15 +60,15 @@ public:
     };
 
     /**
-     * Default constructor.
-     */
+    * Default constructor.
+    */
     CANInterface()
     {
     }
 
     /**
-     * Default destructor.
-     */
+    * Default destructor.
+    */
     virtual ~CANInterface()
     {
     }
@@ -83,7 +83,7 @@ public:
     * Set the State of the CAN Channel.
     * @param[in] state         Channel State to be set
     */
-    virtual uint8_t setState(const int state) = 0;
+    virtual uint8_t setState(const BUS_STATE state) = 0;
 
     /**
     * Set the Baudrate of the CAN Channel.

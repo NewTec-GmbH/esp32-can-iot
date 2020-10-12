@@ -3,15 +3,12 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup gggggModule_group gggggModule
+@addtogroup Application
 @{
-@file       Xxxxx.h
+@file       CANAdapter.h
 
-Enter short description here.
+ESP32SJA1000 CAN-Controller Adapter for Lawicel Protocol
 
-Enter detailed description here.
-
-@version    %$Id: CppTemplate.h 8740 2018-05-05 12:46:37Z link $
 * @}
 ***************************************************************************************************/
 #ifndef CAN_ADAPTER_H
@@ -36,25 +33,22 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-         * Default constructor.
-         */
-
+    * Default constructor.
+    */
     CANAdapter() : CANInterface(), m_baudrate(0), m_currentstate(CLOSED)
     {
     }
 
     /**
-         * Default destructor.
-         */
-
+    * Default destructor.
+    */
     ~CANAdapter()
     {
     }
 
     /**
-         * Send a Data String.
-         */
-
+    * Send a Frame.
+    */
     uint8_t send(const Frame &Frame)
     {
         if (Frame.Extended)
@@ -68,7 +62,7 @@ public:
 
         CAN.write(Frame.Data, Frame.DLC);
 
-        if (CAN.endPacket())
+        if (CAN.endPacket() == 1)
         {
             return 0;
         }
@@ -77,10 +71,9 @@ public:
     }
 
     /**
-         * Set the State of the CAN Channel.
-         */
-
-    uint8_t setState(const int state)
+    * Set the State of the CAN Channel.
+    */
+    uint8_t setState(const BUS_STATE state)
     {
         switch (state)
         {
@@ -113,9 +106,8 @@ public:
     }
 
     /**
-         * Set the Baudrate of the CAN Channel.
-         */
-
+    * Set the Baudrate of the CAN Channel.
+    */
     uint8_t setBaudrate(const long baudrate)
     {
         m_baudrate = baudrate;
@@ -123,54 +115,48 @@ public:
     }
 
     /**
-         * Sent the BTR Registers of the CAN Channel.
-         */
-
+    * Sent the BTR Registers of the CAN Channel.
+    */
     uint8_t setBTR(const uint8_t BTR0, const uint8_t BTR1)
     {
         return 1; //Must write to register
     }
 
     /**
-         * Set the Filter Mode of the CAN Channel.
-         */
-
+    * Set the Filter Mode of the CAN Channel.
+    */
     uint8_t setFilterMode(const bool Filter)
     {
         return 1; //Must write to register
     }
 
     /**
-         * Set the Acceptance Code Register.
-         */
-
+    * Set the Acceptance Code Register.
+    */
     uint8_t setACn(const uint8_t *ACn)
     {
         return 1;
     }
 
     /**
-         * Set the Acceptance Mask Register.
-         */
-
+    * Set the Acceptance Mask Register.
+    */
     uint8_t setAMn(const uint8_t *AMn)
     {
         return 1;
     }
 
     /**
-         * Gets the Channel State from the CAN Controller.
-         */
-
+    * Gets the Channel State from the CAN Controller.
+    */
     uint8_t getChannelState()
     {
         return m_currentstate;
     }
 
     /**
-         * Gets the Status and Error Flags from the CAN Controller.
-         */
-
+    * Gets the Status and Error Flags from the CAN Controller.
+    */
     uint8_t getStatusFlags(bool *_flags)
     {
         return 1; //Must read register
@@ -224,4 +210,4 @@ private:
 
 /* PROTOTYPES *********************************************************************************/
 
-#endif /* SERIAL_INTERFACE_H */
+#endif /* CAN_ADAPTER_H */
