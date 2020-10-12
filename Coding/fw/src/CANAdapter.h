@@ -165,19 +165,22 @@ public:
     /**
     * Polls one Message from the FIFO Buffer.
     */
-    uint8_t pollSingle(CANInterface::Frame *frame)
+    Frame pollSingle()
     {
+        Frame frame;
         if (CAN.parsePacket() == 0)
         {
-            return 1;
+            frame.ID = 0xFFF;
+            return frame;
         }
 
-        frame->ID = CAN.packetId();
-        frame->Extended = CAN.packetExtended();
-        frame->RTR = CAN.packetRtr();
-        frame->Data = CAN.getRxBuf();
+        frame.ID = CAN.packetId();
+        frame.DLC = CAN.packetDlc();
+        frame.Extended = CAN.packetExtended();
+        frame.RTR = CAN.packetRtr();
+        frame.Data = CAN.getRxBuf();
 
-        return 0;
+        return frame;
     }
 
     /**

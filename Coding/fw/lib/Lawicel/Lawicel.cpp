@@ -574,10 +574,10 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
 
     frame.ID = _id;
     frame.DLC = _dlc;
-    frame.RTR = true;    
+    frame.RTR = true;
     frame.Data = new uint8_t[_dlc];
 
-    if (_length >  5)
+    if (_length > 5)
     {
         return 1;
     }
@@ -628,7 +628,6 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
 uint8_t Lawicel::CMD_Poll_Single()
 {
     char cmd = 't';
-    CANInterface::Frame *frame;
 
     if (_length > 1)
     {
@@ -644,32 +643,35 @@ uint8_t Lawicel::CMD_Poll_Single()
         return 1;
     }
 
-    if (m_selectedCAN->pollSingle(frame))
+    CANInterface::Frame frame = m_selectedCAN->pollSingle();
+
+    if (frame.ID == 0xFFF)
     {
         serialReturn += (char)BELL;
         return 0;
     }
 
-    if (frame->Extended == true && frame->RTR == false)
+    if (frame.Extended == true && frame.RTR == false)
     {
         cmd = 'T';
     }
-    else if (frame->Extended == false && frame->RTR == true)
+    else if (frame.Extended == false && frame.RTR == true)
     {
         cmd = 'r';
     }
-    else if (frame->Extended == true && frame->RTR == true)
+    else if (frame.Extended == true && frame.RTR == true)
     {
         cmd = 'R';
     }
 
-    int _dlc = frame->DLC;
+    int _dlc = frame.DLC;
     serialReturn += cmd;
-    serialReturn += String(frame->ID, HEX);
-    serialReturn += frame->DLC;
+    serialReturn += String(frame.ID, HEX);
+    serialReturn += frame.DLC;
+
     for (int i = 0; i < _dlc; i++)
     {
-        serialReturn += String(frame->Data[i], HEX);
+        serialReturn += String(frame.Data[i], HEX);
     }
 
     if (_timestamp)

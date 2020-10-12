@@ -130,7 +130,7 @@ public:
     * Polls one Message from the FIFO Buffer.
     * @todo
     */
-    virtual uint8_t pollSingle(CANInterface::Frame *frame) = 0;
+    virtual Frame pollSingle() = 0;
 
     /**
     * Polls all Messages from the FIFO Buffer.
