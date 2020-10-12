@@ -131,7 +131,7 @@ private:
     int getTimestamp();       /**< Returns Timestamp */
     bool _timestamp = false;  /**< Toggle timestamp */
     bool autoPolling = true;  /**< Toggle Auto-Polling */
-    char buffer[32];          /**< Input Buffer for Serial-Message */
+    String serialInput;       /**< Input String for Serial-Message */
     String serialReturn = ""; /**< String sent back to SerialAdapter */
     uint8_t _length = 0;      /**< Length of Serial-Message */
     uint8_t _autostart = 0;   /**< Sets Auto Start Mode */

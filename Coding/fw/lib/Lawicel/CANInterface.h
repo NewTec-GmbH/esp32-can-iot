@@ -54,7 +54,7 @@ public:
                   RTR(false),
                   Extended(false),
                   DLC(0),
-                  Data(nullptr)
+                  Data(0)
         {
         }
     };
