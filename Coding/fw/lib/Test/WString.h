@@ -231,7 +231,7 @@ public:
      *
      * @param[in] str String, which to compare with.
      *
-     * @return If the strings are equal, it will return true otherwise false.
+     * @return If the strings are equal, it will return false otherwise true.
      */
     bool operator!=(const String &str) const
     {
