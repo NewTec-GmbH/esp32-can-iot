@@ -71,7 +71,7 @@ bool Lawicel::handler()
     {
         serialReturn += (char)BELL;
         m_selectedSerial->print(serialReturn);
-        return false;
+        return false ;
     }
 
     if (serialInput.charAt(0) == VERSION)

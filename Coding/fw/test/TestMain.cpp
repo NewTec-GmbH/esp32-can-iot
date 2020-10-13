@@ -97,14 +97,71 @@ void test_can_btr(void)
 
 void test_can_open_normal(void)
 {
+  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
+  testingSerialAdapter.writeInput("O");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
+  testingSerialAdapter.writeInput("O0");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("O");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.m_currentstate = CANInterface::LISTEN_ONLY;
+  testingSerialAdapter.writeInput("O");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
 
 void test_can_open_listen_only(void)
 {
+  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
+  testingSerialAdapter.writeInput("L");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
+  testingSerialAdapter.writeInput("L0");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("L");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.m_currentstate = CANInterface::LISTEN_ONLY;
+  testingSerialAdapter.writeInput("L");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
 
 void test_can_close(void)
 {
+  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("C");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.setState(CANInterface::LISTEN_ONLY);
+  testingSerialAdapter.writeInput("C");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("C0");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
+
+  testingCANAdapter.m_currentstate = CANInterface::LISTEN_ONLY;
+  testingSerialAdapter.writeInput("L0");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
 
 void test_tx_std(void)
