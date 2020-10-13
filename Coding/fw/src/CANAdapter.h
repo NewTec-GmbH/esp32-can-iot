@@ -183,27 +183,6 @@ public:
         return frame;
     }
 
-    /**
-    * Polls all Messages from the FIFO Buffer.
-    */
-    uint8_t pollAll(CANInterface::Frame *frame)
-    {
-        uint8_t msgCount = 0;
-
-        frame = new CANInterface::Frame[30];
-
-        while (CAN.parsePacket() != 0)
-        {
-            frame[msgCount].ID = CAN.packetId();
-            frame[msgCount].Extended = CAN.packetExtended();
-            frame[msgCount].RTR = CAN.packetRtr();
-            frame[msgCount].Data = CAN.getRxBuf();
-            msgCount++;
-        }
-
-        return msgCount;
-    }
-
 private:
     long m_baudrate;
     BUS_STATE m_currentstate;
