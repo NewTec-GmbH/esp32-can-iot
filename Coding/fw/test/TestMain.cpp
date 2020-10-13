@@ -34,13 +34,65 @@ Lawicel ProtocolTest(&testingSerialAdapter, &testingCANAdapter, &testingNVMAdapt
 
 void test_can_baudrate(void)
 {
+  testingSerialAdapter.writeInput("S0");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(10E3, testingCANAdapter.getBaudrate());
+
+  testingSerialAdapter.writeInput("S1");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(20E3, testingCANAdapter.getBaudrate());
+
+  testingSerialAdapter.writeInput("S2");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(50E3, testingCANAdapter.getBaudrate());
+
+  testingSerialAdapter.writeInput("S3");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(100E3, testingCANAdapter.getBaudrate());
+
+  testingSerialAdapter.writeInput("S4");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(125E3, testingCANAdapter.getBaudrate());
+
+  testingSerialAdapter.writeInput("S5");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(250E3, testingCANAdapter.getBaudrate());
+
   testingSerialAdapter.writeInput("S6");
   ProtocolTest.handler();
-  TEST_ASSERT_EQUAL(500E3,testingCANAdapter.getBaudrate());
+  TEST_ASSERT_EQUAL(500E3, testingCANAdapter.getBaudrate());
+
+  testingSerialAdapter.writeInput("S7");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(800E3, testingCANAdapter.getBaudrate());
+
+  testingSerialAdapter.writeInput("S8");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(1000E3, testingCANAdapter.getBaudrate());
 }
 
 void test_can_btr(void)
 {
+  testingSerialAdapter.writeInput("s0000");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(0x00, testingCANAdapter.m_BTR0);
+  TEST_ASSERT_EQUAL(0x00, testingCANAdapter.m_BTR1);
+
+  testingSerialAdapter.writeInput("s031C");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(0x03, testingCANAdapter.m_BTR0);
+  TEST_ASSERT_EQUAL(0x1C, testingCANAdapter.m_BTR1);
+
+  testingSerialAdapter.writeInput("sFFFF");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_BTR0);
+  TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_BTR1);
+
+  testingSerialAdapter.writeInput("s00000");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+
+  testingSerialAdapter.writeInput("s000");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
 }
 
 void test_can_open_normal(void)
