@@ -134,7 +134,12 @@ public:
         return m_outputFrame;
     }
 
-private:
+    long getBaudrate()
+    {
+        return m_baudrate;
+    }
+
+
     long m_baudrate;
     uint8_t m_BTR0;
     uint8_t m_BTR1;
@@ -145,6 +150,7 @@ private:
     bool m_flags[8] = {1, 1, 1, 1, 1, 1, 1, 1};
     Frame m_inputFrame;
     Frame m_outputFrame;
+    private:
 };
 
 #endif

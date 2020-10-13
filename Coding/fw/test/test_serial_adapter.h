@@ -74,15 +74,19 @@ bool getStatus()
     return m_status;
 }
 
-private:
+void writeInput(String str)
+{
+    input = str;
+}
 
-String input;
+
+
+String input = "S6";
 String outputString;
 int outputInt;
 char outputChar;
 bool m_status;
 long m_baudrate;
-
-
+private:
 };
 #endif

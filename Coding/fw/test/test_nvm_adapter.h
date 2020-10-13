@@ -19,6 +19,10 @@ public:
     {
     }
 
+    void end()
+    {
+    }
+
     void save(const char *name, int32_t value)
     {
     }

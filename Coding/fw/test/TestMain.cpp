@@ -27,16 +27,16 @@ Main Test entry point
 #include "test_can_adapter.h"
 #include "test_nvm_adapter.h"
 
-
-int main(int argc, char **argv)
-{
-  UNITY_BEGIN();
-
-  return UNITY_END();
-}
+testSerial testingSerialAdapter;
+testCAN testingCANAdapter;
+testNVM testingNVMAdapter;
+Lawicel ProtocolTest(&testingSerialAdapter, &testingCANAdapter, &testingNVMAdapter);
 
 void test_can_baudrate(void)
 {
+  testingSerialAdapter.writeInput("S6");
+  ProtocolTest.handler();
+  TEST_ASSERT_EQUAL(500E3,testingCANAdapter.getBaudrate());
 }
 
 void test_can_btr(void)
@@ -101,4 +101,28 @@ void test_timestamp(void)
 
 void test_autostart(void)
 {
+}
+
+int main(int argc, char **argv)
+{
+  
+
+  UNITY_BEGIN();
+  RUN_TEST(test_can_baudrate);
+  RUN_TEST(test_can_btr);
+  RUN_TEST(test_can_open_normal);
+  RUN_TEST(test_can_open_listen_only);
+  RUN_TEST(test_can_close);
+  RUN_TEST(test_tx_std);
+  RUN_TEST(test_tx_ext);
+  RUN_TEST(test_tx_std_rtr);
+  RUN_TEST(test_tx_ext_rtr);
+  RUN_TEST(test_acn_register);
+  RUN_TEST(test_amn_register);
+  RUN_TEST(test_serial_baudrate);
+  RUN_TEST(test_version);
+  RUN_TEST(test_serialnumber);
+  RUN_TEST(test_timestamp);
+  RUN_TEST(test_autostart);
+  return UNITY_END();
 }
