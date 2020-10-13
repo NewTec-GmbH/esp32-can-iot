@@ -125,7 +125,8 @@ public:
 
     void writeFlags(bool _flags[8])
     {
-        for(int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++)
+        {
             m_flags[i] = _flags[i];
         }
     }
@@ -140,6 +141,17 @@ public:
         return m_baudrate;
     }
 
+    void clearOutputframe()
+    {
+        m_outputFrame.ID = 0x000;
+        m_outputFrame.DLC = 0;
+        m_outputFrame.Extended = false;
+        m_outputFrame.RTR = false;
+        for (int i = 0; i < 8; i++)
+        {
+            m_outputFrame.Data[i] = 0;
+        }
+    }
 
     long m_baudrate;
     uint8_t m_BTR0;
@@ -151,7 +163,8 @@ public:
     bool m_flags[8] = {1, 1, 1, 1, 1, 1, 1, 1};
     Frame m_inputFrame;
     Frame m_outputFrame;
-    private:
+
+private:
 };
 
 #endif

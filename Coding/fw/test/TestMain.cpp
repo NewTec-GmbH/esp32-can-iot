@@ -166,6 +166,7 @@ void test_can_close(void)
 
 void test_tx_std(void)
 {
+  testingCANAdapter.clearOutputframe();
   testingCANAdapter.m_currentstate = CANInterface::NORMAL;
   testingSerialAdapter.writeInput("t0000");
   TEST_ASSERT_TRUE(ProtocolTest.handler());
@@ -173,8 +174,82 @@ void test_tx_std(void)
   TEST_ASSERT_EQUAL_UINT8(0, testingCANAdapter.m_outputFrame.DLC);
   TEST_ASSERT_FALSE(testingCANAdapter.m_outputFrame.Extended);
   TEST_ASSERT_FALSE(testingCANAdapter.m_outputFrame.RTR);
-  
-  TEST_ASSERT_EQUAL_UINT8(0, testingCANAdapter.m_outputFrame.Data[0]);
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[0], "DATA0");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[1], "DATA1");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[2], "DATA2");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[3], "DATA3");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[4], "DATA4");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[5], "DATA5");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[6], "DATA6");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[7], "DATA7");
+
+  testingCANAdapter.clearOutputframe();
+  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("t1FF81122334455667788");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL_UINT32(0x1FF, testingCANAdapter.m_outputFrame.ID);
+  TEST_ASSERT_EQUAL_UINT8(8, testingCANAdapter.m_outputFrame.DLC);
+  TEST_ASSERT_FALSE(testingCANAdapter.m_outputFrame.Extended);
+  TEST_ASSERT_FALSE(testingCANAdapter.m_outputFrame.RTR);
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x11, testingCANAdapter.m_outputFrame.Data[0], "DATA0");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x22, testingCANAdapter.m_outputFrame.Data[1], "DATA1");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x33, testingCANAdapter.m_outputFrame.Data[2], "DATA2");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x44, testingCANAdapter.m_outputFrame.Data[3], "DATA3");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x55, testingCANAdapter.m_outputFrame.Data[4], "DATA4");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x66, testingCANAdapter.m_outputFrame.Data[5], "DATA5");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x77, testingCANAdapter.m_outputFrame.Data[6], "DATA6");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x88, testingCANAdapter.m_outputFrame.Data[7], "DATA7");
+
+  testingCANAdapter.clearOutputframe();
+  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("t1234AABBCCDD");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x123, testingCANAdapter.m_outputFrame.ID, "ID");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(4, testingCANAdapter.m_outputFrame.DLC, "DLC");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.Extended, "Extended");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.RTR, "RTR");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0xAA, testingCANAdapter.m_outputFrame.Data[0], "DATA0");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0xBB, testingCANAdapter.m_outputFrame.Data[1], "DATA1");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0xCC, testingCANAdapter.m_outputFrame.Data[2], "DATA2");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0xDD, testingCANAdapter.m_outputFrame.Data[3], "DATA3");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[4], "DATA4");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[5], "DATA5");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[6], "DATA6");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[7], "DATA7");
+
+  testingCANAdapter.clearOutputframe();
+  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
+  testingSerialAdapter.writeInput("t1234AABBCCDD");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x000, testingCANAdapter.m_outputFrame.ID, "ID");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.DLC, "DLC");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.Extended, "Extended");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.RTR, "RTR");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[0], "DATA0");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[1], "DATA1");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[2], "DATA2");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[3], "DATA3");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[4], "DATA4");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[5], "DATA5");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[6], "DATA6");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[7], "DATA7");
+
+  testingCANAdapter.clearOutputframe();
+  testingCANAdapter.m_currentstate = CANInterface::LISTEN_ONLY;
+  testingSerialAdapter.writeInput("t1234AABBCCDD");
+  TEST_ASSERT_FALSE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x000, testingCANAdapter.m_outputFrame.ID, "ID");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.DLC, "DLC");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.Extended, "Extended");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.RTR, "RTR");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[0], "DATA0");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[1], "DATA1");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[2], "DATA2");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[3], "DATA3");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[4], "DATA4");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[5], "DATA5");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[6], "DATA6");
+  TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.Data[7], "DATA7");
 }
 
 void test_tx_ext(void)
@@ -223,7 +298,6 @@ void test_autostart(void)
 
 int main(int argc, char **argv)
 {
-  
 
   UNITY_BEGIN();
   RUN_TEST(test_can_baudrate);
