@@ -19,6 +19,7 @@
         "regex": "cpp",
         "cstdio": "cpp",
         "exception": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "cmath": "cpp"
     }
 }
