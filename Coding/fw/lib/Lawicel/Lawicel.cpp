@@ -516,7 +516,6 @@ uint8_t Lawicel::CMD_Tx_Std()
 
     frame.ID = _id;
     frame.DLC = _dlc;
-    frame.Data = new uint8_t[_dlc];
 
     if (_length > ((2 * _dlc) + 5))
     {

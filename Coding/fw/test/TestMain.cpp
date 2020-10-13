@@ -166,6 +166,15 @@ void test_can_close(void)
 
 void test_tx_std(void)
 {
+  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("t0000");
+  TEST_ASSERT_TRUE(ProtocolTest.handler());
+  TEST_ASSERT_EQUAL_UINT32(0x000, testingCANAdapter.m_outputFrame.ID);
+  TEST_ASSERT_EQUAL_UINT8(0, testingCANAdapter.m_outputFrame.DLC);
+  TEST_ASSERT_FALSE(testingCANAdapter.m_outputFrame.Extended);
+  TEST_ASSERT_FALSE(testingCANAdapter.m_outputFrame.RTR);
+  
+  TEST_ASSERT_EQUAL_UINT8(0, testingCANAdapter.m_outputFrame.Data[0]);
 }
 
 void test_tx_ext(void)

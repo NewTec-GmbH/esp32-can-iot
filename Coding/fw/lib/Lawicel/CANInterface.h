@@ -53,9 +53,13 @@ public:
         Frame() : ID(0),
                   RTR(false),
                   Extended(false),
-                  DLC(0),
-                  Data(0)
+                  DLC(0)
         {
+            Data =  new uint8_t[8];
+            for( int i = 0; i <8; i++)
+            {
+                Data[i] = 0;
+            }
         }
     };
 
