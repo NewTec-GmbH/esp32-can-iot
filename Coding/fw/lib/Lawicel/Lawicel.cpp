@@ -550,7 +550,6 @@ uint8_t Lawicel::CMD_Tx_Ext()
     frame.ID = _id;
     frame.DLC = _dlc;
     frame.Extended = true;
-    frame.Data = new uint8_t[_dlc];
 
     if (_length > ((2 * _dlc) + 10))
     {
@@ -584,7 +583,6 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
     frame.ID = _id;
     frame.DLC = _dlc;
     frame.RTR = true;
-    frame.Data = new uint8_t[_dlc];
 
     if (_length > 5)
     {
@@ -614,7 +612,6 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
     frame.DLC = _dlc;
     frame.Extended = true;
     frame.RTR = true;
-    frame.Data = new uint8_t[_dlc];
 
     if (_length > 10)
     {
