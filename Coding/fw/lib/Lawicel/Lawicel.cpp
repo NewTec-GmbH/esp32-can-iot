@@ -150,7 +150,7 @@ void Lawicel::end()
 /**************************************************************************************************/
 uint8_t Lawicel::charToByte(char MSB, char LSB)
 {
-    uint8_t result = -10;
+    uint8_t result = 10;
     if (MSB >= 48 && MSB <= 57)
     {
         result = (MSB - 48) * 16;
