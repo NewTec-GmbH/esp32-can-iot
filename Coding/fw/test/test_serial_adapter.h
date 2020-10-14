@@ -81,7 +81,7 @@ void writeInput(String str)
 
 
 
-String input = "S6";
+String input;
 String outputString;
 int outputInt;
 char outputChar;

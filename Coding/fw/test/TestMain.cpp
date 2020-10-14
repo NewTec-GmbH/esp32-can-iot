@@ -32,6 +32,7 @@ testCAN testingCANAdapter;
 testNVM testingNVMAdapter;
 Lawicel ProtocolTest(&testingSerialAdapter, &testingCANAdapter, &testingNVMAdapter);
 
+
 void test_can_baudrate(void)
 {
   testingSerialAdapter.writeInput("S0");
@@ -701,21 +702,33 @@ void test_timestamp(void)
   testingSerialAdapter.writeInput("Z2");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.handler(), "Handler");
   TEST_ASSERT_EQUAL_UINT32(1,testingNVMAdapter.m_outputInt);
-
 }
 
 void test_autostart(void)
 {
-}
+  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("Q0");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(0,testingNVMAdapter.m_outputInt);
 
-void test_autopoll(void)
-{
+  testingSerialAdapter.writeInput("Q1");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(1,testingNVMAdapter.m_outputInt);
+
+  testingSerialAdapter.writeInput("Q2");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(2,testingNVMAdapter.m_outputInt);
+
+  testingSerialAdapter.writeInput("Q3");
+  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(2,testingNVMAdapter.m_outputInt);
 }
 
 int main(int argc, char **argv)
 {
 
   UNITY_BEGIN();
+  testingCANAdapter.m_inputFrame.ID = 0xFFF;
   RUN_TEST(test_can_baudrate);
   RUN_TEST(test_can_btr);
   RUN_TEST(test_can_open_normal);
@@ -732,6 +745,5 @@ int main(int argc, char **argv)
   RUN_TEST(test_serialnumber);
   RUN_TEST(test_timestamp);
   RUN_TEST(test_autostart);
-  RUN_TEST(test_autopoll);
   return UNITY_END();
 }

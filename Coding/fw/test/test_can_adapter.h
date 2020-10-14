@@ -107,7 +107,6 @@ public:
 
     Frame pollSingle()
     {
-        m_inputFrame.ID = 0xFFF;
         return m_inputFrame;
     }
 

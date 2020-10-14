@@ -35,7 +35,29 @@ public:
 
     uint32_t read(const char *name)
     {
-        return 0;
+        String str;
+        int counter = 0;
+        uint32_t out = 0;
+
+        while (name[counter] != 0)
+        {
+            str += name[counter];
+            counter++;
+        }
+
+        if(str == "AutoStart")
+        {
+            out = m_autostart;
+        }
+
+        if(str == "ToggleTime")
+        {
+            out = m_toggletime;
+        }
+
+
+
+        return out;
     }
 
     String readString(const char *name)
@@ -52,7 +74,7 @@ public:
 
         if (str == "SerialBaud")
         {
-            out = "U1";
+            out = "U5";
         }
         else if (str == "CanBaud")
         {
@@ -76,6 +98,8 @@ public:
 
     String m_outputString;
     uint32_t m_outputInt;
+    uint32_t m_toggletime = 0;
+    uint32_t m_autostart = 0;
 
 private:
 };
