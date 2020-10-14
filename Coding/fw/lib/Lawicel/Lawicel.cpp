@@ -1005,16 +1005,18 @@ uint8_t Lawicel::CMD_Timestamp()
 
     uint8_t var = charToInt(serialInput.charAt(1));
 
-    m_selectedNVM->save(INIT_TIMESTAMP, var);
+    
 
     if (var == 0)
     {
         _timestamp = false;
+        m_selectedNVM->save(INIT_TIMESTAMP, var);
         return 0;
     }
     else if (var == 1)
     {
         _timestamp = true;
+        m_selectedNVM->save(INIT_TIMESTAMP, var);
         return 0;
     }
 

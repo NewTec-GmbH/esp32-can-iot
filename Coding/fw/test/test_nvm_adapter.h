@@ -25,10 +25,12 @@ public:
 
     void save(const char *name, int32_t value)
     {
+        m_outputInt = value;
     }
 
     void saveString(const char *name, String value)
     {
+        m_outputString = value;
     }
 
     uint32_t read(const char *name)
@@ -71,6 +73,9 @@ public:
 
         return out;
     }
+
+    String m_outputString;
+    uint32_t m_outputInt;
 
 private:
 };

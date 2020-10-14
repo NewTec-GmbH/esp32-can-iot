@@ -634,18 +634,74 @@ void test_amn_register(void)
 
 void test_serial_baudrate(void)
 {
+  testingSerialAdapter.writeInput("U0");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(230400, testingSerialAdapter.m_baudrate);
+  TEST_ASSERT_EQUAL_STRING("U0",testingNVMAdapter.m_outputString.c_str());
+
+  testingSerialAdapter.m_baudrate =115200;
+  testingSerialAdapter.writeInput("U1");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(115200, testingSerialAdapter.m_baudrate);
+  TEST_ASSERT_EQUAL_STRING("U1",testingNVMAdapter.m_outputString.c_str());
+
+  testingSerialAdapter.m_baudrate =115200;
+  testingSerialAdapter.writeInput("U2");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(57600, testingSerialAdapter.m_baudrate);
+  testingSerialAdapter.m_baudrate =115200;
+  TEST_ASSERT_EQUAL_STRING("U2",testingNVMAdapter.m_outputString.c_str());
+
+  testingSerialAdapter.writeInput("U3");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(38400, testingSerialAdapter.m_baudrate);
+  testingSerialAdapter.m_baudrate =115200;
+  TEST_ASSERT_EQUAL_STRING("U3",testingNVMAdapter.m_outputString.c_str());
+
+  testingSerialAdapter.writeInput("U4");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_baudrate);
+  TEST_ASSERT_EQUAL_STRING("U4",testingNVMAdapter.m_outputString.c_str());
+
+  testingSerialAdapter.writeInput("U");
+  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_baudrate);
+  TEST_ASSERT_EQUAL_STRING("U4",testingNVMAdapter.m_outputString.c_str());
+
+  testingSerialAdapter.writeInput("U54");
+  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_baudrate);
+  TEST_ASSERT_EQUAL_STRING("U4",testingNVMAdapter.m_outputString.c_str());
 }
 
 void test_version(void)
 {
+  testingSerialAdapter.writeInput("V");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_STRING("V0101\r",testingSerialAdapter.outputString.c_str());
 }
 
 void test_serialnumber(void)
 {
+  testingSerialAdapter.writeInput("N");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_STRING("NNT32\r",testingSerialAdapter.outputString.c_str());
 }
 
 void test_timestamp(void)
 {
+  testingSerialAdapter.writeInput("Z0");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(0,testingNVMAdapter.m_outputInt);
+
+  testingSerialAdapter.writeInput("Z1");
+  TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(1,testingNVMAdapter.m_outputInt);
+
+  testingSerialAdapter.writeInput("Z2");
+  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.handler(), "Handler");
+  TEST_ASSERT_EQUAL_UINT32(1,testingNVMAdapter.m_outputInt);
+
 }
 
 void test_autostart(void)
