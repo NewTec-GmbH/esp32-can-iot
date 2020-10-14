@@ -48,14 +48,13 @@ public:
         bool RTR;      //Identifies a RTR Frame
         bool Extended; //Identifies an Extended Frame
         uint8_t DLC;   //Data Length
-        uint8_t *Data; //Data of the Frame
+        uint8_t Data[8]; //Data of the Frame
 
         Frame() : ID(0),
                   RTR(false),
                   Extended(false),
                   DLC(0)
         {
-            Data =  new uint8_t[8];
             for( int i = 0; i <8; i++)
             {
                 Data[i] = 0;

@@ -178,7 +178,11 @@ public:
         frame.DLC = CAN.packetDlc();
         frame.Extended = CAN.packetExtended();
         frame.RTR = CAN.packetRtr();
-        frame.Data = CAN.getRxBuf();
+
+        for (int i = 0; i < frame.DLC; i++)
+        {
+            frame.Data[i] = CAN.read();
+        }
 
         return frame;
     }
