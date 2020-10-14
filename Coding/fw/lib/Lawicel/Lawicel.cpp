@@ -71,7 +71,7 @@ bool Lawicel::handler()
     {
         serialReturn += (char)BELL;
         m_selectedSerial->print(serialReturn);
-        return false ;
+        return false;
     }
 
     if (serialInput.charAt(0) == VERSION)
@@ -814,6 +814,14 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
     if (serialInput.charAt(1) == '1')
     {
         filterMode = true;
+    }
+    else if (serialInput.charAt(1) == '0')
+    {
+        filterMode = false;
+    }
+    else
+    {
+        return 1;
     }
 
     m_selectedNVM->saveString(INIT_FILTER_MODE, serialInput);
