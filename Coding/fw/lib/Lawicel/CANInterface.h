@@ -36,7 +36,7 @@ public:
     {
         CLOSED,
         NORMAL,
-        LISTEN_ONLY,
+        LISTEN_ONLY
     };
 
     /**
@@ -137,7 +137,7 @@ public:
     * Gets the Status and Error Flags from the CAN Controller.
     * @param[in] _flags         Array that contains the state of each Flag
     */
-    virtual uint8_t getStatusFlags(bool *_flags) = 0;
+    virtual uint8_t getStatusFlags() = 0;
 
     /**
     * Polls one Message from the FIFO Buffer.

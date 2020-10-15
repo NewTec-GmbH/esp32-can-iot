@@ -173,7 +173,7 @@ public:
     /**
     * Gets the Status and Error Flags from the CAN Controller.
     */
-    uint8_t getStatusFlags(bool *_flags)
+    uint8_t getStatusFlags()
     {
         return 1; //Must read register
     }

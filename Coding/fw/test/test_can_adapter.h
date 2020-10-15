@@ -106,12 +106,8 @@ public:
         return m_currentstate;
     }
 
-    uint8_t getStatusFlags(bool *_flags)
+    uint8_t getStatusFlags()
     {
-        for (int i = 0; i < 8; i++)
-        {
-            _flags[i] = m_flags[i];
-        }
         return 0;
     }
 
