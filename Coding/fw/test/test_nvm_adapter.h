@@ -25,17 +25,17 @@ public:
         return 0;
     }
 
-    void save(const char *name, int32_t value)
+    void saveInt(String name, int32_t value)
     {
         m_outputInt = value;
     }
 
-    void saveString(const char *name, String value)
+    void saveString(String name, String value)
     {
         m_outputString = value;
     }
 
-    uint32_t read(const char *name)
+    uint32_t readInt(String name)
     {
         String str;
         int counter = 0;
@@ -62,7 +62,7 @@ public:
         return out;
     }
 
-    String readString(const char *name)
+    String readString(String name)
     {
         String str;
         String out;
