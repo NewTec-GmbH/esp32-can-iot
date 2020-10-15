@@ -87,17 +87,18 @@ bool Lawicel::handler()
 /**************************************************************************************************/
 void Lawicel::begin()
 {
-    m_selectedNVM->begin();
+    m_selectedNVM->begin();    
 
+    m_serialInput = "";
     m_serialInput = m_selectedNVM->readString(INIT_SERIAL_BAUD);
     receiveCommand();
 
     m_selectedSerial->begin();
     m_selectedCAN->begin();
 
-    m_timestamp = m_selectedNVM->read(INIT_TIMESTAMP);
+    m_timestamp = m_selectedNVM->readInt(INIT_TIMESTAMP);
 
-    m_autostart = m_selectedNVM->read(INIT_AUTO_START);
+    m_autostart = m_selectedNVM->readInt(INIT_AUTO_START);
 
     if (m_autostart > 0)
     {
@@ -237,6 +238,7 @@ uint32_t Lawicel::IdDecode(bool extended)
 /**************************************************************************************************/
 uint8_t Lawicel::receiveCommand()
 {
+    m_length = m_serialInput.length();
     switch (m_serialInput.charAt(0))
     {
     case SET_BAUDRATE:
@@ -931,7 +933,7 @@ uint8_t Lawicel::CMD_Timestamp()
     if (var <= 1)
     {
         m_timestamp = var;
-        m_selectedNVM->save(INIT_TIMESTAMP, var);
+        m_selectedNVM->saveInt(INIT_TIMESTAMP, var);
         return 0;
     }
 
@@ -956,7 +958,7 @@ uint8_t Lawicel::CMD_Auto_Start()
     if (var <= 2)
     {
         m_autostart = var;
-        m_selectedNVM->save(INIT_AUTO_START, var);
+        m_selectedNVM->saveInt(INIT_AUTO_START, var);
         return 0;
     }
 
@@ -973,7 +975,7 @@ uint8_t Lawicel::Autopoll()
     else
     {
         CANInterface::Frame frame = m_selectedCAN->pollSingle();
-        
+
         if (frame.ID == 0xFFF)
         {
             return 1;

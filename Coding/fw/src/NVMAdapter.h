@@ -57,13 +57,6 @@ public:
     uint8_t begin()
     {
         nvm.begin("Startup", false);
-        nvm.putString("SerialBaud", "");
-        nvm.putULong("ToggleTime", 0);
-        nvm.putULong("AutoStart", 0);
-        nvm.putString("CanBaud", "");
-        nvm.putString("FilterMode", "");
-        nvm.putString("FilterACn", "");
-        nvm.putString("FilterAMn", "");
         nvm.end();
         return 0;
     }
@@ -73,6 +66,7 @@ public:
     */
     uint8_t end()
     {
+        nvm.begin("Startup", false);
         nvm.clear();
         nvm.end();
         return 0;
@@ -81,30 +75,30 @@ public:
     /**
     * Save Data in NVM
     */
-    void save(const char *name, int32_t value)
+    void saveInt(String name, int32_t value)
     {
         nvm.begin("Startup", false);
-        nvm.putULong(name, value);
+        nvm.putULong(name.c_str(), value);
         nvm.end();
     }
 
     /**
     * Save String in NVM
     */
-    void saveString(const char *name, String value)
+    void saveString(String name, String value)
     {
         nvm.begin("Startup", false);
-        nvm.putString(name, value);
+        nvm.putString(name.c_str(), value);
         nvm.end();
     }
 
     /**
     * Read Data from NVM
     */
-    uint32_t read(const char *name)
+    uint32_t readInt(String name)
     {
         nvm.begin("Startup", false);
-        uint32_t value = nvm.getULong(name);
+        uint32_t value = nvm.getULong(name.c_str());
         nvm.end();
 
         return value;
@@ -113,10 +107,10 @@ public:
     /**
      * Read String from NVM
     */
-    String readString(const char *name)
+    String readString(String name)
     {
         nvm.begin("Startup", false);
-        String value = nvm.getString(name);
+        String value = nvm.getString(name.c_str());
         nvm.end();
         return value;
     }

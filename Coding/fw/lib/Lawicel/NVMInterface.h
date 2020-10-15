@@ -62,22 +62,22 @@ public:
   /**
   * Save Data in NVM
   */
-  virtual void save(const char *name,int32_t value) = 0;
+  virtual void saveInt(String name, int32_t value) = 0;
 
   /**
   * Save String in NVM
   */
-  virtual void saveString(const char *name, String value) = 0;
+  virtual void saveString(String name, String value) = 0;
 
   /**
   * Read Data from NVM
   */
-  virtual uint32_t read(const char *name) = 0;
+  virtual uint32_t readInt(String name) = 0;
 
   /**
   * Read String from NVM
   */
-  virtual String readString(const char *name) = 0;
+  virtual String readString(String name) = 0;
 
 private:
 };
