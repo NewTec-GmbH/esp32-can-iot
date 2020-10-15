@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.2"/>
+    <errors>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;loop&amp;#039; is never used." verbose="The function &amp;#039;loop&amp;#039; is never used." cwe="561" sinceDate="15.10.2020">
+            <location file="src\main.cpp" line="17"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;setup&amp;#039; is never used." verbose="The function &amp;#039;setup&amp;#039; is never used." cwe="561" sinceDate="15.10.2020">
+            <location file="src\main.cpp" line="12"/>
+        </error>
+    </errors>
+</results>

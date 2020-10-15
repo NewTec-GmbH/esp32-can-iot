@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3804726087">
+  <FileInfo check="ctu">
+<function-call call-id="lib/Lawicel/Lawicel.h:106:14" call-funcname="IdDecode" call-argnr="1" file="lib/Lawicel/Lawicel.cpp" line="556" col="27" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="lib/Lawicel/Lawicel.h:106:14" call-funcname="IdDecode" call-argnr="1" file="lib/Lawicel/Lawicel.cpp" line="623" col="27" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/>  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="handler" lineNumber="35"/>
+    <functiondecl functionName="begin" lineNumber="92"/>
+    <functiondecl functionName="end" lineNumber="137"/>
+    <functiondecl functionName="charToByte" lineNumber="149"/>
+    <functiondecl functionName="charToInt" lineNumber="183"/>
+    <functiondecl functionName="IdDecode" lineNumber="196"/>
+    <functiondecl functionName="receiveCommand" lineNumber="241"/>
+    <functiondecl functionName="CMD_Set_Baudrate" lineNumber="383"/>
+    <functiondecl functionName="CMD_Set_BTR" lineNumber="464"/>
+    <functiondecl functionName="CMD_Open_Normal" lineNumber="488"/>
+    <functiondecl functionName="CMD_Open_Listen_Only" lineNumber="509"/>
+    <functiondecl functionName="CMD_Close" lineNumber="530"/>
+    <functiondecl functionName="CMD_Tx_Std" lineNumber="551"/>
+    <functiondecl functionName="CMD_Tx_Ext" lineNumber="584"/>
+    <functiondecl functionName="CMD_Tx_Std_RTR" lineNumber="618"/>
+    <functiondecl functionName="CMD_Tx_Ext_RTR" lineNumber="646"/>
+    <functiondecl functionName="CMD_Poll_Single" lineNumber="674"/>
+    <functiondecl functionName="CMD_Poll_All" lineNumber="742"/>
+    <functiondecl functionName="CMD_Poll_Auto" lineNumber="770"/>
+    <functiondecl functionName="CMD_Flags" lineNumber="803"/>
+    <functiondecl functionName="CMD_Set_Filter_Mode" lineNumber="822"/>
+    <functiondecl functionName="CMD_Set_ACn" lineNumber="861"/>
+    <functiondecl functionName="CMD_Set_AMn" lineNumber="890"/>
+    <functiondecl functionName="CMD_Set_Serial_Baudrate" lineNumber="920"/>
+    <functiondecl functionName="CMD_Version" lineNumber="991"/>
+    <functiondecl functionName="CMD_Serial_Number" lineNumber="1004"/>
+    <functiondecl functionName="CMD_Timestamp" lineNumber="1017"/>
+    <functiondecl functionName="CMD_Auto_Start" lineNumber="1054"/>
+    <functiondecl functionName="Autopoll" lineNumber="1079"/>
+    <functiondecl functionName="getTimestamp" lineNumber="1139"/>
+    <functioncall functionName="ACn"/>
+    <functioncall functionName="AMn"/>
+    <functioncall functionName="Autopoll"/>
+    <functioncall functionName="BTR0"/>
+    <functioncall functionName="BTR1"/>
+    <functioncall functionName="CANInterface"/>
+    <functioncall functionName="CLOSED"/>
+    <functioncall functionName="CMD_Auto_Start"/>
+    <functioncall functionName="CMD_Close"/>
+    <functioncall functionName="CMD_Flags"/>
+    <functioncall functionName="CMD_Open_Listen_Only"/>
+    <functioncall functionName="CMD_Open_Normal"/>
+    <functioncall functionName="CMD_Poll_All"/>
+    <functioncall functionName="CMD_Poll_Auto"/>
+    <functioncall functionName="CMD_Poll_Single"/>
+    <functioncall functionName="CMD_Serial_Number"/>
+    <functioncall functionName="CMD_Set_ACn"/>
+    <functioncall functionName="CMD_Set_AMn"/>
+    <functioncall functionName="CMD_Set_BTR"/>
+    <functioncall functionName="CMD_Set_Baudrate"/>
+    <functioncall functionName="CMD_Set_Filter_Mode"/>
+    <functioncall functionName="CMD_Set_Serial_Baudrate"/>
+    <functioncall functionName="CMD_Timestamp"/>
+    <functioncall functionName="CMD_Tx_Ext"/>
+    <functioncall functionName="CMD_Tx_Ext_RTR"/>
+    <functioncall functionName="CMD_Tx_Std"/>
+    <functioncall functionName="CMD_Tx_Std_RTR"/>
+    <functioncall functionName="CMD_Version"/>
+    <functioncall functionName="CMD_status"/>
+    <functioncall functionName="DLC"/>
+    <functioncall functionName="Extended"/>
+    <functioncall functionName="Frame"/>
+    <functioncall functionName="HEX"/>
+    <functioncall functionName="ID"/>
+    <functioncall functionName="IdDecode"/>
+    <functioncall functionName="LISTEN_ONLY"/>
+    <functioncall functionName="Lawicel"/>
+    <functioncall functionName="NORMAL"/>
+    <functioncall functionName="RTR"/>
+    <functioncall functionName="String"/>
+    <functioncall functionName="_baudrate"/>
+    <functioncall functionName="_canInt"/>
+    <functioncall functionName="_dlc"/>
+    <functioncall functionName="_id"/>
+    <functioncall functionName="_nvmInt"/>
+    <functioncall functionName="_serialInt"/>
+    <functioncall functionName="begin"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="bufferPosition"/>
+    <functioncall functionName="char"/>
+    <functioncall functionName="charAt"/>
+    <functioncall functionName="charToByte"/>
+    <functioncall functionName="charToInt"/>
+    <functioncall functionName="counter"/>
+    <functioncall functionName="default"/>
+    <functioncall functionName="end"/>
+    <functioncall functionName="extended"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="filterMode"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="frame"/>
+    <functioncall functionName="frameposition"/>
+    <functioncall functionName="getChannelState"/>
+    <functioncall functionName="getStatusFlags"/>
+    <functioncall functionName="getTimestamp"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="length"/>
+    <functioncall functionName="m_autoPolling"/>
+    <functioncall functionName="m_autostart"/>
+    <functioncall functionName="m_length"/>
+    <functioncall functionName="m_selectedCAN"/>
+    <functioncall functionName="m_selectedNVM"/>
+    <functioncall functionName="m_selectedSerial"/>
+    <functioncall functionName="m_serialInput"/>
+    <functioncall functionName="m_serialReturn"/>
+    <functioncall functionName="m_timestamp"/>
+    <functioncall functionName="millis"/>
+    <functioncall functionName="num_symbol"/>
+    <functioncall functionName="pollSingle"/>
+    <functioncall functionName="pow"/>
+    <functioncall functionName="print"/>
+    <functioncall functionName="private:"/>
+    <functioncall functionName="read"/>
+    <functioncall functionName="readInt"/>
+    <functioncall functionName="readString"/>
+    <functioncall functionName="receiveCommand"/>
+    <functioncall functionName="saveInt"/>
+    <functioncall functionName="saveString"/>
+    <functioncall functionName="send"/>
+    <functioncall functionName="setACn"/>
+    <functioncall functionName="setAMn"/>
+    <functioncall functionName="setBTR"/>
+    <functioncall functionName="setBaudrate"/>
+    <functioncall functionName="setFilterMode"/>
+    <functioncall functionName="setState"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="var"/>
+    <functioncall functionName="while"/>
+  </FileInfo>
+</analyzerinfo>
