@@ -1,2 +1,0 @@
-main.a1::src/main.cpp
-Lawicel.a1::lib/Lawicel/Lawicel.cpp
