@@ -7,7 +7,7 @@
 @{
 @file       SerialInterface.h
 
-Serial Interface for Lawicel Protocol
+SerialInterface for Lawicel Protocol
 
 * @}
 ***************************************************************************************************/

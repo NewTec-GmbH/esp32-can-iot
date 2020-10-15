@@ -3,15 +3,12 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup gggggModule_group gggggModule
+@addtogroup Adapters
 @{
-@file       Xxxxx.h
+@file       SerialAdapter.h
 
-Enter short description here.
+ESP32 Serial Adapter for Lawicel Protocol
 
-Enter detailed description here.
-
-@version    %$Id: CppTemplate.h 8740 2018-05-05 12:46:37Z link $
 * @}
 ***************************************************************************************************/
 #ifndef SERIAL_ADAPTER_H

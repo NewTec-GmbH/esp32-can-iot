@@ -3,15 +3,12 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup gggggModule_group gggggModule
+@addtogroup Lawicel
 @{
-@file       Xxxxx.h
+@file       NVMInterface.h
 
-Enter short description here.
+NVM Interface for Lawicel Protocol
 
-Enter detailed description here.
-
-@version    %$Id: CppTemplate.h 8740 2018-05-05 12:46:37Z link $
 * @}
 ***************************************************************************************************/
 #ifndef NVM_INTERFACE_H

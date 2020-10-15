@@ -7,7 +7,7 @@
 @{
 @file       CANInterface.h
 
-CAN-Controller Interface for Lawicel Protocol
+CAN interface for Lawicel Protocol
 
 * @}
 ***************************************************************************************************/
@@ -141,7 +141,6 @@ public:
 
     /**
     * Polls one Message from the FIFO Buffer.
-    * @todo
     */
     virtual Frame pollSingle() = 0;
 

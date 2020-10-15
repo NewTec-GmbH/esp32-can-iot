@@ -3,11 +3,11 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup Application
+@addtogroup Adapters
 @{
 @file       CANAdapter.h
 
-ESP32SJA1000 CAN-Controller Adapter for Lawicel Protocol
+ESP32SJA1000 Adapter for Lawicel Protocol
 
 * @}
 ***************************************************************************************************/
