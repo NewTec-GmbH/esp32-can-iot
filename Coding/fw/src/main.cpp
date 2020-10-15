@@ -17,6 +17,6 @@ void setup()
 void loop()
 {
   if(!protocolLawicel.handler()){
-    serialAdapter.print("Error");
+    //serialAdapter.print("Error");
   }
 }

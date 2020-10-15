@@ -94,7 +94,7 @@ public:
   */
   void print(String string)
   {
-    Serial.println(string);
+    Serial.print(string);
   }
 
   /**

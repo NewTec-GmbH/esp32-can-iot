@@ -40,6 +40,7 @@ bool Lawicel::handler()
     {
         if (Autopoll() == 0)
         {
+            m_serialReturn += (char)CR;
             m_selectedSerial->print(m_serialReturn);
         }
     }
@@ -680,6 +681,7 @@ uint8_t Lawicel::CMD_Poll_All()
 
     while (CMD_Poll_Single() == 0)
     {
+        m_serialReturn += (char)CR;
         m_selectedSerial->print(m_serialReturn);
         m_serialReturn = "";
     }
