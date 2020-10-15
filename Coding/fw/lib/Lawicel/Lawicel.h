@@ -68,7 +68,7 @@ public:
     {
     }
 
-    bool handler(); /**< Handles the Serial Messages */
+    uint8_t handler(); /**< Handles the Serial Messages */
     void begin();   /**< Initializes Module */
     void end();     /**< Terminates Module */
 
