@@ -54,8 +54,8 @@ bool Lawicel::handler()
         return true;
     }
 
-    m_selectedSerial->print(_length);
-    m_selectedSerial->print(serialInput);
+    //m_selectedSerial->print(_length);
+    //m_selectedSerial->print(serialInput);
 
     uint8_t CMD_status = receiveCommand();
 
