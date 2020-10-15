@@ -19,6 +19,16 @@ public:
     {
     }
 
+    uint8_t begin()
+    {
+        return 0;
+    }
+
+    uint8_t end()
+    {
+        return 0;
+    }
+
     uint8_t send(const Frame &Frame)
     {
         m_outputFrame = Frame;

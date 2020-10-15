@@ -16,12 +16,14 @@ testSerial() : SerialInterface(), m_baudrate(115200), m_status(false)
 {
 }
 
-void begin()
+uint8_t begin()
 {
+    return 0;
 }
 
-void end()
+uint8_t end()
 {
+    return 0;
 }
 
 void setBaudrate(long _baudrate)

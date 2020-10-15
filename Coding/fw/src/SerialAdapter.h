@@ -51,17 +51,19 @@ public:
   /**
   * Initialize Module.
   */
-  void begin()
+  uint8_t begin()
   {
     Serial.begin(m_baudrate);
+    return 0;
   }
 
   /**
   * Terminate Module
   */
-  void end()
+  uint8_t end()
   {
     Serial.end();
+    return 0;
   }
 
   /**

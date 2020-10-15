@@ -15,12 +15,14 @@ public:
     {
     }
 
-    void begin()
+    uint8_t begin()
     {
+        return 0;
     }
 
-    void end()
+    uint8_t end()
     {
+        return 0;
     }
 
     void save(const char *name, int32_t value)
