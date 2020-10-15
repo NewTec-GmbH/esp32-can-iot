@@ -47,12 +47,12 @@ public:
    /** 
    * Initialize Module.
    */
-    virtual void begin() = 0;
+    virtual uint8_t begin() = 0;
 
    /** 
    * Terminate Module. 
    */
-    virtual void end() = 0;
+    virtual uint8_t end() = 0;
 
    /** 
    * Sets the Baudrate for Serial Communication.

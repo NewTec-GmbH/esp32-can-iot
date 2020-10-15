@@ -46,6 +46,22 @@ public:
     {
     }
 
+    /** 
+    * Initialize Module.
+    */
+    uint8_t begin()
+    {
+        return 0;
+    }
+
+    /** 
+    * Terminate Module. 
+    */
+    uint8_t end()
+    {
+        return 0;
+    }
+
     /**
     * Send a Frame.
     */

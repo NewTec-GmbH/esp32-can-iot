@@ -54,7 +54,7 @@ public:
     /**
     * Initialize Module
     */
-    void begin()
+    uint8_t begin()
     {
         nvm.begin("Startup", false);
         nvm.putString("SerialBaud", "");
@@ -65,15 +65,17 @@ public:
         nvm.putString("FilterACn", "");
         nvm.putString("FilterAMn", "");
         nvm.end();
+        return 0;
     }
 
     /**
     * Terminate Module
     */
-    void end()
+    uint8_t end()
     {
         nvm.clear();
         nvm.end();
+        return 0;
     }
 
     /**
