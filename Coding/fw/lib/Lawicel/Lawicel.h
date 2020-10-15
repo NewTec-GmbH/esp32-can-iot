@@ -55,7 +55,9 @@ public:
     /**
     * Constructor
     */
-    Lawicel(SerialInterface *_serialInt, CANInterface *_canInt, NVMInterface *_nvmInt) : m_selectedSerial(_serialInt), m_selectedCAN(_canInt), m_selectedNVM(_nvmInt)
+    Lawicel(SerialInterface *_serialInt, CANInterface *_canInt, NVMInterface *_nvmInt) : m_selectedSerial(_serialInt),
+                                                                                         m_selectedCAN(_canInt),
+                                                                                         m_selectedNVM(_nvmInt)
     {
     }
 
@@ -126,15 +128,15 @@ private:
     uint8_t CMD_Timestamp();           /**< Toggles Timestamp (and saves setting on EEPROM) */
     uint8_t CMD_Auto_Start();          /**< Auto Startup feature (from power on) */
 
-    uint8_t Autopoll(); //Frame Polling without any extra tags */
+    uint8_t Autopoll(); /**< Frame Polling without any extra tags */
+    uint32_t getTimestamp(); /**< Returns Timestamp */
 
-    int getTimestamp();       /**< Returns Timestamp */
-    bool _timestamp = false;  /**< Toggle timestamp */
-    bool autoPolling = true;  /**< Toggle Auto-Polling */
-    String serialInput;       /**< Input String for Serial-Message */
-    String serialReturn = ""; /**< String sent back to SerialAdapter */
-    uint8_t _length = 0;      /**< Length of Serial-Message */
-    uint8_t _autostart = 0;   /**< Sets Auto Start Mode */
+    bool m_timestamp = false;   /**< Toggle timestamp */
+    bool m_autoPolling = true;  /**< Toggle Auto-Polling */
+    String m_serialInput;       /**< Input String for Serial-Message */
+    String m_serialReturn = ""; /**< String sent back to SerialAdapter */
+    uint8_t m_length = 0;       /**< Length of Serial-Message */
+    uint8_t m_autostart = 0;    /**< Sets Auto Start Mode */
 
     SerialInterface *m_selectedSerial; /**< Active Serial Adapter */
     CANInterface *m_selectedCAN;       /**< Active CAN Adapter */

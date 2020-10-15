@@ -34,58 +34,52 @@ extern "C"
 /**************************************************************************************************/
 bool Lawicel::handler()
 {
+    m_serialReturn = "";
 
-    if (autoPolling)
+    if (m_autoPolling)
     {
         if (Autopoll() == 0)
         {
-            m_selectedSerial->print(serialReturn);
+            m_selectedSerial->print(m_serialReturn);
         }
-        serialReturn = "";
     }
 
-    serialReturn = "";
-    serialInput = "";
-    serialInput = m_selectedSerial->read();
-    _length = serialInput.length();
+    m_serialReturn = "";
 
-    if (_length == 0)
+    m_serialInput = m_selectedSerial->read();
+    m_length = m_serialInput.length();
+
+    if (m_length == 0)
     {
         return true;
     }
 
-    //m_selectedSerial->print(_length);
-    //m_selectedSerial->print(serialInput);
-
     uint8_t CMD_status = receiveCommand();
 
-    if (serialInput.charAt(0) == POLL_SINGLE)
+    if (m_serialInput.charAt(0) == POLL_SINGLE && CMD_status == 2)
     {
-        if (CMD_status == 2)
-        {
-            CMD_status = 0;
-        }
+        CMD_status = 0;
     }
 
-    if (CMD_status != 0)
+    if (CMD_status > 0)
     {
-        serialReturn += (char)BELL;
-        m_selectedSerial->print(serialReturn);
+        m_serialReturn += (char)BELL;
+        m_selectedSerial->print(m_serialReturn);
         return false;
     }
 
-    if (serialInput.charAt(0) == VERSION)
+    if (m_serialInput.charAt(0) == VERSION)
     {
-        serialReturn += X_VERSION;
+        m_serialReturn += X_VERSION;
     }
-    else if (serialInput.charAt(0) == SERIAL_NUMBER)
+    else if (m_serialInput.charAt(0) == SERIAL_NUMBER)
     {
-        serialReturn += X_SERIAL_NUMBER;
+        m_serialReturn += X_SERIAL_NUMBER;
     }
 
-    serialReturn += (char)CR;
+    m_serialReturn += (char)CR;
 
-    m_selectedSerial->print(serialReturn);
+    m_selectedSerial->print(m_serialReturn);
 
     return true;
 }
@@ -93,54 +87,53 @@ bool Lawicel::handler()
 /**************************************************************************************************/
 void Lawicel::begin()
 {
-    String var;
-
     m_selectedNVM->begin();
 
-    serialInput = m_selectedNVM->readString(INIT_SERIAL_BAUD);
+    m_serialInput = m_selectedNVM->readString(INIT_SERIAL_BAUD);
     receiveCommand();
 
     m_selectedSerial->begin();
+    m_selectedCAN->begin();
 
-    _timestamp = m_selectedNVM->read(INIT_TIMESTAMP);
+    m_timestamp = m_selectedNVM->read(INIT_TIMESTAMP);
 
-    _autostart = m_selectedNVM->read(INIT_AUTO_START);
+    m_autostart = m_selectedNVM->read(INIT_AUTO_START);
 
-    if (_autostart != 0)
+    if (m_autostart > 0)
     {
-        autoPolling = true;
+        m_autoPolling = true;
 
-        serialInput = m_selectedNVM->readString(INIT_CAN_BAUD);
+        m_serialInput = m_selectedNVM->readString(INIT_CAN_BAUD);
         receiveCommand();
 
-        serialInput = m_selectedNVM->readString(INIT_FILTER_MODE);
+        m_serialInput = m_selectedNVM->readString(INIT_FILTER_MODE);
         receiveCommand();
 
-        serialInput = m_selectedNVM->readString(INIT_FILTER_ACN);
+        m_serialInput = m_selectedNVM->readString(INIT_FILTER_ACN);
         receiveCommand();
 
-        serialInput = m_selectedNVM->readString(INIT_FILTER_AMN);
+        m_serialInput = m_selectedNVM->readString(INIT_FILTER_AMN);
         receiveCommand();
     }
 
-    if (_autostart == 1)
+    if (m_autostart == 1)
     {
-        serialInput = "O";
+        m_serialInput = "O";
         receiveCommand();
     }
-    else if (_autostart == 2)
+    else if (m_autostart == 2)
     {
-        serialInput = "L";
+        m_serialInput = "L";
         receiveCommand();
     }
-
-    m_selectedSerial->print("System initated Correctly");
 }
 
 /**************************************************************************************************/
 void Lawicel::end()
 {
     m_selectedSerial->end();
+    m_selectedCAN->end();
+    m_selectedNVM->end();
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -150,7 +143,8 @@ void Lawicel::end()
 /**************************************************************************************************/
 uint8_t Lawicel::charToByte(char MSB, char LSB)
 {
-    uint8_t result = 10;
+    uint8_t result = 0xFF;
+
     if (MSB >= 48 && MSB <= 57)
     {
         result = (MSB - 48) * 16;
@@ -199,27 +193,26 @@ uint8_t Lawicel::charToInt(char num_symbol)
 uint32_t Lawicel::IdDecode(bool extended)
 {
     uint32_t result = 0;
-    char _IdBuffer[8];
-
     uint8_t _IdLength = 3;
+    char _IdBuffer[8];
 
     if (extended)
     {
         _IdLength = 8;
-        _IdBuffer[0] = serialInput.charAt(8);
-        _IdBuffer[1] = serialInput.charAt(7);
-        _IdBuffer[2] = serialInput.charAt(6);
-        _IdBuffer[3] = serialInput.charAt(5);
-        _IdBuffer[4] = serialInput.charAt(4);
-        _IdBuffer[5] = serialInput.charAt(3);
-        _IdBuffer[6] = serialInput.charAt(2);
-        _IdBuffer[7] = serialInput.charAt(1);
+        _IdBuffer[0] = m_serialInput.charAt(8);
+        _IdBuffer[1] = m_serialInput.charAt(7);
+        _IdBuffer[2] = m_serialInput.charAt(6);
+        _IdBuffer[3] = m_serialInput.charAt(5);
+        _IdBuffer[4] = m_serialInput.charAt(4);
+        _IdBuffer[5] = m_serialInput.charAt(3);
+        _IdBuffer[6] = m_serialInput.charAt(2);
+        _IdBuffer[7] = m_serialInput.charAt(1);
     }
     else
     {
-        _IdBuffer[0] = serialInput.charAt(3);
-        _IdBuffer[1] = serialInput.charAt(2);
-        _IdBuffer[2] = serialInput.charAt(1);
+        _IdBuffer[0] = m_serialInput.charAt(3);
+        _IdBuffer[1] = m_serialInput.charAt(2);
+        _IdBuffer[2] = m_serialInput.charAt(1);
     }
 
     for (int counter = 0; counter < _IdLength; counter++)
@@ -244,7 +237,7 @@ uint32_t Lawicel::IdDecode(bool extended)
 /**************************************************************************************************/
 uint8_t Lawicel::receiveCommand()
 {
-    switch (serialInput.charAt(0))
+    switch (m_serialInput.charAt(0))
     {
     case SET_BAUDRATE:
     {
@@ -363,11 +356,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
 {
     long _baudrate = 0;
 
-    if (_length > 2)
-    {
-        return 1;
-    }
-    else if (_length < 2)
+    if (m_length != 2)
     {
         return 1;
     }
@@ -377,7 +366,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
         return 1;
     }
 
-    switch (serialInput.charAt(1))
+    switch (m_serialInput.charAt(1))
     {
     case '0':
     {
@@ -430,7 +419,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
     }
     }
 
-    m_selectedNVM->saveString(INIT_CAN_BAUD, serialInput);
+    m_selectedNVM->saveString(INIT_CAN_BAUD, m_serialInput);
 
     return m_selectedCAN->setBaudrate(_baudrate);
 }
@@ -438,11 +427,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_BTR()
 {
-    if (_length > 5)
-    {
-        return 1;
-    }
-    else if (_length < 5)
+    if (m_length != 5)
     {
         return 1;
     }
@@ -452,8 +437,8 @@ uint8_t Lawicel::CMD_Set_BTR()
         return 1;
     }
 
-    uint8_t BTR0 = charToByte(serialInput.charAt(1), serialInput.charAt(2));
-    uint8_t BTR1 = charToByte(serialInput.charAt(3), serialInput.charAt(4));
+    uint8_t BTR0 = charToByte(m_serialInput.charAt(1), m_serialInput.charAt(2));
+    uint8_t BTR1 = charToByte(m_serialInput.charAt(3), m_serialInput.charAt(4));
 
     return m_selectedCAN->setBTR(BTR0, BTR1);
 }
@@ -461,7 +446,7 @@ uint8_t Lawicel::CMD_Set_BTR()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Open_Normal()
 {
-    if (_length > 1)
+    if (m_length > 1)
     {
         return 1;
     }
@@ -477,7 +462,7 @@ uint8_t Lawicel::CMD_Open_Normal()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Open_Listen_Only()
 {
-    if (_length > 1)
+    if (m_length > 1)
     {
         return 1;
     }
@@ -493,7 +478,7 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Close()
 {
-    if (_length > 1)
+    if (m_length > 1)
     {
         return 1;
     }
@@ -510,18 +495,14 @@ uint8_t Lawicel::CMD_Close()
 uint8_t Lawicel::CMD_Tx_Std()
 {
     CANInterface::Frame frame;
-    uint8_t _dlc = charToInt(serialInput.charAt(4));
+    uint8_t _dlc = charToInt(m_serialInput.charAt(4));
     int32_t _id = IdDecode(0);
     int frameposition = 0;
 
     frame.ID = _id;
     frame.DLC = _dlc;
 
-    if (_length > ((2 * _dlc) + 5))
-    {
-        return 1;
-    }
-    else if (_length < ((2 * _dlc) + 5))
+    if (m_length != ((2 * _dlc) + 5))
     {
         return 1;
     }
@@ -533,7 +514,7 @@ uint8_t Lawicel::CMD_Tx_Std()
 
     for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2, frameposition++)
     {
-        frame.Data[frameposition] = (charToByte(serialInput.charAt(bufferPosition), serialInput.charAt(bufferPosition + 1)));
+        frame.Data[frameposition] = (charToByte(m_serialInput.charAt(bufferPosition), m_serialInput.charAt(bufferPosition + 1)));
     }
 
     return m_selectedCAN->send(frame);
@@ -543,7 +524,7 @@ uint8_t Lawicel::CMD_Tx_Std()
 uint8_t Lawicel::CMD_Tx_Ext()
 {
     CANInterface::Frame frame;
-    uint8_t _dlc = charToInt(serialInput.charAt(9));
+    uint8_t _dlc = charToInt(m_serialInput.charAt(9));
     int32_t _id = IdDecode(1);
     int frameposition = 0;
 
@@ -551,11 +532,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
     frame.DLC = _dlc;
     frame.Extended = true;
 
-    if (_length > ((2 * _dlc) + 10))
-    {
-        return 1;
-    }
-    else if (_length < ((2 * _dlc) + 10))
+    if (m_length != ((2 * _dlc) + 10))
     {
         return 1;
     }
@@ -567,7 +544,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
 
     for (int bufferPosition = 10; bufferPosition < (_dlc * 2 + 9); bufferPosition += 2, frameposition++)
     {
-        frame.Data[frameposition] = (charToByte(serialInput.charAt(bufferPosition), serialInput.charAt(bufferPosition + 1)));
+        frame.Data[frameposition] = (charToByte(m_serialInput.charAt(bufferPosition), m_serialInput.charAt(bufferPosition + 1)));
     }
 
     return m_selectedCAN->send(frame);
@@ -577,18 +554,14 @@ uint8_t Lawicel::CMD_Tx_Ext()
 uint8_t Lawicel::CMD_Tx_Std_RTR()
 {
     CANInterface::Frame frame;
-    uint8_t _dlc = charToInt(serialInput.charAt(4));
+    uint8_t _dlc = charToInt(m_serialInput.charAt(4));
     int32_t _id = IdDecode(0);
 
     frame.ID = _id;
     frame.DLC = _dlc;
     frame.RTR = true;
 
-    if (_length > 5)
-    {
-        return 1;
-    }
-    else if (_length < 5)
+    if (m_length != 5)
     {
         return 1;
     }
@@ -605,7 +578,7 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
 uint8_t Lawicel::CMD_Tx_Ext_RTR()
 {
     CANInterface::Frame frame;
-    uint8_t _dlc = charToInt(serialInput.charAt(9));
+    uint8_t _dlc = charToInt(m_serialInput.charAt(9));
     int32_t _id = IdDecode(1);
 
     frame.ID = _id;
@@ -613,11 +586,7 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
     frame.Extended = true;
     frame.RTR = true;
 
-    if (_length > 10)
-    {
-        return 1;
-    }
-    else if (_length < 10)
+    if (m_length != 10)
     {
         return 1;
     }
@@ -633,14 +602,7 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Poll_Single()
 {
-    char cmd = 't';
-    int _id_length = 3;
-
-    if (_length > 1)
-    {
-        return 1;
-    }
-    if (_length < 1)
+    if (m_length > 1)
     {
         return 1;
     }
@@ -657,6 +619,8 @@ uint8_t Lawicel::CMD_Poll_Single()
         return 2;
     }
 
+    char cmd = 't';
+    int _id_length = 3;
     if (frame.Extended == true && frame.RTR == false)
     {
         cmd = 'T';
@@ -672,29 +636,28 @@ uint8_t Lawicel::CMD_Poll_Single()
         _id_length = 8;
     }
 
-    serialReturn += cmd;
+    m_serialReturn += cmd;
 
     String _ID = String(frame.ID, HEX);
     for (int i = 0; i < _id_length - _ID.length(); i++)
     {
-        serialReturn += '0';
+        m_serialReturn += '0';
     }
-    serialReturn += _ID;
+    m_serialReturn += _ID;
 
-    int _dlc = frame.DLC;
-    serialReturn += frame.DLC;
+    m_serialReturn += frame.DLC;
 
     if (frame.RTR == false)
     {
-        for (int i = 0; i < _dlc; i++)
+        for (int i = 0; i < frame.DLC; i++)
         {
-            serialReturn += String(frame.Data[i], HEX);
+            m_serialReturn += String(frame.Data[i], HEX);
         }
     }
 
-    if (_timestamp)
+    if (m_timestamp)
     {
-        serialReturn += String(getTimestamp(), HEX);
+        m_serialReturn += String(getTimestamp(), HEX);
     }
 
     return 0;
@@ -703,12 +666,7 @@ uint8_t Lawicel::CMD_Poll_Single()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Poll_All()
 {
-
-    if (_length > 1)
-    {
-        return 1;
-    }
-    if (_length < 1)
+    if (m_length > 1)
     {
         return 1;
     }
@@ -720,22 +678,19 @@ uint8_t Lawicel::CMD_Poll_All()
 
     while (CMD_Poll_Single() == 0)
     {
-        m_selectedSerial->print(serialReturn);
-        serialReturn = "";
+        m_selectedSerial->print(m_serialReturn);
+        m_serialReturn = "";
     }
 
-    serialReturn += 'A';
+    m_serialReturn += 'A';
+
     return 0;
 }
 
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Poll_Auto()
 {
-    if (_length > 2)
-    {
-        return 1;
-    }
-    if (_length < 2)
+    if (m_length != 2)
     {
         return 1;
     }
@@ -745,30 +700,24 @@ uint8_t Lawicel::CMD_Poll_Auto()
         return 1;
     }
 
-    if (serialInput.charAt(1) == '0')
+    if (m_serialInput.charAt(1) == '0')
     {
-        autoPolling = false;
+        m_autoPolling = false;
+        return 0;
     }
-    else if (serialInput.charAt(1) == '1')
+    else if (m_serialInput.charAt(1) == '1')
     {
-        autoPolling = true;
-    }
-    else
-    {
-        return 1;
+        m_autoPolling = true;
+        return 0;
     }
 
-    return 0;
+    return 1;
 }
 
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Flags()
 {
-    if (_length > 1)
-    {
-        return 1;
-    }
-    if (_length < 1)
+    if (m_length > 1)
     {
         return 1;
     }
@@ -797,11 +746,7 @@ uint8_t Lawicel::CMD_Flags()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_Filter_Mode()
 {
-    if (_length > 2)
-    {
-        return 1;
-    }
-    else if (_length < 2)
+    if (m_length != 2)
     {
         return 1;
     }
@@ -810,12 +755,14 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
     {
         return 1;
     }
-    bool filterMode = false;
-    if (serialInput.charAt(1) == '1')
+
+    bool filterMode;
+
+    if (m_serialInput.charAt(1) == '1')
     {
         filterMode = true;
     }
-    else if (serialInput.charAt(1) == '0')
+    else if (m_serialInput.charAt(1) == '0')
     {
         filterMode = false;
     }
@@ -824,7 +771,7 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
         return 1;
     }
 
-    m_selectedNVM->saveString(INIT_FILTER_MODE, serialInput);
+    m_selectedNVM->saveString(INIT_FILTER_MODE, m_serialInput);
 
     return m_selectedCAN->setFilterMode(filterMode);
 }
@@ -832,11 +779,7 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_ACn()
 {
-    if (_length > 9)
-    {
-        return 1;
-    }
-    else if (_length < 9)
+    if (m_length != 9)
     {
         return 1;
     }
@@ -848,12 +791,12 @@ uint8_t Lawicel::CMD_Set_ACn()
 
     uint8_t ACn[4];
 
-    ACn[0] = charToByte(serialInput.charAt(1), serialInput.charAt(2));
-    ACn[1] = charToByte(serialInput.charAt(3), serialInput.charAt(4));
-    ACn[2] = charToByte(serialInput.charAt(5), serialInput.charAt(6));
-    ACn[3] = charToByte(serialInput.charAt(7), serialInput.charAt(8));
+    ACn[0] = charToByte(m_serialInput.charAt(1), m_serialInput.charAt(2));
+    ACn[1] = charToByte(m_serialInput.charAt(3), m_serialInput.charAt(4));
+    ACn[2] = charToByte(m_serialInput.charAt(5), m_serialInput.charAt(6));
+    ACn[3] = charToByte(m_serialInput.charAt(7), m_serialInput.charAt(8));
 
-    m_selectedNVM->saveString(INIT_FILTER_ACN, serialInput);
+    m_selectedNVM->saveString(INIT_FILTER_ACN, m_serialInput);
 
     return m_selectedCAN->setACn(ACn);
 }
@@ -861,11 +804,7 @@ uint8_t Lawicel::CMD_Set_ACn()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Set_AMn()
 {
-    if (_length > 9)
-    {
-        return 1;
-    }
-    else if (_length < 9)
+    if (m_length != 9)
     {
         return 1;
     }
@@ -877,12 +816,12 @@ uint8_t Lawicel::CMD_Set_AMn()
 
     uint8_t AMn[4];
 
-    AMn[0] = charToByte(serialInput.charAt(1), serialInput.charAt(2));
-    AMn[1] = charToByte(serialInput.charAt(3), serialInput.charAt(4));
-    AMn[2] = charToByte(serialInput.charAt(5), serialInput.charAt(6));
-    AMn[3] = charToByte(serialInput.charAt(7), serialInput.charAt(8));
+    AMn[0] = charToByte(m_serialInput.charAt(1), m_serialInput.charAt(2));
+    AMn[1] = charToByte(m_serialInput.charAt(3), m_serialInput.charAt(4));
+    AMn[2] = charToByte(m_serialInput.charAt(5), m_serialInput.charAt(6));
+    AMn[3] = charToByte(m_serialInput.charAt(7), m_serialInput.charAt(8));
 
-    m_selectedNVM->saveString(INIT_FILTER_AMN, serialInput);
+    m_selectedNVM->saveString(INIT_FILTER_AMN, m_serialInput);
 
     return m_selectedCAN->setAMn(AMn);
 }
@@ -892,11 +831,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
 {
     long _baudrate = 0;
 
-    if (_length > 2)
-    {
-        return 1;
-    }
-    else if (_length < 2)
+    if (m_length != 2)
     {
         return 1;
     }
@@ -906,7 +841,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
         return 1;
     }
 
-    switch (serialInput.charAt(1))
+    switch (m_serialInput.charAt(1))
     {
     case '0':
     {
@@ -949,7 +884,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
     }
     }
 
-    m_selectedNVM->saveString(INIT_SERIAL_BAUD, serialInput);
+    m_selectedNVM->saveString(INIT_SERIAL_BAUD, m_serialInput);
 
     m_selectedSerial->setBaudrate(_baudrate);
 
@@ -959,11 +894,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Version()
 {
-    if (_length > 1)
-    {
-        return 1;
-    }
-    if (_length < 1)
+    if (m_length > 1)
     {
         return 1;
     }
@@ -974,11 +905,7 @@ uint8_t Lawicel::CMD_Version()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Serial_Number()
 {
-    if (_length > 1)
-    {
-        return 1;
-    }
-    if (_length < 1)
+    if (m_length > 1)
     {
         return 1;
     }
@@ -989,11 +916,7 @@ uint8_t Lawicel::CMD_Serial_Number()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Timestamp()
 {
-    if (_length > 2)
-    {
-        return 1;
-    }
-    else if (_length < 2)
+    if (m_length != 2)
     {
         return 1;
     }
@@ -1003,19 +926,11 @@ uint8_t Lawicel::CMD_Timestamp()
         return 1;
     }
 
-    uint8_t var = charToInt(serialInput.charAt(1));
+    uint8_t var = charToInt(m_serialInput.charAt(1));
 
-    
-
-    if (var == 0)
+    if (var <= 1)
     {
-        _timestamp = false;
-        m_selectedNVM->save(INIT_TIMESTAMP, var);
-        return 0;
-    }
-    else if (var == 1)
-    {
-        _timestamp = true;
+        m_timestamp = var;
         m_selectedNVM->save(INIT_TIMESTAMP, var);
         return 0;
     }
@@ -1026,11 +941,7 @@ uint8_t Lawicel::CMD_Timestamp()
 /**************************************************************************************************/
 uint8_t Lawicel::CMD_Auto_Start()
 {
-    if (_length > 2)
-    {
-        return 1;
-    }
-    else if (_length < 2)
+    if (m_length != 2)
     {
         return 1;
     }
@@ -1040,11 +951,11 @@ uint8_t Lawicel::CMD_Auto_Start()
         return 1;
     }
 
-    int var = charToInt(serialInput.charAt(1));
+    uint8_t var = charToInt(m_serialInput.charAt(1));
 
     if (var <= 2)
     {
-        _autostart = var;
+        m_autostart = var;
         m_selectedNVM->save(INIT_AUTO_START, var);
         return 0;
     }
@@ -1062,14 +973,14 @@ uint8_t Lawicel::Autopoll()
     else
     {
         CANInterface::Frame frame = m_selectedCAN->pollSingle();
-        char cmd = 't';
-        int _id_length = 3;
-
+        
         if (frame.ID == 0xFFF)
         {
             return 1;
         }
 
+        char cmd = 't';
+        int _id_length = 3;
         if (frame.Extended == true && frame.RTR == false)
         {
             cmd = 'T';
@@ -1085,35 +996,35 @@ uint8_t Lawicel::Autopoll()
             _id_length = 8;
         }
 
-        serialReturn += cmd;
+        m_serialReturn += cmd;
+
         String _ID = String(frame.ID, HEX);
         for (int i = 0; i < _id_length - _ID.length(); i++)
         {
-            serialReturn += '0';
+            m_serialReturn += '0';
         }
-        serialReturn += _ID;
+        m_serialReturn += _ID;
 
-        long _dlc = frame.DLC;
-        serialReturn += frame.DLC;
+        m_serialReturn += frame.DLC;
 
         if (frame.RTR == false)
         {
-            for (int i = 0; i < _dlc; i++)
+            for (int i = 0; i < frame.DLC; i++)
             {
-                serialReturn += String(frame.Data[i], HEX);
+                m_serialReturn += String(frame.Data[i], HEX);
             }
         }
 
-        if (_timestamp)
+        if (m_timestamp)
         {
-            serialReturn += String(getTimestamp(), HEX);
+            m_serialReturn += String(getTimestamp(), HEX);
         }
         return 0;
     }
 }
 
 /**************************************************************************************************/
-int Lawicel::getTimestamp()
+uint32_t Lawicel::getTimestamp()
 {
     return millis() % MAX_TIMESTAMP;
 }
