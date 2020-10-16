@@ -51,6 +51,8 @@ public:
     */
     uint8_t begin()
     {
+        CAN.begin(500E3);
+        CAN.sleep();
         return 0;
     }
 
@@ -94,7 +96,8 @@ public:
         switch (state)
         {
         case CLOSED:
-            CAN.end();
+            //CAN.end();
+            CAN.sleep();
             m_currentstate = CLOSED;
             return 0;
 
@@ -103,7 +106,8 @@ public:
             {
                 return 1;
             }
-            CAN.begin(m_baudrate);
+            //CAN.begin(m_baudrate);
+            CAN.wakeup();
             m_currentstate = NORMAL;
             return 0;
 
@@ -112,7 +116,8 @@ public:
             {
                 return 1;
             }
-            CAN.begin(m_baudrate);
+            //CAN.begin(m_baudrate);
+            CAN.wakeup();
             m_currentstate = LISTEN_ONLY;
             return 0;
 
@@ -127,6 +132,9 @@ public:
     uint8_t setBaudrate(const long baudrate)
     {
         m_baudrate = baudrate;
+        CAN.end();
+        CAN.begin(m_baudrate);
+        CAN.sleep();
         return 0;
     }
 
