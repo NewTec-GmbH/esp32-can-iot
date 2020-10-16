@@ -3,7 +3,8 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup Lawicel
+@addtogroup Interfaces
+@ingroup Lawicel
 @{
 @file       CANInterface.h
 
@@ -34,7 +35,7 @@ public:
      */
     enum BUS_STATE
     {
-        CLOSED,
+        CLOSED = 0,
         NORMAL,
         LISTEN_ONLY
     };

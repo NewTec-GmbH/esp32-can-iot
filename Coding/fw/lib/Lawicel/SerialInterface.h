@@ -3,7 +3,8 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup Lawicel
+@addtogroup Interfaces
+@ingroup Lawicel
 @{
 @file       SerialInterface.h
 
