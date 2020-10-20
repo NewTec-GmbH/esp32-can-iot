@@ -20,8 +20,11 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
+const uint32_t DNS_PORT = 53U;
+const uint32_t WEBSERVER_PORT = 80U;
 static AsyncWebServer server(WEBSERVER_PORT);
 static DNSServer dnsServer;
+static Preferences flash;
 
 /* MACROS *****************************************************************************************/
 
@@ -31,14 +34,26 @@ static DNSServer dnsServer;
 static void notFound(AsyncWebServerRequest *request);
 static String pageProcessor(const String &var);
 static void credentialsProcessor(String name, String value);
+static void importConfig();
 
 /* VARIABLES **************************************************************************************/
+
+bool defaultValues = true;
+char STA_SSID[32] = "";
+char STA_PASSWORD[32] = "";
+char AP_SSID[32] = "";
+char AP_PASSWORD[32] = "";
+char WEB_USER[32] = "";
+char WEB_PASSWORD[32] = "";
+bool reboot = false;
+
 
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
 void ESPServer::init()
 {
+    importConfig();
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
         if (!request->authenticate(WEB_USER, WEB_PASSWORD))
             return request->requestAuthentication();
@@ -90,7 +105,7 @@ void ESPServer::init()
 /**************************************************************************************************/
 void ESPServer::begin()
 {
-    WiFi.softAP(AP_SSID,AP_PASSWORD);
+    WiFi.softAP(AP_SSID, AP_PASSWORD);
     dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
     dnsServer.start(DNS_PORT, "*", WiFi.softAPIP());
     SPIFFS.begin();
@@ -103,7 +118,7 @@ void ESPServer::end()
     server.end();
     SPIFFS.end();
     dnsServer.stop();
-    WiFi.disconnect(true,true);
+    WiFi.disconnect(true, true);
 }
 
 /**************************************************************************************************/
@@ -117,12 +132,20 @@ void ESPServer::handle()
     }
 }
 
+/* PROTECTED METHODES *****************************************************************************/
+
+/* PRIVATE METHODES *******************************************************************************/
+
+/* EXTERNAL FUNCTIONS *****************************************************************************/
+
+/* INTERNAL FUNCTIONS *****************************************************************************/
 /**************************************************************************************************/
 static void notFound(AsyncWebServerRequest *request)
 {
     request->send(404, "text/plain", "Not Found");
 }
 
+/**************************************************************************************************/
 static String pageProcessor(const String &var)
 {
     String temp;
@@ -150,6 +173,7 @@ static String pageProcessor(const String &var)
     return temp;
 }
 
+/**************************************************************************************************/
 static void credentialsProcessor(String name, String value)
 {
     if (name == "STA_SSID")
@@ -178,4 +202,31 @@ static void credentialsProcessor(String name, String value)
     }
 
     reboot = false;
+}
+
+/**************************************************************************************************/
+static void importConfig()
+{
+    flash.begin("Startup", false);
+    defaultValues = flash.getBool("defaultValues", true);
+    
+    if (defaultValues)
+    {
+        strcpy(AP_SSID, "ESP32");
+        strcpy(AP_PASSWORD, "hochschuleulm");
+        strcpy(STA_SSID, "");
+        strcpy(STA_PASSWORD, "");
+        strcpy(WEB_USER, "admin");
+        strcpy(WEB_PASSWORD, "admin");
+    }
+    else
+    {        
+        strcpy(AP_SSID, flash.getString("AP_SSID").c_str());
+        strcpy(AP_PASSWORD, flash.getString("AP_PASSWORD").c_str());
+        strcpy(STA_SSID, flash.getString("STA_SSID").c_str());
+        strcpy(STA_PASSWORD, flash.getString("STA_PASSWORD").c_str());
+        strcpy(WEB_USER, flash.getString("WEB_USER").c_str());
+        strcpy(WEB_PASSWORD, flash.getString("WEB_PASSWORD").c_str());        
+    }
+    flash.end();
 }
