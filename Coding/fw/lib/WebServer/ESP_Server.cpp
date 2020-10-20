@@ -47,7 +47,6 @@ char WEB_USER[32] = "";
 char WEB_PASSWORD[32] = "";
 bool reboot = false;
 
-
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
@@ -127,7 +126,6 @@ void ESPServer::handle()
     dnsServer.processNextRequest();
     if (reboot)
     {
-        delay(5000);
         ESP.restart();
     }
 }
@@ -176,57 +174,46 @@ static String pageProcessor(const String &var)
 /**************************************************************************************************/
 static void credentialsProcessor(String name, String value)
 {
+    flash.begin("Startup", false);
     if (name == "STA_SSID")
     {
-        strcpy(STA_SSID, value.c_str());
+        flash.putString("STA_SSID", value);
     }
     else if (name == "STA_Password")
     {
-        strcpy(STA_PASSWORD, value.c_str());
+        flash.putString("STA_PASSWORD", value);
     }
     else if (name == "AP_SSID")
     {
-        strcpy(AP_SSID, value.c_str());
+        flash.putString("AP_SSID", value);
     }
     else if (name == "AP_Password")
     {
-        strcpy(AP_PASSWORD, value.c_str());
+        flash.putString("AP_PASSWORD", value);
     }
     else if (name == "Server_User")
     {
-        strcpy(WEB_USER, value.c_str());
+        flash.putString("WEB_USER", value);
     }
     else if (name == "Server_Password")
     {
-        strcpy(WEB_PASSWORD, value.c_str());
+        flash.putString("WEB_PASSWORD", value);
     }
-
-    reboot = false;
+    flash.end();
+    reboot = true;
 }
 
 /**************************************************************************************************/
 static void importConfig()
 {
     flash.begin("Startup", false);
-    defaultValues = flash.getBool("defaultValues", true);
-    
-    if (defaultValues)
-    {
-        strcpy(AP_SSID, "ESP32");
-        strcpy(AP_PASSWORD, "hochschuleulm");
-        strcpy(STA_SSID, "");
-        strcpy(STA_PASSWORD, "");
-        strcpy(WEB_USER, "admin");
-        strcpy(WEB_PASSWORD, "admin");
-    }
-    else
-    {        
-        strcpy(AP_SSID, flash.getString("AP_SSID").c_str());
-        strcpy(AP_PASSWORD, flash.getString("AP_PASSWORD").c_str());
-        strcpy(STA_SSID, flash.getString("STA_SSID").c_str());
-        strcpy(STA_PASSWORD, flash.getString("STA_PASSWORD").c_str());
-        strcpy(WEB_USER, flash.getString("WEB_USER").c_str());
-        strcpy(WEB_PASSWORD, flash.getString("WEB_PASSWORD").c_str());        
-    }
+
+    strcpy(STA_SSID, flash.getString("STA_SSID", "").c_str());
+    strcpy(STA_PASSWORD, flash.getString("STA_PASSWORD", "").c_str());
+    strcpy(AP_SSID, flash.getString("AP_SSID", "ESP32").c_str());
+    strcpy(AP_PASSWORD, flash.getString("AP_PASSWORD", "hochschuleulm").c_str());
+    strcpy(WEB_USER, flash.getString("WEB_USER", "admin").c_str());
+    strcpy(WEB_PASSWORD, flash.getString("WEB_PASSWORD", "admin").c_str());
+
     flash.end();
 }
