@@ -17,6 +17,7 @@ Main Application
 #include <SerialAdapter.h>
 #include <CANAdapter.h>
 #include <NVMAdapter.h>
+#include <ESP_Server.h>
 
 /* CONSTANTS **************************************************************************************/
 SerialAdapter serialAdapter;
@@ -37,11 +38,14 @@ Lawicel protocolLawicel(&serialAdapter, &sja1000Adapter, &flashAdapter);
 void setup()
 {
   protocolLawicel.begin();
+  ESPServer::init();
+  ESPServer::begin();
 }
 
 void loop()
 {
   protocolLawicel.handler();
+  ESPServer::handle();
 }
 
 /* PROTECTED METHODES *****************************************************************************/
