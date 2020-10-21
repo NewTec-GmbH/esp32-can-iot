@@ -32,14 +32,14 @@ extern "C"
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
-uint8_t Lawicel::handler()
+uint8_t Lawicel::executeCycle()
 {
     uint8_t isError = 0;
     m_serialReturn = "";
 
     if (m_autoPolling)
     {
-        if (Autopoll() == 0)
+        if (autopoll() == 0)
         {
             m_serialReturn += (char)CR;
             m_selectedSerial->print(m_serialReturn);
@@ -102,9 +102,9 @@ void Lawicel::begin()
 
     m_timestamp = m_selectedNVM->readInt(INIT_TIMESTAMP);
 
-    m_autostart = m_selectedNVM->readInt(INIT_AUTO_START);
+    m_autoStart = m_selectedNVM->readInt(INIT_AUTO_START);
 
-    if (m_autostart > 0)
+    if (m_autoStart > 0)
     {
         m_autoPolling = true;
 
@@ -121,12 +121,12 @@ void Lawicel::begin()
         receiveCommand();
     }
 
-    if (m_autostart == 1)
+    if (m_autoStart == 1)
     {
         m_serialInput = "O";
         receiveCommand();
     }
-    else if (m_autostart == 2)
+    else if (m_autoStart == 2)
     {
         m_serialInput = "L";
         receiveCommand();
@@ -246,127 +246,127 @@ uint8_t Lawicel::receiveCommand()
     {
     case SET_BAUDRATE:
     {
-        isError = CMD_Set_Baudrate();
+        isError = setBaudrateCmd();
         break;
     }
 
     case SET_BTR:
     {
-        isError = CMD_Set_BTR();
+        isError = setBTRCmd();
         break;
     }
 
     case OPEN_NORMAL:
     {
-        isError = CMD_Open_Normal();
+        isError = openNormalCmd();
         break;
     }
 
     case OPEN_LISTEN_ONLY:
     {
-        isError = CMD_Open_Listen_Only();
+        isError = openListenOnlyCmd();
         break;
     }
 
     case CLOSE:
     {
-        isError = CMD_Close();
+        isError = closeCmd();
         break;
     }
 
     case TX_STD:
     {
-        isError = CMD_Tx_Std();
+        isError = stdTxCmd();
         break;
     }
 
     case TX_EXT:
     {
-        isError = CMD_Tx_Ext();
+        isError = extTxCmd();
         break;
     }
 
     case TX_STD_RTR:
     {
-        isError = CMD_Tx_Std_RTR();
+        isError = stdRtrTxCmd();
         break;
     }
 
     case TX_EXT_RTR:
     {
-        isError = CMD_Tx_Ext_RTR();
+        isError = extRtrTxCmd();
         break;
     }
 
     case POLL_SINGLE:
     {
-        isError = CMD_Poll_Single();
+        isError = singlePollCmd();
         break;
     }
 
     case POLL_ALL:
     {
-        isError = CMD_Poll_All();
+        isError = allPollCmd();
         break;
     }
 
     case POLL_AUTO:
     {
-        isError = CMD_Poll_Auto();
+        isError = toggleAutoPollCmd();
         break;
     }
 
     case STATUS_FLAGS:
     {
-        isError = CMD_Flags();
+        isError = getFlagsCmd();
         break;
     }
 
     case FILTER_MODE:
     {
-        isError = CMD_Set_Filter_Mode();
+        isError = setFilterModeCmd();
         break;
     }
 
     case ACN_REGISTER:
     {
-        isError = CMD_Set_ACn();
+        isError = setACnCmd();
         break;
     }
 
     case AMN_REGISTER:
     {
-        isError = CMD_Set_AMn();
+        isError = setAMnCmd();
         break;
     }
 
     case SERIAL_BAUDRATE:
     {
-        isError = CMD_Set_Serial_Baudrate();
+        isError = setSerialBaudrateCmd();
         break;
     }
 
     case VERSION:
     {
-        isError = CMD_Version();
+        isError = getVersionCmd();
         break;
     }
 
     case SERIAL_NUMBER:
     {
-        isError = CMD_Serial_Number();
+        isError = getSerialNumberCmd();
         break;
     }
 
     case TOGGLE_TIMESTAMP:
     {
-        isError = CMD_Timestamp();
+        isError = toggleTimeStampCmd();
         break;
     }
 
     case AUTO_START:
     {
-        isError = CMD_Auto_Start();
+        isError = toggleAutoStartCmd();
         break;
     }
 
@@ -380,7 +380,7 @@ uint8_t Lawicel::receiveCommand()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Set_Baudrate()
+uint8_t Lawicel::setBaudrateCmd()
 {
     uint8_t isError = 0;
 
@@ -461,7 +461,7 @@ uint8_t Lawicel::CMD_Set_Baudrate()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Set_BTR()
+uint8_t Lawicel::setBTRCmd()
 {
     uint8_t isError = 0;
 
@@ -485,7 +485,7 @@ uint8_t Lawicel::CMD_Set_BTR()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Open_Normal()
+uint8_t Lawicel::openNormalCmd()
 {
     uint8_t isError = 0;
 
@@ -506,7 +506,7 @@ uint8_t Lawicel::CMD_Open_Normal()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Open_Listen_Only()
+uint8_t Lawicel::openListenOnlyCmd()
 {
     uint8_t isError = 0;
 
@@ -527,7 +527,7 @@ uint8_t Lawicel::CMD_Open_Listen_Only()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Close()
+uint8_t Lawicel::closeCmd()
 {
     uint8_t isError = 0;
 
@@ -548,7 +548,7 @@ uint8_t Lawicel::CMD_Close()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Tx_Std()
+uint8_t Lawicel::stdTxCmd()
 {
     uint8_t isError = 0;
     CANInterface::Frame frame;
@@ -556,8 +556,8 @@ uint8_t Lawicel::CMD_Tx_Std()
     int32_t _id = IdDecode(0);
     int frameposition = 0;
 
-    frame.ID = _id;
-    frame.DLC = _dlc;
+    frame.m_id = _id;
+    frame.m_dlc = _dlc;
 
     if (m_length != ((2 * _dlc) + 5))
     {
@@ -571,7 +571,7 @@ uint8_t Lawicel::CMD_Tx_Std()
     {
         for (int bufferPosition = 5; bufferPosition < (_dlc * 2 + 4); bufferPosition += 2, frameposition++)
         {
-            frame.Data[frameposition] = (charToByte(m_serialInput.charAt(bufferPosition), m_serialInput.charAt(bufferPosition + 1)));
+            frame.m_data[frameposition] = (charToByte(m_serialInput.charAt(bufferPosition), m_serialInput.charAt(bufferPosition + 1)));
         }
 
         isError = m_selectedCAN->send(frame);
@@ -581,7 +581,7 @@ uint8_t Lawicel::CMD_Tx_Std()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Tx_Ext()
+uint8_t Lawicel::extTxCmd()
 {
     uint8_t isError = 0;
     CANInterface::Frame frame;
@@ -589,9 +589,9 @@ uint8_t Lawicel::CMD_Tx_Ext()
     int32_t _id = IdDecode(1);
     int frameposition = 0;
 
-    frame.ID = _id;
-    frame.DLC = _dlc;
-    frame.Extended = true;
+    frame.m_id = _id;
+    frame.m_dlc = _dlc;
+    frame.m_extended = true;
 
     if (m_length != ((2 * _dlc) + 10))
     {
@@ -605,7 +605,7 @@ uint8_t Lawicel::CMD_Tx_Ext()
     {
         for (int bufferPosition = 10; bufferPosition < (_dlc * 2 + 9); bufferPosition += 2, frameposition++)
         {
-            frame.Data[frameposition] = (charToByte(m_serialInput.charAt(bufferPosition), m_serialInput.charAt(bufferPosition + 1)));
+            frame.m_data[frameposition] = (charToByte(m_serialInput.charAt(bufferPosition), m_serialInput.charAt(bufferPosition + 1)));
         }
 
         isError = m_selectedCAN->send(frame);
@@ -615,16 +615,16 @@ uint8_t Lawicel::CMD_Tx_Ext()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Tx_Std_RTR()
+uint8_t Lawicel::stdRtrTxCmd()
 {
     uint8_t isError = 0;
     CANInterface::Frame frame;
     uint8_t _dlc = charToInt(m_serialInput.charAt(4));
     int32_t _id = IdDecode(0);
 
-    frame.ID = _id;
-    frame.DLC = _dlc;
-    frame.RTR = true;
+    frame.m_id = _id;
+    frame.m_dlc = _dlc;
+    frame.m_rtr = true;
 
     if (m_length != 5)
     {
@@ -643,17 +643,17 @@ uint8_t Lawicel::CMD_Tx_Std_RTR()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Tx_Ext_RTR()
+uint8_t Lawicel::extRtrTxCmd()
 {
     uint8_t isError = 0;
     CANInterface::Frame frame;
     uint8_t _dlc = charToInt(m_serialInput.charAt(9));
     int32_t _id = IdDecode(1);
 
-    frame.ID = _id;
-    frame.DLC = _dlc;
-    frame.Extended = true;
-    frame.RTR = true;
+    frame.m_id = _id;
+    frame.m_dlc = _dlc;
+    frame.m_extended = true;
+    frame.m_rtr = true;
 
     if (m_length != 10)
     {
@@ -671,7 +671,7 @@ uint8_t Lawicel::CMD_Tx_Ext_RTR()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Poll_Single()
+uint8_t Lawicel::singlePollCmd()
 {
     uint8_t isError = 0;
 
@@ -685,22 +685,22 @@ uint8_t Lawicel::CMD_Poll_Single()
     }
     else
     {
-        CANInterface::Frame frame = m_selectedCAN->pollSingle();
+        CANInterface::Frame frame;
 
-        if (frame.ID != 0xFFF)
+        if (m_selectedCAN->pollSingle(frame) != 0)
         {
             char cmd = 't';
             int _id_length = 3;
-            if (frame.Extended == true && frame.RTR == false)
+            if (frame.m_extended == true && frame.m_rtr == false)
             {
                 cmd = 'T';
                 _id_length = 8;
             }
-            else if (frame.Extended == false && frame.RTR == true)
+            else if (frame.m_extended == false && frame.m_rtr == true)
             {
                 cmd = 'r';
             }
-            else if (frame.Extended == true && frame.RTR == true)
+            else if (frame.m_extended == true && frame.m_rtr == true)
             {
                 cmd = 'R';
                 _id_length = 8;
@@ -708,20 +708,20 @@ uint8_t Lawicel::CMD_Poll_Single()
 
             m_serialReturn += cmd;
 
-            String _ID = String(frame.ID, HEX);
+            String _ID = String(frame.m_id, HEX);
             for (int i = 0; i < _id_length - _ID.length(); i++)
             {
                 m_serialReturn += '0';
             }
             m_serialReturn += _ID;
 
-            m_serialReturn += frame.DLC;
+            m_serialReturn += frame.m_dlc;
 
-            if (frame.RTR == false)
+            if (frame.m_rtr == false)
             {
-                for (int i = 0; i < frame.DLC; i++)
+                for (int i = 0; i < frame.m_dlc; i++)
                 {
-                    m_serialReturn += String(frame.Data[i], HEX);
+                    m_serialReturn += String(frame.m_data[i], HEX);
                 }
             }
 
@@ -732,14 +732,14 @@ uint8_t Lawicel::CMD_Poll_Single()
         }
         else
         {
-            isError = 2; // it is no error, but marks the end of the message buffer
+            isError = 2; /**< it is no error, but marks the end of the message buffer */
         }
     }
     return isError;
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Poll_All()
+uint8_t Lawicel::allPollCmd()
 {
     uint8_t isError = 0;
 
@@ -753,7 +753,7 @@ uint8_t Lawicel::CMD_Poll_All()
     }
     else
     {
-        while (CMD_Poll_Single() == 0)
+        while (singlePollCmd() == 0)
         {
             m_serialReturn += (char)CR;
             m_selectedSerial->print(m_serialReturn);
@@ -767,7 +767,7 @@ uint8_t Lawicel::CMD_Poll_All()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Poll_Auto()
+uint8_t Lawicel::toggleAutoPollCmd()
 {
     uint8_t isError = 0;
 
@@ -800,7 +800,7 @@ uint8_t Lawicel::CMD_Poll_Auto()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Flags()
+uint8_t Lawicel::getFlagsCmd()
 {
     uint8_t isError = 0;
     if (m_length > 1)
@@ -819,7 +819,7 @@ uint8_t Lawicel::CMD_Flags()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Set_Filter_Mode()
+uint8_t Lawicel::setFilterModeCmd()
 {
     uint8_t isError = 0;
     bool filterMode;
@@ -836,11 +836,11 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
         switch (m_serialInput.charAt(1))
         {
         case '0':
-            filterMode = false;
+            filterMode = 0;
             break;
 
         case '1':
-            filterMode = true;
+            filterMode = 1;
             break;
 
         default:
@@ -858,7 +858,7 @@ uint8_t Lawicel::CMD_Set_Filter_Mode()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Set_ACn()
+uint8_t Lawicel::setACnCmd()
 {
     uint8_t isError = 0;
 
@@ -887,7 +887,7 @@ uint8_t Lawicel::CMD_Set_ACn()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Set_AMn()
+uint8_t Lawicel::setAMnCmd()
 {
     uint8_t isError = 0;
 
@@ -917,7 +917,7 @@ uint8_t Lawicel::CMD_Set_AMn()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Set_Serial_Baudrate()
+uint8_t Lawicel::setSerialBaudrateCmd()
 {
     uint8_t isError = 0;
 
@@ -988,7 +988,7 @@ uint8_t Lawicel::CMD_Set_Serial_Baudrate()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Version()
+uint8_t Lawicel::getVersionCmd()
 {
     uint8_t isError = 0;
 
@@ -1001,7 +1001,7 @@ uint8_t Lawicel::CMD_Version()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Serial_Number()
+uint8_t Lawicel::getSerialNumberCmd()
 {
     uint8_t isError = 0;
 
@@ -1014,7 +1014,7 @@ uint8_t Lawicel::CMD_Serial_Number()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Timestamp()
+uint8_t Lawicel::toggleTimeStampCmd()
 {
     uint8_t isError = 0;
 
@@ -1052,7 +1052,7 @@ uint8_t Lawicel::CMD_Timestamp()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::CMD_Auto_Start()
+uint8_t Lawicel::toggleAutoStartCmd()
 {
     uint8_t isError = 0;
 
@@ -1070,19 +1070,19 @@ uint8_t Lawicel::CMD_Auto_Start()
         {
         case '0':
         {
-            m_autostart = 0;
+            m_autoStart = 0;
             m_selectedNVM->saveInt(INIT_AUTO_START, 0);
             break;
         }
         case '1':
         {
-            m_autostart = 1;
+            m_autoStart = 1;
             m_selectedNVM->saveInt(INIT_AUTO_START, 1);
             break;
         }
         case '2':
         {
-            m_autostart = 2;
+            m_autoStart = 2;
             m_selectedNVM->saveInt(INIT_AUTO_START, 2);
             break;
         }
@@ -1096,7 +1096,7 @@ uint8_t Lawicel::CMD_Auto_Start()
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::Autopoll()
+uint8_t Lawicel::autopoll()
 {
     uint8_t isError = 0;
 
@@ -1106,22 +1106,22 @@ uint8_t Lawicel::Autopoll()
     }
     else
     {
-        CANInterface::Frame frame = m_selectedCAN->pollSingle();
+        CANInterface::Frame frame;        
 
-        if (frame.ID != 0xFFF)
+        if (m_selectedCAN->pollSingle(frame) != 0)
         {
             char cmd = 't';
             int _id_length = 3;
-            if (frame.Extended == true && frame.RTR == false)
+            if (frame.m_extended == true && frame.m_rtr == false)
             {
                 cmd = 'T';
                 _id_length = 8;
             }
-            else if (frame.Extended == false && frame.RTR == true)
+            else if (frame.m_extended == false && frame.m_rtr == true)
             {
                 cmd = 'r';
             }
-            else if (frame.Extended == true && frame.RTR == true)
+            else if (frame.m_extended == true && frame.m_rtr == true)
             {
                 cmd = 'R';
                 _id_length = 8;
@@ -1129,20 +1129,20 @@ uint8_t Lawicel::Autopoll()
 
             m_serialReturn += cmd;
 
-            String _ID = String(frame.ID, HEX);
+            String _ID = String(frame.m_id, HEX);
             for (int i = 0; i < _id_length - _ID.length(); i++)
             {
                 m_serialReturn += '0';
             }
             m_serialReturn += _ID;
 
-            m_serialReturn += frame.DLC;
+            m_serialReturn += frame.m_dlc;
 
-            if (frame.RTR == false)
+            if (frame.m_rtr == false)
             {
-                for (int i = 0; i < frame.DLC; i++)
+                for (int i = 0; i < frame.m_dlc; i++)
                 {
-                    m_serialReturn += String(frame.Data[i], HEX);
+                    m_serialReturn += String(frame.m_data[i], HEX);
                 }
             }
 
@@ -1153,7 +1153,7 @@ uint8_t Lawicel::Autopoll()
         }
         else
         {
-            isError = 2; // it is no error, but marks the end of the message buffer
+            isError = 2; /**< it is no error, but marks the end of the message buffer */
         }
     }
     return isError;

@@ -21,12 +21,6 @@ Driver for Lawicel Protocol
 #include <SerialInterface.h>
 #include <NVMInterface.h>
 
-#define MAX_TIMESTAMP 0xEA5F    /**< Maximum value of a Timestamp, representing 1 Minute. */
-#define X_VERSION "V0101"       /**< Hardware and Software Version. */
-#define X_SERIAL_NUMBER "NNT32" /**< Hardware Serial Number. */
-#define CR 13                   /**< CR Character as OK Line Terminator */
-#define BELL 7                  /**< BEL Character as ERROR Line Terminator */
-
 /**
 * Key Definition (Adresses) to be read by NVM Adapter for initialization
 */
@@ -45,32 +39,48 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
+/**
+ * Lawicel Class contains the protocol to communicate between a Serial connection and a CAN Controller using ASCII symbols.
+ * @ref http://www.can232.com/docs/can232_v3.pdf
+ * @param serialInt             Serial Adapter (from abstract class SerialInterface) that 
+ *                              connects the Serial capabilities of the board to the protocol.
+ * @param canInt                CAN Adapter (from abstract class CANInterface) that
+ *                              connects the CAN Controller of the board to the protocol.
+ * @param nvmint                Non-Volatile Memory Adapter (from abstract class NVMInterface) that
+ *                              connects the NVM capability of the board to the protocol.
+ */
+
 class Lawicel
 {
 public:
     /* CONSTANTS ******************************************************************************/
+    const uint16_t MAX_TIMESTAMP = 0xEA5F;  /**< Maximum value of a Timestamp, representing 1 Minute. */
+    const String X_VERSION = "V0101";       /**< Hardware and Software Version. */
+    const String X_SERIAL_NUMBER = "NNT32"; /**< Hardware Serial Number. */
+    const char CR = 13;                     /**< CR Character as OK Line Terminator */
+    const char BELL = 7;                    /**< BEL Character as ERROR Line Terminator */
 
     /* TYPES **********************************************************************************/
 
     /**
-    * Constructor
+    * Default constructor creates instance of the class and connects the required Adapters.
     */
-    Lawicel(SerialInterface *_serialInt, CANInterface *_canInt, NVMInterface *_nvmInt) : m_selectedSerial(_serialInt),
-                                                                                         m_selectedCAN(_canInt),
-                                                                                         m_selectedNVM(_nvmInt)
+    Lawicel(SerialInterface &serialInt, CANInterface &canInt, NVMInterface &nvmInt) : m_selectedSerial(&serialInt),
+                                                                                      m_selectedCAN(&canInt),
+                                                                                      m_selectedNVM(&nvmInt)
     {
     }
 
     /**
-     *  Default Destructor
+     *  Default destructor deletes instance of the class.
      */
     ~Lawicel()
     {
     }
 
-    uint8_t handler(); /**< Handles the Serial Messages */
-    void begin();   /**< Initializes Module */
-    void end();     /**< Terminates Module */
+    uint8_t executeCycle(); /**< Handles the Serial Messages */
+    void begin();           /**< Initializes Module */
+    void end();             /**< Terminates Module */
 
 private:
     /**
@@ -105,30 +115,30 @@ private:
     uint8_t charToInt(char symbol);         /**< Translates char symbols of numbers into int values */
     uint32_t IdDecode(bool extended);       /**< Translates char ID into value */
 
-    uint8_t receiveCommand();          /**< Receives and Interprets Buffer with Serial Command */
-    uint8_t CMD_Set_Baudrate();        /**< Sets Baudrate through presets */
-    uint8_t CMD_Set_BTR();             /**< Sets Baudrate through Registers */
-    uint8_t CMD_Open_Normal();         /**< Opens CAN Channel in Normal Mode */
-    uint8_t CMD_Open_Listen_Only();    /**< Opens CAN Channel in Listen-Only Mode */
-    uint8_t CMD_Close();               /**< Closes CAN Channel */
-    uint8_t CMD_Tx_Std();              /**< Transmits standard CAN Frame (11-bit ID) */
-    uint8_t CMD_Tx_Ext();              /**< Transmits extended CAN Frame (29-bit ID) */
-    uint8_t CMD_Tx_Std_RTR();          /**< Transmits standard RTR CAN Frame (11-bit ID) */
-    uint8_t CMD_Tx_Ext_RTR();          /**< Transmits extended RTR CAN Frame (29-bit ID) */
-    uint8_t CMD_Poll_Single();         /**< Poll incomming FIFO for CAN frames (single poll) */
-    uint8_t CMD_Poll_All();            /**< Polls incomming FIFO for CAN frames (all pending frames) */
-    uint8_t CMD_Poll_Auto();           /**< Toggles Auto Poll for inconming Frames */
-    uint8_t CMD_Flags();               /**< Read Status Flags */
-    uint8_t CMD_Set_Filter_Mode();     /**< Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter */
-    uint8_t CMD_Set_ACn();             /**< Sets Acceptance Code Register */
-    uint8_t CMD_Set_AMn();             /**< Sets Acceptance Mask Register */
-    uint8_t CMD_Set_Serial_Baudrate(); /**< Sets UART Baudrate (and saves setting on EEPROM) */
-    uint8_t CMD_Version();             /**< Sends Hardware and Software Version */
-    uint8_t CMD_Serial_Number();       /**< Sends Serial Number of Hardware */
-    uint8_t CMD_Timestamp();           /**< Toggles Timestamp (and saves setting on EEPROM) */
-    uint8_t CMD_Auto_Start();          /**< Auto Startup feature (from power on) */
+    uint8_t receiveCommand();       /**< Receives and Interprets Buffer with Serial Command */
+    uint8_t setBaudrateCmd();       /**< Sets Baudrate through presets */
+    uint8_t setBTRCmd();            /**< Sets Baudrate through Registers */
+    uint8_t openNormalCmd();        /**< Opens CAN Channel in Normal Mode */
+    uint8_t openListenOnlyCmd();    /**< Opens CAN Channel in Listen-Only Mode */
+    uint8_t closeCmd();             /**< Closes CAN Channel */
+    uint8_t stdTxCmd();             /**< Transmits standard CAN Frame (11-bit ID) */
+    uint8_t extTxCmd();             /**< Transmits extended CAN Frame (29-bit ID) */
+    uint8_t stdRtrTxCmd();          /**< Transmits standard RTR CAN Frame (11-bit ID) */
+    uint8_t extRtrTxCmd();          /**< Transmits extended RTR CAN Frame (29-bit ID) */
+    uint8_t singlePollCmd();        /**< Poll incomming FIFO for CAN frames (single poll) */
+    uint8_t allPollCmd();           /**< Polls incomming FIFO for CAN frames (all pending frames) */
+    uint8_t toggleAutoPollCmd();    /**< Toggles Auto Poll for inconming Frames */
+    uint8_t getFlagsCmd();          /**< Read Status Flags */
+    uint8_t setFilterModeCmd();     /**< Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter */
+    uint8_t setACnCmd();            /**< Sets Acceptance Code Register */
+    uint8_t setAMnCmd();            /**< Sets Acceptance Mask Register */
+    uint8_t setSerialBaudrateCmd(); /**< Sets UART Baudrate (and saves setting on EEPROM) */
+    uint8_t getVersionCmd();        /**< Sends Hardware and Software Version */
+    uint8_t getSerialNumberCmd();   /**< Sends Serial Number of Hardware */
+    uint8_t toggleTimeStampCmd();   /**< Toggles Timestamp (and saves setting on EEPROM) */
+    uint8_t toggleAutoStartCmd();   /**< Auto Startup feature (from power on) */
 
-    uint8_t Autopoll(); /**< Frame Polling without any extra tags */
+    uint8_t autopoll();      /**< Frame Polling without any extra tags */
     uint32_t getTimestamp(); /**< Returns Timestamp */
 
     bool m_timestamp = false;   /**< Toggle timestamp */
@@ -136,12 +146,13 @@ private:
     String m_serialInput;       /**< Input String for Serial-Message */
     String m_serialReturn = ""; /**< String sent back to SerialAdapter */
     uint8_t m_length = 0;       /**< Length of Serial-Message */
-    uint8_t m_autostart = 0;    /**< Sets Auto Start Mode */
+    uint8_t m_autoStart = 0;    /**< Sets Auto Start Mode */
 
     SerialInterface *m_selectedSerial; /**< Active Serial Adapter */
     CANInterface *m_selectedCAN;       /**< Active CAN Adapter */
     NVMInterface *m_selectedNVM;       /**< Active NVM Adapter */
 
+private:
     /**
      *  Preventing copying, assigning and using an empty constructor
      */

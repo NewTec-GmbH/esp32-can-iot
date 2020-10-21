@@ -29,13 +29,13 @@ public:
         return 0;
     }
 
-    uint8_t send(const Frame &Frame)
+    uint8_t send(const Frame &frame)
     {
-        m_outputFrame = Frame;
+        m_outputFrame = frame;
         return 0;
     }
 
-    uint8_t setState(const BUS_STATE state)
+    uint8_t setState(BUS_STATE state)
     {
         switch (state)
         {
@@ -64,39 +64,39 @@ public:
         }
     }
 
-    uint8_t setBaudrate(const long baudrate)
+    uint8_t setBaudrate(uint32_t baudrate)
     {
         m_baudrate = baudrate;
         return 0;
     }
 
-    uint8_t setBTR(const uint8_t BTR0, const uint8_t BTR1)
+    uint8_t setBTR(uint8_t btr0, uint8_t btr1)
     {
-        m_BTR0 = BTR0;
-        m_BTR1 = BTR1;
+        m_BTR0 = btr0;
+        m_BTR1 = btr1;
         return 0;
     }
 
-    uint8_t setFilterMode(const bool Filter)
+    uint8_t setFilterMode(uint8_t filter)
     {
-        m_filtermode = Filter;
+        m_filtermode = filter;
         return 0;
     }
 
-    uint8_t setACn(const uint8_t *ACn)
+    uint8_t setACn(const uint8_t *acn)
     {
         for (int i = 0; i < 4; i++)
         {
-            m_ACn[i] = ACn[i];
+            m_ACn[i] = acn[i];
         }
         return 0;
     }
 
-    uint8_t setAMn(const uint8_t *AMn)
+    uint8_t setAMn(const uint8_t *amn)
     {
         for (int i = 0; i < 4; i++)
         {
-            m_AMn[i] = AMn[i];
+            m_AMn[i] = amn[i];
         }
         return 0;
     }
@@ -111,20 +111,21 @@ public:
         return 0;
     }
 
-    Frame pollSingle()
+    uint8_t pollSingle(Frame& frame)
     {
-        return m_inputFrame;
+        frame = m_inputFrame;
+        return 0;
     }
 
     void writeInputFrame(uint32_t _id, bool _rtr, bool _ext, uint8_t _dlc, uint8_t _data[8])
     {
-        m_inputFrame.ID = _id;
-        m_inputFrame.RTR = _rtr;
-        m_inputFrame.Extended = _ext;
-        m_inputFrame.DLC = _dlc;
+        m_inputFrame.m_id = _id;
+        m_inputFrame.m_rtr = _rtr;
+        m_inputFrame.m_extended = _ext;
+        m_inputFrame.m_dlc = _dlc;
         for (int i = 0; i < 8; i++)
         {
-            m_inputFrame.Data[i] = _data[i];
+            m_inputFrame.m_data[i] = _data[i];
         }
     }
 
@@ -148,13 +149,13 @@ public:
 
     void clearOutputframe()
     {
-        m_outputFrame.ID = 0x000;
-        m_outputFrame.DLC = 0;
-        m_outputFrame.Extended = false;
-        m_outputFrame.RTR = false;
+        m_outputFrame.m_id = 0x000;
+        m_outputFrame.m_dlc = 0;
+        m_outputFrame.m_extended = false;
+        m_outputFrame.m_rtr = false;
         for (int i = 0; i < 8; i++)
         {
-            m_outputFrame.Data[i] = 0;
+            m_outputFrame.m_data[i] = 0;
         }
     }
 

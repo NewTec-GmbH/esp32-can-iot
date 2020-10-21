@@ -19,10 +19,11 @@ Main Application
 #include <NVMAdapter.h>
 
 /* CONSTANTS **************************************************************************************/
+
 SerialAdapter serialAdapter;
 CANAdapter sja1000Adapter;
 NVMAdapter flashAdapter;
-Lawicel protocolLawicel(&serialAdapter, &sja1000Adapter, &flashAdapter);
+Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 
 /* MACROS *****************************************************************************************/
 
@@ -41,7 +42,7 @@ void setup()
 
 void loop()
 {
-  protocolLawicel.handler();
+  protocolLawicel.executeCycle();
 }
 
 /* PROTECTED METHODES *****************************************************************************/

@@ -25,6 +25,9 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
+/**
+ *  ESP-32 Adapter as implementation of CANInterface for the Lawicel Protocol.
+ */
 class CANAdapter : public CANInterface
 {
 public:
@@ -33,187 +36,220 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-    * Default constructor.
+    * Default constructor creates instance of the class using default values.
+    * Uses CANInterface constructor as its the implementation of an Interface
     */
-    CANAdapter() : CANInterface(), m_baudrate(0), m_currentstate(CLOSED)
+    CANAdapter() : CANInterface(), m_baudRate(0), m_currentState(CLOSED)
     {
     }
 
     /**
-    * Default destructor.
+    * Default destructor deletes instance of the class.
     */
     ~CANAdapter()
     {
     }
 
     /** 
-    * Initialize Module.
+    * Configures and starts the CAN Controller to use the user values.
+    * @return isError = 0 for OK, 1 for Error 
     */
     uint8_t begin()
     {
-        CAN.begin(500E3);
-        CAN.sleep();
-        return 0;
+        uint8_t isError = 0;
+        if (CAN.begin(500E3) == 0)
+        {
+            isError = 1;
+        }
+        else
+        {
+            CAN.sleep();
+        }
+
+        return isError;
     }
 
     /** 
-    * Terminate Module. 
+    * Stops the Controller Module without destroying the instance.
+    * @return isError = 0 for OK, 1 for Error 
     */
     uint8_t end()
     {
+        CAN.end();
         return 0;
     }
 
     /**
-    * Send a Frame.
+    * Send a Frame from Serial to CAN Channel
+    * @param &Frame     Reference to the Frame to be sended
+    * @return isError = 0 for OK, 1 for Error 
     */
-    uint8_t send(const Frame &Frame)
+    uint8_t send(const Frame &frame)
     {
-        if (Frame.Extended)
+        uint8_t isError = 0;
+        if (frame.m_extended)
         {
-            CAN.beginExtendedPacket(Frame.ID, Frame.DLC, Frame.RTR);
+            if (CAN.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            {
+                isError = 1;
+            }
         }
         else
         {
-            CAN.beginPacket(Frame.ID, Frame.DLC, Frame.RTR);
+            if (CAN.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            {
+                isError = 1;
+            }
         }
 
-        CAN.write(Frame.Data, Frame.DLC);
+        CAN.write(frame.m_data, frame.m_dlc);
 
-        if (CAN.endPacket() == 1)
+        if (CAN.endPacket() == 0)
         {
-            return 0;
+            isError = 1;
         }
 
-        return 1;
+        return isError;
     }
 
     /**
     * Set the State of the CAN Channel.
+    * @param state          BUS_STATE to be set to the CAN Channel
+    * @return isError = 0 for OK, 1 for Error 
     */
-    uint8_t setState(const BUS_STATE state)
+    uint8_t setState(BUS_STATE state)
     {
+        uint8_t isError = 0;
         switch (state)
         {
         case CLOSED:
-            //CAN.end();
             CAN.sleep();
-            m_currentstate = CLOSED;
-            return 0;
+            m_currentState = CLOSED;
+            break;
 
         case NORMAL:
-            if (m_baudrate == 0)
+            if (m_baudRate == 0)
             {
-                return 1;
+                isError = 1;
             }
-            //CAN.begin(m_baudrate);
             CAN.wakeup();
-            m_currentstate = NORMAL;
-            return 0;
+            m_currentState = NORMAL;
+            break;
 
         case LISTEN_ONLY:
-            if (m_baudrate == 0)
+            if (m_baudRate == 0)
             {
-                return 1;
+                isError = 1;
             }
-            //CAN.begin(m_baudrate);
             CAN.wakeup();
-            m_currentstate = LISTEN_ONLY;
-            return 0;
+            m_currentState = LISTEN_ONLY;
+            break;
 
         default:
-            return 1;
+            isError = 1;
+            break;
         }
+
+        return isError;
     }
 
     /**
     * Set the Baudrate of the CAN Channel.
+    * @return isError = 0 for OK, 1 for Error 
     */
-    uint8_t setBaudrate(const long baudrate)
+    uint8_t setBaudrate(uint32_t baudrate)
     {
-        m_baudrate = baudrate;
+        uint8_t isError = 0;
+        m_baudRate = baudrate;
         CAN.end();
-        CAN.begin(m_baudrate);
+        if (CAN.begin(m_baudRate) == 0)
+        {
+            isError = 1;
+        }
         CAN.sleep();
-        return 0;
+        return isError;
     }
 
     /**
     * Sent the BTR Registers of the CAN Channel.
+    * @return 0 for OK, 1 for Error 
     */
-    uint8_t setBTR(const uint8_t BTR0, const uint8_t BTR1)
+    uint8_t setBTR(uint8_t btr0, uint8_t btr1)
     {
-        return 1; //Must write to register
+        return 1; /**< Must write to register. It returns error as the Controller does not allow it */
     }
 
     /**
     * Set the Filter Mode of the CAN Channel.
+    * @return 0 for OK, 1 for Error 
     */
-    uint8_t setFilterMode(const bool Filter)
+    uint8_t setFilterMode(uint8_t filter)
     {
-        return 1; //Must write to register
+        return 1; /**< Must write to register. It returns error as the Controller does not allow it */
     }
 
     /**
     * Set the Acceptance Code Register.
+    * @todo Try to configure this
     */
-    uint8_t setACn(const uint8_t *ACn)
+    uint8_t setACn(const uint8_t *acn)
     {
         return 1;
     }
 
     /**
     * Set the Acceptance Mask Register.
+    * @todo Try to configure this
     */
-    uint8_t setAMn(const uint8_t *AMn)
+    uint8_t setAMn(const uint8_t *amn)
     {
         return 1;
     }
 
     /**
     * Gets the Channel State from the CAN Controller.
+    * @return BUS_STATE m_currentState stores the state of the CAN Channel.
     */
     uint8_t getChannelState()
     {
-        return m_currentstate;
+        return m_currentState;
     }
 
     /**
     * Gets the Status and Error Flags from the CAN Controller.
+    * @return 0 for OK, 1 for Error 
     */
     uint8_t getStatusFlags()
     {
-        return 1; //Must read register
+        return 1; /**< Must write to register. It returns error as the Controller does not allow it */
     }
 
     /**
     * Polls one Message from the FIFO Buffer.
+    * @return isError = 0 for OK, 1 for Error 
     */
-    Frame pollSingle()
+    uint8_t pollSingle(Frame &frame)
     {
-        Frame frame;
-        if (CAN.parsePacket() == 0)
+        uint8_t availableFrames = CAN.parsePacket();
+        if (availableFrames != 0)
         {
-            frame.ID = 0xFFF;
-            return frame;
+            frame.m_id = CAN.packetId();
+            frame.m_dlc = CAN.packetDlc();
+            frame.m_extended = CAN.packetExtended();
+            frame.m_rtr = CAN.packetRtr();
+
+            for (int i = 0; i < frame.m_dlc; i++)
+            {
+                frame.m_data[i] = CAN.read();
+            }
         }
 
-        frame.ID = CAN.packetId();
-        frame.DLC = CAN.packetDlc();
-        frame.Extended = CAN.packetExtended();
-        frame.RTR = CAN.packetRtr();
-
-        for (int i = 0; i < frame.DLC; i++)
-        {
-            frame.Data[i] = CAN.read();
-        }
-
-        return frame;
+        return availableFrames;
     }
 
 private:
-    long m_baudrate;
-    BUS_STATE m_currentstate;
+    uint32_t m_baudRate;
+    BUS_STATE m_currentState;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/
