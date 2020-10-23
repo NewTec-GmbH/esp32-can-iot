@@ -49,9 +49,8 @@ uint8_t Lawicel::executeCycle()
     m_serialReturn = "";
 
     m_serialInput = m_selectedSerial->read();
-    m_length = m_serialInput.length();
 
-    if (m_length != 0)
+    if (m_serialInput.length() != 0)
     {
         uint8_t CMD_status = receiveCommand();
 
@@ -241,7 +240,6 @@ uint32_t Lawicel::IdDecode(bool extended)
 uint8_t Lawicel::receiveCommand()
 {
     uint8_t isError = 0;
-    m_length = m_serialInput.length();
     switch (m_serialInput.charAt(0))
     {
     case SET_BAUDRATE:
@@ -386,7 +384,7 @@ uint8_t Lawicel::setBaudrateCmd()
 
     long _baudrate = 0;
 
-    if (m_length != 2)
+    if (m_serialInput.length() != 2)
     {
         isError = 1;
     }
@@ -465,7 +463,7 @@ uint8_t Lawicel::setBTRCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length != 5)
+    if (m_serialInput.length() != 5)
     {
         isError = 1;
     }
@@ -489,7 +487,7 @@ uint8_t Lawicel::openNormalCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length > 1)
+    if (m_serialInput.length() > 1)
     {
         isError = 1;
     }
@@ -510,7 +508,7 @@ uint8_t Lawicel::openListenOnlyCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length > 1)
+    if (m_serialInput.length() > 1)
     {
         isError = 1;
     }
@@ -531,7 +529,7 @@ uint8_t Lawicel::closeCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length > 1)
+    if (m_serialInput.length() > 1)
     {
         isError = 1;
     }
@@ -559,7 +557,7 @@ uint8_t Lawicel::stdTxCmd()
     frame.m_id = _id;
     frame.m_dlc = _dlc;
 
-    if (m_length != ((2 * _dlc) + 5))
+    if (m_serialInput.length() != ((2 * _dlc) + 5))
     {
         isError = 1;
     }
@@ -593,7 +591,7 @@ uint8_t Lawicel::extTxCmd()
     frame.m_dlc = _dlc;
     frame.m_extended = true;
 
-    if (m_length != ((2 * _dlc) + 10))
+    if (m_serialInput.length() != ((2 * _dlc) + 10))
     {
         isError = 1;
     }
@@ -626,7 +624,7 @@ uint8_t Lawicel::stdRtrTxCmd()
     frame.m_dlc = _dlc;
     frame.m_rtr = true;
 
-    if (m_length != 5)
+    if (m_serialInput.length() != 5)
     {
         isError = 1;
     }
@@ -655,7 +653,7 @@ uint8_t Lawicel::extRtrTxCmd()
     frame.m_extended = true;
     frame.m_rtr = true;
 
-    if (m_length != 10)
+    if (m_serialInput.length() != 10)
     {
         isError = 1;
     }
@@ -675,7 +673,7 @@ uint8_t Lawicel::singlePollCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length > 1)
+    if (m_serialInput.length() > 1)
     {
         isError = 1;
     }
@@ -743,7 +741,7 @@ uint8_t Lawicel::allPollCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length > 1)
+    if (m_serialInput.length() > 1)
     {
         isError = 1;
     }
@@ -771,7 +769,7 @@ uint8_t Lawicel::toggleAutoPollCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length != 2)
+    if (m_serialInput.length() != 2)
     {
         isError = 1;
     }
@@ -803,7 +801,7 @@ uint8_t Lawicel::toggleAutoPollCmd()
 uint8_t Lawicel::getFlagsCmd()
 {
     uint8_t isError = 0;
-    if (m_length > 1)
+    if (m_serialInput.length() > 1)
     {
         isError = 1;
     }
@@ -823,7 +821,7 @@ uint8_t Lawicel::setFilterModeCmd()
 {
     uint8_t isError = 0;
     bool filterMode;
-    if (m_length != 2)
+    if (m_serialInput.length() != 2)
     {
         isError = 1;
     }
@@ -862,7 +860,7 @@ uint8_t Lawicel::setACnCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length != 9)
+    if (m_serialInput.length() != 9)
     {
         isError = 1;
     }
@@ -891,7 +889,7 @@ uint8_t Lawicel::setAMnCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length != 9)
+    if (m_serialInput.length() != 9)
     {
         isError = 1;
     }
@@ -923,7 +921,7 @@ uint8_t Lawicel::setSerialBaudrateCmd()
 
     long _baudrate = 0;
 
-    if (m_length != 2)
+    if (m_serialInput.length() != 2)
     {
         isError = 1;
     }
@@ -992,7 +990,7 @@ uint8_t Lawicel::getVersionCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length > 1)
+    if (m_serialInput.length() > 1)
     {
         isError = 1;
     }
@@ -1005,7 +1003,7 @@ uint8_t Lawicel::getSerialNumberCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length > 1)
+    if (m_serialInput.length() > 1)
     {
         isError = 1;
     }
@@ -1018,7 +1016,7 @@ uint8_t Lawicel::toggleTimeStampCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length != 2)
+    if (m_serialInput.length() != 2)
     {
         isError = 1;
     }
@@ -1056,7 +1054,7 @@ uint8_t Lawicel::toggleAutoStartCmd()
 {
     uint8_t isError = 0;
 
-    if (m_length != 2)
+    if (m_serialInput.length() != 2)
     {
         isError = 1;
     }

@@ -145,7 +145,6 @@ private:
     bool m_autoPolling = true;  /**< Toggle Auto-Polling */
     String m_serialInput;       /**< Input String for Serial-Message */
     String m_serialReturn = ""; /**< String sent back to SerialAdapter */
-    uint8_t m_length = 0;       /**< Length of Serial-Message */
     uint8_t m_autoStart = 0;    /**< Sets Auto Start Mode */
 
     SerialInterface *m_selectedSerial; /**< Active Serial Adapter */
