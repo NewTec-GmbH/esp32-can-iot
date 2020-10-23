@@ -451,7 +451,7 @@ uint8_t Lawicel::setBaudrateCmd()
 
     if (isError == 0)
     {
-        m_selectedNVM->saveString(INIT_CAN_BAUD, m_serialInput);
+        m_selectedNVM->save(INIT_CAN_BAUD, m_serialInput);
         isError = m_selectedCAN->setBaudrate(_baudrate);
     }
 
@@ -848,7 +848,7 @@ uint8_t Lawicel::setFilterModeCmd()
 
         if (isError == 0)
         {
-            m_selectedNVM->saveString(INIT_FILTER_MODE, m_serialInput);
+            m_selectedNVM->save(INIT_FILTER_MODE, m_serialInput);
             isError = m_selectedCAN->setFilterMode(filterMode);
         }
     }
@@ -877,7 +877,7 @@ uint8_t Lawicel::setACnCmd()
         ACn[2] = charToByte(m_serialInput.charAt(5), m_serialInput.charAt(6));
         ACn[3] = charToByte(m_serialInput.charAt(7), m_serialInput.charAt(8));
 
-        m_selectedNVM->saveString(INIT_FILTER_ACN, m_serialInput);
+        m_selectedNVM->save(INIT_FILTER_ACN, m_serialInput);
 
         isError = m_selectedCAN->setACn(ACn);
     }
@@ -906,7 +906,7 @@ uint8_t Lawicel::setAMnCmd()
         AMn[2] = charToByte(m_serialInput.charAt(5), m_serialInput.charAt(6));
         AMn[3] = charToByte(m_serialInput.charAt(7), m_serialInput.charAt(8));
 
-        m_selectedNVM->saveString(INIT_FILTER_AMN, m_serialInput);
+        m_selectedNVM->save(INIT_FILTER_AMN, m_serialInput);
 
         isError = m_selectedCAN->setAMn(AMn);
     }
@@ -977,7 +977,7 @@ uint8_t Lawicel::setSerialBaudrateCmd()
 
         if (isError == 0)
         {
-            m_selectedNVM->saveString(INIT_SERIAL_BAUD, m_serialInput);
+            m_selectedNVM->save(INIT_SERIAL_BAUD, m_serialInput);
             m_selectedSerial->setBaudrate(_baudrate);
         }
     }
@@ -1031,13 +1031,13 @@ uint8_t Lawicel::toggleTimeStampCmd()
         case '0':
         {
             m_timestamp = false;
-            m_selectedNVM->saveInt(INIT_TIMESTAMP, 0);
+            m_selectedNVM->save(INIT_TIMESTAMP, 0);
             break;
         }
         case '1':
         {
             m_timestamp = true;
-            m_selectedNVM->saveInt(INIT_TIMESTAMP, 1);
+            m_selectedNVM->save(INIT_TIMESTAMP, 1);
             break;
         }
         default:
@@ -1069,19 +1069,19 @@ uint8_t Lawicel::toggleAutoStartCmd()
         case '0':
         {
             m_autoStart = 0;
-            m_selectedNVM->saveInt(INIT_AUTO_START, 0);
+            m_selectedNVM->save(INIT_AUTO_START, 0);
             break;
         }
         case '1':
         {
             m_autoStart = 1;
-            m_selectedNVM->saveInt(INIT_AUTO_START, 1);
+            m_selectedNVM->save(INIT_AUTO_START, 1);
             break;
         }
         case '2':
         {
             m_autoStart = 2;
-            m_selectedNVM->saveInt(INIT_AUTO_START, 2);
+            m_selectedNVM->save(INIT_AUTO_START, 2);
             break;
         }
         default:
