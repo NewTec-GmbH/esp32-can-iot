@@ -50,7 +50,7 @@ uint8_t Lawicel::executeCycle()
     char c = '\a';
     m_selectedSerial->read(c);
 
-    if (c == '\r')
+    if ('\r' == c)
     {
         uint8_t CMD_status = receiveCommand();
 
@@ -84,6 +84,10 @@ uint8_t Lawicel::executeCycle()
         }
 
         m_serialInput = "";
+    }
+    else if(m_serialInput.length() > 30)
+    {
+        isError = 1;
     }
     else if(c != '\a')
     {
