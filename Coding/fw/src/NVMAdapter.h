@@ -72,7 +72,7 @@ public:
     /**
     * Save Data in NVM
     */
-    void save(String name, int32_t value)
+    void save(const String &name, int32_t value)
     {
         nvm.begin("Startup", false);
         nvm.putULong(name.c_str(), value);
@@ -82,7 +82,7 @@ public:
     /**
     * Save String in NVM
     */
-    void save(String name, String value)
+    void save(const String &name, const String &value)
     {
         nvm.begin("Startup", false);
         nvm.putString(name.c_str(), value);

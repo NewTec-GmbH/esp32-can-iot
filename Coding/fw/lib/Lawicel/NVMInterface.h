@@ -60,12 +60,12 @@ public:
   /**
   * Save Data in NVM
   */
-  virtual void save(String name, int32_t value) = 0;
+  virtual void save(const String &name, int32_t value) = 0;
 
   /**
   * Save String in NVM
   */
-  virtual void save(String name, String value) = 0;
+  virtual void save(const String &name, const String &value) = 0;
 
   /**
   * Read Data from NVM
