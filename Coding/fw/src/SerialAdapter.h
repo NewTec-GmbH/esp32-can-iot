@@ -66,30 +66,28 @@ public:
   /**
   * Sets the Baudrate for Serial Communication.
   */
-  void setBaudrate(long _baudrate)
+  void setBaudrate(uint32_t baudrate)
   {
-    m_baudrate = _baudrate;
+    m_baudrate = baudrate;
     Serial.updateBaudRate(m_baudrate);
   }
 
   /**
   * Reads the Serial Adapter into a buffer.
   */
-  String read()
+  uint8_t read(char &c)
   {
-    if (Serial.available() > 0){
-      return Serial.readStringUntil('\r');
-    }
-    else
+    if ((Serial.available() > 0) && (Serial.available() < 30))
     {
-      return "";
-    }        
+      c = Serial.read();
+    }
+    return 0;
   }
 
   /**
   * Prints a Line to Serial Adapter.
   */
-  void print(String string)
+  void print(const String &string)
   {
     Serial.print(string);
   }
@@ -97,7 +95,7 @@ public:
   /**
   * Prints an Integer to Serial Adapter.
   */
-  void print(int num)
+  void print(uint32_t num)
   {
     Serial.println(num);
   }
@@ -113,10 +111,11 @@ public:
 protected:
 private:
   long m_baudrate;
+  String currentCommand = "";
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/
 
 /* PROTOTYPES *********************************************************************************/
 
-#endif /* XXXXX_H */
+#endif /* SERIAL_ADAPTER_H */

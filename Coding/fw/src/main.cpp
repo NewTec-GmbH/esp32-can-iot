@@ -20,11 +20,6 @@ Main Application
 
 /* CONSTANTS **************************************************************************************/
 
-SerialAdapter serialAdapter;
-CANAdapter sja1000Adapter;
-NVMAdapter flashAdapter;
-Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
-
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
@@ -32,6 +27,11 @@ Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
+
+SerialAdapter serialAdapter;
+CANAdapter sja1000Adapter;
+NVMAdapter flashAdapter;
+Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/
 

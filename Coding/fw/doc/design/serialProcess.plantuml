@@ -1,0 +1,16 @@
+@startuml
+
+Title Serial Process
+skinparam responseMessageBelowArrow true
+mainloop --> Lawicel : executeCycle()
+Lawicel --> serialAdapter : read(c)
+serialAdapter --> serialAdapter : Read a Char from Serial \n and write it in "c"
+serialAdapter --> Lawicel : Add "c" to serialInput String
+
+alt "c" equals "CR"
+    Lawicel --> Lawicel : process Message
+    Lawicel --> serialAdapter : return answer
+end
+Lawicel --> mainloop : return 0
+
+@enduml

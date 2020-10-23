@@ -12,7 +12,7 @@ Driver for Lawicel Protocol @ref Lawicel.h
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
-#include <Lawicel.h>
+#include "Lawicel.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -47,10 +47,10 @@ uint8_t Lawicel::executeCycle()
     }
 
     m_serialReturn = "";
+    char c = '\a';
+    m_selectedSerial->read(c);
 
-    m_serialInput = m_selectedSerial->read();
-
-    if (m_serialInput.length() != 0)
+    if (c == '\r')
     {
         uint8_t CMD_status = receiveCommand();
 
@@ -82,6 +82,12 @@ uint8_t Lawicel::executeCycle()
             m_serialReturn += (char)CR;
             m_selectedSerial->print(m_serialReturn);
         }
+
+        m_serialInput = "";
+    }
+    else if(c != '\a')
+    {
+        m_serialInput += c;
     }
 
     return isError;
@@ -1104,7 +1110,7 @@ uint8_t Lawicel::autopoll()
     }
     else
     {
-        CANInterface::Frame frame;        
+        CANInterface::Frame frame;
 
         if (m_selectedCAN->pollSingle(frame) != 0)
         {

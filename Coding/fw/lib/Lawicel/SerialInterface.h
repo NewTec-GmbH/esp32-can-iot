@@ -27,63 +27,63 @@ extern "C"
 class SerialInterface
 {
 public:
-    /* CONSTANTS ******************************************************************************/
+  /* CONSTANTS ******************************************************************************/
 
-    /* TYPES **********************************************************************************/
+  /* TYPES **********************************************************************************/
 
-   /** 
+  /** 
    * Default constructor. 
    */
-    SerialInterface()
-    {
-    }
+  SerialInterface()
+  {
+  }
 
-   /** 
+  /** 
    * Default destructor. 
    */
-    virtual ~SerialInterface()
-    {
-    }
+  virtual ~SerialInterface()
+  {
+  }
 
-   /** 
+  /** 
    * Initialize Module.
    */
-    virtual uint8_t begin() = 0;
+  virtual uint8_t begin() = 0;
 
-   /** 
+  /** 
    * Terminate Module. 
    */
-    virtual uint8_t end() = 0;
+  virtual uint8_t end() = 0;
 
-   /** 
+  /** 
    * Sets the Baudrate for Serial Communication.
-   * @param[in] _baudrate      Baudrate for Serial Communication
+   * @param[in] baudrate      Baudrate for Serial Communication
    */
-    virtual void setBaudrate(long _baudrate) = 0;
+  virtual void setBaudrate(uint32_t baudrate) = 0;
 
-   /** 
+  /** 
    * Reads the Serial Adapter into a buffer.
    * @return Serial input 
    */
-    virtual String read() = 0;
+  virtual uint8_t read(char &c) = 0;
 
-   /** 
+  /** 
    * Prints a String to Serial Adapter.
    * @param[in] string     String to be printed
    */
-    virtual void print(String string) = 0;
+  virtual void print(const String &string) = 0;
 
-   /** 
+  /** 
    * Prints an Integer to Serial Adapter.
    * @param[in] num     Integer to be printed
    */
-    virtual void print(int num) = 0;
+  virtual void print(uint32_t num) = 0;
 
-   /** 
+  /** 
    * Prints a Character to Serial Adapter.
    * @param[in] c     Character to be printed
    */
-    virtual void print(char c) = 0;
+  virtual void print(char c) = 0;
 
 private:
 };

@@ -25,12 +25,12 @@ public:
         return 0;
     }
 
-    void saveInt(String name, int32_t value)
+    void save(const String &name, int32_t value)
     {
         m_outputInt = value;
     }
 
-    void saveString(String name, String value)
+    void save(const String &name, const String &value)
     {
         m_outputString = value;
     }
@@ -47,17 +47,15 @@ public:
             counter++;
         }
 
-        if(str == "AutoStart")
+        if (str == "AutoStart")
         {
             out = m_autostart;
         }
 
-        if(str == "ToggleTime")
+        if (str == "ToggleTime")
         {
             out = m_toggletime;
         }
-
-
 
         return out;
     }
