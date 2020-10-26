@@ -155,43 +155,133 @@ void Lawicel::end()
 bool Lawicel::charToByte(char msb, char lsb, uint8_t &result)
 {
     bool isError = OK;
-    uint8_t output = 0xFF;
+    uint8_t output = 0;
 
-    if (msb >= 48 && msb <= 57)
+    switch (msb)
     {
-        output = (msb - 48) * 16;
-    }
-    else if (msb >= 65 && msb <= 70)
-    {
-        output = (msb - 55) * 16;
-    }
-    else if (msb >= 97 && msb <= 102)
-    {
-        output = (msb - 87) * 16;
-    }
-    else
-    {
+    case '0':
+        output = 0x00;
+        break;
+    case '1':
+        output = 0x10;
+        break;
+    case '2':
+        output = 0x20;
+        break;
+    case '3':
+        output = 0x30;
+        break;
+    case '4':
+        output = 0x40;
+        break;
+    case '5':
+        output = 0x50;
+        break;
+    case '6':
+        output = 0x60;
+        break;
+    case '7':
+        output = 0x70;
+        break;
+    case '8':
+        output = 0x80;
+        break;
+    case '9':
+        output = 0x90;
+        break;
+    case 'a':
+    case 'A':
+        output = 0xA0;
+        break;
+    case 'b':
+    case 'B':
+        output = 0xB0;
+        break;
+    case 'c':
+    case 'C':
+        output = 0xC0;
+        break;
+    case 'd':
+    case 'D':
+        output = 0xD0;
+        break;
+    case 'e':
+    case 'E':
+        output = 0xE0;
+        break;
+    case 'f':
+    case 'F':
+        output = 0xF0;
+        break;
+
+    default:
         isError = ERROR;
+        break;
     }
 
-    if (lsb >= 48 && lsb <= 57)
+    switch (lsb)
     {
-        output = output + (lsb - 48);
-    }
-    else if (lsb >= 65 && lsb <= 70)
-    {
-        output = output + (lsb - 55);
-    }
-    else if (lsb >= 97 && lsb <= 102)
-    {
-        output = output + (lsb - 87);
-    }
-    else
-    {
+    case '0':
+        output += 0x00;
+        break;
+    case '1':
+        output += 0x1;
+        break;
+    case '2':
+        output += 0x2;
+        break;
+    case '3':
+        output += 0x3;
+        break;
+    case '4':
+        output += 0x4;
+        break;
+    case '5':
+        output += 0x5;
+        break;
+    case '6':
+        output += 0x6;
+        break;
+    case '7':
+        output += 0x7;
+        break;
+    case '8':
+        output += 0x8;
+        break;
+    case '9':
+        output += 0x9;
+        break;
+    case 'a':
+    case 'A':
+        output += 0xA;
+        break;
+    case 'b':
+    case 'B':
+        output += 0xB;
+        break;
+    case 'c':
+    case 'C':
+        output += 0xC;
+        break;
+    case 'd':
+    case 'D':
+        output += 0xD;
+        break;
+    case 'e':
+    case 'E':
+        output += 0xE;
+        break;
+    case 'f':
+    case 'F':
+        output += 0xF;
+        break;
+
+    default:
         isError = ERROR;
+        break;
     }
 
-    if (isError == OK)
+    if(isError == OK)
     {
         result = output;
     }
