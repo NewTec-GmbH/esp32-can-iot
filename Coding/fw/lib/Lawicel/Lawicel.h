@@ -115,6 +115,13 @@ private:
         AUTO_START = 'Q'        /**< Auto-Startup with CAN Channel open and filters */
     };
 
+    enum CMD_STATE : int
+    {
+        OK = 0,       /**< Command processed with no Errors*/
+        ERROR,        /**< Error. Command not processed*/
+        END_OF_BUFFER /**< No Error. End of CAN Frame Receiving Buffer */
+    };
+
     bool charToByte(char msb, char lsb, uint8_t &result);                     /**< Translates char symbols of a Byte into hex values */
     bool charToInt(char symbol, uint8_t &result);                             /**< Translates char symbols of numbers into int values */
     bool IdDecode(bool extended, const String &lawicelCMD, uint32_t &result); /**< Translates char ID into value */
