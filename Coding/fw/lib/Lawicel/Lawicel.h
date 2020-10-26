@@ -111,39 +111,39 @@ private:
         AUTO_START = 'Q'        /**< Auto-Startup with CAN Channel open and filters */
     };
 
-    uint8_t charToByte(char MSB, char LSB); /**< Translates char symbols of a Byte into hex values */
-    uint8_t charToInt(char symbol);         /**< Translates char symbols of numbers into int values */
-    uint32_t IdDecode(bool extended);       /**< Translates char ID into value */
+    bool charToByte(char msb, char lsb, uint8_t& result); /**< Translates char symbols of a Byte into hex values */
+    bool charToInt(char symbol, uint8_t &result);         /**< Translates char symbols of numbers into int values */
+    bool IdDecode(bool extended, const String &lawicelCMD, uint32_t &result);       /**< Translates char ID into value */
 
-    uint8_t receiveCommand();       /**< Receives and Interprets Buffer with Serial Command */
-    uint8_t setBaudrateCmd();       /**< Sets Baudrate through presets */
-    uint8_t setBTRCmd();            /**< Sets Baudrate through Registers */
-    uint8_t openNormalCmd();        /**< Opens CAN Channel in Normal Mode */
-    uint8_t openListenOnlyCmd();    /**< Opens CAN Channel in Listen-Only Mode */
-    uint8_t closeCmd();             /**< Closes CAN Channel */
-    uint8_t stdTxCmd();             /**< Transmits standard CAN Frame (11-bit ID) */
-    uint8_t extTxCmd();             /**< Transmits extended CAN Frame (29-bit ID) */
-    uint8_t stdRtrTxCmd();          /**< Transmits standard RTR CAN Frame (11-bit ID) */
-    uint8_t extRtrTxCmd();          /**< Transmits extended RTR CAN Frame (29-bit ID) */
-    uint8_t singlePollCmd();        /**< Poll incomming FIFO for CAN frames (single poll) */
-    uint8_t allPollCmd();           /**< Polls incomming FIFO for CAN frames (all pending frames) */
-    uint8_t toggleAutoPollCmd();    /**< Toggles Auto Poll for inconming Frames */
-    uint8_t getFlagsCmd();          /**< Read Status Flags */
-    uint8_t setFilterModeCmd();     /**< Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter */
-    uint8_t setACnCmd();            /**< Sets Acceptance Code Register */
-    uint8_t setAMnCmd();            /**< Sets Acceptance Mask Register */
-    uint8_t setSerialBaudrateCmd(); /**< Sets UART Baudrate (and saves setting on EEPROM) */
-    uint8_t getVersionCmd();        /**< Sends Hardware and Software Version */
-    uint8_t getSerialNumberCmd();   /**< Sends Serial Number of Hardware */
-    uint8_t toggleTimeStampCmd();   /**< Toggles Timestamp (and saves setting on EEPROM) */
-    uint8_t toggleAutoStartCmd();   /**< Auto Startup feature (from power on) */
+    uint8_t receiveCommand(const String &lawicelCMD); /**< Receives and Interprets Buffer with Serial Command */
+    uint8_t setBaudrateCmd(const String &lawicelCMD);                         /**< Sets Baudrate through presets */
+    uint8_t setBTRCmd(const String &lawicelCMD);                              /**< Sets Baudrate through Registers */
+    uint8_t openNormalCmd(const String &lawicelCMD);                          /**< Opens CAN Channel in Normal Mode */
+    uint8_t openListenOnlyCmd(const String &lawicelCMD);                      /**< Opens CAN Channel in Listen-Only Mode */
+    uint8_t closeCmd(const String &lawicelCMD);                               /**< Closes CAN Channel */
+    uint8_t stdTxCmd(const String &lawicelCMD);                               /**< Transmits standard CAN Frame (11-bit ID) */
+    uint8_t extTxCmd(const String &lawicelCMD);                               /**< Transmits extended CAN Frame (29-bit ID) */
+    uint8_t stdRtrTxCmd(const String &lawicelCMD);                            /**< Transmits standard RTR CAN Frame (11-bit ID) */
+    uint8_t extRtrTxCmd(const String &lawicelCMD);                            /**< Transmits extended RTR CAN Frame (29-bit ID) */
+    uint8_t singlePollCmd(const String &lawicelCMD);                          /**< Poll incomming FIFO for CAN frames (single poll) */
+    uint8_t allPollCmd(const String &lawicelCMD);                             /**< Polls incomming FIFO for CAN frames (all pending frames) */
+    uint8_t toggleAutoPollCmd(const String &lawicelCMD);                      /**< Toggles Auto Poll for inconming Frames */
+    uint8_t getFlagsCmd(const String &lawicelCMD);                            /**< Read Status Flags */
+    uint8_t setFilterModeCmd(const String &lawicelCMD);                       /**< Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter */
+    uint8_t setACnCmd(const String &lawicelCMD);                              /**< Sets Acceptance Code Register */
+    uint8_t setAMnCmd(const String &lawicelCMD);                              /**< Sets Acceptance Mask Register */
+    uint8_t setSerialBaudrateCmd(const String &lawicelCMD);                   /**< Sets UART Baudrate (and saves setting on EEPROM) */
+    uint8_t getVersionCmd(const String &lawicelCMD);                          /**< Sends Hardware and Software Version */
+    uint8_t getSerialNumberCmd(const String &lawicelCMD);                     /**< Sends Serial Number of Hardware */
+    uint8_t toggleTimeStampCmd(const String &lawicelCMD);                     /**< Toggles Timestamp (and saves setting on EEPROM) */
+    uint8_t toggleAutoStartCmd(const String &lawicelCMD);                     /**< Auto Startup feature (from power on) */
 
     uint8_t autopoll();      /**< Frame Polling without any extra tags */
     uint32_t getTimestamp(); /**< Returns Timestamp */
 
     bool m_timestamp = false;   /**< Toggle timestamp */
     bool m_autoPolling = true;  /**< Toggle Auto-Polling */
-    String m_serialInput = "";       /**< Input String for Serial-Message */
+    String m_serialInput = "";  /**< Input String for Serial-Message */
     String m_serialReturn = ""; /**< String sent back to SerialAdapter */
     uint8_t m_autoStart = 0;    /**< Sets Auto Start Mode */
 
