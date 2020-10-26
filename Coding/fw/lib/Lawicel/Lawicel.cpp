@@ -281,7 +281,7 @@ bool Lawicel::charToByte(char msb, char lsb, uint8_t &result)
         break;
     }
 
-    if(isError == OK)
+    if (isError == OK)
     {
         result = output;
     }
@@ -359,137 +359,94 @@ uint8_t Lawicel::receiveCommand(const String &lawicelCMD)
     switch (lawicelCMD.charAt(0))
     {
     case SET_BAUDRATE:
-    {
         isError = setBaudrateCmd(lawicelCMD);
         break;
-    }
 
     case SET_BTR:
-    {
         isError = setBTRCmd(lawicelCMD);
         break;
-    }
 
     case OPEN_NORMAL:
-    {
         isError = openNormalCmd(lawicelCMD);
         break;
-    }
 
     case OPEN_LISTEN_ONLY:
-    {
         isError = openListenOnlyCmd(lawicelCMD);
         break;
-    }
 
     case CLOSE:
-    {
         isError = closeCmd(lawicelCMD);
         break;
-    }
 
     case TX_STD:
-    {
         isError = stdTxCmd(lawicelCMD);
         break;
-    }
 
     case TX_EXT:
-    {
         isError = extTxCmd(lawicelCMD);
         break;
-    }
 
     case TX_STD_RTR:
-    {
         isError = stdRtrTxCmd(lawicelCMD);
         break;
-    }
 
     case TX_EXT_RTR:
-    {
         isError = extRtrTxCmd(lawicelCMD);
         break;
-    }
 
     case POLL_SINGLE:
-    {
         isError = singlePollCmd(lawicelCMD);
         break;
-    }
 
     case POLL_ALL:
-    {
         isError = allPollCmd(lawicelCMD);
         break;
-    }
 
     case POLL_AUTO:
-    {
         isError = toggleAutoPollCmd(lawicelCMD);
         break;
-    }
 
     case STATUS_FLAGS:
-    {
         isError = getFlagsCmd(lawicelCMD);
         break;
-    }
 
     case FILTER_MODE:
-    {
         isError = setFilterModeCmd(lawicelCMD);
         break;
-    }
 
     case ACN_REGISTER:
-    {
         isError = setACnCmd(lawicelCMD);
         break;
-    }
 
     case AMN_REGISTER:
-    {
         isError = setAMnCmd(lawicelCMD);
         break;
-    }
 
     case SERIAL_BAUDRATE:
-    {
         isError = setSerialBaudrateCmd(lawicelCMD);
         break;
-    }
 
     case VERSION:
-    {
         isError = getVersionCmd(lawicelCMD);
         break;
-    }
 
     case SERIAL_NUMBER:
-    {
         isError = getSerialNumberCmd(lawicelCMD);
         break;
-    }
 
     case TOGGLE_TIMESTAMP:
-    {
         isError = toggleTimeStampCmd(lawicelCMD);
         break;
-    }
 
     case AUTO_START:
-    {
         isError = toggleAutoStartCmd(lawicelCMD);
         break;
-    }
 
     default:
-    {
         isError = 1;
         break;
     }
-    }
+
     return isError;
 }
 
@@ -513,55 +470,45 @@ uint8_t Lawicel::setBaudrateCmd(const String &lawicelCMD)
         switch (lawicelCMD.charAt(1))
         {
         case '0':
-        {
             baudrate = 10E3;
             break;
-        }
+        
         case '1':
-        {
             baudrate = 20E3;
             break;
-        }
+        
         case '2':
-        {
             baudrate = 50E3;
             break;
-        }
+        
         case '3':
-        {
             baudrate = 100E3;
             break;
-        }
+        
         case '4':
-        {
             baudrate = 125E3;
             break;
-        }
+        
         case '5':
-        {
             baudrate = 250E3;
             break;
-        }
+        
         case '6':
-        {
             baudrate = 500E3;
             break;
-        }
+        
         case '7':
-        {
             baudrate = 800E3;
             break;
-        }
+        
         case '8':
-        {
             baudrate = 1000E3;
             break;
-        }
+        
         default:
-        {
             isError = ERROR;
             break;
-        }
+
         }
     }
 
@@ -1157,45 +1104,37 @@ uint8_t Lawicel::setSerialBaudrateCmd(const String &lawicelCMD)
         switch (lawicelCMD.charAt(1))
         {
         case '0':
-        {
             _baudrate = 230400;
             break;
-        }
+        
         case '1':
-        {
             _baudrate = 115200;
             break;
-        }
+        
         case '2':
-        {
             _baudrate = 57600;
             break;
-        }
+        
         case '3':
-        {
             _baudrate = 38400;
             break;
-        }
+        
         case '4':
-        {
             _baudrate = 19200;
             break;
-        }
+        
         case '5':
-        {
             _baudrate = 9600;
             break;
-        }
+        
         case '6':
-        {
             _baudrate = 2400;
             break;
-        }
+        
         default:
-        {
             isError = ERROR;
             break;
-        }
+        
         }
 
         if (isError == OK)
@@ -1252,17 +1191,15 @@ uint8_t Lawicel::toggleTimeStampCmd(const String &lawicelCMD)
         switch (lawicelCMD.charAt(1))
         {
         case '0':
-        {
             m_timestamp = false;
             m_selectedNVM->save(INIT_TIMESTAMP, 0);
             break;
-        }
+        
         case '1':
-        {
             m_timestamp = true;
             m_selectedNVM->save(INIT_TIMESTAMP, 1);
             break;
-        }
+        
         default:
             isError = ERROR;
             break;
@@ -1290,23 +1227,20 @@ uint8_t Lawicel::toggleAutoStartCmd(const String &lawicelCMD)
         switch (lawicelCMD.charAt(1))
         {
         case '0':
-        {
             m_autoStart = 0;
             m_selectedNVM->save(INIT_AUTO_START, 0);
             break;
-        }
+        
         case '1':
-        {
             m_autoStart = 1;
             m_selectedNVM->save(INIT_AUTO_START, 1);
             break;
-        }
+        
         case '2':
-        {
             m_autoStart = 2;
             m_selectedNVM->save(INIT_AUTO_START, 2);
             break;
-        }
+        
         default:
             isError = ERROR;
             break;

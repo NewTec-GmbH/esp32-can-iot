@@ -25,14 +25,14 @@ public:
         return 0;
     }
 
-    void setBaudrate(uint32_t baudrate)
+    uint8_t setBaudrate(uint32_t baudrate)
     {
         m_baudrate = baudrate;
+        return 0;
     }
 
-    uint8_t read(String &serialInput)
+    uint8_t read(char &c)
     {
-        serialInput = input;
         return 0;
     }
 
