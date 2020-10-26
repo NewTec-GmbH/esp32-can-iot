@@ -20,6 +20,19 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
+const uint16_t Lawicel::MAX_TIMESTAMP = 0xEA5F;
+const String Lawicel::X_VERSION = "V0101";
+const String Lawicel::X_SERIAL_NUMBER = "NNT32";
+const char Lawicel::CR = 13;
+const char Lawicel::BELL = 7;
+
+const String Lawicel::INIT_SERIAL_BAUD = "SerialBaud";
+const String Lawicel::INIT_TIMESTAMP = "ToggleTime";
+const String Lawicel::INIT_AUTO_START = "AutoStart";
+const String Lawicel::INIT_CAN_BAUD = "CanBaud";
+const String Lawicel::INIT_FILTER_MODE = "FilterMode";
+const String Lawicel::INIT_FILTER_ACN = "FilterACn";
+const String Lawicel::INIT_FILTER_AMN = "FilterAMn";
 
 /* MACROS *****************************************************************************************/
 
@@ -256,9 +269,9 @@ bool Lawicel::IdDecode(bool extended, const String &lawicelCMD, uint32_t &result
         else
         {
             isError = 1;
-        }        
+        }
     }
-    if(isError == false)
+    if (isError == false)
     {
         result = output;
     }
@@ -594,13 +607,13 @@ uint8_t Lawicel::stdTxCmd(const String &lawicelCMD)
     uint8_t isError = 0;
     CANInterface::Frame frame;
     uint8_t dlc = 0;
-    if(charToInt(lawicelCMD.charAt(4), dlc) == true)
+    if (charToInt(lawicelCMD.charAt(4), dlc) == true)
     {
         isError = 1;
     }
-       
+
     uint32_t id = 0;
-    if(IdDecode(0, lawicelCMD, id) == true)
+    if (IdDecode(0, lawicelCMD, id) == true)
     {
         isError = 1;
     }
@@ -650,13 +663,13 @@ uint8_t Lawicel::extTxCmd(const String &lawicelCMD)
     CANInterface::Frame frame;
 
     uint8_t dlc = 0;
-    if(charToInt(lawicelCMD.charAt(9), dlc) == true)
+    if (charToInt(lawicelCMD.charAt(9), dlc) == true)
     {
         isError = 1;
     }
-       
+
     uint32_t id = 0;
-    if(IdDecode(1, lawicelCMD, id) == true)
+    if (IdDecode(1, lawicelCMD, id) == true)
     {
         isError = 1;
     }
@@ -704,15 +717,15 @@ uint8_t Lawicel::stdRtrTxCmd(const String &lawicelCMD)
 {
     uint8_t isError = 0;
     CANInterface::Frame frame;
-    
+
     uint8_t dlc = 0;
-    if(charToInt(lawicelCMD.charAt(4), dlc) == true)
+    if (charToInt(lawicelCMD.charAt(4), dlc) == true)
     {
         isError = 1;
     }
-       
+
     uint32_t id = 0;
-    if(IdDecode(0, lawicelCMD, id) == true)
+    if (IdDecode(0, lawicelCMD, id) == true)
     {
         isError = 1;
     }
@@ -742,15 +755,15 @@ uint8_t Lawicel::extRtrTxCmd(const String &lawicelCMD)
 {
     uint8_t isError = 0;
     CANInterface::Frame frame;
-    
+
     uint8_t dlc = 0;
-    if(charToInt(lawicelCMD.charAt(9), dlc) == true)
+    if (charToInt(lawicelCMD.charAt(9), dlc) == true)
     {
         isError = 1;
     }
-       
+
     uint32_t id = 0;
-    if(IdDecode(1, lawicelCMD, id) == true)
+    if (IdDecode(1, lawicelCMD, id) == true)
     {
         isError = 1;
     }
