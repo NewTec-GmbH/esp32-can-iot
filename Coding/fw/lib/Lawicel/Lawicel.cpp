@@ -293,18 +293,8 @@ bool Lawicel::charToByte(char msb, char lsb, uint8_t &result)
 bool Lawicel::charToInt(char num_symbol, uint8_t &result)
 {
     bool isError = OK;
-    uint8_t output = 0;
-    if (num_symbol > 48 && num_symbol < 57)
-    {
-        output = num_symbol;
-        output -= 48;
-        result = output;
-    }
-    else
-    {
-        isError = ERROR;
-    }
-
+    uint8_t output = num_symbol - 48;
+    result = output;
     return isError;
 }
 
