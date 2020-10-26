@@ -27,91 +27,106 @@ extern "C"
 class SerialAdapter : public SerialInterface
 {
 public:
-  /* CONSTANTS ******************************************************************************/
+    /* CONSTANTS ******************************************************************************/
 
-  /* TYPES **********************************************************************************/
+    /* TYPES **********************************************************************************/
 
-  /**
-  * Default Serial Adapter constructor.
-  */
-  SerialAdapter() : SerialInterface(), m_baudrate(115200)
-  {
-  }
-
-  /**
-  * Default Serial Adapter destructor.
-  */
-  ~SerialAdapter()
-  {
-  }
-
-  /**
-  * Initialize Module.
-  */
-  uint8_t begin()
-  {
-    Serial.begin(m_baudrate);
-    return 0;
-  }
-
-  /**
-  * Terminate Module
-  */
-  uint8_t end()
-  {
-    Serial.end();
-    return 0;
-  }
-
-  /**
-  * Sets the Baudrate for Serial Communication.
-  */
-  void setBaudrate(uint32_t baudrate)
-  {
-    m_baudrate = baudrate;
-    Serial.updateBaudRate(m_baudrate);
-  }
-
-  /**
-  * Reads the Serial Adapter into a buffer.
-  */
-  uint8_t read(char &c)
-  {
-    if ((Serial.available() > 0) && (Serial.available() < 30))
+    /**
+    *  Default constructor creates instance of the class using default values.
+    */
+    SerialAdapter() : SerialInterface(), m_baudrate(115200)
     {
-      c = Serial.read();
     }
-    return 0;
-  }
 
-  /**
-  * Prints a Line to Serial Adapter.
-  */
-  void print(const String &string)
-  {
-    Serial.print(string);
-  }
+    /**
+    * Default destructor deletes instance of the class.
+    */
+    ~SerialAdapter()
+    {
+    }
 
-  /**
-  * Prints an Integer to Serial Adapter.
-  */
-  void print(uint32_t num)
-  {
-    Serial.println(num);
-  }
+    /**
+    * Configures and starts the Serial Controller to use the user values.
+    * @return 0 for OK, 1 for Error
+    */
+    uint8_t begin()
+    {
+        Serial.begin(m_baudrate);
+        return 0;
+    }
 
-  /**
-  * Prints a Character to Serial Adapter.
-  */
-  void print(char c)
-  {
-    Serial.println(c);
-  }
+    /**
+    * Stops the Serial Module without destroying the instance.
+    * @return 0 for OK, 1 for Error
+    */
+    uint8_t end()
+    {
+        Serial.end();
+        return 0;
+    }
+
+    /**
+    * Sets the Baudrate for Serial Communication.
+    * @param[in] baudrate      Baudrate for Serial Communication
+    * @return 0 for OK, 1 for Error
+    */
+    uint8_t setBaudrate(uint32_t baudrate)
+    {
+        m_baudrate = baudrate;
+        Serial.updateBaudRate(m_baudrate);
+        return 0;
+    }
+
+    /**
+    * Reads the Serial Adapter into a buffer.
+    * @return isError: 0 for OK, 1 for Error
+    */
+    uint8_t read(char &c)
+    {
+        uint8_t isError = 0;
+        if ((Serial.available() > 0) && (Serial.available() < 30))
+        {
+            c = Serial.read();
+        }
+        else
+        {
+            isError = 1;
+        }
+
+        return isError;
+    }
+
+    /**
+    * Prints a Line to Serial Adapter.
+    * @param[in] string     String to be printed
+    */
+    void print(const String &string)
+    {
+        Serial.print(string);
+    }
+
+    /**
+    * Prints an Integer to Serial Adapter.
+    * @param[in] num     Integer to be printed
+    */
+    void print(uint32_t num)
+    {
+        Serial.println(num);
+    }
+
+    /**
+    * Prints a Character to Serial Adapter.
+    * @param[in] c     Character to be printed
+    */
+    void print(char c)
+    {
+        Serial.println(c);
+    }
 
 protected:
 private:
-  long m_baudrate;
-  String currentCommand = "";
+    long m_baudrate;
+    String currentCommand = "";
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

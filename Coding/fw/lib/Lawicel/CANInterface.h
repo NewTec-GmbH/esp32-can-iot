@@ -25,7 +25,8 @@ extern "C"
 /* FORWARD DECLARATIONS ***************************************************************************/
 
 /**
- *  Interface of the Lawicel Protocol to the CAN Controller of the board.
+ *  Interface of the Lawicel Protocol to the CAN Controller of the board. Defines the Methods to be 
+ *  implemented on the Adapter so that the Protocol works as expected.
  */
 class CANInterface
 {
@@ -156,6 +157,7 @@ public:
 
     /**
     * Polls one Message from the FIFO Buffer.
+    * @return availableFrames. 0 for No new Frames.  
     */
     virtual uint8_t pollSingle(Frame &frame) = 0;
 

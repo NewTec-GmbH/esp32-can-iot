@@ -57,7 +57,7 @@ public:
     uint8_t begin()
     {
         uint8_t isError = 0;
-        if (CAN.begin(500E3) == 0)
+        if (CAN.begin(500E3) == 0)      /**< Starts CAN channel with 500kbps Baudrate */
         {
             isError = 1;
         }
@@ -226,7 +226,7 @@ public:
 
     /**
     * Polls one Message from the FIFO Buffer.
-    * @return isError = 0 for OK, 1 for Error 
+    * @return availableFrames. 0 for No new Frames.  
     */
     uint8_t pollSingle(Frame &frame)
     {

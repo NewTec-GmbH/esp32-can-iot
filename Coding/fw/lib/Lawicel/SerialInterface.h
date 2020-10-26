@@ -32,38 +32,41 @@ public:
   /* TYPES **********************************************************************************/
 
   /** 
-   * Default constructor. 
+   * Default constructor creates instance of the class using default values.
    */
   SerialInterface()
   {
   }
 
   /** 
-   * Default destructor. 
+   * Default destructor deletes instance of the class.
    */
   virtual ~SerialInterface()
   {
   }
 
   /** 
-   * Initialize Module.
+   * Configures and starts the Serial Controller to use the user values.
+   * @return 0 for OK, 1 for Error
    */
   virtual uint8_t begin() = 0;
 
   /** 
-   * Terminate Module. 
+   * Stops the Serial Module without destroying the instance.
+   * @return 0 for OK, 1 for Error
    */
   virtual uint8_t end() = 0;
 
   /** 
    * Sets the Baudrate for Serial Communication.
    * @param[in] baudrate      Baudrate for Serial Communication
+   * @return 0 for OK, 1 for Error
    */
-  virtual void setBaudrate(uint32_t baudrate) = 0;
+  virtual uint8_t setBaudrate(uint32_t baudrate) = 0;
 
   /** 
    * Reads the Serial Adapter into a buffer.
-   * @return Serial input 
+   * @return isError: 0 for OK, 1 for Error
    */
   virtual uint8_t read(char &c) = 0;
 

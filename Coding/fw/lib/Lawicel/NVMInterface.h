@@ -32,7 +32,7 @@ public:
   /* TYPES **********************************************************************************/
 
   /**
-  * Default constructor.
+  * Default constructor creates instance of the class using default values.
   */
 
   NVMInterface()
@@ -40,7 +40,7 @@ public:
   }
 
   /**
-  * Default destructor
+  * Default destructor deletes instance of the class.
   */
 
   virtual ~NVMInterface()
@@ -48,12 +48,12 @@ public:
   }
 
   /**
-    * Initialize Module
+    * Configures and starts the NVM Controller to use the user values.
     */
   virtual uint8_t begin() = 0;
 
   /**
-  * Terminate Module
+  * Stops the NVM Module without destroying the instance.
   */
   virtual uint8_t end() = 0;
 
