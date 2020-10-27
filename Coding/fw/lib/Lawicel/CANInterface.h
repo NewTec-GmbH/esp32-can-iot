@@ -32,7 +32,7 @@ class CANInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
-    static const uint8_t FRAME_DATA_SIZE = 8;
+    static const uint8_t FRAME_DATA_SIZE = 8;       /**< Maximum Data size of a Frame */
 
     /* TYPES **********************************************************************************/
 
@@ -117,7 +117,8 @@ public:
 
     /**
     * Sent the BTR Registers of the CAN Channel.
-    * @param[in] BTR0, BTR1       Registers that set a Channel Baudrate directly
+    * @param BTR0             Register 0 to set a Channel Baudrate directly
+    * @param BTR1             Register 1 to set a Channel Baudrate directly
     * @return 0 for OK, 1 for Error
     */
     virtual uint8_t setBTR(uint8_t btr0, uint8_t btr1) = 0;

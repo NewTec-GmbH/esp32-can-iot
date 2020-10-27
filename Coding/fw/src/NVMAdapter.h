@@ -64,9 +64,6 @@ public:
     */
     uint8_t end()
     {
-        nvm.begin("Startup", false);
-        nvm.clear();
-        nvm.end();
         return 0;
     }
 
@@ -111,6 +108,17 @@ public:
         String value = nvm.getString(name.c_str());
         nvm.end();
         return value;
+    }
+
+    /**
+     * Delete all NVM Entries.
+     */
+    uint8_t clearEntries()
+    {
+        nvm.begin("Startup", false);
+        nvm.clear();
+        nvm.end();
+        return 0;
     }
 
 private:

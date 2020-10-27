@@ -79,6 +79,11 @@ public:
     */
     virtual String readString(const String &name) = 0;
 
+    /**
+     * Delete all NVM Entries.
+     */
+    virtual uint8_t clearEntries() = 0;
+
 private:
 };
 

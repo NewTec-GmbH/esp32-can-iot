@@ -86,6 +86,7 @@ public:
     void end();             /**< Terminates Module */
 
 private:
+
     /**
      * Enum of Possible Lawicel Commands to be received via Serial Adapter
      */
@@ -162,6 +163,7 @@ private:
     NVMInterface *m_selectedNVM;       /**< Active NVM Adapter */
 
 private:
+
     /**
      *  Preventing copying, assigning and using an empty constructor
      */

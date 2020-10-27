@@ -298,46 +298,48 @@ bool Lawicel::charToInt(char num_symbol, uint8_t &result)
     return isError;
 }
 
-/**************************************************************************************************/
+/***************************************
+ * @todo
+ ************************************************************/
 bool Lawicel::IdDecode(bool extended, const String &lawicelCMD, uint32_t &result)
 {
     bool isError = OK;
     uint32_t output = 0;
-    uint8_t _IdLength = 3;
-    char _IdBuffer[8];
+    uint8_t IdLength = 3;
+    char IdBuffer[8];
 
     if (extended)
     {
-        _IdLength = 8;
-        _IdBuffer[0] = lawicelCMD.charAt(8);
-        _IdBuffer[1] = lawicelCMD.charAt(7);
-        _IdBuffer[2] = lawicelCMD.charAt(6);
-        _IdBuffer[3] = lawicelCMD.charAt(5);
-        _IdBuffer[4] = lawicelCMD.charAt(4);
-        _IdBuffer[5] = lawicelCMD.charAt(3);
-        _IdBuffer[6] = lawicelCMD.charAt(2);
-        _IdBuffer[7] = lawicelCMD.charAt(1);
+        IdLength = 8;
+        IdBuffer[0] = lawicelCMD.charAt(8);
+        IdBuffer[1] = lawicelCMD.charAt(7);
+        IdBuffer[2] = lawicelCMD.charAt(6);
+        IdBuffer[3] = lawicelCMD.charAt(5);
+        IdBuffer[4] = lawicelCMD.charAt(4);
+        IdBuffer[5] = lawicelCMD.charAt(3);
+        IdBuffer[6] = lawicelCMD.charAt(2);
+        IdBuffer[7] = lawicelCMD.charAt(1);
     }
     else
     {
-        _IdBuffer[0] = lawicelCMD.charAt(3);
-        _IdBuffer[1] = lawicelCMD.charAt(2);
-        _IdBuffer[2] = lawicelCMD.charAt(1);
+        IdBuffer[0] = lawicelCMD.charAt(3);
+        IdBuffer[1] = lawicelCMD.charAt(2);
+        IdBuffer[2] = lawicelCMD.charAt(1);
     }
 
-    for (int counter = 0; counter < _IdLength; counter++)
+    for (int counter = 0; counter < IdLength; counter++)
     {
-        if (_IdBuffer[counter] >= 48 && _IdBuffer[counter] <= 57)
+        if (IdBuffer[counter] >= 48 && IdBuffer[counter] <= 57)
         {
-            output = output + (_IdBuffer[counter] - 48) * pow(16.0, counter);
+            output = output + (IdBuffer[counter] - 48) * pow(16.0, counter);
         }
-        else if (_IdBuffer[counter] >= 65 && _IdBuffer[counter] <= 70)
+        else if (IdBuffer[counter] >= 65 && IdBuffer[counter] <= 70)
         {
-            output = output + (_IdBuffer[counter] - 55) * pow(16.0, counter);
+            output = output + (IdBuffer[counter] - 55) * pow(16.0, counter);
         }
-        else if (_IdBuffer[counter] >= 97 && _IdBuffer[counter] <= 102)
+        else if (IdBuffer[counter] >= 97 && IdBuffer[counter] <= 102)
         {
-            output = output + (_IdBuffer[counter] - 87) * pow(16.0, counter);
+            output = output + (IdBuffer[counter] - 87) * pow(16.0, counter);
         }
         else
         {
