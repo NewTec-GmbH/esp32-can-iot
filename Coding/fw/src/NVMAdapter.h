@@ -25,6 +25,9 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
+/**
+*  ESP-32 Adapter as implementation of NVMInterface for the Lawicel Protocol.
+*/
 class NVMAdapter : public NVMInterface
 {
 public:
@@ -33,9 +36,8 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-     * Default constructor creates instance of the class using default values.
-     */
-
+    * Default constructor creates instance of the class using default values.
+    */
     NVMAdapter() : NVMInterface()
     {
     }
@@ -43,7 +45,6 @@ public:
     /**
     *Default destructor deletes instance of the class.
     */
-
     ~NVMAdapter()
     {
     }
@@ -92,7 +93,7 @@ public:
     /**
     * Read Data from NVM
     */
-    uint32_t readInt(String name)
+    uint32_t readInt(const String &name)
     {
         nvm.begin("Startup", false);
         uint32_t value = nvm.getULong(name.c_str());
@@ -104,7 +105,7 @@ public:
     /**
      * Read String from NVM
     */
-    String readString(String name)
+    String readString(const String &name)
     {
         nvm.begin("Startup", false);
         String value = nvm.getString(name.c_str());

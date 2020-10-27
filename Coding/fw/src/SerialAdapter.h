@@ -24,6 +24,9 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
+/**
+*  ESP-32 Adapter as implementation of SerialInterface for the Lawicel Protocol.
+*/
 class SerialAdapter : public SerialInterface
 {
 public:
@@ -33,6 +36,7 @@ public:
 
     /**
     *  Default constructor creates instance of the class using default values.
+    * @param m_baudrate     Sets the Default baudrate to the Serial Channel.
     */
     SerialAdapter() : SerialInterface(), m_baudrate(115200)
     {

@@ -26,8 +26,8 @@ extern "C"
 /* FORWARD DECLARATIONS ***************************************************************************/
 
 /**
- *  ESP-32 Adapter as implementation of CANInterface for the Lawicel Protocol.
- */
+*  ESP-32 Adapter as implementation of CANInterface for the Lawicel Protocol.
+*/
 class CANAdapter : public CANInterface
 {
 public:
@@ -37,9 +37,10 @@ public:
 
     /**
     * Default constructor creates instance of the class using default values.
-    * Uses CANInterface constructor as its the implementation of an Interface
+    * Uses CANInterface constructor as its the implementation of an Interface.
+    * @param m_baudrate         Defines the Default baudrate of the CAN Channel
     */
-    CANAdapter() : CANInterface(), m_baudRate(0), m_currentState(CLOSED)
+    CANAdapter() : CANInterface(), m_baudRate(500000), m_currentState(CLOSED)
     {
     }
 
@@ -57,7 +58,7 @@ public:
     uint8_t begin()
     {
         uint8_t isError = 0;
-        if (CAN.begin(500E3) == 0)      /**< Starts CAN channel with 500kbps Baudrate */
+        if (CAN.begin(m_baudRate) == 0) /**< Starts CAN channel with 500kbps Baudrate */
         {
             isError = 1;
         }
@@ -102,7 +103,10 @@ public:
             }
         }
 
-        CAN.write(frame.m_data, frame.m_dlc);
+        if (CAN.write(frame.m_data, frame.m_dlc) == 0)
+        {
+            isError = 1;
+        }
 
         if (CAN.endPacket() == 0)
         {
@@ -132,8 +136,11 @@ public:
             {
                 isError = 1;
             }
-            CAN.wakeup();
-            m_currentState = NORMAL;
+            else
+            {
+                CAN.wakeup();
+                m_currentState = NORMAL;
+            }
             break;
 
         case LISTEN_ONLY:
@@ -141,8 +148,11 @@ public:
             {
                 isError = 1;
             }
-            CAN.wakeup();
-            m_currentState = LISTEN_ONLY;
+            else
+            {
+                CAN.wakeup();
+                m_currentState = LISTEN_ONLY;
+            }
             break;
 
         default:
@@ -176,16 +186,17 @@ public:
     */
     uint8_t setBTR(uint8_t btr0, uint8_t btr1)
     {
-        return 1; /**< Must write to register. It returns error as the Controller does not allow it */
+        return 1; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
     }
 
     /**
     * Set the Filter Mode of the CAN Channel.
+    * @param filter       Defines Filter mode. 0 for DualMode, 1 for SingleMode. Default 0.
     * @return 0 for OK, 1 for Error 
     */
     uint8_t setFilterMode(uint8_t filter)
     {
-        return 1; /**< Must write to register. It returns error as the Controller does not allow it */
+        return 1; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
     }
 
     /**
