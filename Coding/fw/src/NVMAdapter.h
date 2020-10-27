@@ -52,7 +52,7 @@ public:
     /**
     * Configures and starts the NVM Controller to use the user values.
     */
-    uint8_t begin()
+    bool begin()
     {
         nvm.begin("Startup", false);
         nvm.end();
@@ -62,7 +62,7 @@ public:
     /**
     * Stops the NVM Module without destroying the instance.
     */
-    uint8_t end()
+    bool end()
     {
         return 0;
     }

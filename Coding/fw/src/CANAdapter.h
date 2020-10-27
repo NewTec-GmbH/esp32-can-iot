@@ -55,7 +55,7 @@ public:
     * Configures and starts the CAN Controller to use the user values.
     * @return isError = 0 for OK, 1 for Error 
     */
-    uint8_t begin()
+    bool begin()
     {
         uint8_t isError = 0;
         if (CAN.begin(m_baudRate) == 0) /**< Starts CAN channel with 500kbps Baudrate */
@@ -74,7 +74,7 @@ public:
     * Stops the Controller Module without destroying the instance.
     * @return isError = 0 for OK, 1 for Error 
     */
-    uint8_t end()
+    bool end()
     {
         CAN.end();
         return 0;
@@ -85,7 +85,7 @@ public:
     * @param &Frame     Reference to the Frame to be sended
     * @return isError = 0 for OK, 1 for Error 
     */
-    uint8_t send(const Frame &frame)
+    bool send(const Frame &frame)
     {
         uint8_t isError = 0;
         if (frame.m_extended)
@@ -121,7 +121,7 @@ public:
     * @param state          BUS_STATE to be set to the CAN Channel
     * @return isError = 0 for OK, 1 for Error 
     */
-    uint8_t setState(BUS_STATE state)
+    bool setState(BUS_STATE state)
     {
         uint8_t isError = 0;
         switch (state)
@@ -167,7 +167,7 @@ public:
     * Set the Baudrate of the CAN Channel.
     * @return isError = 0 for OK, 1 for Error 
     */
-    uint8_t setBaudrate(uint32_t baudrate)
+    bool setBaudrate(uint32_t baudrate)
     {
         uint8_t isError = 0;
         m_baudRate = baudrate;
@@ -184,7 +184,7 @@ public:
     * Sent the BTR Registers of the CAN Channel.
     * @return 0 for OK, 1 for Error 
     */
-    uint8_t setBTR(uint8_t btr0, uint8_t btr1)
+    bool setBTR(uint8_t btr0, uint8_t btr1)
     {
         return 1; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
     }
@@ -194,7 +194,7 @@ public:
     * @param filter       Defines Filter mode. 0 for DualMode, 1 for SingleMode. Default 0.
     * @return 0 for OK, 1 for Error 
     */
-    uint8_t setFilterMode(uint8_t filter)
+    bool setFilterMode(uint8_t filter)
     {
         return 1; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
     }
@@ -203,7 +203,7 @@ public:
     * Set the Acceptance Code Register.
     * @todo Try to configure this
     */
-    uint8_t setACn(const uint8_t *acn)
+    bool setACn(const uint8_t *acn)
     {
         return 1;
     }
@@ -212,7 +212,7 @@ public:
     * Set the Acceptance Mask Register.
     * @todo Try to configure this
     */
-    uint8_t setAMn(const uint8_t *amn)
+    bool setAMn(const uint8_t *amn)
     {
         return 1;
     }

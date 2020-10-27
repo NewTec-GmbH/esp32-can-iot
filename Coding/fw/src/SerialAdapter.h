@@ -53,7 +53,7 @@ public:
     * Configures and starts the Serial Controller to use the user values.
     * @return 0 for OK, 1 for Error
     */
-    uint8_t begin()
+    bool begin()
     {
         Serial.begin(m_baudrate);
         return 0;
@@ -63,7 +63,7 @@ public:
     * Stops the Serial Module without destroying the instance.
     * @return 0 for OK, 1 for Error
     */
-    uint8_t end()
+    bool end()
     {
         Serial.end();
         return 0;
@@ -74,7 +74,7 @@ public:
     * @param[in] baudrate      Baudrate for Serial Communication
     * @return 0 for OK, 1 for Error
     */
-    uint8_t setBaudrate(uint32_t baudrate)
+    bool setBaudrate(uint32_t baudrate)
     {
         m_baudrate = baudrate;
         Serial.updateBaudRate(m_baudrate);

@@ -52,12 +52,12 @@ public:
     /**
     * Configures and starts the NVM Controller to use the user values.
     */
-    virtual uint8_t begin() = 0;
+    virtual bool begin() = 0;
 
     /**
     * Stops the NVM Module without destroying the instance.
     */
-    virtual uint8_t end() = 0;
+    virtual bool end() = 0;
 
     /**
     * Save Data in NVM

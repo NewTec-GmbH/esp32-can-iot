@@ -53,20 +53,20 @@ public:
    * Configures and starts the Serial Controller to use the user values.
    * @return 0 for OK, 1 for Error
    */
-  virtual uint8_t begin() = 0;
+  virtual bool begin() = 0;
 
   /** 
    * Stops the Serial Module without destroying the instance.
    * @return 0 for OK, 1 for Error
    */
-  virtual uint8_t end() = 0;
+  virtual bool end() = 0;
 
   /** 
    * Sets the Baudrate for Serial Communication.
    * @param[in] baudrate      Baudrate for Serial Communication
    * @return 0 for OK, 1 for Error
    */
-  virtual uint8_t setBaudrate(uint32_t baudrate) = 0;
+  virtual bool setBaudrate(uint32_t baudrate) = 0;
 
   /** 
    * Reads the Serial Adapter into a buffer.
