@@ -32,17 +32,9 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-/**
- * Lawicel Class contains the protocol to communicate between a Serial connection and a CAN Controller using ASCII symbols.
- * @ref http://www.can232.com/docs/can232_v3.pdf
- * @param serialInt             Serial Adapter (from abstract class SerialInterface) that 
- *                              connects the Serial capabilities of the board to the protocol.
- * @param canInt                CAN Adapter (from abstract class CANInterface) that
- *                              connects the CAN Controller of the board to the protocol.
- * @param nvmint                Non-Volatile Memory Adapter (from abstract class NVMInterface) that
- *                              connects the NVM capability of the board to the protocol.
- */
-
+/*
+* Lawicel Class contains the protocol to communicate between a Serial connection and a CAN Controller using ASCII symbols.
+*/
 class Lawicel
 {
 public:
@@ -67,7 +59,14 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-    * Default constructor creates instance of the class and connects the required Adapters.
+    * Default Constructor for a Lawicel Instance. This is the only Constructor available. 
+    * @ref http://www.can232.com/docs/can232_v3.pdf
+    * @param serialInt             Serial Adapter (from abstract class SerialInterface) that 
+    *                              connects the Serial capabilities of the board to the protocol.
+    * @param canInt                CAN Adapter (from abstract class CANInterface) that
+    *                              connects the CAN Controller of the board to the protocol.
+    * @param nvmint                Non-Volatile Memory Adapter (from abstract class NVMInterface) that
+    *                              connects the NVM capability of the board to the protocol.
     */
     Lawicel(SerialInterface &serialInt, CANInterface &canInt, NVMInterface &nvmInt) : m_selectedSerial(&serialInt),
                                                                                       m_selectedCAN(&canInt),
