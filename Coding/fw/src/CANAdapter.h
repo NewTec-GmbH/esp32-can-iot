@@ -40,7 +40,7 @@ public:
     * Uses CANInterface constructor as its the implementation of an Interface.
     * @param m_baudrate         Defines the Default baudrate of the CAN Channel
     */
-    CANAdapter() : CANInterface(), m_baudRate(500000), m_currentState(CLOSED)
+    CANAdapter() : CANInterface(), m_baudRate(500000), m_currentState(CLOSED), m_Can_Controller(CAN)
     {
     }
 
@@ -57,17 +57,17 @@ public:
     */
     bool begin()
     {
-        uint8_t isError = 0;
-        if (CAN.begin(m_baudRate) == 0) /**< Starts CAN channel with 500kbps Baudrate */
+        bool success = true;
+        if (m_Can_Controller.begin(m_baudRate) == 0) /**< Starts CAN channel with 500kbps Baudrate */
         {
-            isError = 1;
+            success = false;
         }
         else
         {
-            CAN.sleep();
+            m_Can_Controller.sleep();
         }
 
-        return isError;
+        return success;
     }
 
     /** 
@@ -76,7 +76,7 @@ public:
     */
     bool end()
     {
-        CAN.end();
+        m_Can_Controller.end();
         return 0;
     }
 
@@ -87,33 +87,33 @@ public:
     */
     bool send(const Frame &frame)
     {
-        uint8_t isError = 0;
+        bool success = true;
         if (frame.m_extended)
         {
-            if (CAN.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            if (m_Can_Controller.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
             {
-                isError = 1;
+                success = false;
             }
         }
         else
         {
-            if (CAN.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            if (m_Can_Controller.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
             {
-                isError = 1;
+                success = false;
             }
         }
 
-        if (CAN.write(frame.m_data, frame.m_dlc) == 0)
+        if (m_Can_Controller.write(frame.m_data, frame.m_dlc) == 0)
         {
-            isError = 1;
+            success = false;
         }
 
-        if (CAN.endPacket() == 0)
+        if (m_Can_Controller.endPacket() == 0)
         {
-            isError = 1;
+            success = false;
         }
 
-        return isError;
+        return success;
     }
 
     /**
@@ -123,22 +123,22 @@ public:
     */
     bool setState(BUS_STATE state)
     {
-        uint8_t isError = 0;
+        bool success = true;
         switch (state)
         {
         case CLOSED:
-            CAN.sleep();
+            m_Can_Controller.sleep();
             m_currentState = CLOSED;
             break;
 
         case NORMAL:
             if (m_baudRate == 0)
             {
-                isError = 1;
+                success = false;
             }
             else
             {
-                CAN.wakeup();
+                m_Can_Controller.wakeup();
                 m_currentState = NORMAL;
             }
             break;
@@ -146,21 +146,21 @@ public:
         case LISTEN_ONLY:
             if (m_baudRate == 0)
             {
-                isError = 1;
+                success = false;
             }
             else
             {
-                CAN.wakeup();
+                m_Can_Controller.wakeup();
                 m_currentState = LISTEN_ONLY;
             }
             break;
 
         default:
-            isError = 1;
+            success = false;
             break;
         }
 
-        return isError;
+        return success;
     }
 
     /**
@@ -169,15 +169,15 @@ public:
     */
     bool setBaudrate(uint32_t baudrate)
     {
-        uint8_t isError = 0;
+        bool success = true;
         m_baudRate = baudrate;
-        CAN.end();
-        if (CAN.begin(m_baudRate) == 0)
+        m_Can_Controller.end();
+        if (m_Can_Controller.begin(m_baudRate) == 0)
         {
-            isError = 1;
+            success = false;
         }
-        CAN.sleep();
-        return isError;
+        m_Can_Controller.sleep();
+        return success;
     }
 
     /**
@@ -186,7 +186,7 @@ public:
     */
     bool setBTR(uint8_t btr0, uint8_t btr1)
     {
-        return 1; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
+        return false; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
     }
 
     /**
@@ -196,7 +196,7 @@ public:
     */
     bool setFilterMode(uint8_t filter)
     {
-        return 1; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
+        return false; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
     }
 
     /**
@@ -205,7 +205,7 @@ public:
     */
     bool setACn(const uint8_t *acn)
     {
-        return 1;
+        return false;
     }
 
     /**
@@ -214,14 +214,14 @@ public:
     */
     bool setAMn(const uint8_t *amn)
     {
-        return 1;
+        return false;
     }
 
     /**
     * Gets the Channel State from the CAN Controller.
     * @return BUS_STATE m_currentState stores the state of the CAN Channel.
     */
-    uint8_t getChannelState()
+    BUS_STATE getChannelState()
     {
         return m_currentState;
     }
@@ -232,35 +232,39 @@ public:
     */
     uint8_t getStatusFlags()
     {
-        return 1; /**< Must write to register. It returns error as the Controller does not allow it */
+        return 0; /**< Must read register. It returns error as the Controller does not allow it */
     }
 
     /**
     * Polls one Message from the FIFO Buffer.
     * @return availableFrames. 0 for No new Frames.  
+    * @todo Bool return ?
     */
-    uint8_t pollSingle(Frame &frame)
+    bool pollSingle(Frame &frame)
     {
-        uint8_t availableFrames = CAN.parsePacket();
-        if (availableFrames != 0)
+        bool success = false;
+
+        if (m_Can_Controller.parsePacket() != 0)
         {
-            frame.m_id = CAN.packetId();
-            frame.m_dlc = CAN.packetDlc();
-            frame.m_extended = CAN.packetExtended();
-            frame.m_rtr = CAN.packetRtr();
+            frame.m_id = m_Can_Controller.packetId();
+            frame.m_dlc = m_Can_Controller.packetDlc();
+            frame.m_extended = m_Can_Controller.packetExtended();
+            frame.m_rtr = m_Can_Controller.packetRtr();
 
             for (int i = 0; i < frame.m_dlc; i++)
             {
-                frame.m_data[i] = CAN.read();
+                frame.m_data[i] = m_Can_Controller.read();
             }
+            success = true;
         }
-
-        return availableFrames;
+        
+        return success;
     }
 
 private:
     uint32_t m_baudRate;
     BUS_STATE m_currentState;
+    ESP32SJA1000Class &m_Can_Controller;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

@@ -47,12 +47,12 @@ const String Lawicel::INIT_FILTER_AMN = "FilterAMn";
 /**************************************************************************************************/
 bool Lawicel::executeCycle()
 {
-    bool isError = OK;
+    bool success = true;
     m_serialReturn = "";
 
     if (m_autoPolling)
     {
-        if (autopoll() == 0)
+        if (autopoll())
         {
             m_selectedSerial->print(m_serialReturn += (char)CR);
         }
@@ -60,27 +60,16 @@ bool Lawicel::executeCycle()
 
     m_serialReturn = "";
     char c = BELL;
-    m_selectedSerial->read(c);
+
+    m_selectedSerial->read(c); /**< No return check for success because having no new chars is a possible result */
 
     if ('\r' == c)
     {
-        if (receiveCommand(m_serialInput) == ERROR)
+        if (!receiveCommand(m_serialInput))
         {
             m_serialReturn += (char)BELL;
             m_selectedSerial->print(m_serialReturn);
-            isError = ERROR;
-        }
-        else if (m_serialInput.charAt(0) == VERSION)
-        {
-            m_serialReturn += X_VERSION;
-            m_serialReturn += (char)CR;
-            m_selectedSerial->print(m_serialReturn);
-        }
-        else if (m_serialInput.charAt(0) == SERIAL_NUMBER)
-        {
-            m_serialReturn += X_SERIAL_NUMBER;
-            m_serialReturn += (char)CR;
-            m_selectedSerial->print(m_serialReturn);
+            success = false;
         }
         else
         {
@@ -92,100 +81,102 @@ bool Lawicel::executeCycle()
     }
     else if (m_serialInput.length() > 30)
     {
-        isError = ERROR;
+        success = false;
+        m_serialInput = "";
     }
     else if (c != BELL)
     {
         m_serialInput += c;
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::begin()
 {
-    bool isError = OK;
-    if (m_selectedNVM->begin())
+    bool success = true;
+    if (!m_selectedNVM->begin())
     {
-        isError = ERROR;
+        success = false;
     }
-    if (receiveCommand(m_selectedNVM->readString(INIT_SERIAL_BAUD)))
+    else if (!receiveCommand(m_selectedNVM->readString(INIT_SERIAL_BAUD)))
     {
-        isError = ERROR;
+        success = false;
     }
-    if (m_selectedSerial->begin())
+    else if (!m_selectedSerial->begin())
     {
-        isError = ERROR;
+        success = false;
     }
-    if (m_selectedCAN->begin())
+    else if (!m_selectedCAN->begin())
     {
-        isError = ERROR;
+        success = false;
     }
+    else
+    {
+        m_timestamp = m_selectedNVM->readInt(INIT_TIMESTAMP);
 
-    m_timestamp = m_selectedNVM->readInt(INIT_TIMESTAMP);
+        m_autoStart = m_selectedNVM->readInt(INIT_AUTO_START);
 
-    m_autoStart = m_selectedNVM->readInt(INIT_AUTO_START);
+        if (m_autoStart > 0)
+        {
+            m_autoPolling = true;
 
-    if (m_autoStart > 0)
-    {
-        m_autoPolling = true;
+            if (!receiveCommand(m_selectedNVM->readString(INIT_CAN_BAUD)))
+            {
+                success = false;
+            }
+            if (!receiveCommand(m_selectedNVM->readString(INIT_FILTER_MODE)))
+            {
+                success = false;
+            }
+            if (!receiveCommand(m_selectedNVM->readString(INIT_FILTER_ACN)))
+            {
+                success = false;
+            }
+            if (!receiveCommand(m_selectedNVM->readString(INIT_FILTER_AMN)))
+            {
+                success = false;
+            }
+        }
 
-        if (receiveCommand(m_selectedNVM->readString(INIT_CAN_BAUD)))
+        if (m_autoStart == 1)
         {
-            isError = ERROR;
+            if (!receiveCommand("O"))
+            {
+                success = false;
+            }
         }
-        if (receiveCommand(m_selectedNVM->readString(INIT_FILTER_MODE)))
+        else if (m_autoStart == 2)
         {
-            isError = ERROR;
-        }
-        if (receiveCommand(m_selectedNVM->readString(INIT_FILTER_ACN)))
-        {
-            isError = ERROR;
-        }
-        if (receiveCommand(m_selectedNVM->readString(INIT_FILTER_AMN)))
-        {
-            isError = ERROR;
+            if (!receiveCommand("L"))
+            {
+                success = false;
+            }
         }
     }
-
-    if (m_autoStart == 1)
-    {
-        if (receiveCommand("O"))
-        {
-            isError = ERROR;
-        }
-    }
-    else if (m_autoStart == 2)
-    {
-        if (receiveCommand("L"))
-        {
-            isError = ERROR;
-        }
-    }
-
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::end()
 {
-    bool isError = OK;
+    bool success = true;
 
-    if (m_selectedSerial->end())
+    if (!m_selectedSerial->end())
     {
-        isError = ERROR;
+        success = false;
     }
-    if (m_selectedCAN->end())
+    if (!m_selectedCAN->end())
     {
-        isError = ERROR;
+        success = false;
     }
-    if (m_selectedNVM->end())
+    if (!m_selectedNVM->end())
     {
-        isError = ERROR;
+        success = false;
     }
 
-    return isError;
+    return success;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -195,154 +186,101 @@ bool Lawicel::end()
 /**************************************************************************************************/
 bool Lawicel::charToByte(char msb, char lsb, uint8_t &result)
 {
-    bool isError = OK;
-    uint8_t output = 0;
-
-    switch (msb)
+    bool success = true;
+    uint8_t var = 0;
+    if (charToInt(msb, var))
     {
-    case '0':
-        output = 0x00;
-        break;
-    case '1':
-        output = 0x10;
-        break;
-    case '2':
-        output = 0x20;
-        break;
-    case '3':
-        output = 0x30;
-        break;
-    case '4':
-        output = 0x40;
-        break;
-    case '5':
-        output = 0x50;
-        break;
-    case '6':
-        output = 0x60;
-        break;
-    case '7':
-        output = 0x70;
-        break;
-    case '8':
-        output = 0x80;
-        break;
-    case '9':
-        output = 0x90;
-        break;
-    case 'a':
-    case 'A':
-        output = 0xA0;
-        break;
-    case 'b':
-    case 'B':
-        output = 0xB0;
-        break;
-    case 'c':
-    case 'C':
-        output = 0xC0;
-        break;
-    case 'd':
-    case 'D':
-        output = 0xD0;
-        break;
-    case 'e':
-    case 'E':
-        output = 0xE0;
-        break;
-    case 'f':
-    case 'F':
-        output = 0xF0;
-        break;
-
-    default:
-        isError = ERROR;
-        break;
+        result = var * 16;
+    }
+    else
+    {
+        success = false;
     }
 
-    switch (lsb)
+    if (charToInt(lsb, var))
     {
-    case '0':
-        output += 0x00;
-        break;
-    case '1':
-        output += 0x1;
-        break;
-    case '2':
-        output += 0x2;
-        break;
-    case '3':
-        output += 0x3;
-        break;
-    case '4':
-        output += 0x4;
-        break;
-    case '5':
-        output += 0x5;
-        break;
-    case '6':
-        output += 0x6;
-        break;
-    case '7':
-        output += 0x7;
-        break;
-    case '8':
-        output += 0x8;
-        break;
-    case '9':
-        output += 0x9;
-        break;
-    case 'a':
-    case 'A':
-        output += 0xA;
-        break;
-    case 'b':
-    case 'B':
-        output += 0xB;
-        break;
-    case 'c':
-    case 'C':
-        output += 0xC;
-        break;
-    case 'd':
-    case 'D':
-        output += 0xD;
-        break;
-    case 'e':
-    case 'E':
-        output += 0xE;
-        break;
-    case 'f':
-    case 'F':
-        output += 0xF;
-        break;
-
-    default:
-        isError = ERROR;
-        break;
+        result += var;
+    }
+    else
+    {
+        success = false;
     }
 
-    if (isError == OK)
-    {
-        result = output;
-    }
-
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::charToInt(char num_symbol, uint8_t &result)
 {
-    bool isError = OK;
-    uint8_t output = num_symbol - 48;
-    result = output;
-    return isError;
+    bool success = true;
+    switch (num_symbol)
+    {
+    case '0':
+        result = 0x00;
+        break;
+    case '1':
+        result = 0x1;
+        break;
+    case '2':
+        result = 0x2;
+        break;
+    case '3':
+        result = 0x3;
+        break;
+    case '4':
+        result = 0x4;
+        break;
+    case '5':
+        result = 0x5;
+        break;
+    case '6':
+        result = 0x6;
+        break;
+    case '7':
+        result = 0x7;
+        break;
+    case '8':
+        result = 0x8;
+        break;
+    case '9':
+        result = 0x9;
+        break;
+    case 'a':
+    case 'A':
+        result = 0xA;
+        break;
+    case 'b':
+    case 'B':
+        result = 0xB;
+        break;
+    case 'c':
+    case 'C':
+        result = 0xC;
+        break;
+    case 'd':
+    case 'D':
+        result = 0xD;
+        break;
+    case 'e':
+    case 'E':
+        result = 0xE;
+        break;
+    case 'f':
+    case 'F':
+        result = 0xF;
+        break;
+
+    default:
+        success = false;
+        break;
+    }
+    return success;
 }
 
 /**************************************************************************************************/
-bool Lawicel::IdDecode(bool extended, const String &lawicelCMD, uint32_t &result)
+bool Lawicel::decodeId(bool extended, const String &lawicelCMD, uint32_t &result)
 {
-    bool isError = OK;
+    bool success = true;
     uint32_t output = 0;
     uint8_t IdLength = 3;
     char IdBuffer[8];
@@ -368,143 +306,137 @@ bool Lawicel::IdDecode(bool extended, const String &lawicelCMD, uint32_t &result
 
     for (int counter = 0; counter < IdLength; counter++)
     {
-        if (IdBuffer[counter] >= 48 && IdBuffer[counter] <= 57)
+        uint8_t var = 0;
+        if (charToInt(IdBuffer[counter], var))
         {
-            output = output + (IdBuffer[counter] - 48) * pow(16.0, counter);
-        }
-        else if (IdBuffer[counter] >= 65 && IdBuffer[counter] <= 70)
-        {
-            output = output + (IdBuffer[counter] - 55) * pow(16.0, counter);
-        }
-        else if (IdBuffer[counter] >= 97 && IdBuffer[counter] <= 102)
-        {
-            output = output + (IdBuffer[counter] - 87) * pow(16.0, counter);
+            output += var << (4 * (IdLength - counter - 1));
         }
         else
         {
-            isError = ERROR;
+            success = false;
         }
     }
-    if (isError == OK)
+
+    if (success)
     {
         result = output;
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::receiveCommand(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
     switch (lawicelCMD.charAt(0))
     {
     case SET_BAUDRATE:
-        isError = setBaudrateCmd(lawicelCMD);
+        success = setBaudrateCmd(lawicelCMD);
         break;
 
     case SET_BTR:
-        isError = setBTRCmd(lawicelCMD);
+        success = setBTRCmd(lawicelCMD);
         break;
 
     case OPEN_NORMAL:
-        isError = openNormalCmd(lawicelCMD);
+        success = openNormalCmd(lawicelCMD);
         break;
 
     case OPEN_LISTEN_ONLY:
-        isError = openListenOnlyCmd(lawicelCMD);
+        success = openListenOnlyCmd(lawicelCMD);
         break;
 
     case CLOSE:
-        isError = closeCmd(lawicelCMD);
+        success = closeCmd(lawicelCMD);
         break;
 
     case TX_STD:
-        isError = stdTxCmd(lawicelCMD);
+        success = stdTxCmd(lawicelCMD);
         break;
 
     case TX_EXT:
-        isError = extTxCmd(lawicelCMD);
+        success = extTxCmd(lawicelCMD);
         break;
 
     case TX_STD_RTR:
-        isError = stdRtrTxCmd(lawicelCMD);
+        success = stdRtrTxCmd(lawicelCMD);
         break;
 
     case TX_EXT_RTR:
-        isError = extRtrTxCmd(lawicelCMD);
+        success = extRtrTxCmd(lawicelCMD);
         break;
 
     case POLL_SINGLE:
-        isError = singlePollCmd(lawicelCMD);
+        success = singlePollCmd(lawicelCMD);
         break;
 
     case POLL_ALL:
-        isError = allPollCmd(lawicelCMD);
+        success = allPollCmd(lawicelCMD);
         break;
 
     case POLL_AUTO:
-        isError = toggleAutoPollCmd(lawicelCMD);
+        success = toggleAutoPollCmd(lawicelCMD);
         break;
 
     case STATUS_FLAGS:
-        isError = getFlagsCmd(lawicelCMD);
+        success = getFlagsCmd(lawicelCMD);
         break;
 
     case FILTER_MODE:
-        isError = setFilterModeCmd(lawicelCMD);
+        success = setFilterModeCmd(lawicelCMD);
         break;
 
     case ACN_REGISTER:
-        isError = setACnCmd(lawicelCMD);
+        success = setACnCmd(lawicelCMD);
         break;
 
     case AMN_REGISTER:
-        isError = setAMnCmd(lawicelCMD);
+        success = setAMnCmd(lawicelCMD);
         break;
 
     case SERIAL_BAUDRATE:
-        isError = setSerialBaudrateCmd(lawicelCMD);
+        success = setSerialBaudrateCmd(lawicelCMD);
         break;
 
     case VERSION:
-        isError = getVersionCmd(lawicelCMD);
+        success = getVersionCmd(lawicelCMD);
         break;
 
     case SERIAL_NUMBER:
-        isError = getSerialNumberCmd(lawicelCMD);
+        success = getSerialNumberCmd(lawicelCMD);
         break;
 
     case TOGGLE_TIMESTAMP:
-        isError = toggleTimeStampCmd(lawicelCMD);
+        success = toggleTimeStampCmd(lawicelCMD);
         break;
 
     case AUTO_START:
-        isError = toggleAutoStartCmd(lawicelCMD);
+        success = toggleAutoStartCmd(lawicelCMD);
         break;
 
     default:
-        isError = 1;
+        success = false;
         break;
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::setBaudrateCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     uint32_t baudrate = 0;
 
     if (lawicelCMD.length() != 2)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
@@ -547,325 +479,352 @@ bool Lawicel::setBaudrateCmd(const String &lawicelCMD)
             break;
 
         default:
-            isError = ERROR;
+            success = false;
             break;
         }
     }
 
-    if (isError == OK)
+    if (success)
     {
         m_selectedNVM->save(INIT_CAN_BAUD, lawicelCMD);
-        isError = m_selectedCAN->setBaudrate(baudrate);
+        success = m_selectedCAN->setBaudrate(baudrate);
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::setBTRCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 5)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
         uint8_t BTR0 = 0;
         uint8_t BTR1 = 0;
 
-        if (charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), BTR0))
+        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), BTR0))
         {
-            isError = ERROR;
+            success = false;
         }
 
-        if (charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), BTR1))
+        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), BTR1))
         {
-            isError = ERROR;
+            success = false;
         }
 
-        if (isError == OK)
+        if (success)
         {
-            isError = m_selectedCAN->setBTR(BTR0, BTR1);
+            success = m_selectedCAN->setBTR(BTR0, BTR1);
         }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::openNormalCmd(const String &lawicelCMD)
 {
-    uint8_t isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 1)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
-        isError = m_selectedCAN->setState(CANInterface::NORMAL);
+        success = m_selectedCAN->setState(CANInterface::NORMAL);
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::openListenOnlyCmd(const String &lawicelCMD)
 {
-    uint8_t isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 1)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
-        isError = m_selectedCAN->setState(CANInterface::LISTEN_ONLY);
+        success = m_selectedCAN->setState(CANInterface::LISTEN_ONLY);
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::closeCmd(const String &lawicelCMD)
 {
-    uint8_t isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 1)
     {
-        isError = ERROR;
+        success = false;
+        ;
     }
     else if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
-        isError = m_selectedCAN->setState(CANInterface::CLOSED);
+        success = m_selectedCAN->setState(CANInterface::CLOSED);
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::stdTxCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
-    CANInterface::Frame frame;
-    uint8_t dlc = 0;
-    if (charToInt(lawicelCMD.charAt(4), dlc))
+    bool success = true;
+
+    if (lawicelCMD.length() < 5)
     {
-        isError = ERROR;
-    }
-
-    uint32_t id = 0;
-    if (IdDecode(0, lawicelCMD, id))
-    {
-        isError = ERROR;
-    }
-
-    int frameposition = 0;
-
-    frame.m_id = id;
-    frame.m_dlc = dlc;
-
-    if (lawicelCMD.length() != ((2 * dlc) + 5))
-    {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::NORMAL)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
-        for (int bufferPosition = 5; bufferPosition < (dlc * 2 + 4); bufferPosition += 2, frameposition++)
+        uint8_t dlc = 0;
+        if (!charToInt(lawicelCMD.charAt(4), dlc))
         {
-            uint8_t resultByte = 0;
-
-            if (charToByte(lawicelCMD.charAt(bufferPosition), lawicelCMD.charAt(bufferPosition + 1), resultByte))
+            success = false;
+        }
+        else
+        {
+            uint32_t id = 0;
+            if (!decodeId(0, lawicelCMD, id))
             {
-                isError = ERROR;
+                success = false;
             }
             else
             {
-                frame.m_data[frameposition] = resultByte;
-            }
-        }
+                if (lawicelCMD.length() != ((2 * dlc) + 5))
+                {
+                    success = false;
+                }
+                else
+                {
+                    CANInterface::Frame frame;
+                    frame.m_id = id;
+                    frame.m_dlc = dlc;
 
-        if (isError == OK)
-        {
-            isError = m_selectedCAN->send(frame);
+                    int frameposition = 0;
+                    for (int bufferPosition = 5; bufferPosition < (dlc * 2 + 4); bufferPosition += 2, frameposition++)
+                    {
+                        uint8_t resultByte = 0;
+
+                        if (!charToByte(lawicelCMD.charAt(bufferPosition), lawicelCMD.charAt(bufferPosition + 1), resultByte))
+                        {
+                            success = false;
+                        }
+                        else
+                        {
+                            frame.m_data[frameposition] = resultByte;
+                        }
+                    }
+
+                    if (success)
+                    {
+                        success = m_selectedCAN->send(frame);
+                    }
+                }
+            }
         }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::extTxCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
-    CANInterface::Frame frame;
+    bool success = true;
 
-    uint8_t dlc = 0;
-    if (charToInt(lawicelCMD.charAt(9), dlc))
+    if (lawicelCMD.length() < 10)
     {
-        isError = ERROR;
-    }
-
-    uint32_t id = 0;
-    if (IdDecode(1, lawicelCMD, id))
-    {
-        isError = ERROR;
-    }
-
-    int frameposition = 0;
-
-    frame.m_id = id;
-    frame.m_dlc = dlc;
-    frame.m_extended = true;
-
-    if (lawicelCMD.length() != ((2 * dlc) + 10))
-    {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::NORMAL)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
-        for (int bufferPosition = 10; bufferPosition < (dlc * 2 + 9); bufferPosition += 2, frameposition++)
+        uint8_t dlc = 0;
+        if (!charToInt(lawicelCMD.charAt(9), dlc))
         {
-            uint8_t resultByte = 0;
-            if (charToByte(lawicelCMD.charAt(bufferPosition), lawicelCMD.charAt(bufferPosition + 1), resultByte))
+            success = false;
+        }
+        else
+        {
+            uint32_t id = 0;
+            if (!decodeId(1, lawicelCMD, id))
             {
-                isError = ERROR;
+                success = false;
             }
             else
             {
-                frame.m_data[frameposition] = resultByte;
-            }
-        }
+                if (lawicelCMD.length() != ((2 * dlc) + 10))
+                {
+                    success = false;
+                }
+                else
+                {
+                    CANInterface::Frame frame;
+                    frame.m_id = id;
+                    frame.m_dlc = dlc;
+                    frame.m_extended = true;
 
-        if (isError == OK)
-        {
-            isError = m_selectedCAN->send(frame);
+                    int frameposition = 0;
+                    for (int bufferPosition = 10; bufferPosition < (dlc * 2 + 9); bufferPosition += 2, frameposition++)
+                    {
+                        uint8_t resultByte = 0;
+                        if (!charToByte(lawicelCMD.charAt(bufferPosition), lawicelCMD.charAt(bufferPosition + 1), resultByte))
+                        {
+                            success = false;
+                        }
+                        else
+                        {
+                            frame.m_data[frameposition] = resultByte;
+                        }
+                    }
+
+                    if (success)
+                    {
+                        success = m_selectedCAN->send(frame);
+                    }
+                }
+            }
         }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::stdRtrTxCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
-    CANInterface::Frame frame;
-
-    uint8_t dlc = 0;
-    if (charToInt(lawicelCMD.charAt(4), dlc))
-    {
-        isError = ERROR;
-    }
-
-    uint32_t id = 0;
-    if (IdDecode(0, lawicelCMD, id))
-    {
-        isError = ERROR;
-    }
-
-    frame.m_id = id;
-    frame.m_dlc = dlc;
-    frame.m_rtr = true;
+    bool success = true;
 
     if (lawicelCMD.length() != 5)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::NORMAL)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
-        isError = m_selectedCAN->send(frame);
+        uint32_t id = 0;
+        if (!decodeId(0, lawicelCMD, id))
+        {
+            success = false;
+        }
+        else
+        {
+            uint8_t dlc = 0;
+            if (!charToInt(lawicelCMD.charAt(4), dlc))
+            {
+                success = false;
+            }
+            else
+            {
+                CANInterface::Frame frame;
+                frame.m_id = id;
+                frame.m_dlc = dlc;
+                frame.m_rtr = true;
+                success = m_selectedCAN->send(frame);
+            }
+        }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::extRtrTxCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
-    CANInterface::Frame frame;
-
-    uint8_t dlc = 0;
-    if (charToInt(lawicelCMD.charAt(9), dlc))
-    {
-        isError = ERROR;
-    }
-
-    uint32_t id = 0;
-    if (IdDecode(1, lawicelCMD, id))
-    {
-        isError = ERROR;
-    }
-
-    frame.m_id = id;
-    frame.m_dlc = dlc;
-    frame.m_extended = true;
-    frame.m_rtr = true;
+    bool success = true;
 
     if (lawicelCMD.length() != 10)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::NORMAL)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
-        isError = m_selectedCAN->send(frame);
+        uint8_t dlc = 0;
+        if (!charToInt(lawicelCMD.charAt(9), dlc))
+        {
+            success = false;
+        }
+        else
+        {
+            uint32_t id = 0;
+            if (!decodeId(1, lawicelCMD, id))
+            {
+                success = false;
+            }
+            else
+            {
+                CANInterface::Frame frame;
+                frame.m_id = id;
+                frame.m_dlc = dlc;
+                frame.m_extended = true;
+                frame.m_rtr = true;
+                success = m_selectedCAN->send(frame);
+            }
+        }
     }
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::singlePollCmd(const String &lawicelCMD)
+bool Lawicel::singlePollCmd(const String &lawicelCMD)
 {
-    uint8_t isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 1)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
         CANInterface::Frame frame;
-
-        if (m_selectedCAN->pollSingle(frame) != 0)
+        if (m_selectedCAN->pollSingle(frame))
         {
             char cmd = 't';
             int idLength = 3;
@@ -908,54 +867,57 @@ uint8_t Lawicel::singlePollCmd(const String &lawicelCMD)
                 m_serialReturn += String(getTimestamp(), HEX);
             }
         }
-        else
-        {
-            isError = END_OF_BUFFER; /**< it is no error, but marks the end of the message buffer */
-        }
     }
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::allPollCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 1)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
-        while (singlePollCmd(lawicelCMD) == 0)
+        while (singlePollCmd(lawicelCMD))
         {
-            m_serialReturn += (char)CR;
-            m_selectedSerial->print(m_serialReturn);
-            m_serialReturn = "";
+            if (m_serialReturn.isEmpty())
+            {
+                break;
+            }
+            else
+            {
+                m_serialReturn += (char)CR;
+                m_selectedSerial->print(m_serialReturn);
+                m_serialReturn = "";
+            }
         }
 
         m_serialReturn += 'A';
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::toggleAutoPollCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 2)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
@@ -969,45 +931,45 @@ bool Lawicel::toggleAutoPollCmd(const String &lawicelCMD)
             break;
 
         default:
-            isError = ERROR;
+            success = false;
             break;
         }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::getFlagsCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
     if (lawicelCMD.length() > 1)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
         m_serialReturn += String(m_selectedCAN->getStatusFlags(), HEX);
     }
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
     bool filterMode;
     if (lawicelCMD.length() != 2)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
@@ -1022,75 +984,74 @@ bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
             break;
 
         default:
-            isError = ERROR;
+            success = false;
             break;
         }
 
-        if (isError == OK)
+        if (success)
         {
             m_selectedNVM->save(INIT_FILTER_MODE, lawicelCMD);
-            isError = m_selectedCAN->setFilterMode(filterMode);
+            success = m_selectedCAN->setFilterMode(filterMode);
         }
     }
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::setACnCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 9)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
         uint8_t ACn[4];
 
-        if (charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), ACn[0]))
+        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), ACn[0]))
         {
-            isError = ERROR;
+            success = false;
         }
-        if (charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), ACn[1]))
+        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), ACn[1]))
         {
-            isError = ERROR;
+            success = false;
         }
-        if (charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), ACn[2]))
+        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), ACn[2]))
         {
-            isError = ERROR;
+            success = false;
         }
-        if (charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), ACn[3]))
+        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), ACn[3]))
         {
-            isError = ERROR;
+            success = false;
         }
 
-        if (isError == OK)
+        if (success)
         {
             m_selectedNVM->save(INIT_FILTER_ACN, lawicelCMD);
-
-            isError = m_selectedCAN->setACn(ACn);
+            success = m_selectedCAN->setACn(ACn);
         }
     }
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::setAMnCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 9)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
@@ -1098,46 +1059,44 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
 
         if (charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), AMn[0]))
         {
-            isError = ERROR;
+            success = false;
         }
         if (charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), AMn[1]))
         {
-            isError = ERROR;
+            success = false;
         }
         if (charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), AMn[2]))
         {
-            isError = ERROR;
+            success = false;
         }
         if (charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), AMn[3]))
         {
-            isError = ERROR;
+            success = false;
         }
 
-        if (isError == OK)
+        if (success)
         {
             m_selectedNVM->save(INIT_FILTER_AMN, lawicelCMD);
-
-            isError = m_selectedCAN->setACn(AMn);
+            success = m_selectedCAN->setACn(AMn);
         }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::setSerialBaudrateCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
-
+    bool success = true;
     long _baudrate = 0;
 
     if (lawicelCMD.length() != 2)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
@@ -1172,58 +1131,66 @@ bool Lawicel::setSerialBaudrateCmd(const String &lawicelCMD)
             break;
 
         default:
-            isError = ERROR;
+            success = false;
             break;
         }
 
-        if (isError == OK)
+        if (success)
         {
             m_selectedNVM->save(INIT_SERIAL_BAUD, lawicelCMD);
-            m_selectedSerial->setBaudrate(_baudrate);
+            success = m_selectedSerial->setBaudrate(_baudrate);
         }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::getVersionCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 1)
     {
-        isError = ERROR;
+        success = false;
+    }
+    else
+    {
+        m_serialReturn += X_VERSION;
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::getSerialNumberCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 1)
     {
-        isError = ERROR;
+        success = false;
+    }
+    else
+    {
+        m_serialReturn += X_SERIAL_NUMBER;
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::toggleTimeStampCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 2)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() != CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
@@ -1240,26 +1207,26 @@ bool Lawicel::toggleTimeStampCmd(const String &lawicelCMD)
             break;
 
         default:
-            isError = ERROR;
+            success = false;
             break;
         }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
 bool Lawicel::toggleAutoStartCmd(const String &lawicelCMD)
 {
-    bool isError = OK;
+    bool success = true;
 
     if (lawicelCMD.length() != 2)
     {
-        isError = ERROR;
+        success = false;
     }
     else if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
@@ -1281,35 +1248,34 @@ bool Lawicel::toggleAutoStartCmd(const String &lawicelCMD)
             break;
 
         default:
-            isError = ERROR;
+            success = false;
             break;
         }
     }
 
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/
-uint8_t Lawicel::autopoll()
+bool Lawicel::autopoll()
 {
-    uint8_t isError = OK;
+    bool success = true;
 
     if (m_selectedCAN->getChannelState() == CANInterface::CLOSED)
     {
-        isError = ERROR;
+        success = false;
     }
     else
     {
         CANInterface::Frame frame;
-
-        if (m_selectedCAN->pollSingle(frame) != 0)
+        if (m_selectedCAN->pollSingle(frame))
         {
             char cmd = 't';
-            int _id_length = 3;
+            int idLength = 3;
             if (frame.m_extended == true && frame.m_rtr == false)
             {
                 cmd = 'T';
-                _id_length = 8;
+                idLength = 8;
             }
             else if (frame.m_extended == false && frame.m_rtr == true)
             {
@@ -1318,17 +1284,17 @@ uint8_t Lawicel::autopoll()
             else if (frame.m_extended == true && frame.m_rtr == true)
             {
                 cmd = 'R';
-                _id_length = 8;
+                idLength = 8;
             }
 
             m_serialReturn += cmd;
 
-            String _ID = String(frame.m_id, HEX);
-            for (int i = 0; i < _id_length - _ID.length(); i++)
+            String idHex = String(frame.m_id, HEX);
+            for (int i = 0; i < idLength - idHex.length(); i++)
             {
                 m_serialReturn += '0';
             }
-            m_serialReturn += _ID;
+            m_serialReturn += idHex;
 
             m_serialReturn += frame.m_dlc;
 
@@ -1345,12 +1311,8 @@ uint8_t Lawicel::autopoll()
                 m_serialReturn += String(getTimestamp(), HEX);
             }
         }
-        else
-        {
-            isError = END_OF_BUFFER; /**< it is no error, but marks the end of the message buffer */
-        }
     }
-    return isError;
+    return success;
 }
 
 /**************************************************************************************************/

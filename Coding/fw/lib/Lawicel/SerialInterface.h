@@ -72,7 +72,7 @@ public:
    * Reads the Serial Adapter into a buffer.
    * @return isError: 0 for OK, 1 for Error
    */
-  virtual uint8_t read(char &c) = 0;
+  virtual bool read(char &c) = 0;
 
   /** 
    * Prints a String to Serial Adapter.

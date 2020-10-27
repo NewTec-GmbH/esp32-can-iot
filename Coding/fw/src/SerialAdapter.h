@@ -85,19 +85,19 @@ public:
     * Reads the Serial Adapter into a buffer.
     * @return isError: 0 for OK, 1 for Error
     */
-    uint8_t read(char &c)
+    bool read(char &c)
     {
-        uint8_t isError = 0;
-        if ((Serial.available() > 0) && (Serial.available() < 30))
+        uint8_t success = true;
+        if ((Serial.available() > 0))
         {
             c = Serial.read();
         }
         else
         {
-            isError = 1;
+            success = false;
         }
 
-        return isError;
+        return success;
     }
 
     /**

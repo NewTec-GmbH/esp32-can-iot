@@ -115,16 +115,10 @@ private:
         AUTO_START = 'Q'        /**< Auto-Startup with CAN Channel open and filters */
     };
 
-    enum CMD_STATE : int
-    {
-        OK = 0,       /**< Command processed with no Errors*/
-        ERROR,        /**< Error. Command not processed*/
-        END_OF_BUFFER /**< No Error. End of CAN Frame Receiving Buffer */
-    };
 
     bool charToByte(char msb, char lsb, uint8_t &result);                     /**< Translates char symbols of a Byte into hex values */
     bool charToInt(char symbol, uint8_t &result);                             /**< Translates char symbols of numbers into int values */
-    bool IdDecode(bool extended, const String &lawicelCMD, uint32_t &result); /**< Translates char ID into value */
+    bool decodeId(bool extended, const String &lawicelCMD, uint32_t &result); /**< Translates char ID into value */
 
     bool receiveCommand(const String &lawicelCMD);       /**< Receives and Interprets Buffer with Serial Command */
     bool setBaudrateCmd(const String &lawicelCMD);       /**< Sets Baudrate through presets */
@@ -136,7 +130,7 @@ private:
     bool extTxCmd(const String &lawicelCMD);             /**< Transmits extended CAN Frame (29-bit ID) */
     bool stdRtrTxCmd(const String &lawicelCMD);          /**< Transmits standard RTR CAN Frame (11-bit ID) */
     bool extRtrTxCmd(const String &lawicelCMD);          /**< Transmits extended RTR CAN Frame (29-bit ID) */
-    uint8_t singlePollCmd(const String &lawicelCMD);        /**< Poll incomming FIFO for CAN frames (single poll) */
+    bool singlePollCmd(const String &lawicelCMD);        /**< Poll incomming FIFO for CAN frames (single poll) */
     bool allPollCmd(const String &lawicelCMD);           /**< Polls incomming FIFO for CAN frames (all pending frames) */
     bool toggleAutoPollCmd(const String &lawicelCMD);    /**< Toggles Auto Poll for inconming Frames */
     bool getFlagsCmd(const String &lawicelCMD);          /**< Read Status Flags */
@@ -149,7 +143,7 @@ private:
     bool toggleTimeStampCmd(const String &lawicelCMD);   /**< Toggles Timestamp (and saves setting on EEPROM) */
     bool toggleAutoStartCmd(const String &lawicelCMD);   /**< Auto Startup feature (from power on) */
 
-    uint8_t autopoll();      /**< Frame Polling without any extra tags */
+    bool autopoll();      /**< Frame Polling without any extra tags */
     uint32_t getTimestamp(); /**< Returns Timestamp */
 
     bool m_timestamp = false;   /**< Toggle timestamp */

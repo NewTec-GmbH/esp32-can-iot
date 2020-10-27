@@ -46,7 +46,7 @@ public:
     };
 
     /**
-    * Format of a CAN Frame with an empty constructor
+    * Format of a CAN Frame with an empty structure
     */
     struct Frame
     {
@@ -84,34 +84,34 @@ public:
 
     /**
     * Configures and starts the CAN Controller to use the user values.
-    * @return 0 for OK, 1 for Error
+    * @return bool
     */
     virtual bool begin() = 0;
 
     /** 
     * Stops the Controller Module without destroying the instance.
-    * @return 0 for OK, 1 for Error 
+    * @return bool
     */
     virtual bool end() = 0;
 
     /**
     * Send a Data String.
     * @param[in] Frame         Frame to be sended via CAN BUS
-    * @return 0 for OK, 1 for Error
+    * @return bool
     */
     virtual bool send(const Frame &frame) = 0;
 
     /**
     * Set the State of the CAN Channel.
     * @param[in] state         Channel State to be set
-    * @return 0 for OK, 1 for Error
+    * @return bool
     */
     virtual bool setState(BUS_STATE state) = 0;
 
     /**
     * Set the Baudrate of the CAN Channel.
     * @param[in] baudrate      Channel Baudrate to be set
-    * @return 0 for OK, 1 for Error
+    * @return bool
     */
     virtual bool setBaudrate(uint32_t baudrate) = 0;
 
@@ -119,28 +119,28 @@ public:
     * Sent the BTR Registers of the CAN Channel.
     * @param BTR0             Register 0 to set a Channel Baudrate directly
     * @param BTR1             Register 1 to set a Channel Baudrate directly
-    * @return 0 for OK, 1 for Error
+    * @return bool
     */
     virtual bool setBTR(uint8_t btr0, uint8_t btr1) = 0;
 
     /**
     * Set the Filter Mode of the CAN Channel.
     * @param[in] Filter        When FALSE (default), set to Dual Filter Mode. When TRUE, Single Filter Mode
-    * @return 0 for OK, 1 for Error
+    * @return bool
     */
     virtual bool setFilterMode(uint8_t filter) = 0;
 
     /**
     * Set the Acceptance Code Register.
     * @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
-    * @return 0 for OK, 1 for Error
+    * @return bool 
     */
     virtual bool setACn(const uint8_t *acn) = 0;
 
     /**
     * Set the Acceptance Mask Register.
     * @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
-    * @return 0 for OK, 1 for Error
+    * @return bool
     */
     virtual bool setAMn(const uint8_t *acn) = 0;
 
@@ -148,7 +148,7 @@ public:
     * Gets the Channel State from the CAN Controller.
     * @return BUS_STATE m_currentState of the CAN-Bus Channel.
     */
-    virtual uint8_t getChannelState() = 0;
+    virtual BUS_STATE getChannelState() = 0;
 
     /**
     * Gets the Status and Error Flags from the CAN Controller.
@@ -158,9 +158,9 @@ public:
 
     /**
     * Polls one Message from the FIFO Buffer.
-    * @return availableFrames. 0 for No new Frames.  
+    * @return number of available Frames. 0 for No new Frames.  
     */
-    virtual uint8_t pollSingle(Frame &frame) = 0;
+    virtual bool pollSingle(Frame &frame) = 0;
 
 private:
 };
