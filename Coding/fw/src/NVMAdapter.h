@@ -56,7 +56,7 @@ public:
     {
         nvm.begin("Startup", false);
         nvm.end();
-        return 0;
+        return true;
     }
 
     /**
@@ -64,7 +64,7 @@ public:
     */
     bool end()
     {
-        return 0;
+        return true;
     }
 
     /**

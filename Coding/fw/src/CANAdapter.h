@@ -77,7 +77,7 @@ public:
     bool end()
     {
         m_Can_Controller.end();
-        return 0;
+        return true;
     }
 
     /**
