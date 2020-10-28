@@ -204,7 +204,6 @@ public:
 
     /**
     * Set the Acceptance Code Register.
-    * @todo Try to configure this
     */
     bool setACn(const FILTER &acn)
     {
@@ -213,7 +212,6 @@ public:
 
     /**
     * Set the Acceptance Mask Register.
-    * @todo Try to configure this
     */
     bool setAMn(const FILTER &amn)
     {
@@ -240,8 +238,7 @@ public:
 
     /**
     * Polls one Message from the FIFO Buffer.
-    * @return availableFrames. 0 for No new Frames.  
-    * @todo Bool return ?
+    * @return availableFrames. 0 for No new Frames.
     */
     bool pollSingle(Frame &frame)
     {
