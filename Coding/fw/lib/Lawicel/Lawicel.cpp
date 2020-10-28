@@ -49,7 +49,7 @@ bool Lawicel::executeCycle()
 {
     bool success = true;
     m_serialReturn = "";
-
+    /*
     if (m_autoPolling)
     {
         if (autopoll())
@@ -57,7 +57,7 @@ bool Lawicel::executeCycle()
             m_selectedSerial->print(m_serialReturn += (char)CR);
         }
     }
-
+*/
     m_serialReturn = "";
     char c = BELL;
 
@@ -216,7 +216,7 @@ bool Lawicel::charToInt(char num_symbol, uint8_t &result)
     switch (num_symbol)
     {
     case '0':
-        result = 0x00;
+        result = 0x0;
         break;
     case '1':
         result = 0x1;
@@ -283,33 +283,19 @@ bool Lawicel::decodeId(bool extended, const String &lawicelCMD, uint32_t &result
     bool success = true;
     uint32_t output = 0;
     uint8_t IdLength = 3;
-    char IdBuffer[8];
 
     if (extended)
     {
         IdLength = 8;
-        IdBuffer[0] = lawicelCMD.charAt(8);
-        IdBuffer[1] = lawicelCMD.charAt(7);
-        IdBuffer[2] = lawicelCMD.charAt(6);
-        IdBuffer[3] = lawicelCMD.charAt(5);
-        IdBuffer[4] = lawicelCMD.charAt(4);
-        IdBuffer[5] = lawicelCMD.charAt(3);
-        IdBuffer[6] = lawicelCMD.charAt(2);
-        IdBuffer[7] = lawicelCMD.charAt(1);
-    }
-    else
-    {
-        IdBuffer[0] = lawicelCMD.charAt(3);
-        IdBuffer[1] = lawicelCMD.charAt(2);
-        IdBuffer[2] = lawicelCMD.charAt(1);
+        
     }
 
     for (int counter = 0; counter < IdLength; counter++)
     {
         uint8_t var = 0;
-        if (charToInt(IdBuffer[counter], var))
+        if (charToInt(lawicelCMD[counter+1], var))
         {
-            output += var << (4 * (IdLength - counter - 1));
+            output += (var << (4 * (IdLength - counter - 1)));
         }
         else
         {
