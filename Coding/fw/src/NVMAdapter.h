@@ -32,7 +32,7 @@ class NVMAdapter : public NVMInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
-
+    const char *DIRECTORY = "Startup";
     /* TYPES **********************************************************************************/
 
     /**
@@ -54,7 +54,7 @@ public:
     */
     bool begin()
     {
-        nvm.begin("Startup", false);
+        nvm.begin(DIRECTORY, false);
         nvm.end();
         return true;
     }
@@ -73,7 +73,7 @@ public:
     bool save(const String &name, int32_t value)
     {
         bool success = true;
-        if (nvm.begin("Startup", false))
+        if (nvm.begin(DIRECTORY, false))
         {
             nvm.putULong(name.c_str(), value);
             nvm.end();
@@ -91,7 +91,7 @@ public:
     bool save(const String &name, const String &value)
     {
         bool success = true;
-        if (nvm.begin("Startup", false))
+        if (nvm.begin(DIRECTORY, false))
         {
             nvm.putString(name.c_str(), value);
             nvm.end();
@@ -108,7 +108,7 @@ public:
     */
     uint32_t readInt(const String &name)
     {
-        nvm.begin("Startup", false);
+        nvm.begin(DIRECTORY, false);
         uint32_t value = nvm.getULong(name.c_str());
         nvm.end();
 
@@ -120,7 +120,7 @@ public:
     */
     String readString(const String &name)
     {
-        nvm.begin("Startup", false);
+        nvm.begin(DIRECTORY, false);
         String value = nvm.getString(name.c_str());
         nvm.end();
         return value;
@@ -132,7 +132,7 @@ public:
     bool clearEntries()
     {
         bool success = true;
-        if (!nvm.begin("Startup", false))
+        if (!nvm.begin(DIRECTORY, false))
         {
             success = false;
         }
