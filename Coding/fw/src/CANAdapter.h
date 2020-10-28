@@ -103,14 +103,17 @@ public:
             }
         }
 
-        if (m_Can_Controller.write(frame.m_data, frame.m_dlc) == 0)
+        if (success)
         {
-            success = false;
-        }
+            if (m_Can_Controller.write(frame.m_data, frame.m_dlc))
+            {
+                success = false;
+            }
 
-        if (m_Can_Controller.endPacket() == 0)
-        {
-            success = false;
+            if (0 == m_Can_Controller.endPacket())
+            {
+                success = false;
+            }
         }
 
         return success;
@@ -257,7 +260,7 @@ public:
             }
             success = true;
         }
-        
+
         return success;
     }
 
