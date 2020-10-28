@@ -49,46 +49,48 @@ bool Lawicel::executeCycle()
 {
     bool success = true;
     m_serialReturn = "";
-    
+
     if (m_autoPolling)
     {
         if (autopoll())
         {
-            m_selectedSerial->print(m_serialReturn += (char)CR);
+            m_serialReturn += CR;
+            m_selectedSerial->print(m_serialReturn);
         }
     }
 
     m_serialReturn = "";
     char c = BELL;
 
-    m_selectedSerial->read(c); /**< No return check for success because having no new chars is a possible result */
-
-    if ('\r' == c)
+    if (m_selectedSerial->read(c))
     {
-        if (!receiveCommand(m_serialInput))
+        if ('\r' == c)
         {
-            m_serialReturn += (char)BELL;
-            m_selectedSerial->print(m_serialReturn);
+            if (!receiveCommand(m_serialInput))
+            {
+                m_serialReturn += BELL;
+                m_selectedSerial->print(m_serialReturn);
+                success = false;
+            }
+            else
+            {
+                m_serialReturn += CR;
+                m_selectedSerial->print(m_serialReturn);
+            }
+
+            m_serialInput = "";
+        }
+        else if (m_serialInput.length() > 30)
+        {
             success = false;
+            m_serialInput = "";
         }
-        else
+        else if (c != BELL)
         {
-            m_serialReturn += (char)CR;
-            m_selectedSerial->print(m_serialReturn);
+            m_serialInput += c;
         }
-
-        m_serialInput = "";
     }
-    else if (m_serialInput.length() > 30)
-    {
-        success = false;
-        m_serialInput = "";
-    }
-    else if (c != BELL)
-    {
-        m_serialInput += c;
-    }
-
+    
     return success;
 }
 
@@ -287,13 +289,12 @@ bool Lawicel::decodeId(bool extended, const String &lawicelCMD, uint32_t &result
     if (extended)
     {
         IdLength = 8;
-        
     }
 
     for (int counter = 0; counter < IdLength; counter++)
     {
         uint8_t var = 0;
-        if (charToInt(lawicelCMD[counter+1], var))
+        if (charToInt(lawicelCMD[counter + 1], var))
         {
             output += (var << (4 * (IdLength - counter - 1)));
         }
@@ -998,21 +999,21 @@ bool Lawicel::setACnCmd(const String &lawicelCMD)
     }
     else
     {
-        uint8_t ACn[4];
+        CANInterface::FILTER acn;
 
-        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), ACn[0]))
+        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), acn.data[0]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), ACn[1]))
+        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), acn.data[1]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), ACn[2]))
+        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), acn.data[2]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), ACn[3]))
+        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), acn.data[3]))
         {
             success = false;
         }
@@ -1020,7 +1021,7 @@ bool Lawicel::setACnCmd(const String &lawicelCMD)
         if (success)
         {
             m_selectedNVM->save(INIT_FILTER_ACN, lawicelCMD);
-            success = m_selectedCAN->setACn(ACn);
+            success = m_selectedCAN->setACn(acn);
         }
     }
     return success;
@@ -1041,21 +1042,21 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
     }
     else
     {
-        uint8_t AMn[4];
+        CANInterface::FILTER amn;
 
-        if (charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), AMn[0]))
+        if (charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), amn.data[0]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), AMn[1]))
+        if (charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), amn.data[1]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), AMn[2]))
+        if (charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), amn.data[2]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), AMn[3]))
+        if (charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), amn.data[3]))
         {
             success = false;
         }
@@ -1063,7 +1064,7 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
         if (success)
         {
             m_selectedNVM->save(INIT_FILTER_AMN, lawicelCMD);
-            success = m_selectedCAN->setACn(AMn);
+            success = m_selectedCAN->setACn(amn);
         }
     }
 

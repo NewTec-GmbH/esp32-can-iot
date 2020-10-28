@@ -206,7 +206,7 @@ public:
     * Set the Acceptance Code Register.
     * @todo Try to configure this
     */
-    bool setACn(const uint8_t *acn)
+    bool setACn(const FILTER &acn)
     {
         return false;
     }
@@ -215,7 +215,7 @@ public:
     * Set the Acceptance Mask Register.
     * @todo Try to configure this
     */
-    bool setAMn(const uint8_t *amn)
+    bool setAMn(const FILTER &amn)
     {
         return false;
     }

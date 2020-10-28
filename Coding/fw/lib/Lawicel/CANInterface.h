@@ -32,7 +32,8 @@ class CANInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
-    static const uint8_t FRAME_DATA_SIZE = 8;       /**< Maximum Data size of a Frame */
+    static const uint8_t FRAME_DATA_SIZE = 8;  /**< Maximum Data size of a Frame */
+    static const uint8_t FILTER_DATA_SIZE = 4; /**< Standard Data size of a Filter */
 
     /* TYPES **********************************************************************************/
 
@@ -56,7 +57,7 @@ public:
         uint8_t m_dlc;                   /**< Data Length */
         uint8_t m_data[FRAME_DATA_SIZE]; /**< Data of the Frame */
 
-        Frame() : m_id(0),               /**< Initialize Frame with default values*/
+        Frame() : m_id(0), /**< Initialize Frame with default values*/
                   m_rtr(false),
                   m_extended(false),
                   m_dlc(0)
@@ -66,6 +67,11 @@ public:
                 m_data[i] = 0;
             }
         }
+    };
+
+    struct FILTER
+    {
+        uint8_t data[FILTER_DATA_SIZE];
     };
 
     /**
@@ -135,14 +141,14 @@ public:
     * @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
     * @return bool 
     */
-    virtual bool setACn(const uint8_t *acn) = 0;
+    virtual bool setACn(const FILTER &acn) = 0;
 
     /**
     * Set the Acceptance Mask Register.
     * @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
     * @return bool
     */
-    virtual bool setAMn(const uint8_t *acn) = 0;
+    virtual bool setAMn(const FILTER &acn) = 0;
 
     /**
     * Gets the Channel State from the CAN Controller.
