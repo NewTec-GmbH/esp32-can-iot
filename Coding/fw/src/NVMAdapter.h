@@ -70,21 +70,37 @@ public:
     /**
     * Save Data in NVM
     */
-    void save(const String &name, int32_t value)
+    bool save(const String &name, int32_t value)
     {
-        nvm.begin("Startup", false);
-        nvm.putULong(name.c_str(), value);
-        nvm.end();
+        bool success = true;
+        if (nvm.begin("Startup", false))
+        {
+            nvm.putULong(name.c_str(), value);
+            nvm.end();
+        }
+        else
+        {
+            success = false;
+        }
+        return success;
     }
 
     /**
     * Save String in NVM
     */
-    void save(const String &name, const String &value)
+    bool save(const String &name, const String &value)
     {
-        nvm.begin("Startup", false);
-        nvm.putString(name.c_str(), value);
-        nvm.end();
+        bool success = true;
+        if (nvm.begin("Startup", false))
+        {
+            nvm.putString(name.c_str(), value);
+            nvm.end();
+        }
+        else
+        {
+            success = false;
+        }
+        return success;
     }
 
     /**
@@ -113,12 +129,19 @@ public:
     /**
      * Delete all NVM Entries.
      */
-    uint8_t clearEntries()
+    bool clearEntries()
     {
-        nvm.begin("Startup", false);
-        nvm.clear();
+        bool success = true;
+        if (!nvm.begin("Startup", false))
+        {
+            success = false;
+        }
+        else if (!nvm.clear())
+        {
+            success = false;
+        }
         nvm.end();
-        return 0;
+        return success;
     }
 
 private:

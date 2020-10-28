@@ -62,12 +62,12 @@ public:
     /**
     * Save Data in NVM
     */
-    virtual void save(const String &name, int32_t value) = 0;
+    virtual bool save(const String &name, int32_t value) = 0;
 
     /**
     * Save String in NVM
     */
-    virtual void save(const String &name, const String &value) = 0;
+    virtual bool save(const String &name, const String &value) = 0;
 
     /**
     * Read Data from NVM
@@ -82,7 +82,7 @@ public:
     /**
      * Delete all NVM Entries.
      */
-    virtual uint8_t clearEntries() = 0;
+    virtual bool clearEntries() = 0;
 
 private:
 };

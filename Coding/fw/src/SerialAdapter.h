@@ -56,7 +56,7 @@ public:
     bool begin()
     {
         Serial.begin(m_baudrate);
-        return 0;
+        return true;
     }
 
     /**
@@ -66,7 +66,7 @@ public:
     bool end()
     {
         Serial.end();
-        return 0;
+        return true;
     }
 
     /**
@@ -78,7 +78,7 @@ public:
     {
         m_baudrate = baudrate;
         Serial.updateBaudRate(m_baudrate);
-        return 0;
+        return true;
     }
 
     /**
