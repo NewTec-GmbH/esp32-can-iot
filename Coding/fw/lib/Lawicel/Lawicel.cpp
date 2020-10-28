@@ -49,7 +49,7 @@ bool Lawicel::executeCycle()
 {
     bool success = true;
     m_serialReturn = "";
-    /*
+    
     if (m_autoPolling)
     {
         if (autopoll())
@@ -57,7 +57,7 @@ bool Lawicel::executeCycle()
             m_selectedSerial->print(m_serialReturn += (char)CR);
         }
     }
-*/
+
     m_serialReturn = "";
     char c = BELL;
 
@@ -1296,6 +1296,10 @@ bool Lawicel::autopoll()
             {
                 m_serialReturn += String(getTimestamp(), HEX);
             }
+        }
+        else
+        {
+            success = false;
         }
     }
     return success;
