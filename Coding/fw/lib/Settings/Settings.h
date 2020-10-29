@@ -40,8 +40,8 @@ public:
 
     bool save(const char *directory, const String &key, const uint32_t &value);     /**< Saves uint32_t value to Flash memory on location "key" */
     bool save(const char *directory, const String &key, const String &value);       /**< Saves String to Flash memory on location "key" */
-    bool get(const char *directory, const String &key, uint32_t &value);            /**< Gets uint32_t value from Flash memory on location "key". Writes it in "value" */
-    bool get(const char *directory, const String &key, String &value);              /**< Gets String from Flash memory on location "key". Writes it in "value" */
+    bool get(const char *directory, const String &key, uint32_t &value, const uint32_t defaultValue = 0U);            /**< Gets uint32_t value from Flash memory on location "key". Writes it in "value" */
+    bool get(const char *directory, const String &key, String &value, const String defaultValue = "");              /**< Gets String from Flash memory on location "key". Writes it in "value" */
     bool clear(const char *directory);                                              /**< Clears all entries on a directory */
 
 private:
