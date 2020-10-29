@@ -1,0 +1,40 @@
+@startuml
+
+Title Mainloop Sequence
+
+group Setup
+    Mainloop --> Settings : importSettings()
+    Settings --> Mainloop : return bool success
+    Mainloop --> Lawicel : begin()
+    note right
+        importSettings() defines if SerialAdapter or Websocket is used
+    end note
+    Mainloop --> ESPServer : init()
+    note right
+        Probably can pack this init in the constructor
+        as it sets up the Webpages and Handlers
+    end note
+
+    Mainloop --> ESPServer : begin()
+end
+
+group loop
+    Mainloop --> Lawicel : executeCycle()
+    Lawicel --> Mainloop : return bool success
+    Mainloop --> ESPServer : handleRequest()
+    note right
+        Process next request to DNS Server
+        and restarts the ESP32 in case
+        settings were changed
+    end note
+
+    else Restart requested
+    ESPServer --> Mainloop : restart()
+    Mainloop --> Settings : saveSettings();
+    Settings --> Mainloop : return bool success
+    Mainloop --> Lawicel : end()
+    Lawicel --> Mainloop : return bool success
+    Mainloop --> Mainloop : esp.restart()
+end
+
+@enduml
