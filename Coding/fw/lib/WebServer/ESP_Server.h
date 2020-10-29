@@ -28,15 +28,17 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
+/*
+* namespace for Methods in Async Server
+*/
 namespace ESPServer
 {
-    void init();
-    void begin(void);
-    void end(void);
-    void handle(void);
+    bool init();
+    bool begin(void);
+    bool end(void);
+    bool handleNextRequest(void);
     AsyncWebServer &getInstance(void);
-}
-
+} // namespace ESPServer
 
 /* INLINE FUNCTIONS ***************************************************************************/
 

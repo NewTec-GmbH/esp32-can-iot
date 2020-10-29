@@ -22,9 +22,11 @@ extern "C"
 /* CONSTANTS **************************************************************************************/
 const uint32_t DNS_PORT = 53U;
 const uint32_t WEBSERVER_PORT = 80U;
+const uint8_t WIFI_MODE_BUTTON = 21U;
 static AsyncWebServer server(WEBSERVER_PORT);
 static DNSServer dnsServer;
 static Preferences flash;
+const uint16_t WIFI_TIMEOUT_MS = 20000;
 
 /* MACROS *****************************************************************************************/
 
@@ -34,7 +36,8 @@ static Preferences flash;
 static void notFound(AsyncWebServerRequest *request);
 static String pageProcessor(const String &var);
 static void credentialsProcessor(String name, String value);
-static void importConfig();
+static bool importConfig();
+static bool setSTAMode();
 
 /* VARIABLES **************************************************************************************/
 
@@ -46,88 +49,132 @@ char AP_PASSWORD[32] = "";
 char WEB_USER[32] = "";
 char WEB_PASSWORD[32] = "";
 bool reboot = false;
+IPAddress serverIP;
 
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
-void ESPServer::init()
+bool ESPServer::init()
 {
-    importConfig();
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (!request->authenticate(WEB_USER, WEB_PASSWORD))
-            return request->requestAuthentication();
-        request->send(SPIFFS, "/index.html", String(), false, pageProcessor);
-    });
+    bool success = false;
+    if (importConfig())
+    {
+        pinMode(WIFI_MODE_BUTTON, INPUT); /* @todo  IO Class */
 
-    server.on("/css/w3.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(SPIFFS, "/css/w3.css", "text/css");
-    });
+        server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+            if (!request->authenticate(WEB_USER, WEB_PASSWORD))
+                return request->requestAuthentication();
+            request->send(SPIFFS, "/index.html", String(), false, pageProcessor);
+        });
 
-    server.on("/pictures/NewTec_Logo.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(SPIFFS, "/pictures/NewTec_Logo.png", "image/png");
-    });
+        server.on("/css/w3.css", HTTP_GET, [](AsyncWebServerRequest *request) {
+            request->send(SPIFFS, "/css/w3.css", "text/css");
+        });
 
-    server.on("/STACredentials.html", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (!request->authenticate(WEB_USER, WEB_PASSWORD))
-            return request->requestAuthentication();
-        request->send(SPIFFS, "/STACredentials.html", String(), false, pageProcessor);
-    });
+        server.on("/pictures/NewTec_Logo.png", HTTP_GET, [](AsyncWebServerRequest *request) {
+            request->send(SPIFFS, "/pictures/NewTec_Logo.png", "image/png");
+        });
 
-    server.on("/APCredentials.html", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (!request->authenticate(WEB_USER, WEB_PASSWORD))
-            return request->requestAuthentication();
-        request->send(SPIFFS, "/APCredentials.html", String(), false, pageProcessor);
-    });
+        server.on("/STACredentials.html", HTTP_GET, [](AsyncWebServerRequest *request) {
+            if (!request->authenticate(WEB_USER, WEB_PASSWORD))
+                return request->requestAuthentication();
+            request->send(SPIFFS, "/STACredentials.html", String(), false, pageProcessor);
+        });
 
-    server.on("/WEBCredentials.html", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (!request->authenticate(WEB_USER, WEB_PASSWORD))
-            return request->requestAuthentication();
-        request->send(SPIFFS, "/WEBCredentials.html", String(), false, pageProcessor);
-    });
+        server.on("/APCredentials.html", HTTP_GET, [](AsyncWebServerRequest *request) {
+            if (!request->authenticate(WEB_USER, WEB_PASSWORD))
+                return request->requestAuthentication();
+            request->send(SPIFFS, "/APCredentials.html", String(), false, pageProcessor);
+        });
 
-    server.on("/setCredentials.html", HTTP_GET, [](AsyncWebServerRequest *request) {
-        int params = request->params();
-        for (int i = 0; i < params; i++)
+        server.on("/WEBCredentials.html", HTTP_GET, [](AsyncWebServerRequest *request) {
+            if (!request->authenticate(WEB_USER, WEB_PASSWORD))
+                return request->requestAuthentication();
+            request->send(SPIFFS, "/WEBCredentials.html", String(), false, pageProcessor);
+        });
+
+        server.on("/setCredentials.html", HTTP_GET, [](AsyncWebServerRequest *request) {
+            int params = request->params();
+            for (int i = 0; i < params; i++)
+            {
+                AsyncWebParameter *p = request->getParam(i);
+                Serial.printf("GET[%s]: %s\n", p->name().c_str(), p->value().c_str());
+                credentialsProcessor(p->name(), p->value());
+            }
+            if (!request->authenticate(WEB_USER, WEB_PASSWORD))
+                return request->requestAuthentication();
+            request->send(SPIFFS, "/setCredentials.html", String(), false, pageProcessor);
+        });
+
+        server.onNotFound(notFound);
+
+        success = true;
+    }
+
+    return success;
+}
+
+/**************************************************************************************************/
+bool ESPServer::begin()
+{
+    bool success = true;
+
+    if (setSTAMode())
+    {
+        WiFi.mode(WIFI_STA);
+        WiFi.begin(STA_SSID, STA_PASSWORD);
+
+        unsigned long startAttempTime = millis();
+
+        while (WiFi.status() != WL_CONNECTED && (millis() - startAttempTime) < WIFI_TIMEOUT_MS)
         {
-            AsyncWebParameter *p = request->getParam(i);
-            Serial.printf("GET[%s]: %s\n", p->name().c_str(), p->value().c_str());
-            credentialsProcessor(p->name(), p->value());
         }
-        if (!request->authenticate(WEB_USER, WEB_PASSWORD))
-            return request->requestAuthentication();
-        request->send(SPIFFS, "/setCredentials.html", String(), false, pageProcessor);
-    });
 
-    server.onNotFound(notFound);
-}
+        if (WiFi.status() != WL_CONNECTED)
+        {
+            success = false;
+        }
+        else
+        {
+            serverIP = WiFi.localIP();
+        }
+    }
+    else
+    {
+        WiFi.softAP(AP_SSID, AP_PASSWORD);
+        serverIP = WiFi.softAPIP();
+    }
 
-/**************************************************************************************************/
-void ESPServer::begin()
-{
-    WiFi.softAP(AP_SSID, AP_PASSWORD);
     dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
-    dnsServer.start(DNS_PORT, "*", WiFi.softAPIP());
-    SPIFFS.begin();
+
+    if (!dnsServer.start(DNS_PORT, "*", serverIP))
+    {
+        success = false;
+    }
+    else if (!SPIFFS.begin())
+    {
+        success = false;
+    }
+
     server.begin();
+
+    return success;
 }
 
 /**************************************************************************************************/
-void ESPServer::end()
+bool ESPServer::end()
 {
     server.end();
     SPIFFS.end();
     dnsServer.stop();
-    WiFi.disconnect(true, true);
+    return WiFi.disconnect(true, true);
 }
 
 /**************************************************************************************************/
-void ESPServer::handle()
+bool ESPServer::handleNextRequest()
 {
     dnsServer.processNextRequest();
-    if (reboot)
-    {
-        ESP.restart();
-    }
+    return reboot;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -204,16 +251,27 @@ static void credentialsProcessor(String name, String value)
 }
 
 /**************************************************************************************************/
-static void importConfig()
+static bool importConfig()
 {
-    flash.begin("Startup", false);
+    bool success = false;
+    if (flash.begin("Startup", false))
+    {
+        strcpy(STA_SSID, flash.getString("STA_SSID", "").c_str());
+        strcpy(STA_PASSWORD, flash.getString("STA_PASSWORD", "").c_str());
+        strcpy(AP_SSID, flash.getString("AP_SSID", "ESP32").c_str());
+        strcpy(AP_PASSWORD, flash.getString("AP_PASSWORD", "hochschuleulm").c_str());
+        strcpy(WEB_USER, flash.getString("WEB_USER", "admin").c_str());
+        strcpy(WEB_PASSWORD, flash.getString("WEB_PASSWORD", "admin").c_str());
+        flash.end();
+        success = true;
+    }
+    return success;
+}
 
-    strcpy(STA_SSID, flash.getString("STA_SSID", "").c_str());
-    strcpy(STA_PASSWORD, flash.getString("STA_PASSWORD", "").c_str());
-    strcpy(AP_SSID, flash.getString("AP_SSID", "ESP32").c_str());
-    strcpy(AP_PASSWORD, flash.getString("AP_PASSWORD", "hochschuleulm").c_str());
-    strcpy(WEB_USER, flash.getString("WEB_USER", "admin").c_str());
-    strcpy(WEB_PASSWORD, flash.getString("WEB_PASSWORD", "admin").c_str());
+/**************************************************************************************************/
+static bool setSTAMode()
+{
+    bool staMode = false;
 
-    flash.end();
+    return staMode;
 }
