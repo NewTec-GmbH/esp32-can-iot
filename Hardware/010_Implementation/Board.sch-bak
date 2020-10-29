@@ -43,7 +43,7 @@ Wire Wire Line
 Wire Wire Line
 	4325 2575 4200 2575
 Wire Wire Line
-	4200 2575 4200 3825
+	4200 2575 4200 3200
 Wire Wire Line
 	4200 3825 4325 3825
 Wire Wire Line
@@ -68,6 +68,7 @@ F3 "CAN_Rx" I L 6075 3925 50
 F4 "USB_GND" O R 7150 3825 50 
 F5 "USB_VDD" O R 7150 3925 50 
 F6 "EN_Transceiver" O L 6075 3725 50 
+F7 "EN_CAN" I R 7150 3725 50 
 $EndSheet
 Wire Wire Line
 	7150 3825 7250 3825
@@ -83,4 +84,13 @@ Wire Wire Line
 	7350 3925 7150 3925
 Wire Wire Line
 	5450 3725 6075 3725
+Wire Wire Line
+	7150 3725 7175 3725
+Wire Wire Line
+	7175 3725 7175 3200
+Wire Wire Line
+	7175 3200 4200 3200
+Connection ~ 4200 3200
+Wire Wire Line
+	4200 3200 4200 3825
 $EndSCHEMATC
