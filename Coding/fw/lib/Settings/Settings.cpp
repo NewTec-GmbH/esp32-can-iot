@@ -57,7 +57,7 @@ bool Settings::save(const char *directory, const String &key, const String &valu
 }
 
 /**************************************************************************************************/
-bool Settings::get(const char *directory, const String &key, uint32_t &value, const uint32_t defaultValue = 0U)
+bool Settings::get(const char *directory, const String &key, uint32_t &value, const uint32_t defaultValue)
 {
     bool success = false;
     if (m_memory.begin(directory, false))
@@ -70,7 +70,7 @@ bool Settings::get(const char *directory, const String &key, uint32_t &value, co
 }
 
 /**************************************************************************************************/
-bool Settings::get(const char *directory, const String &key, String &value, const String defaultValue = "")
+bool Settings::get(const char *directory, const String &key, String &value, const String defaultValue)
 {
     bool success = false;
     if (m_memory.begin(directory, false))

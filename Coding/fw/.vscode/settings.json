@@ -20,6 +20,7 @@
         "cstdio": "cpp",
         "exception": "cpp",
         "new": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "functional": "cpp"
     }
 }

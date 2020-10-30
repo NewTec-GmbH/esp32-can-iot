@@ -18,6 +18,7 @@ Main Application
 #include <CANAdapter.h>
 #include <NVMAdapter.h>
 #include <ESP_Server.h>
+#include <Settings.h>
 
 /* CONSTANTS **************************************************************************************/
 
@@ -28,10 +29,10 @@ Main Application
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-
+Settings systemSettings;
 SerialAdapter serialAdapter;
 CANAdapter sja1000Adapter;
-NVMAdapter flashAdapter;
+NVMAdapter flashAdapter(systemSettings);
 Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/

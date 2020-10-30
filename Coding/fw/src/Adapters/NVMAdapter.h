@@ -16,7 +16,7 @@ ESP32 NVM Adapter for Lawicel Protocol
 
 /* INCLUDES ***************************************************************************************/
 #include <NVMInterface.h>
-#include <Preferences.h>
+#include <Settings.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -38,7 +38,7 @@ public:
     /**
     * Default constructor creates instance of the class using default values.
     */
-    NVMAdapter() : NVMInterface()
+    NVMAdapter(Settings &selectedSettings) : NVMInterface(), m_selectedSettings(&selectedSettings)
     {
     }
 
@@ -54,8 +54,6 @@ public:
     */
     bool begin()
     {
-        nvm.begin(DIRECTORY, false);
-        nvm.end();
         return true;
     }
 
@@ -72,17 +70,7 @@ public:
     */
     bool save(const String &name, int32_t value)
     {
-        bool success = true;
-        if (nvm.begin(DIRECTORY, false))
-        {
-            nvm.putULong(name.c_str(), value);
-            nvm.end();
-        }
-        else
-        {
-            success = false;
-        }
-        return success;
+        return m_selectedSettings->save(DIRECTORY, name, value);
     }
 
     /**
@@ -90,17 +78,7 @@ public:
     */
     bool save(const String &name, const String &value)
     {
-        bool success = true;
-        if (nvm.begin(DIRECTORY, false))
-        {
-            nvm.putString(name.c_str(), value);
-            nvm.end();
-        }
-        else
-        {
-            success = false;
-        }
-        return success;
+        return m_selectedSettings->save(DIRECTORY, name, value);
     }
 
     /**
@@ -108,11 +86,12 @@ public:
     */
     uint32_t readInt(const String &name)
     {
-        nvm.begin(DIRECTORY, false);
-        uint32_t value = nvm.getULong(name.c_str());
-        nvm.end();
-
-        return value;
+        uint32_t result;
+        if(!m_selectedSettings->get(DIRECTORY, name, result))
+        {
+            result = 0;
+        }
+        return result;
     }
 
     /**
@@ -120,10 +99,12 @@ public:
     */
     String readString(const String &name)
     {
-        nvm.begin(DIRECTORY, false);
-        String value = nvm.getString(name.c_str());
-        nvm.end();
-        return value;
+        String result;
+        if(!m_selectedSettings->get(DIRECTORY, name, result))
+        {
+            result = "";
+        }
+        return result;
     }
 
     /**
@@ -131,21 +112,11 @@ public:
      */
     bool clearEntries()
     {
-        bool success = true;
-        if (!nvm.begin(DIRECTORY, false))
-        {
-            success = false;
-        }
-        else if (!nvm.clear())
-        {
-            success = false;
-        }
-        nvm.end();
-        return success;
+        return m_selectedSettings->clear(DIRECTORY);
     }
 
 private:
-    Preferences nvm;
+    Settings *m_selectedSettings;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/
