@@ -19,6 +19,7 @@ Main Application
 #include <NVMAdapter.h>
 #include <ESP_Server.h>
 #include <Settings.h>
+#include <io.h>
 
 /* CONSTANTS **************************************************************************************/
 
@@ -45,6 +46,7 @@ void setup()
   protocolLawicel.begin();
   ESPServer::init();
   ESPServer::begin();
+  pinMode(12,1);
 }
 
 void loop()
