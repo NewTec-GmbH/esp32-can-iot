@@ -20,6 +20,7 @@ Main Application
 #include <ESP_Server.h>
 #include <Settings.h>
 #include <io.h>
+#include <Board.h>
 
 /* CONSTANTS **************************************************************************************/
 
@@ -46,7 +47,6 @@ void setup()
   protocolLawicel.begin();
   ESPServer::init();
   ESPServer::begin();
-  pinMode(12,1);
 }
 
 void loop()

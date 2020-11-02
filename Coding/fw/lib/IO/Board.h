@@ -1,65 +1,36 @@
-/* MIT License
- *
- * Copyright (c) 2019 - 2020 Andreas Merkle <web@blue-andi.de>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
-/*******************************************************************************
-    DESCRIPTION
-*******************************************************************************/
+/***************************************************************************************************
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+***************************************************************************************************/
 /**
- * @brief  Board Abstraction
- * @author Andreas Merkle <web@blue-andi.de>
- *
- * @addtogroup hal
- *
- * @{
- */
+@brief  Board Abstraction
+@author Andreas Merkle <web@blue-andi.de>
+@addtogroup HAL
+@{
+@file       Board.h
 
+* @}
+***************************************************************************************************/
 #ifndef __BOARD_H__
 #define __BOARD_H__
 
-/******************************************************************************
- * Includes
- *****************************************************************************/
-#include "Io.h"
+/* INCLUDES ***************************************************************************************/
+#include "io.h"
 
-/******************************************************************************
- * Compiler Switches
- *****************************************************************************/
+/* C-Interface ************************************************************************************/
+extern "C"
+{
+}
 
 /** Electronic board abstraction */
 namespace Board
 {
 
-    /******************************************************************************
- * Macros
- *****************************************************************************/
+    /* FORWARD DECLARATIONS ***************************************************************************/
 
-    /******************************************************************************
- * Types and Classes
- *****************************************************************************/
+    /* CONSTANTS **************************************************************************************/
 
-    /******************************************************************************
- * Variables
- *****************************************************************************/
+    /* TYPES ******************************************************************************************/
 
     /** Pin number of all used pins. */
     namespace Pin
@@ -101,48 +72,21 @@ namespace Board
     /** ADC reference voltage in mV */
     static const uint16_t adcRefVoltage = 3300U;
 
-    /** LED matrix specific values */
-    namespace LedMatrix
-    {
-
-        /** LED matrix width in pixels */
-        static const uint8_t width = 32U;
-
-        /** LED matrix height in pixels */
-        static const uint8_t height = 8U;
-
-        /** LED matrix supply voltage in volt */
-        static const uint8_t supplyVoltage = 5U;
-
-        /** LED matrix max. supply current in mA */
-        static const uint32_t supplyCurrentMax = 3500U;
-
-        /** Max. current in mA per LED */
-        static const uint32_t maxCurrentPerLed = 60U;
-
-        /** Time to load the data for one single pixel in us. */
-        static const uint32_t pixelLoadTime = 30U;
-
-        /** Time to load the data of the whole matrix in ms. */
-        static const uint32_t matrixLoadTime = ((width * height) * pixelLoadTime + 500U) / 1000U;
-
-    }; // namespace LedMatrix
-
-    /******************************************************************************
- * Functions
- *****************************************************************************/
-
     /**
- * Initialize all i/o pins.
- */
+    * Initialize all i/o pins.
+    */
     extern void init();
 
     /**
- * Execute a hard reset!
- */
+    * Execute a hard reset!
+    */
     extern void reset();
 
 }; // namespace Board
+
+    /* INLINE FUNCTIONS *******************************************************************************/
+
+    /* PROTOTYPES *************************************************************************************/
 
 #endif /* __BOARD_H__ */
 
