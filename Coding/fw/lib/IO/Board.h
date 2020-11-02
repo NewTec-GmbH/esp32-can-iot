@@ -35,42 +35,49 @@ namespace Board
     /** Pin number of all used pins. */
     namespace Pin
     {
-        /** Pin number of onboard LED */
-        static const uint8_t onBoardLedPinNo = 2U;
+        /** Pin number of Error LED */
+        static const uint8_t indicatorError = 2U;
 
-        /** Pin number of user button */
-        static const uint8_t userButtonPinNo = 4U;
+        /** Pin number of AP-Mode LED */
+        static const uint8_t indicatorAPMode = 18U;
 
-        /** Pin number of test pin */
-        static const uint8_t testPinNo = 23U;
+        /** Pin number of STA-Mode LED */
+        static const uint8_t indicatorSTAMode = 19U;
 
-        /** Pin number of LED matrix data out */
-        static const uint8_t ledMatrixDataOutPinNo = 27U;
+        /** Pin number of WiFi-Mode Button */
+        static const uint8_t userButton = 21U;
 
-        /** Pin number of LDR in */
-        static const uint8_t ldrInPinNo = 34U;
+        /** GPIO */
+        static const uint8_t GPIO_1 = 27U;
+        static const uint8_t GPIO_2 = 26U;
+        static const uint8_t GPIO_3 = 25U;
+        static const uint8_t GPIO_4 = 33U;
+
     }; // namespace Pin
 
-    /** Digital output pin: Onboard LED */
-    static const DOutPin<Pin::onBoardLedPinNo> onBoardLedOut;
+    /** Digital output pin: Error Indicator */
+    static const DOutPin<Pin::indicatorError> errorLED;
+
+    /** Digital output pin: AP-Mode LED */
+    static const DOutPin<Pin::indicatorAPMode> apLED;
+
+    /** Digital output pin: STA-Mode LED */
+    static const DOutPin<Pin::indicatorSTAMode> staLED;
 
     /** Digital input pin: User button (input with pull-up) */
-    static const DInPin<Pin::userButtonPinNo, INPUT_PULLUP> userButtonIn;
+    static const DInPin<Pin::userButton, INPUT_PULLUP> wifiModeSelect;
 
-    /** Digital output pin: Test pin (only for debug purposes) */
-    static const DOutPin<Pin::testPinNo> testPinOut;
+    /** Digital output pin: GPIO_1 */
+    static const DOutPin<Pin::GPIO_1> gpio1;
+    
+    /** Digital output pin: GPIO_2 */
+    static const DOutPin<Pin::GPIO_2> gpio2;
+    
+    /** Digital output pin: GPIO_3 */
+    static const DOutPin<Pin::GPIO_3> gpio3;
 
-    /** Digital output pin: LED matrix data out */
-    static const DOutPin<Pin::ledMatrixDataOutPinNo> ledMatrixDataOut;
-
-    /** Analog input pin: LDR in */
-    static const AnalogPin<Pin::ldrInPinNo> ldrIn;
-
-    /** ADC resolution in digits */
-    static const uint16_t adcResolution = 4096U;
-
-    /** ADC reference voltage in mV */
-    static const uint16_t adcRefVoltage = 3300U;
+    /** Digital output pin: GPIO_4 */
+    static const DOutPin<Pin::GPIO_4> gpio4;
 
     /**
     * Initialize all i/o pins.

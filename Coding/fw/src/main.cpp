@@ -40,10 +40,12 @@ Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 /* PUBLIC METHODES ********************************************************************************/
 void restart()
 {
+  Board::reset();
 }
 
 void setup()
 {
+  Board::init();
   protocolLawicel.begin();
   ESPServer::init();
   ESPServer::begin();

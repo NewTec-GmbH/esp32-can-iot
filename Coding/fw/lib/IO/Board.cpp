@@ -35,11 +35,14 @@ using namespace Board;
 /** A list of all used i/o pins, used for intializaton. */
 static const IoPin *ioPinList[] =
     {
-        &onBoardLedOut,
-        &userButtonIn,
-        &testPinOut,
-        &ledMatrixDataOut,
-        &ldrIn};
+        &errorLED,
+        &apLED,
+        &staLED,
+        &wifiModeSelect,
+        &gpio1,
+        &gpio2,
+        &gpio3,
+        &gpio4};
 
 /* PUBLIC METHODES ********************************************************************************/
 
