@@ -18,10 +18,14 @@ state Index_fork <<fork>>
     Index_fork --> WebSocket
     WebSocket --> [*]
 
+    Index_fork --> CAN_Settings
+    CAN_Settings --> [*]
+
     AP_Credentials : Changes the Access-Point \n Credentials
     STA_Credentials : Changes the Station \n Credentials
     Web_Credentials : Changes the Web-Access \n Credentials
     WebSocket : Communication with \n CAN Controller
+    CAN_Settings : Defines the CAN Controller COnfiguration \n such as Speed and Bus Mode
 
 
 state Set_Credentials_fork <<fork>>
