@@ -38,23 +38,29 @@ NVMAdapter flashAdapter(systemSettings);
 Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/
-void restart()
-{
-  Board::reset();
-}
+void restart();
 
 void setup()
 {
   Board::init();
-  protocolLawicel.begin();
-  ESPServer::init();
-  ESPServer::begin();
+  if (!protocolLawicel.begin())
+  {
+    restart();
+  }
+  else if (!ESPServer::init())
+  {
+    restart();
+  }
+  else if (!ESPServer::begin())
+  {
+    restart();
+  }
 }
 
 void loop()
 {
   protocolLawicel.executeCycle();
-  if(ESPServer::handleNextRequest())
+  if (ESPServer::handleNextRequest())
   {
     restart();
   }
@@ -67,3 +73,10 @@ void loop()
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
+
+void restart()
+{
+  protocolLawicel.end();
+  ESPServer::end();
+  Board::reset();
+}

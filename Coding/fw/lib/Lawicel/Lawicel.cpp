@@ -90,7 +90,7 @@ bool Lawicel::executeCycle()
             m_serialInput += c;
         }
     }
-    
+
     return success;
 }
 
@@ -102,11 +102,9 @@ bool Lawicel::begin()
     {
         success = false;
     }
-    else if (!receiveCommand(m_selectedNVM->readString(INIT_SERIAL_BAUD)))
-    {
-        success = false;
-    }
-    else if (!m_selectedSerial->begin())
+    receiveCommand(m_selectedNVM->readString(INIT_SERIAL_BAUD));
+
+    if (!m_selectedSerial->begin())
     {
         success = false;
     }
@@ -124,22 +122,13 @@ bool Lawicel::begin()
         {
             m_autoPolling = true;
 
-            if (!receiveCommand(m_selectedNVM->readString(INIT_CAN_BAUD)))
-            {
-                success = false;
-            }
-            if (!receiveCommand(m_selectedNVM->readString(INIT_FILTER_MODE)))
-            {
-                success = false;
-            }
-            if (!receiveCommand(m_selectedNVM->readString(INIT_FILTER_ACN)))
-            {
-                success = false;
-            }
-            if (!receiveCommand(m_selectedNVM->readString(INIT_FILTER_AMN)))
-            {
-                success = false;
-            }
+            receiveCommand(m_selectedNVM->readString(INIT_CAN_BAUD));
+
+            receiveCommand(m_selectedNVM->readString(INIT_FILTER_MODE));
+
+            receiveCommand(m_selectedNVM->readString(INIT_FILTER_ACN));
+            
+            receiveCommand(m_selectedNVM->readString(INIT_FILTER_AMN));
         }
 
         if (m_autoStart == 1)
