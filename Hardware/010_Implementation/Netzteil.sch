@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 7
+Sheet 2 5
 Title "CAN_Bus Analyzer - Power Supply"
 Date "2020-09-07"
 Rev "1.0"
@@ -13,353 +13,150 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text HLabel 3725 1850 0    50   Input ~ 0
+Text HLabel 3275 2825 0    50   Input ~ 0
 OBD_VDD
-Text HLabel 3725 2250 0    50   Input ~ 0
-OBD_GND
-Text HLabel 6325 1600 1    50   Input ~ 0
-EN_CAN
-$Comp
-L Board:G2R2A K1
-U 1 1 5F5A91AB
-P 4125 2050
-F 0 "K1" H 4125 2050 50  0001 L BNN
-F 1 "G2R2A" H 4305 2050 50  0000 L CNN
-F 2 "Board:G2R2A" H 4125 2050 50  0001 L BNN
-F 3 "36M5257" H 4125 2050 50  0001 L BNN
-F 4 "G2R-2A-DC24" H 4125 2050 50  0001 L BNN "Field4"
-F 5 "6985269" H 4125 2050 50  0001 L BNN "Field6"
-	1    4125 2050
-	1    0    0    -1  
-$EndComp
-$Comp
-L Board:G2R2A K1
-U 2 1 5F5A93DA
-P 4750 2250
-F 0 "K1" H 4750 2250 50  0001 L BNN
-F 1 "G2R2A" H 4826 2250 50  0000 L CNN
-F 2 "Board:G2R2A" H 4750 2250 50  0001 L BNN
-F 3 "36M5257" H 4750 2250 50  0001 L BNN
-F 4 "G2R-2A-DC24" H 4750 2250 50  0001 L BNN "Field4"
-F 5 "6985269" H 4750 2250 50  0001 L BNN "Field6"
-	2    4750 2250
-	0    1    1    0   
-$EndComp
-$Comp
-L Board:G2R2A K1
-U 3 1 5F5A9DB4
-P 4750 1850
-F 0 "K1" H 4750 1850 50  0001 L BNN
-F 1 "G2R2A" H 4826 1850 50  0000 L CNN
-F 2 "Board:G2R2A" H 4750 1850 50  0001 L BNN
-F 3 "36M5257" H 4750 1850 50  0001 L BNN
-F 4 "G2R-2A-DC24" H 4750 1850 50  0001 L BNN "Field4"
-F 5 "6985269" H 4750 1850 50  0001 L BNN "Field6"
-	3    4750 1850
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	4125 1850 4550 1850
-Wire Wire Line
-	4125 2250 4550 2250
-Wire Wire Line
-	3725 2250 4125 2250
-Connection ~ 4125 2250
-Wire Wire Line
-	4125 1850 3725 1850
-Connection ~ 4125 1850
-Wire Wire Line
-	5725 2150 5725 2250
-Wire Wire Line
-	4950 2250 5250 2250
-Wire Wire Line
-	6325 1850 6325 1600
-Connection ~ 6325 1850
-Wire Wire Line
-	6325 1850 6750 1850
-Wire Wire Line
-	5725 2250 6575 2250
-Connection ~ 5725 2250
-Connection ~ 6575 2250
-Wire Notes Line
-	3200 950  8075 950 
-Wire Notes Line
-	8075 950  8075 2800
-Wire Notes Line
-	8075 2800 3200 2800
-Wire Notes Line
-	3200 2800 3200 950 
-Text Notes 4625 1325 2    50   ~ 0
+Text Notes 4175 2300 2    50   ~ 0
 12V-OBD Power Supply
 Wire Wire Line
-	7600 1850 8475 1850
+	6850 2825 6850 2875
 Wire Wire Line
-	7600 5325 8475 5325
-Wire Wire Line
-	6325 5425 6750 5425
-Wire Wire Line
-	6750 5525 6200 5525
-Wire Notes Line
-	8075 3125 3200 3125
-Wire Notes Line
-	3200 3125 3200 4200
-Wire Notes Line
-	8075 4200 8075 3125
-Wire Notes Line
-	3200 4200 8075 4200
-Wire Notes Line
-	3200 4725 3200 6175
-Wire Notes Line
-	3200 6175 8075 6175
-Wire Notes Line
-	8075 6175 8075 4725
-Wire Notes Line
-	8075 4725 3200 4725
-Connection ~ 6200 3450
-Wire Wire Line
-	8475 5325 8475 3450
-Connection ~ 8475 3450
-Wire Wire Line
-	8475 3450 8900 3450
-Wire Wire Line
-	8475 3450 8475 1850
-Wire Wire Line
-	7875 3850 7875 5825
-Connection ~ 7875 3850
-Wire Wire Line
-	7875 3850 7875 2250
-Wire Wire Line
-	6575 2250 7875 2250
-Text Notes 5275 3325 2    50   ~ 0
-5V - External Power Supply
-Text Notes 4600 4875 2    50   ~ 0
-3.3V - MCU Power Supply
-$Sheet
-S 6750 1650 850  475 
-U 5F56212F
-F0 "OBD_MF_Switch" 50
-F1 "OBD_MF_Switch.sch" 50
-F2 "V_IN" I L 6750 1850 50 
-F3 "GND" I L 6750 1975 50 
-F4 "V_OUT" O R 7600 1850 50 
-$EndSheet
-Wire Wire Line
-	6575 1975 6750 1975
-Wire Wire Line
-	6575 1975 6575 2250
-$Sheet
-S 6750 3325 900  425 
-U 5F566EF5
-F0 "EXT_MF_Switch" 50
-F1 "EXT_MF_Switch.sch" 50
-F2 "V_OUT" O R 7650 3450 50 
-F3 "V_IN" I L 6750 3450 50 
-F4 "EN" I L 6750 3575 50 
-F5 "GND" I L 6750 3675 50 
-$EndSheet
-Wire Wire Line
-	6200 3450 6750 3450
-Wire Wire Line
-	6325 3575 6750 3575
-Wire Wire Line
-	6750 3675 6575 3675
-Wire Wire Line
-	6575 3675 6575 3850
-Connection ~ 6575 3850
-Wire Wire Line
-	6575 3850 7875 3850
-Wire Wire Line
-	7650 3450 8475 3450
-Wire Wire Line
-	6750 5625 6575 5625
-Wire Wire Line
-	6575 5625 6575 5825
-Wire Wire Line
-	6575 5825 7875 5825
-$Sheet
-S 6750 5200 850  525 
-U 5F5717B1
-F0 "USB_MF_Switch" 50
-F1 "USB_MF_Switch.sch" 50
-F2 "V_IN" I L 6750 5325 50 
-F3 "EN_1" I L 6750 5425 50 
-F4 "EN_2" I L 6750 5525 50 
-F5 "GND" I L 6750 5625 50 
-F6 "V_OUT" O R 7600 5325 50 
-$EndSheet
-Wire Wire Line
-	7875 3850 8900 3850
-Wire Notes Line
-	3900 1725 3900 2325
-Wire Notes Line
-	3900 2325 5050 2325
-Wire Notes Line
-	5050 2325 5050 1725
-Wire Notes Line
-	5050 1725 3900 1725
+	6850 3175 6850 3225
 $Comp
 L Device:C C2
-U 1 1 5F6072AC
-P 8900 3660
-F 0 "C2" H 9015 3706 50  0000 L CNN
-F 1 "100n" H 9015 3615 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 8938 3510 50  0001 C CNN
-F 3 "~" H 8900 3660 50  0001 C CNN
-	1    8900 3660
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8900 3450 8900 3510
-Connection ~ 8900 3450
-Wire Wire Line
-	8900 3810 8900 3850
-Connection ~ 8900 3850
-Wire Wire Line
-	8900 3850 9450 3850
-Text Notes 10490 3690 2    50   ~ 0
-3.3V Main Supply
-Wire Wire Line
-	6025 1850 6325 1850
-Wire Wire Line
-	6325 3575 6325 1850
-Connection ~ 6325 3575
-$Comp
-L Regulator_Linear:LT1086-3.3 U1
-U 1 1 5F5D8ABD
-P 5725 1850
-F 0 "U1" H 5725 2092 50  0000 C CNN
-F 1 "LT1086-3.3" H 5725 2001 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:TO-263-3_TabPin4" H 5725 2100 50  0001 C CIN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/1086ffs.pdf" H 5725 1850 50  0001 C CNN
-	1    5725 1850
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5250 1850 5250 1900
-Connection ~ 5250 1850
-Wire Wire Line
-	5250 1850 4950 1850
-Connection ~ 5250 2250
-Wire Wire Line
-	5250 2250 5725 2250
-Wire Wire Line
-	5250 2200 5250 2250
-$Comp
-L Device:C C1
 U 1 1 5F6089EB
-P 5250 2050
-F 0 "C1" H 5365 2096 50  0000 L CNN
-F 1 "100n" H 5365 2005 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 5288 1900 50  0001 C CNN
-F 3 "~" H 5250 2050 50  0001 C CNN
-	1    5250 2050
+P 6850 3025
+F 0 "C2" H 6965 3071 50  0000 L CNN
+F 1 "100n" H 6965 2980 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 6888 2875 50  0001 C CNN
+F 3 "~" H 6850 3025 50  0001 C CNN
+	1    6850 3025
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6325 3575 6325 5425
-Wire Wire Line
-	6200 3450 6200 5525
-Text HLabel 3950 5825 0    50   Input ~ 0
-USB_GND
-Text HLabel 3950 5325 0    50   Input ~ 0
-USB_VDD
-Connection ~ 6575 5825
-Wire Wire Line
-	3950 5325 6750 5325
-Wire Wire Line
-	3950 5825 6575 5825
-$Comp
-L power:PWR_FLAG #FLG01
-U 1 1 5F6C2967
-P 5250 1775
-F 0 "#FLG01" H 5250 1850 50  0001 C CNN
-F 1 "PWR_FLAG" H 5250 1948 50  0000 C CNN
-F 2 "" H 5250 1775 50  0001 C CNN
-F 3 "~" H 5250 1775 50  0001 C CNN
-	1    5250 1775
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5250 1850 5425 1850
-Wire Wire Line
-	6025 3450 6200 3450
-Wire Wire Line
-	5725 3750 5725 3850
-Connection ~ 5725 3850
-Wire Wire Line
-	5725 3850 6575 3850
-Wire Wire Line
-	4050 3850 5725 3850
-$Comp
-L Connector:USB_B_Mini J1
-U 1 1 5F5A0FAE
-P 3650 3650
-F 0 "J1" H 3707 4117 50  0000 C CNN
-F 1 "USB_B_Mini" H 3707 4026 50  0000 C CNN
-F 2 "Connector_USB:USB_Micro-B_Wuerth_629105150521_CircularHoles" H 3800 3600 50  0001 C CNN
-F 3 "~" H 3800 3600 50  0001 C CNN
-	1    3650 3650
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3650 4050 4050 4050
-Wire Wire Line
-	4050 4050 4050 3850
-NoConn ~ 3950 3650
-NoConn ~ 3950 3750
-NoConn ~ 3950 3850
-NoConn ~ 3550 4050
-Wire Wire Line
-	3950 3450 5425 3450
-$Comp
-L Regulator_Linear:LM1085-3.3 U2
-U 1 1 5F5B4F9A
-P 5725 3450
-F 0 "U2" H 5725 3692 50  0000 C CNN
-F 1 "LM1085-3.3" H 5725 3601 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:TO-263-3_TabPin4" H 5725 3700 50  0001 C CIN
-F 3 "http://www.ti.com/lit/ds/symlink/lm1085.pdf" H 5725 3450 50  0001 C CNN
-	1    5725 3450
-	1    0    0    -1  
-$EndComp
+	6850 2825 7025 2825
+Text HLabel 7950 2825 2    50   Input ~ 0
+Ext.5V
 $Comp
 L power:GND #PWR02
-U 1 1 5F7C816E
-P 9450 3850
-F 0 "#PWR02" H 9450 3600 50  0001 C CNN
-F 1 "GND" H 9455 3677 50  0000 C CNN
-F 2 "" H 9450 3850 50  0001 C CNN
-F 3 "" H 9450 3850 50  0001 C CNN
-	1    9450 3850
+U 1 1 5FA1043A
+P 7950 3300
+F 0 "#PWR02" H 7950 3050 50  0001 C CNN
+F 1 "GND" H 7955 3127 50  0000 C CNN
+F 2 "" H 7950 3300 50  0001 C CNN
+F 3 "" H 7950 3300 50  0001 C CNN
+	1    7950 3300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8900 3450 9125 3450
+	7950 3225 7950 3300
+Wire Wire Line
+	6850 2825 6775 2825
+Connection ~ 6850 2825
+Wire Wire Line
+	7625 2825 7950 2825
 $Comp
-L power:+3.3V #PWR01
-U 1 1 5F7FF608
-P 9450 3450
-F 0 "#PWR01" H 9450 3300 50  0001 C CNN
-F 1 "+3.3V" H 9465 3623 50  0000 C CNN
-F 2 "" H 9450 3450 50  0001 C CNN
-F 3 "" H 9450 3450 50  0001 C CNN
-	1    9450 3450
+L Regulator_Linear:LT1086-5.0 U1
+U 1 1 5FA0C017
+P 7325 2825
+F 0 "U1" H 7325 3067 50  0000 C CNN
+F 1 "LT1086-5.0" H 7325 2976 50  0000 C CNN
+F 2 "Board:DPAK254P1394X457-4N" H 7325 3075 50  0001 C CIN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/1086ffs.pdf" H 7325 2825 50  0001 C CNN
+	1    7325 2825
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6850 3225 7325 3225
+Wire Wire Line
+	7325 3125 7325 3225
+Connection ~ 7325 3225
+Wire Wire Line
+	7325 3225 7950 3225
+$Comp
+L Device:R R1
+U 1 1 5FAFFDE5
+P 5025 3425
+F 0 "R1" H 5095 3471 50  0000 L CNN
+F 1 "1k" H 5095 3380 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 4955 3425 50  0001 C CNN
+F 3 "~" H 5025 3425 50  0001 C CNN
+	1    5025 3425
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:PWR_FLAG #FLG0101
-U 1 1 5F8BED6A
-P 9125 3450
-F 0 "#FLG0101" H 9125 3525 50  0001 C CNN
-F 1 "PWR_FLAG" H 9125 3623 50  0000 C CNN
-F 2 "" H 9125 3450 50  0001 C CNN
-F 3 "~" H 9125 3450 50  0001 C CNN
-	1    9125 3450
+L Device:R R2
+U 1 1 5FB008D2
+P 5025 3875
+F 0 "R2" H 5095 3921 50  0000 L CNN
+F 1 "100" H 5095 3830 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 4955 3875 50  0001 C CNN
+F 3 "~" H 5025 3875 50  0001 C CNN
+	1    5025 3875
 	1    0    0    -1  
 $EndComp
-Connection ~ 9125 3450
 Wire Wire Line
-	9125 3450 9450 3450
+	5025 3575 5025 3650
 Wire Wire Line
-	5250 1850 5250 1775
+	5025 3650 5450 3650
+Connection ~ 5025 3650
+Wire Wire Line
+	5025 3650 5025 3725
+Wire Wire Line
+	5025 4150 4850 4150
+Wire Wire Line
+	5025 3275 5025 2825
+Connection ~ 5025 2825
+Wire Wire Line
+	5025 2825 3275 2825
+Text HLabel 5450 3650 2    50   Output ~ 0
+OBD_Voltage_Check
+Wire Wire Line
+	5025 4025 5025 4150
+$Comp
+L power:PWR_FLAG #FLG01
+U 1 1 5FB093DE
+P 6775 2825
+F 0 "#FLG01" H 6775 2900 50  0001 C CNN
+F 1 "PWR_FLAG" H 6775 2998 50  0000 C CNN
+F 2 "" H 6775 2825 50  0001 C CNN
+F 3 "~" H 6775 2825 50  0001 C CNN
+	1    6775 2825
+	1    0    0    -1  
+$EndComp
+Connection ~ 6775 2825
+Wire Wire Line
+	6775 2825 5025 2825
+$Comp
+L Device:C C1
+U 1 1 5FB0CD60
+P 4650 3875
+F 0 "C1" H 4765 3921 50  0000 L CNN
+F 1 "10n" H 4765 3830 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 4688 3725 50  0001 C CNN
+F 3 "~" H 4650 3875 50  0001 C CNN
+	1    4650 3875
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5025 3650 4650 3650
+Wire Wire Line
+	4650 3650 4650 3725
+Wire Wire Line
+	4650 4025 4650 4150
+$Comp
+L power:GND #PWR01
+U 1 1 5FB6777E
+P 4850 4325
+F 0 "#PWR01" H 4850 4075 50  0001 C CNN
+F 1 "GND" H 4855 4152 50  0000 C CNN
+F 2 "" H 4850 4325 50  0001 C CNN
+F 3 "" H 4850 4325 50  0001 C CNN
+	1    4850 4325
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4850 4325 4850 4150
+Connection ~ 4850 4150
+Wire Wire Line
+	4850 4150 4650 4150
 $EndSCHEMATC

@@ -1,0 +1,34 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#(c) SnapEDA 2016 (snapeda.com)
+#This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA) with Design Exception 1.0
+#
+# SS24
+#
+DEF SS24 D 0 40 Y N 1 L N
+F0 "D" -200 100 50 H V L BNN
+F1 "SS24" -200 -150 50 H V L BNN
+F2 "DIOM5336X265N" 0 0 50 H I L BNN
+F3 "IPC 7351B" 0 0 50 H I L BNN
+F4 "2.65 mm" 0 0 50 H I L BNN
+F5 "ON Semiconductor" 0 0 50 H I L BNN
+F6 "1.1.2" 0 0 50 H I L BNN
+DRAW
+P 2 0 0 10 -50 -50 50 0 N
+P 2 0 0 10 50 0 -50 50 N
+P 2 0 0 10 75 50 50 50 N
+P 2 0 0 10 50 50 50 0 N
+P 2 0 0 10 -50 50 -50 0 N
+P 2 0 0 10 -50 0 -50 -50 N
+P 2 0 0 10 50 0 50 -50 N
+P 2 0 0 10 75 50 75 40 N
+P 2 0 0 10 50 -50 25 -50 N
+P 2 0 0 10 25 -40 25 -50 N
+P 2 0 0 10 -100 0 -50 0 N
+P 2 0 0 10 100 0 50 0 N
+X ~ C 200 0 100 L 40 40 0 0 P 
+X ~ A -200 0 100 R 40 40 0 0 P 
+ENDDRAW
+ENDDEF
+#
+# End Library

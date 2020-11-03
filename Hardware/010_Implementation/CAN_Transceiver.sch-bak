@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 6 7
+Sheet 3 5
 Title "CAN_Analyzer - CAN_Transceivers"
 Date "2020-09-07"
 Rev "1.0"
@@ -13,459 +13,290 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text HLabel 10450 3600 2    50   Output ~ 0
-CAN_Rx
-Text HLabel 10450 3500 2    50   Input ~ 0
-CAN_Tx
+Wire Wire Line
+	8525 3475 8525 3600
+Connection ~ 8625 2975
+Wire Wire Line
+	8625 3075 8625 2975
+Wire Wire Line
+	8525 3075 8625 3075
 $Comp
-L Board:SN65HVD233-HT IC1
-U 1 1 5F565F75
-P 9100 3500
-F 0 "IC1" H 9100 2730 50  0000 C CNN
-F 1 "SN65HVD233-HT" H 9100 2821 50  0000 C CNN
-F 2 "Board:SOIC127P600X175" H 9100 3500 50  0001 L BNN
-F 3 "" H 9100 3500 50  0001 C CNN
-	1    9100 3500
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	10450 3500 9800 3500
-Wire Wire Line
-	9800 3600 10450 3600
-Wire Wire Line
-	9800 3400 10450 3400
-Wire Wire Line
-	9800 3100 9900 3100
-Wire Wire Line
-	9800 3800 10025 3800
-Wire Wire Line
-	9800 3300 9900 3300
-Wire Wire Line
-	9900 3300 9900 3100
-Connection ~ 9900 3100
-Wire Wire Line
-	9900 3100 10025 3100
-$Comp
-L Connector:Conn_01x09_Female J2
-U 1 1 5F56C5ED
-P 1100 4025
-F 0 "J2" H 992 3400 50  0000 C CNN
-F 1 "Conn_01x09_Female" H 992 3491 50  0000 C CNN
-F 2 "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm" H 1100 4025 50  0001 C CNN
-F 3 "~" H 1100 4025 50  0001 C CNN
-	1    1100 4025
-	-1   0    0    1   
-$EndComp
-Text Label 2025 5300 1    50   ~ 0
-CAN_GND
-Text Label 2250 2925 3    50   ~ 0
-OBD_VDD
-NoConn ~ 1300 3725
-NoConn ~ 1300 3925
-NoConn ~ 1300 4125
-NoConn ~ 1300 4425
-Text Label 2375 2925 3    50   ~ 0
-OBD_GND
-Text HLabel 2250 1625 1    50   Output ~ 0
-OBD_VDD
-Text HLabel 2375 1625 1    50   Output ~ 0
-OBD_GND
-Text Label 1375 5825 0    50   ~ 0
-EN_CAN
-Wire Wire Line
-	1300 4225 2025 4225
-Wire Wire Line
-	2025 4225 2025 5625
-Wire Wire Line
-	1300 3625 1850 3625
-Text Notes 1000 5525 0    50   ~ 0
-CAN_GND Decoupler
-Wire Wire Line
-	1300 4325 2375 4325
-Connection ~ 2375 4325
-$Comp
-L power:PWR_FLAG #FLG02
-U 1 1 5F5BFD41
-P 1850 3625
-F 0 "#FLG02" H 1850 3700 50  0001 C CNN
-F 1 "PWR_FLAG" H 1850 3798 50  0000 C CNN
-F 2 "" H 1850 3625 50  0001 C CNN
-F 3 "~" H 1850 3625 50  0001 C CNN
-	1    1850 3625
-	1    0    0    -1  
-$EndComp
-Connection ~ 1850 3625
-Wire Wire Line
-	1850 3625 2250 3625
-Text Notes 8910 2620 0    50   ~ 0
-Transceiver
-Text Notes 1535 3185 2    50   ~ 0
-DSUB-9 Connector\n
-$Comp
-L Device:R R8
-U 1 1 5F5F1345
-P 7475 3225
-F 0 "R8" H 7545 3271 50  0000 L CNN
-F 1 "62" H 7545 3180 50  0000 L CNN
-F 2 "Resistor_SMD:R_2512_6332Metric_Pad1.52x3.35mm_HandSolder" V 7405 3225 50  0001 C CNN
-F 3 "~" H 7475 3225 50  0001 C CNN
-	1    7475 3225
+L power:GND #PWR02
+U 1 1 5F9161C7
+P 5075 4375
+F 0 "#PWR02" H 5075 4125 50  0001 C CNN
+F 1 "GND" H 5080 4202 50  0000 C CNN
+F 2 "" H 5075 4375 50  0001 C CNN
+F 3 "" H 5075 4375 50  0001 C CNN
+	1    5075 4375
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R9
-U 1 1 5F5F134B
-P 7475 3850
-F 0 "R9" H 7545 3896 50  0000 L CNN
-F 1 "62" H 7545 3805 50  0000 L CNN
-F 2 "Resistor_SMD:R_2512_6332Metric_Pad1.52x3.35mm_HandSolder" V 7405 3850 50  0001 C CNN
-F 3 "~" H 7475 3850 50  0001 C CNN
-	1    7475 3850
+L power:+3.3V #PWR04
+U 1 1 5F913497
+P 8750 3600
+F 0 "#PWR04" H 8750 3450 50  0001 C CNN
+F 1 "+3.3V" H 8765 3773 50  0000 C CNN
+F 2 "" H 8750 3600 50  0001 C CNN
+F 3 "" H 8750 3600 50  0001 C CNN
+	1    8750 3600
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C6
-U 1 1 5F5F1351
-P 7975 4125
-F 0 "C6" H 8090 4171 50  0000 L CNN
-F 1 "4n7" H 8090 4080 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 8013 3975 50  0001 C CNN
-F 3 "~" H 7975 4125 50  0001 C CNN
-	1    7975 4125
+L power:GND #PWR03
+U 1 1 5F91316D
+P 8750 2775
+F 0 "#PWR03" H 8750 2525 50  0001 C CNN
+F 1 "GND" H 8755 2602 50  0000 C CNN
+F 2 "" H 8750 2775 50  0001 C CNN
+F 3 "" H 8750 2775 50  0001 C CNN
+	1    8750 2775
 	1    0    0    -1  
 $EndComp
+Text Notes 5175 2300 2    50   ~ 0
+Signal Filter
 Wire Wire Line
-	7475 4000 7475 4125
+	5075 4050 6700 4050
+Connection ~ 5075 4050
 Wire Wire Line
-	7475 4125 7725 4125
+	5075 4375 5075 4050
 Wire Wire Line
-	7725 4125 7725 3800
+	2800 2525 3400 2525
 Wire Wire Line
-	7475 3375 7475 3525
+	2800 3450 3400 3450
+Connection ~ 3400 3450
 Wire Wire Line
-	7725 3800 8400 3800
+	3925 4050 4450 4050
 Wire Wire Line
-	8400 3700 7725 3700
+	4450 4050 5075 4050
+Connection ~ 4450 4050
 Wire Wire Line
-	7725 3700 7725 2975
+	3400 3025 3400 3100
+Connection ~ 3400 3025
 Wire Wire Line
-	7725 2975 7475 2975
+	3700 3025 3700 4050
 Wire Wire Line
-	7475 2975 7475 3075
+	3400 3025 3700 3025
 Wire Wire Line
-	7975 3975 7975 3525
+	3400 3450 4450 3450
 Wire Wire Line
-	7975 3525 7475 3525
-Connection ~ 7475 3525
+	3400 3400 3400 3450
 Wire Wire Line
-	7475 3525 7475 3700
+	3400 2525 3925 2525
+Connection ~ 3400 2525
 Wire Wire Line
-	7975 4275 7975 4375
-$Comp
-L Device:C C5
-U 1 1 5F5F1365
-P 7025 3525
-F 0 "C5" H 7140 3571 50  0000 L CNN
-F 1 "100p" H 7140 3480 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 7063 3375 50  0001 C CNN
-F 3 "~" H 7025 3525 50  0001 C CNN
-	1    7025 3525
-	1    0    0    -1  
-$EndComp
+	3400 2650 3400 2525
 Wire Wire Line
-	7025 3375 7025 2975
+	3400 2950 3400 3025
 Wire Wire Line
-	7025 2975 7475 2975
-Connection ~ 7475 2975
+	3925 2525 4675 2525
+Connection ~ 3925 2525
 Wire Wire Line
-	7025 3675 7025 4125
+	3925 2525 3925 3500
 Wire Wire Line
-	7025 4125 7475 4125
-Connection ~ 7475 4125
-$Comp
-L Device:L_Core_Ferrite_Coupled L1
-U 1 1 5F5F1371
-P 6350 3525
-F 0 "L1" H 6350 3200 50  0000 C CNN
-F 1 "L_Core_Ferrite_Coupled" H 6350 3291 50  0000 C CNN
-F 2 "Transformer_THT:Transformer_Toroid_Horizontal_D9.0mm_Amidon-T30" H 6350 3525 50  0001 C CNN
-F 3 "~" H 6350 3525 50  0001 C CNN
-	1    6350 3525
-	-1   0    0    -1  
-$EndComp
+	4675 3100 4875 3100
 Wire Wire Line
-	6550 3425 6800 3425
+	4675 2525 4675 3100
 Wire Wire Line
-	6800 3425 6800 2975
+	4450 3450 4675 3450
+Connection ~ 4450 3450
 Wire Wire Line
-	6800 2975 7025 2975
-Connection ~ 7025 2975
+	4450 3500 4450 3450
 Wire Wire Line
-	6550 3625 6800 3625
+	4675 3300 4875 3300
 Wire Wire Line
-	6800 3625 6800 4125
-Wire Wire Line
-	6800 4125 7025 4125
-Connection ~ 7025 4125
-$Comp
-L Device:C C4
-U 1 1 5F5F137F
-P 5725 3975
-F 0 "C4" H 5840 4021 50  0000 L CNN
-F 1 "100p" H 5840 3930 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 5763 3825 50  0001 C CNN
-F 3 "~" H 5725 3975 50  0001 C CNN
-	1    5725 3975
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C C3
-U 1 1 5F5F1385
-P 5200 3975
-F 0 "C3" H 5315 4021 50  0000 L CNN
-F 1 "100p" H 5315 3930 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 5238 3825 50  0001 C CNN
-F 3 "~" H 5200 3975 50  0001 C CNN
-	1    5200 3975
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5200 4125 5200 4375
-Wire Wire Line
-	5200 4375 4975 4375
-Connection ~ 5200 4375
-Wire Wire Line
-	5725 4125 5725 4375
-$Comp
-L Diode:SD05_SOD323 D1
-U 1 1 5F5F138F
-P 4675 3125
-F 0 "D1" V 4721 3046 50  0000 R CNN
-F 1 "SD05_SOD323" V 4630 3046 50  0000 R CNN
-F 2 "Diode_SMD:D_SOD-323" H 4675 2925 50  0001 C CNN
-F 3 "https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_arrays/littelfuse_tvs_diode_array_sd_c_datasheet.pdf.pdf" H 4675 3125 50  0001 C CNN
-	1    4675 3125
-	0    -1   -1   0   
-$EndComp
+	4675 3450 4675 3300
 $Comp
 L Diode:SD05_SOD323 D2
 U 1 1 5F5F1395
-P 4675 3575
-F 0 "D2" V 4629 3654 50  0000 L CNN
-F 1 "SD05_SOD323" V 4720 3654 50  0000 L CNN
-F 2 "Diode_SMD:D_SOD-323" H 4675 3375 50  0001 C CNN
-F 3 "https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_arrays/littelfuse_tvs_diode_array_sd_c_datasheet.pdf.pdf" H 4675 3575 50  0001 C CNN
-	1    4675 3575
+P 3400 3250
+F 0 "D2" V 3354 3329 50  0000 L CNN
+F 1 "SD05_SOD323" V 3445 3329 50  0000 L CNN
+F 2 "Diode_SMD:D_SOD-323" H 3400 3050 50  0001 C CNN
+F 3 "https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_arrays/littelfuse_tvs_diode_array_sd_c_datasheet.pdf.pdf" H 3400 3250 50  0001 C CNN
+	1    3400 3250
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	5950 3775 5950 3625
-Wire Wire Line
-	5950 3625 6150 3625
-Wire Wire Line
-	5725 3825 5725 3775
-Connection ~ 5725 3775
-Wire Wire Line
-	5725 3775 5950 3775
-Wire Wire Line
-	5950 2850 5950 3425
-Wire Wire Line
-	5950 3425 6150 3425
-Wire Wire Line
-	5200 2850 5200 3825
-Connection ~ 5200 2850
-Wire Wire Line
-	5200 2850 5950 2850
-Wire Wire Line
-	4675 3275 4675 3350
-Wire Wire Line
-	4675 2975 4675 2850
-Connection ~ 4675 2850
-Wire Wire Line
-	4675 2850 5200 2850
-Wire Wire Line
-	4675 3725 4675 3775
-Wire Wire Line
-	4675 3775 5725 3775
-Wire Wire Line
-	4675 3350 4975 3350
-Wire Wire Line
-	4975 3350 4975 4375
-Connection ~ 4675 3350
-Wire Wire Line
-	4675 3350 4675 3425
-Connection ~ 5725 4375
-Wire Wire Line
-	5725 4375 6350 4375
-Wire Wire Line
-	5200 4375 5725 4375
-Connection ~ 4675 3775
-Text Label 3025 4975 1    50   ~ 0
-EN_CAN
-Wire Wire Line
-	3775 3775 4675 3775
-Wire Wire Line
-	3775 4325 3775 4025
-Wire Wire Line
-	1300 4025 3775 4025
-Connection ~ 3775 4025
-Wire Wire Line
-	3775 4025 3775 3775
-Wire Wire Line
-	3675 3825 3675 2850
-Wire Wire Line
-	1300 3825 3675 3825
-Wire Wire Line
-	3675 2850 4675 2850
-Wire Wire Line
-	2025 4225 2650 4225
-Connection ~ 2025 4225
-Wire Wire Line
-	2250 1625 2250 3625
-Connection ~ 3675 2850
-Text Label 3025 3500 1    50   ~ 0
-EN_CAN
-Text Label 3675 3050 3    50   ~ 0
-CAN_H
-Text Label 2650 3025 3    50   ~ 0
-OBD_H
-Text Label 3325 4025 0    50   ~ 0
-OBD_L
-Text Label 2550 4325 0    50   ~ 0
-CAN_L
-Text HLabel 1275 5825 0    50   Input ~ 0
-EN_CAN
 $Comp
-L Device:R R7
-U 1 1 5F657D86
-P 1450 6075
-F 0 "R7" H 1520 6121 50  0000 L CNN
-F 1 "220" H 1520 6030 50  0000 L CNN
-F 2 "Resistor_SMD:R_2512_6332Metric_Pad1.52x3.35mm_HandSolder" V 1380 6075 50  0001 C CNN
-F 3 "~" H 1450 6075 50  0001 C CNN
-	1    1450 6075
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1275 5825 1450 5825
-Wire Wire Line
-	1450 5925 1450 5825
-Connection ~ 1450 5825
-Wire Wire Line
-	1450 6225 1450 6300
-Wire Wire Line
-	1450 6300 2025 6300
-Connection ~ 2025 6300
-Wire Wire Line
-	2025 6300 2025 6475
-Wire Wire Line
-	2375 1625 2375 4325
-Wire Wire Line
-	6350 4700 6350 4375
-Connection ~ 6350 4375
-Wire Wire Line
-	6350 4375 7975 4375
-Text HLabel 10450 3400 2    50   Input ~ 0
-EN_Transceiver
-Text Notes 6450 2625 2    50   ~ 0
-Signal Filter
-Text Label 3950 2850 0    50   ~ 0
-Signal_H
-Text Label 3950 3775 0    50   ~ 0
-Signal_L
-$Comp
-L Board:FDV304P U12
-U 1 1 5F60ADD9
-P 1925 5825
-F 0 "U12" H 1925 5825 50  0001 L BNN
-F 1 "FDV304P" H 1925 5825 50  0001 L BNN
-F 2 "Board:SOT23-3" H 1925 5825 50  0001 L BNN
-F 3 "" H 1925 5825 50  0001 C CNN
-	1    1925 5825
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1450 5825 1825 5825
-Wire Wire Line
-	2025 5925 2025 6300
-$Comp
-L Board:FDV304P U13
-U 1 1 5F6176D2
-P 3025 4425
-F 0 "U13" H 3025 4425 50  0001 L BNN
-F 1 "FDV304P" H 3025 4425 50  0001 L BNN
-F 2 "Board:SOT23-3" H 3025 4425 50  0001 L BNN
-F 3 "" H 3025 4425 50  0001 C CNN
-	1    3025 4425
-	0    1    -1   0   
-$EndComp
-Wire Wire Line
-	3025 4525 3025 4975
-Wire Wire Line
-	2375 4325 2925 4325
-Wire Wire Line
-	3225 4325 3775 4325
-$Comp
-L Board:2N7002 Q7
-U 1 1 5F62A0A8
-P 2925 3050
-F 0 "Q7" V 2971 2875 50  0000 R CNN
-F 1 "2N7002" V 2880 2875 50  0000 R CNN
-F 2 "Board:SOT23-3" H 2925 3050 50  0001 L BNN
-F 3 "" H 2925 3050 50  0001 C CNN
-	1    2925 3050
+L Diode:SD05_SOD323 D1
+U 1 1 5F5F138F
+P 3400 2800
+F 0 "D1" V 3446 2721 50  0000 R CNN
+F 1 "SD05_SOD323" V 3355 2721 50  0000 R CNN
+F 2 "Diode_SMD:D_SOD-323" H 3400 2600 50  0001 C CNN
+F 3 "https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_arrays/littelfuse_tvs_diode_array_sd_c_datasheet.pdf.pdf" H 3400 2800 50  0001 C CNN
+	1    3400 2800
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	2650 2850 2650 4225
+	4450 3800 4450 4050
+Connection ~ 3925 4050
 Wire Wire Line
-	2650 2850 2825 2850
+	3925 4050 3700 4050
 Wire Wire Line
-	3025 3250 3025 3500
+	3925 3800 3925 4050
+$Comp
+L Device:C C3
+U 1 1 5F5F1385
+P 3925 3650
+F 0 "C3" H 4040 3696 50  0000 L CNN
+F 1 "100p" H 4040 3605 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 3963 3500 50  0001 C CNN
+F 3 "~" H 3925 3650 50  0001 C CNN
+	1    3925 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C4
+U 1 1 5F5F137F
+P 4450 3650
+F 0 "C4" H 4565 3696 50  0000 L CNN
+F 1 "100p" H 4565 3605 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 4488 3500 50  0001 C CNN
+F 3 "~" H 4450 3650 50  0001 C CNN
+	1    4450 3650
+	1    0    0    -1  
+$EndComp
+Connection ~ 5750 3800
 Wire Wire Line
-	3025 2850 3675 2850
+	5525 3800 5750 3800
+Wire Wire Line
+	5525 3300 5525 3800
+Wire Wire Line
+	5275 3300 5525 3300
+Connection ~ 5750 2650
+Wire Wire Line
+	5525 2650 5750 2650
+Wire Wire Line
+	5525 3100 5525 2650
+Wire Wire Line
+	5275 3100 5525 3100
 $Comp
-L power:GND #PWR0105
-U 1 1 5F91316D
-P 10025 3100
-F 0 "#PWR0105" H 10025 2850 50  0001 C CNN
-F 1 "GND" H 10030 2927 50  0000 C CNN
-F 2 "" H 10025 3100 50  0001 C CNN
-F 3 "" H 10025 3100 50  0001 C CNN
-	1    10025 3100
+L Device:L_Core_Ferrite_Coupled L1
+U 1 1 5F5F1371
+P 5075 3200
+F 0 "L1" H 5075 2875 50  0000 C CNN
+F 1 "L_Core_Ferrite_Coupled" H 5075 2966 50  0000 C CNN
+F 2 "Transformer_THT:Transformer_Toroid_Horizontal_D9.0mm_Amidon-T30" H 5075 3200 50  0001 C CNN
+F 3 "~" H 5075 3200 50  0001 C CNN
+	1    5075 3200
+	-1   0    0    -1  
+$EndComp
+Connection ~ 6200 3800
+Wire Wire Line
+	5750 3800 6200 3800
+Wire Wire Line
+	5750 3350 5750 3800
+Connection ~ 6200 2650
+Wire Wire Line
+	5750 2650 6200 2650
+Wire Wire Line
+	5750 3050 5750 2650
+$Comp
+L Device:C C5
+U 1 1 5F5F1365
+P 5750 3200
+F 0 "C5" H 5865 3246 50  0000 L CNN
+F 1 "100p" H 5865 3155 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 5788 3050 50  0001 C CNN
+F 3 "~" H 5750 3200 50  0001 C CNN
+	1    5750 3200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6700 3950 6700 4050
+Wire Wire Line
+	6200 3200 6200 3375
+Connection ~ 6200 3200
+Wire Wire Line
+	6700 3200 6200 3200
+Wire Wire Line
+	6700 3650 6700 3200
+Wire Wire Line
+	6200 2650 6200 2750
+Wire Wire Line
+	6450 2650 6200 2650
+Wire Wire Line
+	6450 3375 6450 2650
+Wire Wire Line
+	7125 3375 6450 3375
+Wire Wire Line
+	6450 3475 7125 3475
+Wire Wire Line
+	6200 3050 6200 3200
+Wire Wire Line
+	6450 3800 6450 3475
+Wire Wire Line
+	6200 3800 6450 3800
+Wire Wire Line
+	6200 3675 6200 3800
+$Comp
+L Device:C C6
+U 1 1 5F5F1351
+P 6700 3800
+F 0 "C6" H 6815 3846 50  0000 L CNN
+F 1 "4n7" H 6815 3755 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 6738 3650 50  0001 C CNN
+F 3 "~" H 6700 3800 50  0001 C CNN
+	1    6700 3800
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3.3V #PWR0106
-U 1 1 5F913497
-P 10025 3800
-F 0 "#PWR0106" H 10025 3650 50  0001 C CNN
-F 1 "+3.3V" H 10040 3973 50  0000 C CNN
-F 2 "" H 10025 3800 50  0001 C CNN
-F 3 "" H 10025 3800 50  0001 C CNN
-	1    10025 3800
+L Device:R R4
+U 1 1 5F5F134B
+P 6200 3525
+F 0 "R4" H 6270 3571 50  0000 L CNN
+F 1 "62" H 6270 3480 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 6130 3525 50  0001 C CNN
+F 3 "~" H 6200 3525 50  0001 C CNN
+	1    6200 3525
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR0107
-U 1 1 5F9161C7
-P 6350 4700
-F 0 "#PWR0107" H 6350 4450 50  0001 C CNN
-F 1 "GND" H 6355 4527 50  0000 C CNN
-F 2 "" H 6350 4700 50  0001 C CNN
-F 3 "" H 6350 4700 50  0001 C CNN
-	1    6350 4700
+L Device:R R3
+U 1 1 5F5F1345
+P 6200 2900
+F 0 "R3" H 6270 2946 50  0000 L CNN
+F 1 "62" H 6270 2855 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 6130 2900 50  0001 C CNN
+F 3 "~" H 6200 2900 50  0001 C CNN
+	1    6200 2900
 	1    0    0    -1  
 $EndComp
+Text Notes 7635 2295 0    50   ~ 0
+Transceiver
+Wire Wire Line
+	8625 2775 8750 2775
+Connection ~ 8625 2775
+Wire Wire Line
+	8625 2975 8625 2775
+Wire Wire Line
+	8525 2975 8625 2975
+Wire Wire Line
+	8525 3600 8750 3600
+Wire Wire Line
+	8525 2775 8625 2775
+Wire Wire Line
+	8525 3275 9175 3275
+Wire Wire Line
+	9175 3175 8525 3175
 $Comp
-L power:GND #PWR0108
-U 1 1 5F916540
-P 2025 6475
-F 0 "#PWR0108" H 2025 6225 50  0001 C CNN
-F 1 "GND" H 2030 6302 50  0000 C CNN
-F 2 "" H 2025 6475 50  0001 C CNN
-F 3 "" H 2025 6475 50  0001 C CNN
-	1    2025 6475
-	1    0    0    -1  
+L Board:SN65HVD233-HT IC1
+U 1 1 5F565F75
+P 7825 3175
+F 0 "IC1" H 7825 2405 50  0000 C CNN
+F 1 "SN65HVD233-HT" H 7825 2496 50  0000 C CNN
+F 2 "Board:SOIC127P600X175" H 7825 3175 50  0001 L BNN
+F 3 "" H 7825 3175 50  0001 C CNN
+	1    7825 3175
+	-1   0    0    1   
 $EndComp
+Text HLabel 9175 3175 2    50   Input ~ 0
+CAN_Tx
+Text HLabel 9175 3275 2    50   Output ~ 0
+CAN_Rx
+Text HLabel 2800 2525 0    50   BiDi ~ 0
+BUS_H
+Text HLabel 2800 3450 0    50   BiDi ~ 0
+BUS_L
 $EndSCHEMATC

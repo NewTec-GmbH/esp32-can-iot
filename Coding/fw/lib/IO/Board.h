@@ -53,6 +53,12 @@ namespace Board
         static const uint8_t GPIO_3 = 25U;
         static const uint8_t GPIO_4 = 33U;
 
+        /** Pin number of OBD/CAN Control */
+        static const uint8_t canSelector = 32U;
+
+        /** Pin number of OBD Supply in */
+        static const uint8_t analogSupplyCheck = 34U;
+
     }; // namespace Pin
 
     /** Digital output pin: Error Indicator */
@@ -69,15 +75,27 @@ namespace Board
 
     /** Digital output pin: GPIO_1 */
     static const DOutPin<Pin::GPIO_1> gpio1;
-    
+
     /** Digital output pin: GPIO_2 */
     static const DOutPin<Pin::GPIO_2> gpio2;
-    
+
     /** Digital output pin: GPIO_3 */
     static const DOutPin<Pin::GPIO_3> gpio3;
 
     /** Digital output pin: GPIO_4 */
     static const DOutPin<Pin::GPIO_4> gpio4;
+
+    /** Digital output pin: AP-Mode LED */
+    static const DOutPin<Pin::canSelector> obdSwitch;
+
+    /** Analog input pin: LDR in */
+    static const AnalogPin<Pin::analogSupplyCheck> obdSupply;
+
+    /** ADC resolution in digits */
+    static const uint16_t adcResolution = 4096U;
+
+    /** ADC reference voltage in mV */
+    static const uint16_t adcRefVoltage = 3300U;
 
     /**
     * Initialize all i/o pins.
