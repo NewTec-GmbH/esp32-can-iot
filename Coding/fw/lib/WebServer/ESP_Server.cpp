@@ -278,7 +278,7 @@ static bool setSTAMode()
     uint8_t previousBtnState = LOW;
     uint32_t lastDebounceTime = 0;
     const uint8_t DEBOUNCE_DELAY = 50;
-    const uint8_t SETUP_TIME = 3000;
+    const uint32_t SETUP_TIME = 2000;
     uint32_t startTime = millis();
 
     while ((millis() - startTime) < SETUP_TIME)
