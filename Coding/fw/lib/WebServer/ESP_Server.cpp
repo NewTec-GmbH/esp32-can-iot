@@ -13,6 +13,7 @@ Handler for ESP32 WebServer. @ref ESPServer.h
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include <ESP_Server.h>
+#include <Board.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -273,5 +274,31 @@ static bool setSTAMode()
 {
     bool staMode = false;
 
+    uint8_t currentBtnState = LOW;
+    uint8_t previousBtnState = LOW;
+    uint32_t lastDebounceTime = 0;
+    const uint8_t DEBOUNCE_DELAY = 50;
+    const uint8_t SETUP_TIME = 3000;
+    uint32_t startTime = millis();
+
+    while ((millis() - startTime) < SETUP_TIME)
+    {
+        currentBtnState = Board::wifiModeSelect.read();
+
+        if (currentBtnState != previousBtnState)
+        {
+            lastDebounceTime = millis();
+        }
+
+        if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY)
+        {
+            staMode = currentBtnState;
+        }
+
+        previousBtnState = currentBtnState;
+    }
+
+    staMode = currentBtnState;
+    
     return staMode;
 }

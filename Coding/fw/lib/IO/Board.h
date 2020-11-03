@@ -85,10 +85,10 @@ namespace Board
     /** Digital output pin: GPIO_4 */
     static const DOutPin<Pin::GPIO_4> gpio4;
 
-    /** Digital output pin: AP-Mode LED */
+    /** Digital output pin: Bus Selector LED */
     static const DOutPin<Pin::canSelector> obdSwitch;
 
-    /** Analog input pin: LDR in */
+    /** Analog input pin: Analog Voltage in */
     static const AnalogPin<Pin::analogSupplyCheck> obdSupply;
 
     /** ADC resolution in digits */
