@@ -193,7 +193,7 @@ Wire Wire Line
 Wire Wire Line
 	6450 4250 5650 4250
 Wire Wire Line
-	7900 1500 9950 1500
+	7900 1500 8250 1500
 Connection ~ 7900 1500
 Wire Wire Line
 	7875 3650 9950 3650
@@ -324,4 +324,20 @@ F 3 "" H 4050 5200 50  0001 C CNN
 	1    4050 5200
 	1    0    0    -1  
 $EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 5FA1A73B
+P 8250 1325
+F 0 "#PWR?" H 8250 1175 50  0001 C CNN
+F 1 "+5V" H 8265 1498 50  0000 C CNN
+F 2 "" H 8250 1325 50  0001 C CNN
+F 3 "" H 8250 1325 50  0001 C CNN
+	1    8250 1325
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8250 1500 8250 1325
+Connection ~ 8250 1500
+Wire Wire Line
+	8250 1500 9950 1500
 $EndSCHEMATC
