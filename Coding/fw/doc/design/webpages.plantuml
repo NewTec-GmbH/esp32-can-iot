@@ -1,0 +1,38 @@
+@startuml
+
+Title Webpages Navigation
+
+[*] --> Index
+Index : - Welcome Page
+Index : - General Information
+Index : - Shows Stored Credentials
+Index : - Links to other Webpages
+
+state Index_fork <<fork>>
+    Index --> Index_fork
+
+    Index_fork --> AP_Credentials
+    Index_fork --> STA_Credentials
+    Index_fork --> Web_Credentials
+
+    Index_fork --> WebSocket
+    WebSocket --> [*]
+
+    AP_Credentials : Changes the Access-Point \n Credentials
+    STA_Credentials : Changes the Station \n Credentials
+    Web_Credentials : Changes the Web-Access \n Credentials
+    WebSocket : Communication with \n CAN Controller
+
+
+state Set_Credentials_fork <<fork>>
+    AP_Credentials --> Set_Credentials_fork
+    STA_Credentials --> Set_Credentials_fork
+    Web_Credentials --> Set_Credentials_fork
+
+    Set_Credentials_fork --> Set_Credentials
+
+    Set_Credentials --> [*]
+
+    Set_Credentials : Saves the changed credentials \n and restarts the ESP32
+
+@enduml
