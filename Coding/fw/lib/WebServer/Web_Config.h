@@ -23,7 +23,7 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
-const char *DIRECTORY = "Server";
+static const String DIRECTORY = "Server";
 
 namespace WebConfig
 {
@@ -32,27 +32,15 @@ namespace WebConfig
     const uint8_t WIFI_MODE_BUTTON = 21U;
     const uint16_t WIFI_TIMEOUT_MS = 20000;
 
-    String STA_SSID = "";
-    String STA_PASSWORD = "";
-    String AP_SSID = "";
-    String AP_PASSWORD = "";
-    String WEB_USER = "";
-    String WEB_PASSWORD = "";
+    static String STA_SSID = "";
+    static String STA_PASSWORD = "";
+    static String AP_SSID = "";
+    static String AP_PASSWORD = "";
+    static String WEB_USER = "";
+    static String WEB_PASSWORD = "";
 
-    void importConfig()
-    {
-        Settings::get(DIRECTORY, "STA_SSID", STA_SSID,"");
-        Settings::get(DIRECTORY, "STA_Password", STA_PASSWORD,"");
-        Settings::get(DIRECTORY, "AP_SSID", AP_SSID,"ESP32");
-        Settings::get(DIRECTORY, "AP_Password", AP_PASSWORD,"hochschuleulm");
-        Settings::get(DIRECTORY, "Server_User", WEB_USER,"admin");
-        Settings::get(DIRECTORY, "Server_Password", WEB_PASSWORD,"admin");
-    }
-
-    void saveConfig(const String &key, const String &value)
-    {
-        Settings::save(DIRECTORY, key, value);
-    }
+    void importConfig();
+    void saveConfig(const String &key, const String &value);
 
 } // namespace WebConfig
 
