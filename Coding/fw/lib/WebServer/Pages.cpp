@@ -30,12 +30,7 @@ extern "C"
 
 /* PROTOTYPES *************************************************************************************/
 static String pageProcessor(const String &var);
-static void credentialsProcessor(String name, String value);
 static void indexPage(AsyncWebServerRequest *request);
-static void staPage(AsyncWebServerRequest *request);
-static void apPage(AsyncWebServerRequest *request);
-static void srvPage(AsyncWebServerRequest *request);
-static void setCredentialsPage(AsyncWebServerRequest *request);
 static void errorPage(AsyncWebServerRequest *request);
 
 /* VARIABLES **************************************************************************************/
@@ -45,11 +40,6 @@ static void errorPage(AsyncWebServerRequest *request);
 void Pages::init(AsyncWebServer &server)
 {
     server.on("/", HTTP_GET, indexPage);
-    server.on("/STACredentials.html", HTTP_GET, staPage);
-    server.on("/APCredentials.html", HTTP_GET, apPage);
-    server.on("/WEBCredentials.html", HTTP_GET, srvPage);
-    server.on("/setCredentials.html", HTTP_GET, setCredentialsPage);
-
 
     server.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
     server.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
@@ -91,20 +81,6 @@ static String pageProcessor(const String &var)
     return temp;
 }
 
-static void credentialsProcessor(String name, String value)
-{    
-    if (name == "STA_SSID" ||
-        name == "STA_Password" ||
-        name == "AP_SSID" ||
-        name == "AP_Password" ||
-        name == "Server_User"||
-        name == "Server_Password"    
-    )
-    {
-        WebConfig::saveConfig(name, value);
-    }
-}
-
 static void indexPage(AsyncWebServerRequest *request)
 {
     if (nullptr == request)
@@ -118,74 +94,6 @@ static void indexPage(AsyncWebServerRequest *request)
     }
 
     return request->send(SPIFFS, "/index.html", String(), false, pageProcessor);
-}
-
-static void staPage(AsyncWebServerRequest *request)
-{
-    if (nullptr == request)
-    {
-        return;
-    }
-
-    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
-    {
-        return request->requestAuthentication();
-    }
-
-    return request->send(SPIFFS, "/STACredentials.html", String(), false, pageProcessor);
-}
-
-static void apPage(AsyncWebServerRequest *request)
-{
-    if (nullptr == request)
-    {
-        return;
-    }
-
-    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
-    {
-        return request->requestAuthentication();
-    }
-
-    return request->send(SPIFFS, "/APCredentials.html", String(), false, pageProcessor);
-}
-
-static void srvPage(AsyncWebServerRequest *request)
-{
-    if (nullptr == request)
-    {
-        return;
-    }
-
-    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
-    {
-        return request->requestAuthentication();
-    }
-
-    return request->send(SPIFFS, "/WEBCredentials.html", String(), false, pageProcessor);
-}
-
-static void setCredentialsPage(AsyncWebServerRequest *request)
-{
-    if (nullptr == request)
-    {
-        return;
-    }
-
-    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
-    {
-        return request->requestAuthentication();
-    }
-
-    int params = request->params();
-    for (int i = 0; i < params; i++)
-    {
-        AsyncWebParameter *p = request->getParam(i);
-        Serial.printf("GET[%s]: %s\n", p->name().c_str(), p->value().c_str());
-        credentialsProcessor(p->name(), p->value());
-    }
-
-    return request->send(SPIFFS, "/setCredentials.html", String(), false, pageProcessor);
 }
 
 static void errorPage(AsyncWebServerRequest *request)

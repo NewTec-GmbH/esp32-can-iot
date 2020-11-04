@@ -30,7 +30,7 @@ extern "C"
 */
 namespace ESPServer
 {
-    bool init();
+    bool init(bool apModeRequested);
     bool begin(void);
     bool end(void);
     bool handleNextRequest(void);

@@ -32,10 +32,17 @@ namespace CaptivePortal
     * @param[in] server   Web server
     */
     void init(AsyncWebServer &server);
-}
 
-    /* INLINE FUNCTIONS ******************************************************************************/
+    /**
+    * Is restart requested by captive portal?
+    * @return If restart is requested it will return true otherwise false.
+    */
+    bool isRestartRequested();
 
-    /* PROTOTYPES ************************************************************************************/
+} // namespace CaptivePortal
+
+/* INLINE FUNCTIONS ******************************************************************************/
+
+/* PROTOTYPES ************************************************************************************/
 
 #endif /* CAPTIVE_PORTAL_H_ */

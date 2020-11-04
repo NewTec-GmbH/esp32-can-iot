@@ -46,10 +46,6 @@ void setup()
   {
     restart();
   }
-  else if (!ESPServer::init())
-  {
-    restart();
-  }
   else if (!ESPServer::begin())
   {
     restart();
