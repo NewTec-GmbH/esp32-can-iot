@@ -70,7 +70,7 @@ bool ESPServer::begin()
 
     if (setAPMode())
     {
-        WiFi.softAP(WebConfig::AP_SSID, WebConfig::AP_PASSWORD);
+        WiFi.softAP(WebConfig::AP_SSID.c_str(), WebConfig::AP_PASSWORD.c_str());
         serverIP = WiFi.softAPIP();
 
         ESPServer::init(true);
@@ -78,7 +78,7 @@ bool ESPServer::begin()
     else
     {
         WiFi.mode(WIFI_STA);
-        WiFi.begin(WebConfig::STA_SSID, WebConfig::STA_PASSWORD);
+        WiFi.begin(WebConfig::STA_SSID.c_str(), WebConfig::STA_PASSWORD.c_str());
 
         unsigned long startAttempTime = millis();
 
