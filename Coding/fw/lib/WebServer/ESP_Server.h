@@ -15,12 +15,8 @@ Handler for ESP32 WebServer
 #define ESP_SERVER_H_
 
 /* INCLUDES ***************************************************************************************/
-#include <DNSServer.h>
 #include <ESPAsyncWebServer.h>
-#include <SPIFFS.h>
-#include <FS.h>
-#include <Board.h>
-#include <Web_config.h>
+
 
 /* C-Interface ************************************************************************************/
 extern "C"

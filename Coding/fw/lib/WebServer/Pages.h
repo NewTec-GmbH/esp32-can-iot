@@ -16,10 +16,7 @@ Web Pages for ESP32 WebServer
 
 /* INCLUDES ***************************************************************************************/
 #include <ESPAsyncWebServer.h>
-#include <Web_Config.h>
-#include <SPIFFS.h>
-#include <stdint.h>
-#include <Settings.h>
+
 
 /* C-Interface ************************************************************************************/
 extern "C"

@@ -13,6 +13,9 @@ Web Pages for ESP32 WebServer @ref Pages.h
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include <Pages.h>
+#include <Web_Config.h>
+#include <SPIFFS.h>
+#include <Settings.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -192,6 +195,6 @@ static void errorPage(AsyncWebServerRequest *request)
     {
         return;
     }
-    
+
     request->send(404, "text/plain", "Not Found");
 }
