@@ -35,7 +35,7 @@ static DNSServer dnsServer;
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
-static bool setSTAMode();
+static bool setAPMode();
 
 /* VARIABLES **************************************************************************************/
 
@@ -46,13 +46,18 @@ IPAddress serverIP;
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
-bool ESPServer::init()
+bool ESPServer::init(bool apModeRequested)
 {
-    bool success = false;
+    bool success = true;
 
-    Pages::init(server);
-
-    success = true;
+    if(apModeRequested)
+    {
+        CaptivePortal::init(server);
+    }
+    else
+    {
+        Pages::init(server);
+    }
 
     return success;
 }
@@ -61,8 +66,16 @@ bool ESPServer::init()
 bool ESPServer::begin()
 {
     bool success = true;
+    WebConfig::importConfig();
 
-    if (setSTAMode())
+    if (setAPMode())
+    {
+        WiFi.softAP(WebConfig::AP_SSID, WebConfig::AP_PASSWORD);
+        serverIP = WiFi.softAPIP();
+
+        ESPServer::init(true);
+    }
+    else
     {
         WiFi.mode(WIFI_STA);
         WiFi.begin(WebConfig::STA_SSID, WebConfig::STA_PASSWORD);
@@ -81,11 +94,8 @@ bool ESPServer::begin()
         {
             serverIP = WiFi.localIP();
         }
-    }
-    else
-    {
-        WiFi.softAP(WebConfig::AP_SSID, WebConfig::AP_PASSWORD);
-        serverIP = WiFi.softAPIP();
+
+        ESPServer::init(false);
     }
 
     dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
@@ -100,7 +110,6 @@ bool ESPServer::begin()
     }
 
     server.begin();
-
     return success;
 }
 
@@ -128,10 +137,10 @@ bool ESPServer::handleNextRequest()
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
 /**************************************************************************************************/
-static bool setSTAMode()
+static bool setAPMode()
 {
 
-    bool staMode = false;
+    bool apMode = false;
 
     uint8_t currentBtnState = LOW;
     uint8_t previousBtnState = LOW;
@@ -151,13 +160,11 @@ static bool setSTAMode()
 
         if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY)
         {
-            staMode = currentBtnState;
+            apMode = currentBtnState;
         }
 
         previousBtnState = currentBtnState;
     }
 
-    staMode = currentBtnState;
-
-    return staMode;
+    return apMode;
 }
