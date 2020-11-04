@@ -72,10 +72,10 @@ public:
             return;
         }
 
-        if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
-        {
-            return request->requestAuthentication();
-        }
+        if (!request->authenticate(WebConfig::getWEB_USER().c_str(), WebConfig::getWEB_PASS().c_str()))
+    {
+        return request->requestAuthentication();
+    }
 
         if (HTTP_POST == request->method())
         {
@@ -87,10 +87,11 @@ public:
                 credentialsProcessor(p->name(), p->value());
             }
             request->send(200, "plain/text", "Ok.");
+            reqRestart();
         }
         else if (HTTP_GET == request->method())
         {
-            request->send(SPIFFS, "/portal.html", String(), false, captivePageProcessor);
+            request->send(SPIFFS, "/STACredentials.html", String(), false, captivePageProcessor);
         }
         else
         {

@@ -23,24 +23,22 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
-static const String DIRECTORY = "Server";
-
 namespace WebConfig
 {
-    const uint32_t DNS_PORT = 53U;
-    const uint32_t WEBSERVER_PORT = 80U;
-    const uint8_t WIFI_MODE_BUTTON = 21U;
-    const uint16_t WIFI_TIMEOUT_MS = 20000;
+  static const uint32_t DNS_PORT = 53U;
+  static const uint32_t WEBSERVER_PORT = 80U;
+  static const uint8_t WIFI_MODE_BUTTON = 21U;
+  static const uint16_t WIFI_TIMEOUT_MS = 20000;
 
-    static String STA_SSID = "";
-    static String STA_PASSWORD = "";
-    static String AP_SSID = "";
-    static String AP_PASSWORD = "";
-    static String WEB_USER = "";
-    static String WEB_PASSWORD = "";
+  String getSTA_SSID();
+  String getSTA_PASS();
+  String getAP_SSID();
+  String getAP_PASS();
+  String getWEB_USER();
+  String getWEB_PASS();
 
-    void importConfig();
-    void saveConfig(const String &key, const String &value);
+  void importConfig();
+  void saveConfig(const String &key, const String &value);
 
 } // namespace WebConfig
 

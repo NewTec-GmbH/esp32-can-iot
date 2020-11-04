@@ -60,23 +60,23 @@ static String pageProcessor(const String &var)
 
     if (var == "STATION_SSID")
     {
-        temp = WebConfig::STA_SSID;
+        temp = WebConfig::getSTA_SSID();
     }
     else if (var == "AP_SSID")
     {
-        temp = WebConfig::AP_SSID;
+       temp = WebConfig::getAP_SSID();
     }
     else if (var == "AP_PASS")
     {
-        temp = WebConfig::AP_PASSWORD;
+        temp = WebConfig::getAP_PASS();
     }
     else if (var == "SERVER_USER")
     {
-        temp = WebConfig::WEB_USER;
+        temp = WebConfig::getWEB_USER();
     }
     else if (var == "SERVER_PASS")
     {
-        temp = WebConfig::WEB_PASSWORD;
+        temp = WebConfig::getWEB_PASS();
     }
     return temp;
 }
@@ -88,7 +88,7 @@ static void indexPage(AsyncWebServerRequest *request)
         return;
     }
 
-    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
+    if (!request->authenticate(WebConfig::getWEB_USER().c_str(), WebConfig::getWEB_PASS().c_str()))
     {
         return request->requestAuthentication();
     }
@@ -103,7 +103,7 @@ static void errorPage(AsyncWebServerRequest *request)
         return;
     }
 
-    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
+    if (!request->authenticate(WebConfig::getWEB_USER().c_str(), WebConfig::getWEB_PASS().c_str()))
     {
         return request->requestAuthentication();
     }
