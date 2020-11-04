@@ -19,6 +19,7 @@ Handler for ESP32 WebServer. @ref ESPServer.h
 #include <FS.h>
 #include <Board.h>
 #include <Web_config.h>
+#include <CaptivePortal.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"

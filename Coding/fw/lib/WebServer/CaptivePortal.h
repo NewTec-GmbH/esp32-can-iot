@@ -5,14 +5,14 @@
 /**
 @addtogroup Webserver
 @{
-@file       Pages.h
+@file       CaptivePOrtal.h
 
-Web Pages for ESP32 WebServer
+Captive Portal for ESP32 WebServer
 
 * @}
 ***************************************************************************************************/
-#ifndef PAGES_H_
-#define PAGES_H_
+#ifndef CAPTIVE_PORTAL_H_
+#define CAPTIVE_PORTAL_H_
 
 /* INCLUDES ***************************************************************************************/
 #include <ESPAsyncWebServer.h>
@@ -23,26 +23,19 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-namespace Pages
+
+/* FORWARD DECLARATIONS **************************************************************************/
+namespace CaptivePortal
 {
     /**
-    * Initialize all web pages and register them on the web server.
+    * Initialize Captive Portal and register it on the web server.
     * @param[in] server   Web server
     */
     void init(AsyncWebServer &server);
+}
 
-    /**
-    * Error web page used in case a requested path was not found.
-    * @param[in] request   Web request
-    */
-    void error(AsyncWebServerRequest *request);
+    /* INLINE FUNCTIONS ******************************************************************************/
 
-} // namespace Pages
+    /* PROTOTYPES ************************************************************************************/
 
-/* FORWARD DECLARATIONS **************************************************************************/
-
-/* INLINE FUNCTIONS ******************************************************************************/
-
-/* PROTOTYPES ************************************************************************************/
-
-#endif /* PAGES_H_ */
+#endif /* CAPTIVE_PORTAL_H_ */
