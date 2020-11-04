@@ -32,7 +32,7 @@ class NVMAdapter : public NVMInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
-    const char *DIRECTORY = "Startup";
+    const String DIRECTORY = "Startup";
     /* TYPES **********************************************************************************/
 
     /**

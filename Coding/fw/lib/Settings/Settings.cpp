@@ -32,10 +32,10 @@ Preferences m_memory;
 
 /* PUBLIC METHODES ********************************************************************************/
 /**************************************************************************************************/
-bool Settings::save(const char *directory, const String &key, const uint32_t &value)
+bool Settings::save(const String directory, const String &key, const uint32_t &value)
 {
     bool success = false;
-    if (m_memory.begin(directory, false))
+    if (m_memory.begin(directory.c_str(), false))
     {
         m_memory.putULong(key.c_str(), value);
         m_memory.end();
@@ -45,10 +45,10 @@ bool Settings::save(const char *directory, const String &key, const uint32_t &va
 }
 
 /**************************************************************************************************/
-bool Settings::save(const char *directory, const String &key, const String &value)
+bool Settings::save(const String directory, const String &key, const String &value)
 {
     bool success = false;
-    if (m_memory.begin(directory, false))
+    if (m_memory.begin(directory.c_str(), false))
     {
         m_memory.putString(key.c_str(), value);
         m_memory.end();
@@ -58,10 +58,10 @@ bool Settings::save(const char *directory, const String &key, const String &valu
 }
 
 /**************************************************************************************************/
-bool Settings::get(const char *directory, const String &key, uint32_t &value, const uint32_t defaultValue)
+bool Settings::get(const String directory, const String &key, uint32_t &value, const uint32_t defaultValue)
 {
     bool success = false;
-    if (m_memory.begin(directory, false))
+    if (m_memory.begin(directory.c_str(), false))
     {
         value = m_memory.getULong(key.c_str(), defaultValue);
         m_memory.end();
@@ -71,10 +71,10 @@ bool Settings::get(const char *directory, const String &key, uint32_t &value, co
 }
 
 /**************************************************************************************************/
-bool Settings::get(const char *directory, const String &key, String &value, const String defaultValue)
+bool Settings::get(const String directory, const String &key, String &value, const String defaultValue)
 {
     bool success = false;
-    if (m_memory.begin(directory, false))
+    if (m_memory.begin(directory.c_str(), false))
     {
         value = m_memory.getString(key.c_str(), defaultValue);
         m_memory.end();
@@ -84,10 +84,10 @@ bool Settings::get(const char *directory, const String &key, String &value, cons
 }
 
 /**************************************************************************************************/
-bool Settings::clear(const char *directory)
+bool Settings::clear(const String directory)
 {
     bool success = false;
-    if (m_memory.begin(directory, false))
+    if (m_memory.begin(directory.c_str(), false))
     {
         success = m_memory.clear();
     }
