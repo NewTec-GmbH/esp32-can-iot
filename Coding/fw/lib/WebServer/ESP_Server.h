@@ -19,7 +19,8 @@ Handler for ESP32 WebServer
 #include <ESPAsyncWebServer.h>
 #include <SPIFFS.h>
 #include <FS.h>
-#include <Preferences.h>
+#include <Board.h>
+#include <Web_config.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
