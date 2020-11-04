@@ -23,7 +23,6 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-const char *DIRECTORY = "Server";
 
 /* MACROS *****************************************************************************************/
 
@@ -102,8 +101,8 @@ static void credentialsProcessor(String name, String value)
         name == "Server_Password"    
     )
     {
-        Settings::save(DIRECTORY, name, value);
-    }   
+        WebConfig::saveConfig(name, value);
+    }
 }
 
 static void indexPage(AsyncWebServerRequest *request)
@@ -113,7 +112,7 @@ static void indexPage(AsyncWebServerRequest *request)
         return;
     }
 
-    if (!request->authenticate(WebConfig::WEB_USER, WebConfig::WEB_PASSWORD))
+    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
     {
         return request->requestAuthentication();
     }
@@ -128,7 +127,7 @@ static void staPage(AsyncWebServerRequest *request)
         return;
     }
 
-    if (!request->authenticate(WebConfig::WEB_USER, WebConfig::WEB_PASSWORD))
+    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
     {
         return request->requestAuthentication();
     }
@@ -143,7 +142,7 @@ static void apPage(AsyncWebServerRequest *request)
         return;
     }
 
-    if (!request->authenticate(WebConfig::WEB_USER, WebConfig::WEB_PASSWORD))
+    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
     {
         return request->requestAuthentication();
     }
@@ -158,7 +157,7 @@ static void srvPage(AsyncWebServerRequest *request)
         return;
     }
 
-    if (!request->authenticate(WebConfig::WEB_USER, WebConfig::WEB_PASSWORD))
+    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
     {
         return request->requestAuthentication();
     }
@@ -173,7 +172,7 @@ static void setCredentialsPage(AsyncWebServerRequest *request)
         return;
     }
 
-    if (!request->authenticate(WebConfig::WEB_USER, WebConfig::WEB_PASSWORD))
+    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
     {
         return request->requestAuthentication();
     }
@@ -194,6 +193,11 @@ static void errorPage(AsyncWebServerRequest *request)
     if (nullptr == request)
     {
         return;
+    }
+
+    if (!request->authenticate(WebConfig::WEB_USER.c_str(), WebConfig::WEB_PASSWORD.c_str()))
+    {
+        return request->requestAuthentication();
     }
 
     request->send(404, "text/plain", "Not Found");

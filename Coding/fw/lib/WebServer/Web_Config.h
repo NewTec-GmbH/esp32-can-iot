@@ -22,6 +22,9 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
+
+const char *DIRECTORY = "Server";
+
 namespace WebConfig
 {
     const uint32_t DNS_PORT = 53U;
@@ -29,12 +32,27 @@ namespace WebConfig
     const uint8_t WIFI_MODE_BUTTON = 21U;
     const uint16_t WIFI_TIMEOUT_MS = 20000;
 
-    const char STA_SSID[32] = "";
-    const char STA_PASSWORD[32] = "";
-    const char AP_SSID[32] = "";
-    const char AP_PASSWORD[32] = "";
-    const char WEB_USER[32] = "";
-    const char WEB_PASSWORD[32] = "";
+    String STA_SSID = "";
+    String STA_PASSWORD = "";
+    String AP_SSID = "";
+    String AP_PASSWORD = "";
+    String WEB_USER = "";
+    String WEB_PASSWORD = "";
+
+    void importConfig()
+    {
+        Settings::get(DIRECTORY, "STA_SSID", STA_SSID,"");
+        Settings::get(DIRECTORY, "STA_Password", STA_PASSWORD,"");
+        Settings::get(DIRECTORY, "AP_SSID", AP_SSID,"ESP32");
+        Settings::get(DIRECTORY, "AP_Password", AP_PASSWORD,"hochschuleulm");
+        Settings::get(DIRECTORY, "Server_User", WEB_USER,"admin");
+        Settings::get(DIRECTORY, "Server_Password", WEB_PASSWORD,"admin");
+    }
+
+    void saveConfig(const String &key, const String &value)
+    {
+        Settings::save(DIRECTORY, key, value);
+    }
 
 } // namespace WebConfig
 
