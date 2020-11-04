@@ -31,10 +31,9 @@ Main Application
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-Settings systemSettings;
 SerialAdapter serialAdapter;
 CANAdapter sja1000Adapter;
-NVMAdapter flashAdapter(systemSettings);
+NVMAdapter flashAdapter;
 Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/

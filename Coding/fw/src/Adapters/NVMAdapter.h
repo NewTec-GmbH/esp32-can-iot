@@ -38,7 +38,7 @@ public:
     /**
     * Default constructor creates instance of the class using default values.
     */
-    NVMAdapter(Settings &selectedSettings) : NVMInterface(), m_selectedSettings(&selectedSettings)
+    NVMAdapter() : NVMInterface()
     {
     }
 
@@ -70,7 +70,7 @@ public:
     */
     bool save(const String &name, int32_t value)
     {
-        return m_selectedSettings->save(DIRECTORY, name, value);
+        return Settings::save(DIRECTORY, name, value);
     }
 
     /**
@@ -78,7 +78,7 @@ public:
     */
     bool save(const String &name, const String &value)
     {
-        return m_selectedSettings->save(DIRECTORY, name, value);
+        return Settings::save(DIRECTORY, name, value);
     }
 
     /**
@@ -87,7 +87,7 @@ public:
     uint32_t readInt(const String &name)
     {
         uint32_t result;
-        if(!m_selectedSettings->get(DIRECTORY, name, result))
+        if (!Settings::get(DIRECTORY, name, result))
         {
             result = 0;
         }
@@ -100,7 +100,7 @@ public:
     String readString(const String &name)
     {
         String result;
-        if(!m_selectedSettings->get(DIRECTORY, name, result))
+        if (!Settings::get(DIRECTORY, name, result))
         {
             result = "";
         }
@@ -112,11 +112,10 @@ public:
      */
     bool clearEntries()
     {
-        return m_selectedSettings->clear(DIRECTORY);
+        return Settings::clear(DIRECTORY);
     }
 
 private:
-    Settings *m_selectedSettings;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/
