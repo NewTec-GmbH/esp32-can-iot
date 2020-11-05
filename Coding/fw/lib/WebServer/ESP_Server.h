@@ -17,7 +17,6 @@ Handler for ESP32 WebServer
 /* INCLUDES ***************************************************************************************/
 #include <ESPAsyncWebServer.h>
 
-
 /* C-Interface ************************************************************************************/
 extern "C"
 {
@@ -30,11 +29,11 @@ extern "C"
 */
 namespace ESPServer
 {
-    bool init(bool apModeRequested);
-    bool begin(void);
-    bool end(void);
-    bool handleNextRequest(void);
-    AsyncWebServer &getInstance(void);
+  bool init(bool apModeRequested);   /*< Registers the handlers on the server, depending on the WiFi Mode chosen */
+  bool begin(void);                  /*< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
+  bool end(void);                    /*< Disconnects and disables the WebServer */
+  bool handleNextRequest(void);      /*< Calls next request on DNS Server */
+  AsyncWebServer &getInstance(void); /*< Returns server's instance */
 } // namespace ESPServer
 
 /* INLINE FUNCTIONS ***************************************************************************/

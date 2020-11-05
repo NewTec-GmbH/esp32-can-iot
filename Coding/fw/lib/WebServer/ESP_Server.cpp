@@ -13,12 +13,11 @@ Handler for ESP32 WebServer. @ref ESPServer.h
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include <ESP_Server.h>
-#include <Pages.h>
 #include <DNSServer.h>
 #include <SPIFFS.h>
-#include <FS.h>
 #include <Board.h>
 #include <Web_config.h>
+#include <Pages.h>
 #include <CaptivePortal.h>
 
 /* C-Interface ************************************************************************************/
@@ -28,30 +27,36 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
-static AsyncWebServer server(WebConfig::WEBSERVER_PORT);
-static DNSServer dnsServer;
+static AsyncWebServer server(WebConfig::WEBSERVER_PORT); /*< Instance of AsyncWebServer*/
+static DNSServer dnsServer;                              /*< Instance of DNS Server*/
 
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+/*
+*   Determines the state of the WiFiModeSelect Button to enter AP Mode
+*   @return bool AP Mode. If true, will request the AP mode. If false, requests STA Mode
+*/
 static bool setAPMode();
 
 /* VARIABLES **************************************************************************************/
-
-bool defaultValues = true;
-bool reboot = false;
-IPAddress serverIP;
+IPAddress m_serverIP;
 
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
+/*
+* Registers the handlers on the server, depending on the WiFi Mode chosen
+* @param bool apModeRequested  determines if AP Mode or STA Mode are requested, to choose the correct handlers
+* return success
+*/
 bool ESPServer::init(bool apModeRequested)
 {
     bool success = true;
 
-    if(apModeRequested)
+    if (apModeRequested)
     {
         CaptivePortal::init(server);
     }
@@ -64,15 +69,20 @@ bool ESPServer::init(bool apModeRequested)
 }
 
 /**************************************************************************************************/
+
+/*
+*   Initializing of AsyncWebServer, DNS and WiFi capabilities. 
+*   return success
+*/
 bool ESPServer::begin()
 {
     bool success = true;
-    WebConfig::importConfig();
+    WebConfig::importConfig(); /*< Imports Credentials from Flash Memory */
 
     if (setAPMode())
     {
         WiFi.softAP(WebConfig::getAP_SSID().c_str(), WebConfig::getAP_PASS().c_str());
-        serverIP = WiFi.softAPIP();
+        m_serverIP = WiFi.softAPIP();
 
         ESPServer::init(true);
     }
@@ -93,7 +103,7 @@ bool ESPServer::begin()
         }
         else
         {
-            serverIP = WiFi.localIP();
+            m_serverIP = WiFi.localIP();
         }
 
         ESPServer::init(false);
@@ -101,7 +111,7 @@ bool ESPServer::begin()
 
     dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
 
-    if (!dnsServer.start(WebConfig::DNS_PORT, "*", serverIP))
+    if (!dnsServer.start(WebConfig::DNS_PORT, "*", m_serverIP))
     {
         success = false;
     }
@@ -115,6 +125,10 @@ bool ESPServer::begin()
 }
 
 /**************************************************************************************************/
+
+/*
+*   Disconnects and disables the WebServer
+*/
 bool ESPServer::end()
 {
     server.end();
@@ -124,10 +138,19 @@ bool ESPServer::end()
 }
 
 /**************************************************************************************************/
+/*
+*   Calls next request on DNS Server
+*   return true
+*/
 bool ESPServer::handleNextRequest()
 {
     dnsServer.processNextRequest();
-    return reboot;
+    return true;
+}
+
+AsyncWebServer &ESPServer::getInstance()
+{
+    return server;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -146,11 +169,12 @@ static bool setAPMode()
     uint8_t currentBtnState = LOW;
     uint8_t previousBtnState = LOW;
     uint32_t lastDebounceTime = 0;
+
     const uint8_t DEBOUNCE_DELAY = 50;
     const uint32_t SETUP_TIME = 2000;
-    uint32_t startTime = millis();
+    const uint32_t START_TIME = millis();
 
-    while ((millis() - startTime) < SETUP_TIME)
+    while ((millis() - START_TIME) < SETUP_TIME)
     {
         currentBtnState = Board::wifiModeSelect.read();
 
