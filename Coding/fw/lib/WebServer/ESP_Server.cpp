@@ -27,27 +27,28 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
-static AsyncWebServer server(WebConfig::WEBSERVER_PORT); /*< Instance of AsyncWebServer*/
-static DNSServer dnsServer;                              /*< Instance of DNS Server*/
+static AsyncWebServer server(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
+static DNSServer dnsServer;                              /**< Instance of DNS Server*/
 
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
-/*
+/**
 *   Determines the state of the WiFiModeSelect Button to enter AP Mode
 *   @return bool AP Mode. If true, will request the AP mode. If false, requests STA Mode
 */
 static bool setAPMode();
+static bool restartRequested = false;
 
 /* VARIABLES **************************************************************************************/
-IPAddress m_serverIP;
+IPAddress m_serverIP;       /**< Stores the IP Address of the ESP32 */
 
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
-/*
+/**
 * Registers the handlers on the server, depending on the WiFi Mode chosen
 * @param bool apModeRequested  determines if AP Mode or STA Mode are requested, to choose the correct handlers
 * return success
@@ -70,7 +71,7 @@ bool ESPServer::init(bool apModeRequested)
 
 /**************************************************************************************************/
 
-/*
+/**
 *   Initializing of AsyncWebServer, DNS and WiFi capabilities. 
 *   return success
 */
@@ -126,7 +127,7 @@ bool ESPServer::begin()
 
 /**************************************************************************************************/
 
-/*
+/**
 *   Disconnects and disables the WebServer
 */
 bool ESPServer::end()
@@ -138,14 +139,15 @@ bool ESPServer::end()
 }
 
 /**************************************************************************************************/
-/*
+/**
 *   Calls next request on DNS Server
 *   return true
 */
 bool ESPServer::handleNextRequest()
 {
     dnsServer.processNextRequest();
-    return true;
+    restartRequested = CaptivePortal::isRestartRequested();
+    return restartRequested;
 }
 
 AsyncWebServer &ESPServer::getInstance()

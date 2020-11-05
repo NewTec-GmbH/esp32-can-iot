@@ -24,16 +24,16 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-/*
+/**
 * namespace for Methods in Async Server
 */
 namespace ESPServer
 {
-  bool init(bool apModeRequested);   /*< Registers the handlers on the server, depending on the WiFi Mode chosen */
-  bool begin(void);                  /*< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
-  bool end(void);                    /*< Disconnects and disables the WebServer */
-  bool handleNextRequest(void);      /*< Calls next request on DNS Server */
-  AsyncWebServer &getInstance(void); /*< Returns server's instance */
+  bool init(bool apModeRequested);   /**< Registers the handlers on the server, depending on the WiFi Mode chosen */
+  bool begin(void);                  /**< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
+  bool end(void);                    /**< Disconnects and disables the WebServer */
+  bool handleNextRequest(void);      /**< Calls next request on DNS Server */
+  AsyncWebServer &getInstance(void); /**< Returns server's instance */
 } // namespace ESPServer
 
 /* INLINE FUNCTIONS ***************************************************************************/

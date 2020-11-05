@@ -21,6 +21,7 @@
         "exception": "cpp",
         "new": "cpp",
         "cmath": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "bitset": "cpp"
     }
 }

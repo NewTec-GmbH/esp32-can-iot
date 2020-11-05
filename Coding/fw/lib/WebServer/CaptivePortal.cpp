@@ -26,8 +26,8 @@ extern "C"
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
-static void reqRestart();
-static void credentialsProcessor(String name, String value);
+static void reqRestart();                                    /*< Changes the value of restartRequested to True*/
+static void credentialsProcessor(String name, String value); /*< Processor to save the required credentials */
 
 /**
 * Captive portal request handler.
@@ -62,7 +62,6 @@ public:
 
     /**
     * Handles the request.
-    *
     * @param[in] request   Web request, which to handle.
     */
     void handleRequest(AsyncWebServerRequest *request) override
@@ -71,11 +70,11 @@ public:
         {
             return;
         }
-
+        /** Forces authentication */
         if (!request->authenticate(WebConfig::getWEB_USER().c_str(), WebConfig::getWEB_PASS().c_str()))
-    {
-        return request->requestAuthentication();
-    }
+        {
+            return request->requestAuthentication();
+        }
 
         if (HTTP_POST == request->method())
         {
