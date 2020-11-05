@@ -123,6 +123,8 @@ static bool restartRequested = false;
 
 void CaptivePortal::init(AsyncWebServer &server)
 {
+    server.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
+    server.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
     server.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 
     return;
