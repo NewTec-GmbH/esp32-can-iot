@@ -28,6 +28,7 @@ extern "C"
 /* TYPES ******************************************************************************************/
 static void reqRestart();                                    /*< Changes the value of restartRequested to True*/
 static void credentialsProcessor(String name, String value); /*< Processor to save the required credentials */
+static void handleBody(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
 
 /**
 * Captive portal request handler.
@@ -76,26 +77,82 @@ public:
             return request->requestAuthentication();
         }
 
+        Serial.println("URL: ");
+        Serial.println(request->url());
+        Serial.println("Method: ");
+
+        if (request->method() == 1)
+        {
+            Serial.println("GET");
+        }
+        else if (request->method() == 2)
+        {
+            Serial.println("POST");
+        }
+        else
+        {
+            Serial.println("Other");
+        }
+
+        Serial.println("Content Type: ");
+        Serial.println(request->contentType());
+        Serial.println("Content Length: ");
+        Serial.println(request->contentLength());
+        String temp = request->url();
+        Serial.println(request->urlDecode(temp));
+        Serial.println(temp);
+
         if (HTTP_POST == request->method())
         {
-            int params = request->params();
-            for (int i = 0; i < params; i++)
+            if (request->args() != 0)
             {
-                AsyncWebParameter *p = request->getParam(i);
-                Serial.printf("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
-                credentialsProcessor(p->name(), p->value());
+                request->send(200, "plain/text", "\n POST - With Params \n");
+                Serial.println("SUCCESS");
+
+                int params = request->params();
+                for (int i = 0; i < params; i++)
+                {
+                    AsyncWebParameter *p = request->getParam(i);
+
+                    Serial.printf("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
+                }
             }
-            request->send(200, "plain/text", "Ok.");
-            reqRestart();
+            else
+            {
+                request->send(200, "plain/text", "\n POST - No params \n");
+                Serial.println("POST - No Params");
+            }
+            const String ssid = request->arg("ssid");
+            Serial.println(ssid);
         }
         else if (HTTP_GET == request->method())
         {
             request->send(SPIFFS, "/STACredentials.html", String(), false, captivePageProcessor);
+            if (request->args() != 0)
+            {
+                request->send(200, "plain/text", "\n GET - With Params \n");
+                Serial.println("Get-With Params");
+            }
+            else
+            {
+                request->send(200, "plain/text", "\n GET - No params \n");
+                Serial.println("GET - No Params");
+            }
+            const String ssid = request->arg("ssid");
+            Serial.println(ssid);
         }
         else
         {
-            request->send(400, "plain/text", "Error. Bad Request");
+            request->send(400, "plain/text", "\n Error. Bad Request");
         }
+
+        Serial.println();
+        Serial.println();
+    }
+
+    bool isRequestHandlerTrivial() override
+    {
+        return false;
     }
 
 private:
@@ -122,11 +179,7 @@ static bool restartRequested = false;
 
 void CaptivePortal::init(AsyncWebServer &server)
 {
-    server.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
-    server.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
     server.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
-
-    return;
 }
 
 bool CaptivePortal::isRestartRequested()
@@ -154,5 +207,21 @@ static void credentialsProcessor(String name, String value)
         name == "Server_Password")
     {
         WebConfig::saveConfig(name, value);
+    }
+}
+
+void handleBody(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
+{
+    if (!index)
+    {
+        Serial.printf("BodyStart: %u B\n", total);
+    }
+    for (size_t i = 0; i < len; i++)
+    {
+        Serial.write(data[i]);
+    }
+    if (index + len == total)
+    {
+        Serial.printf("BodyEnd: %u B\n", total);
     }
 }

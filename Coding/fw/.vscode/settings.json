@@ -23,5 +23,6 @@
         "cmath": "cpp",
         "functional": "cpp",
         "bitset": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }
