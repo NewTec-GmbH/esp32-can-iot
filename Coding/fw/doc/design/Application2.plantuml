@@ -1,0 +1,37 @@
+@startuml
+Title Application Diagram (WebServer)
+
+Class Application
+
+package WebServer <<node>>
+{
+    Class WebConfig
+    Class Pages
+    Class CaptivePortal
+
+    Application ..|> ESPServer : <<use>>
+    ESPServer ..> WebConfig : <<use>>
+    ESPServer ..> Pages : <<use>>
+    ESPServer ..> CaptivePortal : <<use>>
+}
+
+package Espressif_ESP32_Library{
+    Class Settings{
+
+        -Preferences flashMemory
+    }
+    Class SPIFFS
+
+    WebConfig ..|> Settings : <<use>>
+    Pages ..|> SPIFFS : <<use>>
+    CaptivePortal ..|> SPIFFS : <<use>>
+}
+
+package ESPAsyncWebServer <<folder>>
+{
+    Class AsyncWebServer
+}
+
+WebServer ..|> ESPAsyncWebServer : <<use>>
+
+@enduml
