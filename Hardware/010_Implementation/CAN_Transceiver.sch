@@ -21,10 +21,10 @@ Wire Wire Line
 Wire Wire Line
 	8525 3075 8625 3075
 $Comp
-L power:GND #PWR03
+L power:GND #PWR06
 U 1 1 5F9161C7
 P 5075 4375
-F 0 "#PWR03" H 5075 4125 50  0001 C CNN
+F 0 "#PWR06" H 5075 4125 50  0001 C CNN
 F 1 "GND" H 5080 4202 50  0000 C CNN
 F 2 "" H 5075 4375 50  0001 C CNN
 F 3 "" H 5075 4375 50  0001 C CNN
@@ -32,10 +32,10 @@ F 3 "" H 5075 4375 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3.3V #PWR05
+L power:+3.3V #PWR08
 U 1 1 5F913497
 P 8750 3600
-F 0 "#PWR05" H 8750 3450 50  0001 C CNN
+F 0 "#PWR08" H 8750 3450 50  0001 C CNN
 F 1 "+3.3V" H 8765 3773 50  0000 C CNN
 F 2 "" H 8750 3600 50  0001 C CNN
 F 3 "" H 8750 3600 50  0001 C CNN
@@ -43,10 +43,10 @@ F 3 "" H 8750 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR04
+L power:GND #PWR07
 U 1 1 5F91316D
 P 8750 2775
-F 0 "#PWR04" H 8750 2525 50  0001 C CNN
+F 0 "#PWR07" H 8750 2525 50  0001 C CNN
 F 1 "GND" H 8755 2602 50  0000 C CNN
 F 2 "" H 8750 2775 50  0001 C CNN
 F 3 "" H 8750 2775 50  0001 C CNN
@@ -71,74 +71,47 @@ Wire Wire Line
 	3925 2525 4675 2525
 Connection ~ 3925 2525
 Wire Wire Line
-	3925 2525 3925 3500
-Wire Wire Line
-	4675 3100 4875 3100
-Wire Wire Line
-	4675 2525 4675 3100
+	3925 2525 3925 3600
 Wire Wire Line
 	4450 3450 4675 3450
 Connection ~ 4450 3450
 Wire Wire Line
-	4450 3500 4450 3450
+	4450 3600 4450 3450
 Wire Wire Line
-	4675 3300 4875 3300
-Wire Wire Line
-	4675 3450 4675 3300
-Wire Wire Line
-	4450 3800 4450 4050
+	4450 3900 4450 4050
 Connection ~ 3925 4050
 Wire Wire Line
 	3925 4050 3700 4050
 Wire Wire Line
-	3925 3800 3925 4050
+	3925 3900 3925 4050
 $Comp
-L Device:C C3
+L Device:C C4
 U 1 1 5F5F1385
-P 3925 3650
-F 0 "C3" H 4040 3696 50  0000 L CNN
-F 1 "100p" H 4040 3605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 3963 3500 50  0001 C CNN
-F 3 "~" H 3925 3650 50  0001 C CNN
-	1    3925 3650
+P 3925 3750
+F 0 "C4" H 4040 3796 50  0000 L CNN
+F 1 "100p" H 4040 3705 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 3963 3600 50  0001 C CNN
+F 3 "~" H 3925 3750 50  0001 C CNN
+	1    3925 3750
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C4
+L Device:C C5
 U 1 1 5F5F137F
-P 4450 3650
-F 0 "C4" H 4565 3696 50  0000 L CNN
-F 1 "100p" H 4565 3605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 4488 3500 50  0001 C CNN
-F 3 "~" H 4450 3650 50  0001 C CNN
-	1    4450 3650
+P 4450 3750
+F 0 "C5" H 4565 3796 50  0000 L CNN
+F 1 "100p" H 4565 3705 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 4488 3600 50  0001 C CNN
+F 3 "~" H 4450 3750 50  0001 C CNN
+	1    4450 3750
 	1    0    0    -1  
 $EndComp
 Connection ~ 5750 3800
 Wire Wire Line
 	5525 3800 5750 3800
-Wire Wire Line
-	5525 3300 5525 3800
-Wire Wire Line
-	5275 3300 5525 3300
 Connection ~ 5750 2650
 Wire Wire Line
 	5525 2650 5750 2650
-Wire Wire Line
-	5525 3100 5525 2650
-Wire Wire Line
-	5275 3100 5525 3100
-$Comp
-L Device:L_Core_Ferrite_Coupled L1
-U 1 1 5F5F1371
-P 5075 3200
-F 0 "L1" H 5075 2875 50  0000 C CNN
-F 1 "L_Core_Ferrite_Coupled" H 5075 2966 50  0000 C CNN
-F 2 "Transformer_THT:Transformer_Toroid_Horizontal_D9.0mm_Amidon-T30" H 5075 3200 50  0001 C CNN
-F 3 "~" H 5075 3200 50  0001 C CNN
-	1    5075 3200
-	-1   0    0    -1  
-$EndComp
 Connection ~ 6200 3800
 Wire Wire Line
 	5750 3800 6200 3800
@@ -150,12 +123,12 @@ Wire Wire Line
 Wire Wire Line
 	5750 3050 5750 2650
 $Comp
-L Device:C C5
+L Device:C C6
 U 1 1 5F5F1365
 P 5750 3200
-F 0 "C5" H 5865 3246 50  0000 L CNN
+F 0 "C6" H 5865 3246 50  0000 L CNN
 F 1 "100p" H 5865 3155 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 5788 3050 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 5788 3050 50  0001 C CNN
 F 3 "~" H 5750 3200 50  0001 C CNN
 	1    5750 3200
 	1    0    0    -1  
@@ -188,21 +161,21 @@ Wire Wire Line
 Wire Wire Line
 	6200 3675 6200 3800
 $Comp
-L Device:C C6
+L Device:C C7
 U 1 1 5F5F1351
 P 6700 3800
-F 0 "C6" H 6815 3846 50  0000 L CNN
+F 0 "C7" H 6815 3846 50  0000 L CNN
 F 1 "4n7" H 6815 3755 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 6738 3650 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 6738 3650 50  0001 C CNN
 F 3 "~" H 6700 3800 50  0001 C CNN
 	1    6700 3800
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R4
+L Device:R R7
 U 1 1 5F5F134B
 P 6200 3525
-F 0 "R4" H 6270 3571 50  0000 L CNN
+F 0 "R7" H 6270 3571 50  0000 L CNN
 F 1 "62" H 6270 3480 50  0000 L CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 6130 3525 50  0001 C CNN
 F 3 "~" H 6200 3525 50  0001 C CNN
@@ -210,10 +183,10 @@ F 3 "~" H 6200 3525 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R3
+L Device:R R6
 U 1 1 5F5F1345
 P 6200 2900
-F 0 "R3" H 6270 2946 50  0000 L CNN
+F 0 "R6" H 6270 2946 50  0000 L CNN
 F 1 "62" H 6270 2855 50  0000 L CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 6130 2900 50  0001 C CNN
 F 3 "~" H 6200 2900 50  0001 C CNN
@@ -282,4 +255,77 @@ Wire Wire Line
 Connection ~ 2900 2525
 Wire Wire Line
 	2900 2525 3925 2525
+$Comp
+L SamacSys_Parts:744242220 L2
+U 1 1 5FA954C1
+P 5500 3150
+F 0 "L2" H 5900 3415 50  0000 C CNN
+F 1 "744242220" H 5900 3324 50  0000 C CNN
+F 2 "SamacSys_Parts:WE-SLM77" H 6150 3250 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/1/744242220.pdf" H 6150 3150 50  0001 L CNN
+F 4 "Wurth WE-SLM Series Wire-wound SMD Inductor with a Ferrite Core, 22 uH +50/-30 300mA Idc" H 6150 3050 50  0001 L CNN "Description"
+F 5 "" H 6150 2950 50  0001 L CNN "Height"
+F 6 "710-744242220" H 6150 2850 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=710-744242220" H 6150 2750 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Wurth Elektronik" H 6150 2650 50  0001 L CNN "Manufacturer_Name"
+F 9 "744242220" H 6150 2550 50  0001 L CNN "Manufacturer_Part_Number"
+	1    5500 3150
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	5500 3150 5525 3150
+Wire Wire Line
+	5500 3250 5525 3250
+Wire Wire Line
+	5525 3250 5525 3550
+Wire Wire Line
+	4700 3250 4675 3250
+Wire Wire Line
+	4675 3250 4675 3450
+Wire Wire Line
+	4700 3150 4675 3150
+Wire Wire Line
+	4675 2525 4675 2650
+$Comp
+L Device:R R4
+U 1 1 5FB22CE5
+P 5100 2650
+F 0 "R4" V 4893 2650 50  0000 C CNN
+F 1 "0" V 4984 2650 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 5030 2650 50  0001 C CNN
+F 3 "~" H 5100 2650 50  0001 C CNN
+	1    5100 2650
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R5
+U 1 1 5FB23167
+P 5100 3550
+F 0 "R5" V 4893 3550 50  0000 C CNN
+F 1 "0" V 4984 3550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 5030 3550 50  0001 C CNN
+F 3 "~" H 5100 3550 50  0001 C CNN
+	1    5100 3550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4950 2650 4675 2650
+Wire Wire Line
+	5250 2650 5525 2650
+Wire Wire Line
+	5250 3550 5525 3550
+Connection ~ 5525 3550
+Wire Wire Line
+	5525 3550 5525 3800
+Wire Wire Line
+	4950 3550 4675 3550
+Wire Wire Line
+	4675 3550 4675 3450
+Connection ~ 4675 3450
+Connection ~ 4675 2650
+Connection ~ 5525 2650
+Wire Wire Line
+	5525 2650 5525 3150
+Wire Wire Line
+	4675 2650 4675 3150
 $EndSCHEMATC
