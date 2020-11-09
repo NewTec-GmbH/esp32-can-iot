@@ -96,14 +96,6 @@ public:
         else if (HTTP_GET == request->method())
         {
             request->send(SPIFFS, "/STACredentials.html", String(), false, captivePageProcessor);
-            if (request->args() != 0)
-            {
-                request->send(200, "plain/text", "\n GET - With Params \n");
-            }
-            else
-            {
-                request->send(200, "plain/text", "\n GET - No params \n");
-            }
         }
         else
         {

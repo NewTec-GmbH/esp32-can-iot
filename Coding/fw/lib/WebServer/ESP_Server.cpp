@@ -47,7 +47,7 @@ static bool setAPMode();
 static bool restartRequested = false;
 
 /* VARIABLES **************************************************************************************/
-IPAddress m_serverIP;       /**< Stores the IP Address of the ESP32 */
+IPAddress m_serverIP; /**< Stores the IP Address of the ESP32 */
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -86,32 +86,50 @@ bool ESPServer::begin()
 
     if (setAPMode())
     {
-        WiFi.softAP(WebConfig::getAP_SSID().c_str(), WebConfig::getAP_PASS().c_str());
+        if (!WiFi.softAP(WebConfig::getAP_SSID().c_str(), WebConfig::getAP_PASS().c_str()))
+        {
+            success = false;
+        }
+
         m_serverIP = WiFi.softAPIP();
 
-        ESPServer::init(true);
+        if (!ESPServer::init(true))
+        {
+            success = false;
+        }
     }
     else
     {
-        WiFi.mode(WIFI_STA);
-        WiFi.begin(WebConfig::getSTA_SSID().c_str(), WebConfig::getSTA_PASS().c_str());
-
-        unsigned long startAttempTime = millis();
-
-        while (WiFi.status() != WL_CONNECTED && (millis() - startAttempTime) < WebConfig::WIFI_TIMEOUT_MS)
+        if (!WiFi.mode(WIFI_STA))
         {
+            success = false;
         }
-
-        if (WiFi.status() != WL_CONNECTED)
+        else if (WiFi.begin(WebConfig::getSTA_SSID().c_str(), WebConfig::getSTA_PASS().c_str()) == WL_CONNECT_FAILED)
         {
             success = false;
         }
         else
         {
-            m_serverIP = WiFi.localIP();
+            unsigned long startAttempTime = millis();
+
+            while (WiFi.status() != WL_CONNECTED && (millis() - startAttempTime) < WebConfig::WIFI_TIMEOUT_MS)
+            {
+            }
+
+            if (WiFi.status() != WL_CONNECTED)
+            {
+                success = false;
+            }
+            else
+            {
+                m_serverIP = WiFi.localIP();
+            }
         }
 
-        ESPServer::init(false);
+        if (!ESPServer::init(false))
+        {
+            success = false;
+        }
     }
 
     dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
