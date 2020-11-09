@@ -28,7 +28,6 @@ extern "C"
 /* TYPES ******************************************************************************************/
 static void reqRestart();                                    /*< Changes the value of restartRequested to True*/
 static void credentialsProcessor(String name, String value); /*< Processor to save the required credentials */
-static void handleBody(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
 
 /**
 * Captive portal request handler.
@@ -77,53 +76,22 @@ public:
             return request->requestAuthentication();
         }
 
-        Serial.println("URL: ");
-        Serial.println(request->url());
-        Serial.println("Method: ");
-
-        if (request->method() == 1)
-        {
-            Serial.println("GET");
-        }
-        else if (request->method() == 2)
-        {
-            Serial.println("POST");
-        }
-        else
-        {
-            Serial.println("Other");
-        }
-
-        Serial.println("Content Type: ");
-        Serial.println(request->contentType());
-        Serial.println("Content Length: ");
-        Serial.println(request->contentLength());
-        String temp = request->url();
-        Serial.println(request->urlDecode(temp));
-        Serial.println(temp);
-
         if (HTTP_POST == request->method())
         {
             if (request->args() != 0)
             {
                 request->send(200, "plain/text", "\n POST - With Params \n");
-                Serial.println("SUCCESS");
 
                 int params = request->params();
                 for (int i = 0; i < params; i++)
                 {
                     AsyncWebParameter *p = request->getParam(i);
-
-                    Serial.printf("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
                 }
             }
             else
             {
                 request->send(200, "plain/text", "\n POST - No params \n");
-                Serial.println("POST - No Params");
             }
-            const String ssid = request->arg("ssid");
-            Serial.println(ssid);
         }
         else if (HTTP_GET == request->method())
         {
@@ -131,23 +99,16 @@ public:
             if (request->args() != 0)
             {
                 request->send(200, "plain/text", "\n GET - With Params \n");
-                Serial.println("Get-With Params");
             }
             else
             {
                 request->send(200, "plain/text", "\n GET - No params \n");
-                Serial.println("GET - No Params");
             }
-            const String ssid = request->arg("ssid");
-            Serial.println(ssid);
         }
         else
         {
             request->send(400, "plain/text", "\n Error. Bad Request");
         }
-
-        Serial.println();
-        Serial.println();
     }
 
     bool isRequestHandlerTrivial() override
@@ -172,16 +133,23 @@ private:
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-static CaptiveRequestHandler CaptivePortalReqHandler;
-static bool restartRequested = false;
+static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler */
+static bool restartRequested = false; /**<  Variable to call Restart */
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
-
+/**
+ * @brief Links the Captive Portal handler to the Server
+ * 
+ * @param server AsyncWebserver Instance to initialize to
+ */
 void CaptivePortal::init(AsyncWebServer &server)
 {
     server.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 }
 
+/**
+ * @brief return true if restart has been requested 
+ */
 bool CaptivePortal::isRestartRequested()
 {
     return restartRequested;
@@ -197,31 +165,17 @@ static void reqRestart()
     restartRequested = true;
 }
 
+/**
+ * @brief Saves the Credentials given by the user to the Flash Memory
+ * 
+ * @param name Key to store the Data
+ * @param value Data to be stored
+ */
 static void credentialsProcessor(String name, String value)
 {
     if (name == "STA_SSID" ||
-        name == "STA_Password" ||
-        name == "AP_SSID" ||
-        name == "AP_Password" ||
-        name == "Server_User" ||
-        name == "Server_Password")
+        name == "STA_Password")
     {
         WebConfig::saveConfig(name, value);
-    }
-}
-
-void handleBody(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total)
-{
-    if (!index)
-    {
-        Serial.printf("BodyStart: %u B\n", total);
-    }
-    for (size_t i = 0; i < len; i++)
-    {
-        Serial.write(data[i]);
-    }
-    if (index + len == total)
-    {
-        Serial.printf("BodyEnd: %u B\n", total);
     }
 }

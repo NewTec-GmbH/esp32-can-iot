@@ -40,6 +40,10 @@ static DNSServer dnsServer;                              /**< Instance of DNS Se
 *   @return bool AP Mode. If true, will request the AP mode. If false, requests STA Mode
 */
 static bool setAPMode();
+
+/**
+ *  Variable to call Restart
+ */
 static bool restartRequested = false;
 
 /* VARIABLES **************************************************************************************/
