@@ -34,8 +34,6 @@ F 3 "~" H 6850 3025 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6850 2825 7025 2825
-Text HLabel 7950 2825 2    50   Input ~ 0
-Ext.5V
 $Comp
 L power:GND #PWR02
 U 1 1 5FA1043A
@@ -159,4 +157,15 @@ Wire Wire Line
 Connection ~ 4850 4150
 Wire Wire Line
 	4850 4150 4650 4150
+$Comp
+L power:+5V #PWR?
+U 1 1 5FA170AE
+P 7950 2825
+F 0 "#PWR?" H 7950 2675 50  0001 C CNN
+F 1 "+5V" H 7965 2998 50  0000 C CNN
+F 2 "" H 7950 2825 50  0001 C CNN
+F 3 "" H 7950 2825 50  0001 C CNN
+	1    7950 2825
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

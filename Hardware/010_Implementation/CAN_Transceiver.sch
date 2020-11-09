@@ -61,33 +61,12 @@ Connection ~ 5075 4050
 Wire Wire Line
 	5075 4375 5075 4050
 Wire Wire Line
-	2800 2525 3400 2525
-Wire Wire Line
-	2800 3450 3400 3450
-Connection ~ 3400 3450
-Wire Wire Line
 	3925 4050 4450 4050
 Wire Wire Line
 	4450 4050 5075 4050
 Connection ~ 4450 4050
 Wire Wire Line
-	3400 3025 3400 3100
-Connection ~ 3400 3025
-Wire Wire Line
 	3700 3025 3700 4050
-Wire Wire Line
-	3400 3025 3700 3025
-Wire Wire Line
-	3400 3450 4450 3450
-Wire Wire Line
-	3400 3400 3400 3450
-Wire Wire Line
-	3400 2525 3925 2525
-Connection ~ 3400 2525
-Wire Wire Line
-	3400 2650 3400 2525
-Wire Wire Line
-	3400 2950 3400 3025
 Wire Wire Line
 	3925 2525 4675 2525
 Connection ~ 3925 2525
@@ -106,28 +85,6 @@ Wire Wire Line
 	4675 3300 4875 3300
 Wire Wire Line
 	4675 3450 4675 3300
-$Comp
-L Diode:SD05_SOD323 D2
-U 1 1 5F5F1395
-P 3400 3250
-F 0 "D2" V 3354 3329 50  0000 L CNN
-F 1 "SD05_SOD323" V 3445 3329 50  0000 L CNN
-F 2 "Diode_SMD:D_SOD-323" H 3400 3050 50  0001 C CNN
-F 3 "https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_arrays/littelfuse_tvs_diode_array_sd_c_datasheet.pdf.pdf" H 3400 3250 50  0001 C CNN
-	1    3400 3250
-	0    1    1    0   
-$EndComp
-$Comp
-L Diode:SD05_SOD323 D1
-U 1 1 5F5F138F
-P 3400 2800
-F 0 "D1" V 3446 2721 50  0000 R CNN
-F 1 "SD05_SOD323" V 3355 2721 50  0000 R CNN
-F 2 "Diode_SMD:D_SOD-323" H 3400 2600 50  0001 C CNN
-F 3 "https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_arrays/littelfuse_tvs_diode_array_sd_c_datasheet.pdf.pdf" H 3400 2800 50  0001 C CNN
-	1    3400 2800
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	4450 3800 4450 4050
 Connection ~ 3925 4050
@@ -299,4 +256,30 @@ Text HLabel 2800 2525 0    50   BiDi ~ 0
 BUS_H
 Text HLabel 2800 3450 0    50   BiDi ~ 0
 BUS_L
+$Comp
+L Board:PESD1CAN D1
+U 1 1 5FA9220A
+P 3100 3225
+F 0 "D1" H 3300 3792 50  0000 C CNN
+F 1 "PESD1CAN" H 3300 3701 50  0000 C CNN
+F 2 "Board:SOT23-3" H 3100 3225 50  0001 L BNN
+F 3 "" H 3100 3225 50  0001 L BNN
+F 4 "DIO-12501" H 3100 3225 50  0001 L BNN "PROD_ID"
+	1    3100 3225
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2800 2525 2900 2525
+Wire Wire Line
+	2800 3450 2900 3450
+Wire Wire Line
+	2900 3125 2900 3450
+Connection ~ 2900 3450
+Wire Wire Line
+	2900 3450 4450 3450
+Wire Wire Line
+	2900 2925 2900 2525
+Connection ~ 2900 2525
+Wire Wire Line
+	2900 2525 3925 2525
 $EndSCHEMATC

@@ -21,8 +21,8 @@
       )
     )
     (boundary
-      (path pcb 0  287432 -161750  133126 -161750  133126 -112096  287432 -112096
-            287432 -161750)
+      (path pcb 0  286592 -167507  133126 -167507  133126 -112310  286592 -112310
+            286592 -167507)
     )
     (via "Via[0-1]_800:400_um")
     (rule
@@ -35,78 +35,77 @@
   (placement
     (component Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder
       (place R15 184023 -134493 front 180 (PN 150))
-      (place R14 203708 -144780 front 0 (PN 430))
-      (place R13 175768 -140716 front 0 (PN 500))
-      (place R5 218440 -140970 front 0 (PN 2.2k))
-      (place R2 218694 -124206 front 180 (PN 100))
-      (place R1 218313 -137541 front 0 (PN 1k))
+      (place R14 190246 -138811 front 0 (PN 430))
+      (place R13 178689 -128143 front 180 (PN 500))
+      (place R5 204597 -140834 front 90 (PN 2.2k))
+      (place R2 190110 -145669 front 180 (PN 100))
+      (place R1 190373 -142231 front 270 (PN 1k))
     )
     (component "Package_TO_SOT_SMD:SOT-23"
       (place Q1 183769 -129286 front 0 (PN BC817))
     )
     (component "Board:RELAY_G5V-2-DC5"
-      (place K2 162911 -126432 front 270 (PN "G5V-2-DC5"))
-      (place K1 175341 -126432 front 270 (PN "G5V-2-DC5"))
+      (place K2 172877 -146999 front 90 (PN "G5V-2-DC5"))
+      (place K1 160447 -146999 front 90 (PN "G5V-2-DC5"))
     )
     (component "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal"
-      (place D8 184023 -117475 front 270 (PN 1N4148))
+      (place D8 173736 -127000 front 270 (PN 1N4148))
     )
     (component LED_THT:LED_D3.0mm
-      (place D7 183261 -139192 front 0 (PN RED))
-      (place D6 268097 -118237 front 90 (PN GREEN))
-      (place D5 274447 -118237 front 90 (PN GREEN))
-      (place D4 280797 -118237 front 90 (PN RED))
+      (place D7 180340 -133096 front 180 (PN RED))
+      (place D6 213614 -131953 front 270 (PN GREEN))
+      (place D5 207264 -131953 front 270 (PN GREEN))
+      (place D4 200914 -131953 front 270 (PN RED))
     )
     (component Board:DIOM5336X265N
-      (place D3 194817 -140462 front 180 (PN SS24))
+      (place D3 185293 -140971 front 90 (PN SS24))
     )
     (component Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder
-      (place C1 218948 -130302 front 270 (PN 10n))
-      (place C7 223393 -156398 front 90 (PN 100n))
-      (place C6 216469 -158115 front 0 (PN 4n7))
-      (place C5 201295 -155956 front 270 (PN 100p))
-      (place C4 165608 -156276 front 90 (PN 100p))
-      (place C3 173482 -156403 front 90 (PN 100p))
-      (place C2 210500 -140081 front 0 (PN 100n))
+      (place C1 196154 -143891 front 0 (PN 10n))
+      (place C7 209743 -139954 front 180 (PN 100n))
+      (place C6 210439 -146878 front 90 (PN 4n7))
+      (place C5 201549 -154493 front 270 (PN 100p))
+      (place C4 180594 -146685 front 90 (PN 100p))
+      (place C3 180721 -153863 front 90 (PN 100p))
+      (place C2 196154 -139573 front 0 (PN 100n))
     )
     (component Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder::1
-      (place R12 268097 -123072 front 270 (PN 500))
-      (place R11 274447 -123054 front 270 (PN 500))
-      (place R10 280797 -123063 front 270 (PN 500))
-      (place R9 203971 -135382 front 180 (PN 100))
-      (place R8 203971 -132080 front 180 (PN 100))
-      (place R7 203971 -128270 front 180 (PN 100))
-      (place R6 203962 -124714 front 180 (PN 100))
-      (place R4 208797 -158115 front 180 (PN 62))
-      (place R3 208797 -153797 front 0 (PN 62))
+      (place R12 213614 -127118 front 90 (PN 500))
+      (place R11 207264 -127136 front 90 (PN 500))
+      (place R10 200914 -127127 front 90 (PN 500))
+      (place R9 194573 -129032 front 180 (PN 100))
+      (place R8 194573 -131191 front 180 (PN 100))
+      (place R7 194573 -133477 front 180 (PN 100))
+      (place R6 194573 -135636 front 180 (PN 100))
+      (place R4 208670 -156718 front 180 (PN 62))
+      (place R3 208670 -152400 front 0 (PN 62))
     )
     (component "Board:P-2716-106"
-      (place X1 253365 -129540 back 270 (PN "2716-106"))
+      (place X1 244475 -143256 back 270 (PN "2716-106"))
     )
     (component "Board:MODULE_ESP32-DEVKITC-32D"
-      (place U2 254508 -146939 front 270 (PN "ESP32-DEVKITC-32D"))
+      (place U2 257354 -136398 front 270 (PN "ESP32-DEVKITC-32D"))
     )
     (component "Board:DPAK254P1394X457-4N"
-      (place U1 192532 -128397 front 0 (PN "LT1086-5.0"))
+      (place U1 162919 -130429 front 90 (PN "LT1086-5.0"))
     )
     (component Button_Switch_SMD:SW_Push_1P1T_NO_CK_KSC7xxJ
-      (place SW1 258953 -117094 front 180 (PN SW_Push))
+      (place SW1 222758 -133096 front 0 (PN SW_Push))
     )
     (component "Transformer_THT:Transformer_Toroid_Horizontal_D9.0mm_Amidon-T30"
-      (place L1 194310 -151638 front 180 (PN L_Core_Ferrite_Coupled))
+      (place L1 196596 -149733 front 180 (PN L_Core_Ferrite_Coupled))
     )
     (component "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm"
       (place J2 149733 -147447 front 270 (PN Conn_01x09_Female))
     )
     (component Connector_PinHeader_1.00mm:PinHeader_2x05_P1.00mm_Vertical
-      (place J1 213233 -131826 front 180 (PN Conn_02x05_Odd_Even))
+      (place J1 188976 -129159 front 0 (PN Conn_02x05_Odd_Even))
     )
     (component Board:SOIC127P600X175
-      (place IC1 216916 -147828 front 180 (PN "SN65HVD233-HT"))
+      (place IC1 203835 -147193 front 270 (PN "SN65HVD233-HT"))
     )
-    (component "Diode_SMD:D_SOD-323"
-      (place D2 160274 -156083 front 270 (PN SD05_SOD323))
-      (place D1 178181 -156337 front 270 (PN SD05_SOD323))
+    (component "Board:SOT23-3"
+      (place D1 180340 -138684 front -0 (PN PESD1CAN))
     )
   )
   (library
@@ -2535,26 +2534,18 @@
       (pin Rect[T]Pad_1981.2x558.8_um 2 -2463.8 635)
       (pin Rect[T]Pad_1981.2x558.8_um 1 -2463.8 1905)
     )
-    (image "Diode_SMD:D_SOD-323"
-      (outline (path signal 120  -1500 850  -1500 -850))
-      (outline (path signal 100  200 0  450 0))
-      (outline (path signal 100  200 -350  -300 0))
-      (outline (path signal 100  200 350  200 -350))
-      (outline (path signal 100  -300 0  200 350))
-      (outline (path signal 100  -300 0  -500 0))
-      (outline (path signal 100  -300 350  -300 -350))
-      (outline (path signal 100  -900 -700  -900 700))
-      (outline (path signal 100  900 -700  -900 -700))
-      (outline (path signal 100  900 700  900 -700))
-      (outline (path signal 100  -900 700  900 700))
-      (outline (path signal 50  -1600 950  1600 950))
-      (outline (path signal 50  1600 950  1600 -950))
-      (outline (path signal 50  -1600 -950  1600 -950))
-      (outline (path signal 50  -1600 950  -1600 -950))
-      (outline (path signal 120  -1500 -850  1050 -850))
-      (outline (path signal 120  -1500 850  1050 850))
-      (pin Rect[T]Pad_600x450_um 2 1050 0)
-      (pin Rect[T]Pad_600x450_um 1 -1050 0)
+    (image "Board:SOT23-3"
+      (outline (path signal 203.2  1400 700  1400 -100))
+      (outline (path signal 203.2  800 700  1400 700))
+      (outline (path signal 203.2  -1400 700  -1400 -100))
+      (outline (path signal 203.2  -800 700  -1400 700))
+      (outline (path signal 152.4  -1422.4 660.4  1422.4 660.4))
+      (outline (path signal 152.4  -1422.4 -660.4  -1422.4 660.4))
+      (outline (path signal 152.4  1422.4 -660.4  -1422.4 -660.4))
+      (outline (path signal 152.4  1422.4 660.4  1422.4 -660.4))
+      (pin Rect[T]Pad_800x900_um 3 0 1100)
+      (pin Rect[T]Pad_800x900_um 2 950 -1000)
+      (pin Rect[T]Pad_800x900_um 1 -950 -1000)
     )
     (padstack Round[A]Pad_1508_um
       (shape (circle F.Cu 1508))
@@ -2637,8 +2628,8 @@
       (shape (rect F.Cu -1400 -500 1400 500))
       (attach off)
     )
-    (padstack Rect[T]Pad_600x450_um
-      (shape (rect F.Cu -300 -225 300 225))
+    (padstack Rect[T]Pad_800x900_um
+      (shape (rect F.Cu -400 -450 400 450))
       (attach off)
     )
     (padstack Rect[A]Pad_850x850_um
@@ -2691,8 +2682,8 @@
   (network
     (net GND
       (pins R15-2 R2-2 Q1-2 K1-13 K1-4 K1-11 C1-2 R12-2 R11-2 R10-2 X1-L5.2 U2-14
-        U2-20 U2-26 U1-1 SW1-1 SW1-1@1 J1-9 J1-7 J1-5 J1-3 IC1-8 IC1-5 IC1-2 D2-1
-        D1-1 C7-2 C6-2 C4-2 C3-2 C2-2)
+        U2-20 U2-26 U1-1 SW1-1 SW1-1@1 J1-9 J1-7 J1-5 J1-3 IC1-8 IC1-5 IC1-2 C7-2
+        C6-2 C4-2 C3-2 C2-2 D1-3)
     )
     (net "Net-(C5-Pad1)"
       (pins R3-1 L1-1 IC1-7 C5-1)
@@ -2728,10 +2719,10 @@
       (pins R9-2 U2-12)
     )
     (net /CAN_Transceiver/BUS_H
-      (pins K2-13 L1-2 D1-2 C3-1)
+      (pins K2-13 L1-2 C3-1 D1-1)
     )
     (net /CAN_Transceiver/BUS_L
-      (pins K2-4 L1-4 D2-2 C4-1)
+      (pins K2-4 L1-4 C4-1 D1-2)
     )
     (net /MCU/Indicator_Error
       (pins U2-34 D4-2)
@@ -2781,9 +2772,6 @@
     (net "Net-(D3-PadC)"
       (pins D3-C U2-19)
     )
-    (net /MCU/Ext.5V
-      (pins D3-A U1-2)
-    )
     (net "Net-(D6-Pad1)"
       (pins R12-1 D6-1)
     )
@@ -2792,9 +2780,6 @@
     )
     (net "Net-(D8-Pad2)"
       (pins Q1-3 K2-1 K1-1 D8-2)
-    )
-    (net "Net-(D8-Pad1)"
-      (pins K2-16 K1-16 D8-1)
     )
     (net /Connector/Pin_7
       (pins K2-9 J2-7)
@@ -2817,26 +2802,28 @@
     (net "/Connector/OBD-CAN_Switch"
       (pins R14-2 U2-7)
     )
-    (class kicad_default "" +3V3 /CAN_Transceiver/BUS_H /CAN_Transceiver/BUS_L
-      /CAN_Transceiver/CAN_Rx /CAN_Transceiver/CAN_Tx /Connector/CAN_GND /Connector/CAN_Mode
-      /Connector/EN_CAN "/Connector/OBD-CAN_Switch" /Connector/OBD_GND /Connector/OBD_VDD
-      /Connector/Pin_2 /Connector/Pin_3 /Connector/Pin_5 /Connector/Pin_7
-      /MCU/Ext.5V /MCU/GPIO_1 /MCU/GPIO_2 /MCU/GPIO_3 /MCU/GPIO_4 /MCU/Indicator_AP_Mode
-      /MCU/Indicator_Error /MCU/Indicator_STA_Mode /MCU/MTCK /MCU/MTDI /MCU/MTDO
-      /MCU/MTMS /MCU/OBD_Voltage_Check /MCU/WiFi_Mode GND "Net-(C1-Pad1)"
-      "Net-(C4-Pad1)" "Net-(C4-Pad2)" "Net-(C5-Pad1)" "Net-(C5-Pad2)" "Net-(C6-Pad1)"
-      "Net-(D3-Pad1)" "Net-(D3-PadC)" "Net-(D4-Pad1)" "Net-(D5-Pad1)" "Net-(D6-Pad1)"
-      "Net-(D7-Pad1)" "Net-(D8-Pad1)" "Net-(D8-Pad2)" "Net-(J1-Pad10)" "Net-(J1-Pad2)"
-      "Net-(J1-Pad4)" "Net-(J1-Pad6)" "Net-(J1-Pad8)" "Net-(J2-Pad1)" "Net-(J2-Pad4)"
-      "Net-(J2-Pad6)" "Net-(J2-Pad8)" "Net-(Q1-Pad1)" "Net-(U2-Pad16)" "Net-(U2-Pad17)"
-      "Net-(U2-Pad18)" "Net-(U2-Pad2)" "Net-(U2-Pad21)" "Net-(U2-Pad22)" "Net-(U2-Pad23)"
-      "Net-(U2-Pad24)" "Net-(U2-Pad3)" "Net-(U2-Pad30)" "Net-(U2-Pad31)" "Net-(U2-Pad33)"
-      "Net-(U2-Pad36)" "Net-(U2-Pad37)" "Net-(U2-Pad38)" "Net-(U2-Pad4)" "Net-(U2-Pad5)"
-      "Net-(X1-PadL1.1)" "Net-(X1-PadL1.3)" "Net-(X1-PadL1.4)" "Net-(X1-PadL2.1)"
-      "Net-(X1-PadL2.3)" "Net-(X1-PadL2.4)" "Net-(X1-PadL3.1)" "Net-(X1-PadL3.3)"
-      "Net-(X1-PadL3.4)" "Net-(X1-PadL4.1)" "Net-(X1-PadL4.3)" "Net-(X1-PadL4.4)"
-      "Net-(X1-PadL5.1)" "Net-(X1-PadL5.3)" "Net-(X1-PadL5.4)" "Net-(X1-PadL6.1)"
-      "Net-(X1-PadL6.3)" "Net-(X1-PadL6.4)"
+    (net +5V
+      (pins K2-16 K1-16 D8-1 D3-A U1-2)
+    )
+    (class kicad_default "" +3V3 +5V /CAN_Transceiver/BUS_H /CAN_Transceiver/BUS_L
+      /CAN_Transceiver/CAN_Rx /CAN_Transceiver/CAN_Tx /Connector/CAN_Mode
+      "/Connector/OBD-CAN_Switch" /Connector/OBD_VDD /Connector/Pin_2 /Connector/Pin_3
+      /Connector/Pin_5 /Connector/Pin_7 /MCU/Ext.5V /MCU/GPIO_1 /MCU/GPIO_2
+      /MCU/GPIO_3 /MCU/GPIO_4 /MCU/Indicator_AP_Mode /MCU/Indicator_Error
+      /MCU/Indicator_STA_Mode /MCU/MTCK /MCU/MTDI /MCU/MTDO /MCU/MTMS /MCU/OBD_Voltage_Check
+      /MCU/WiFi_Mode GND "Net-(C5-Pad1)" "Net-(C5-Pad2)" "Net-(C6-Pad1)" "Net-(D3-PadC)"
+      "Net-(D4-Pad1)" "Net-(D5-Pad1)" "Net-(D6-Pad1)" "Net-(D7-Pad1)" "Net-(D8-Pad1)"
+      "Net-(D8-Pad2)" "Net-(J1-Pad10)" "Net-(J1-Pad2)" "Net-(J1-Pad4)" "Net-(J1-Pad6)"
+      "Net-(J1-Pad8)" "Net-(J2-Pad1)" "Net-(J2-Pad4)" "Net-(J2-Pad6)" "Net-(J2-Pad8)"
+      "Net-(Q1-Pad1)" "Net-(U2-Pad16)" "Net-(U2-Pad17)" "Net-(U2-Pad18)" "Net-(U2-Pad2)"
+      "Net-(U2-Pad21)" "Net-(U2-Pad22)" "Net-(U2-Pad23)" "Net-(U2-Pad24)"
+      "Net-(U2-Pad3)" "Net-(U2-Pad30)" "Net-(U2-Pad31)" "Net-(U2-Pad33)" "Net-(U2-Pad36)"
+      "Net-(U2-Pad37)" "Net-(U2-Pad38)" "Net-(U2-Pad4)" "Net-(U2-Pad5)" "Net-(X1-PadL1.1)"
+      "Net-(X1-PadL1.3)" "Net-(X1-PadL1.4)" "Net-(X1-PadL2.1)" "Net-(X1-PadL2.3)"
+      "Net-(X1-PadL2.4)" "Net-(X1-PadL3.1)" "Net-(X1-PadL3.3)" "Net-(X1-PadL3.4)"
+      "Net-(X1-PadL4.1)" "Net-(X1-PadL4.3)" "Net-(X1-PadL4.4)" "Net-(X1-PadL5.1)"
+      "Net-(X1-PadL5.3)" "Net-(X1-PadL5.4)" "Net-(X1-PadL6.1)" "Net-(X1-PadL6.3)"
+      "Net-(X1-PadL6.4)"
       (circuit
         (use_via Via[0-1]_800:400_um)
       )

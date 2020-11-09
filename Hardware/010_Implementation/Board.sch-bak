@@ -19,8 +19,7 @@ U 5F52EFB7
 F0 "Power Supply" 50
 F1 "Netzteil.sch" 50
 F2 "OBD_VDD" I L 3900 3075 50 
-F3 "Ext.5V" I R 6725 3025 50 
-F4 "OBD_Voltage_Check" O R 6725 2850 50 
+F3 "OBD_Voltage_Check" O R 6725 2850 50 
 $EndSheet
 $Sheet
 S 4650 3625 1300 475 
@@ -39,12 +38,9 @@ F0 "MCU" 50
 F1 "MCU.sch" 50
 F2 "CAN_Tx" O L 6075 3825 50 
 F3 "CAN_Rx" I L 6075 3925 50 
-F4 "Ext.5V" I R 7150 3825 50 
-F5 "OBD_Voltage_Check" I R 7150 4125 50 
-F6 "OBD-CAN_Switch" O L 6075 4325 50 
+F4 "OBD_Voltage_Check" I R 7150 4125 50 
+F5 "OBD-CAN_Switch" O L 6075 4325 50 
 $EndSheet
-Wire Wire Line
-	7150 3825 7400 3825
 $Sheet
 S 3300 3625 1200 900 
 U 5FA55ABF
@@ -63,10 +59,6 @@ Wire Wire Line
 	4500 3825 4650 3825
 Wire Wire Line
 	4650 3925 4500 3925
-Wire Wire Line
-	6725 3025 7400 3025
-Wire Wire Line
-	7400 3025 7400 3825
 Wire Wire Line
 	3300 3750 3175 3750
 Wire Wire Line
