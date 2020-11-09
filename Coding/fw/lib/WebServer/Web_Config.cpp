@@ -4,19 +4,15 @@ static const String DIRECTORY = "Server";
 
 static String STA_SSID = "";
 static String STA_PASSWORD = "";
-static String AP_SSID = "";
-static String AP_PASSWORD = "";
-static String WEB_USER = "";
-static String WEB_PASSWORD = "";
+static String AP_SSID = "ESP32";
+static String AP_PASSWORD = "hochschuleulm";
+static String WEB_USER = "admin";
+static String WEB_PASSWORD = "admin";
 
 void WebConfig::importConfig()
 {
-    Settings::get(DIRECTORY, "STA_SSID", STA_SSID, "OnePlus 6");
-    Settings::get(DIRECTORY, "STA_Password", STA_PASSWORD, "alejoreyes");
-    Settings::get(DIRECTORY, "AP_SSID", AP_SSID, "ESP32");
-    Settings::get(DIRECTORY, "AP_Password", AP_PASSWORD, "hochschuleulm");
-    Settings::get(DIRECTORY, "Server_User", WEB_USER, "admin");
-    Settings::get(DIRECTORY, "Server_Password", WEB_PASSWORD, "admin");
+    Settings::get(DIRECTORY, "STA_SSID", STA_SSID, "");
+    Settings::get(DIRECTORY, "STA_Password", STA_PASSWORD, "");
 }
 
 String WebConfig::getSTA_SSID()
