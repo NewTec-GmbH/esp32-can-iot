@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name Board)(type Legacy)(uri ${KIPRJMOD}/Board.lib)(options "")(descr ""))
+  (lib (name Board-rescue)(type Legacy)(uri ${KIPRJMOD}/Board-rescue.lib)(options "")(descr ""))
 )

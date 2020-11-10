@@ -118,17 +118,6 @@ Wire Wire Line
 Wire Wire Line
 	5425 2825 6975 2825
 $Comp
-L Regulator_Switching:TPS62163DSG U1
-U 1 1 5FB37DEF
-P 7975 3125
-F 0 "U1" H 7975 3692 50  0000 C CNN
-F 1 "TPS62163DGK" H 7975 3601 50  0000 C CNN
-F 2 "Package_SO:VSSOP-8_3.0x3.0mm_P0.65mm" H 8125 2775 50  0001 L CNN
-F 3 "http://www.ti.com/lit/ds/symlink/tps62160.pdf" H 7975 3675 50  0001 C CNN
-	1    7975 3125
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:L L1
 U 1 1 5FB3AA0A
 P 8650 2825
@@ -280,6 +269,17 @@ $EndComp
 Connection ~ 10450 2825
 Wire Wire Line
 	10450 2825 10625 2825
+$Comp
+L Regulator_Switching:TPS62163DSG U1
+U 1 1 5FB37DEF
+P 7975 3125
+F 0 "U1" H 7975 3692 50  0000 C CNN
+F 1 "TPS62163DGK" H 7975 3601 50  0000 C CNN
+F 2 "Package_SO:VSSOP-8_3.0x3.0mm_P0.65mm" H 8125 2775 50  0001 L CNN
+F 3 "http://www.ti.com/lit/ds/symlink/tps62160.pdf" H 7975 3675 50  0001 C CNN
+	1    7975 3125
+	1    0    0    -1  
+$EndComp
 Wire Wire Line
 	7875 3525 7875 3575
 Wire Wire Line

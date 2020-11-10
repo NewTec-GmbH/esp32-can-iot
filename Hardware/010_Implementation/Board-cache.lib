@@ -1,11 +1,11 @@
 EESchema-LIBRARY Version 2.4
 #encoding utf-8
 #
-# 2020-11-09_14-09-29_2606-3356
+# Board-rescue_2606-3356-2020-11-09_14-09-29
 #
-DEF 2020-11-09_14-09-29_2606-3356 J 0 10 Y N 1 L N
+DEF Board-rescue_2606-3356-2020-11-09_14-09-29 J 0 10 Y N 1 L N
 F0 "J" 350 250 60 H V C CNN
-F1 "2020-11-09_14-09-29_2606-3356" 400 -800 60 H V C CNN
+F1 "Board-rescue_2606-3356-2020-11-09_14-09-29" 400 -800 60 H V C CNN
 F2 "CONN_2606-3356_WAG" 400 -860 60 H I C CNN
 F3 "" 0 0 60 H V C CNN
 $FPLIST
@@ -104,6 +104,27 @@ X 6 6 0 -500 200 R 59 59 1 1 B
 X 7 7 0 -600 200 R 59 59 1 1 B
 X 8 8 0 -700 200 R 59 59 1 1 B
 X 9 9 0 -800 200 R 59 59 1 1 B
+ENDDRAW
+ENDDEF
+#
+# Board-rescue_744242220-SamacSys_Parts
+#
+DEF Board-rescue_744242220-SamacSys_Parts L 0 30 Y Y 1 F N
+F0 "L" 650 300 50 H V L CNN
+F1 "Board-rescue_744242220-SamacSys_Parts" 650 200 50 H V L CNN
+F2 "WE-SLM77" 650 100 50 H I L CNN
+F3 "https://componentsearchengine.com/Datasheets/1/744242220.pdf" 650 0 50 H I L CNN
+F4 "Wurth WE-SLM Series Wire-wound SMD Inductor with a Ferrite Core, 22 uH +50/-30 300mA Idc" 650 -100 50 H I L CNN "Description"
+F5 "710-744242220" 650 -300 50 H I L CNN "Mouser Part Number"
+F6 "https://www.mouser.com/Search/Refine.aspx?Keyword=710-744242220" 650 -400 50 H I L CNN "Mouser Price/Stock"
+F7 "Wurth Elektronik" 650 -500 50 H I L CNN "Manufacturer_Name"
+F8 "744242220" 650 -600 50 H I L CNN "Manufacturer_Part_Number"
+DRAW
+P 5 0 1 6 200 100 600 100 600 -200 200 -200 200 100 N
+X 3 1 0 0 200 R 50 50 0 0 P
+X 1 2 0 -100 200 R 50 50 0 0 P
+X 2 3 800 -100 200 L 50 50 0 0 P
+X 4 4 800 0 200 L 50 50 0 0 P
 ENDDRAW
 ENDDEF
 #
@@ -530,27 +551,6 @@ X VOS 6 400 200 100 L 50 50 1 1 I
 X SW 7 400 300 100 L 50 50 1 1 O
 X PG 8 -400 -100 100 R 50 50 1 1 C
 X PAD 9 -100 -400 100 U 50 50 1 1 W
-ENDDRAW
-ENDDEF
-#
-# SamacSys_Parts_744242220
-#
-DEF SamacSys_Parts_744242220 L 0 30 Y Y 1 F N
-F0 "L" 650 300 50 H V L CNN
-F1 "SamacSys_Parts_744242220" 650 200 50 H V L CNN
-F2 "WE-SLM77" 650 100 50 H I L CNN
-F3 "https://componentsearchengine.com/Datasheets/1/744242220.pdf" 650 0 50 H I L CNN
-F4 "Wurth WE-SLM Series Wire-wound SMD Inductor with a Ferrite Core, 22 uH +50/-30 300mA Idc" 650 -100 50 H I L CNN "Description"
-F5 "710-744242220" 650 -300 50 H I L CNN "Mouser Part Number"
-F6 "https://www.mouser.com/Search/Refine.aspx?Keyword=710-744242220" 650 -400 50 H I L CNN "Mouser Price/Stock"
-F7 "Wurth Elektronik" 650 -500 50 H I L CNN "Manufacturer_Name"
-F8 "744242220" 650 -600 50 H I L CNN "Manufacturer_Part_Number"
-DRAW
-P 5 0 1 6 200 100 600 100 600 -200 200 -200 200 100 N
-X 3 1 0 0 200 R 50 50 0 0 P
-X 1 2 0 -100 200 R 50 50 0 0 P
-X 2 3 800 -100 200 L 50 50 0 0 P
-X 4 4 800 0 200 L 50 50 0 0 P
 ENDDRAW
 ENDDEF
 #
