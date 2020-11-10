@@ -86,7 +86,7 @@ public:
                     AsyncWebParameter *p = request->getParam(i);
                     credentialsProcessor(p->name(), p->value());
                 }
-                request->send(200, "text/html", "Credentials Accepted. Will restart in a few seconds in Station Mode");
+                request->send(SPIFFS, "/setCredentials.html", String(), false, captivePageProcessor);
                 reqRestart();
             }
         }
