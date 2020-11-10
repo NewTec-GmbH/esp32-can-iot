@@ -80,17 +80,14 @@ public:
         {
             if (request->args() != 0)
             {
-                request->send(200, "plain/text", "\n POST - With Params \n");
-
                 int params = request->params();
                 for (int i = 0; i < params; i++)
                 {
                     AsyncWebParameter *p = request->getParam(i);
+                    credentialsProcessor(p->name(), p->value());
                 }
-            }
-            else
-            {
-                request->send(200, "plain/text", "\n POST - No params \n");
+                request->send(200, "text/html", "Credentials Accepted. Will restart in a few seconds in Station Mode");
+                reqRestart();
             }
         }
         else if (HTTP_GET == request->method())
@@ -99,7 +96,7 @@ public:
         }
         else
         {
-            request->send(400, "plain/text", "\n Error. Bad Request");
+            request->send(400, "text/html", "\n Error. Bad Request");
         }
     }
 
@@ -136,6 +133,8 @@ static bool restartRequested = false; /**<  Variable to call Restart */
  */
 void CaptivePortal::init(AsyncWebServer &server)
 {
+    server.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
+    server.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
     server.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 }
 

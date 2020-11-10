@@ -46,32 +46,17 @@ static bool setAPMode();
  */
 static bool restartRequested = false;
 
-/* VARIABLES **************************************************************************************/
-IPAddress m_serverIP; /**< Stores the IP Address of the ESP32 */
-
-/* PUBLIC METHODES ********************************************************************************/
-
-/**************************************************************************************************/
 /**
 * Registers the handlers on the server, depending on the WiFi Mode chosen
 * @param bool apModeRequested  determines if AP Mode or STA Mode are requested, to choose the correct handlers
 * return success
 */
-bool ESPServer::init(bool apModeRequested)
-{
-    bool success = true;
+static bool initPages(bool apModeRequested);
 
-    if (apModeRequested)
-    {
-        CaptivePortal::init(server);
-    }
-    else
-    {
-        Pages::init(server);
-    }
+/* VARIABLES **************************************************************************************/
+IPAddress m_serverIP; /**< Stores the IP Address of the ESP32 */
 
-    return success;
-}
+/* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
 
@@ -93,7 +78,7 @@ bool ESPServer::begin()
 
         m_serverIP = WiFi.softAPIP();
 
-        if (!ESPServer::init(true))
+        if (!initPages(true))
         {
             success = false;
         }
@@ -126,7 +111,7 @@ bool ESPServer::begin()
             }
         }
 
-        if (!ESPServer::init(false))
+        if (!initPages(false))
         {
             success = false;
         }
@@ -142,6 +127,8 @@ bool ESPServer::begin()
     {
         success = false;
     }
+
+    Serial.println(m_serverIP);
 
     server.begin();
     return success;
@@ -216,4 +203,21 @@ static bool setAPMode()
     }
 
     return apMode;
+}
+
+/**************************************************************************************************/
+bool initPages(bool apModeRequested)
+{
+    bool success = true;
+
+    if (apModeRequested)
+    {
+        CaptivePortal::init(server);
+    }
+    else
+    {
+        Pages::init(server);
+    }
+
+    return success;
 }
