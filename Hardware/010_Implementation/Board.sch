@@ -14,14 +14,6 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Sheet
-S 3900 2650 2825 525 
-U 5F52EFB7
-F0 "Power Supply" 50
-F1 "Netzteil.sch" 50
-F2 "OBD_VDD" I L 3900 3075 50 
-F3 "OBD_Voltage_Check" O R 6725 2850 50 
-$EndSheet
-$Sheet
 S 4650 3625 1300 475 
 U 5F562A6B
 F0 "CAN_Transceiver" 50
@@ -73,4 +65,12 @@ Wire Wire Line
 	7525 2850 7525 4125
 Wire Wire Line
 	7525 4125 7150 4125
+$Sheet
+S 3900 2650 2825 525 
+U 5F52EFB7
+F0 "Power Supply" 50
+F1 "Netzteil.sch" 50
+F2 "OBD_VDD" I L 3900 3075 50 
+F3 "OBD_Voltage_Check" O R 6725 2850 50 
+$EndSheet
 $EndSCHEMATC
