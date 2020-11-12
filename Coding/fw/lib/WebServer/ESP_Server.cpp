@@ -42,9 +42,15 @@ static DNSServer dnsServer;                              /**< Instance of DNS Se
 static bool setAPMode();
 
 /**
- *  Variable to call Restart
- */
+*  Variable to call Restart
+*/
 static bool restartRequested = false;
+
+/**
+* Connects to the WiFi AP when requested
+* @return true when succesfully connected. False otherwise.
+*/
+static bool connectWiFi();
 
 /**
 * Registers the handlers on the server, depending on the WiFi Mode chosen
@@ -95,20 +101,7 @@ bool ESPServer::begin()
         }
         else
         {
-            unsigned long startAttempTime = millis();
-
-            while (WiFi.status() != WL_CONNECTED && (millis() - startAttempTime) < WebConfig::WIFI_TIMEOUT_MS)
-            {
-            }
-
-            if (WiFi.status() != WL_CONNECTED)
-            {
-                success = false;
-            }
-            else
-            {
-                m_serverIP = WiFi.localIP();
-            }
+            success = connectWiFi();
         }
 
         if (!initPages(false))
@@ -154,8 +147,21 @@ bool ESPServer::end()
 */
 bool ESPServer::handleNextRequest()
 {
-    dnsServer.processNextRequest();
-    restartRequested = CaptivePortal::isRestartRequested();
+    if (WiFi.status() != WL_CONNECTED)
+    {
+        if(!connectWiFi())
+        {
+            Board::errorLED.write(HIGH);
+            while(true)
+            {}
+        }
+    }
+    else
+    {
+        dnsServer.processNextRequest();
+        restartRequested = CaptivePortal::isRestartRequested();
+    }
+
     return restartRequested;
 }
 
@@ -217,6 +223,28 @@ bool initPages(bool apModeRequested)
     else
     {
         Pages::init(server);
+    }
+
+    return success;
+}
+
+bool connectWiFi()
+{
+    bool success = true;
+
+    unsigned long startAttempTime = millis();
+
+    while (WiFi.status() != WL_CONNECTED && (millis() - startAttempTime) < WebConfig::WIFI_TIMEOUT_MS)
+    {
+    }
+
+    if (WiFi.status() != WL_CONNECTED)
+    {
+        success = false;
+    }
+    else
+    {
+        m_serverIP = WiFi.localIP();
     }
 
     return success;
