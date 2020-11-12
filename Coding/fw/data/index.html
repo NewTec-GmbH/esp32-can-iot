@@ -38,7 +38,7 @@
     <!-- Header -->
     <header class="w3-display-container w3-content w3-wide" style="max-width:1600px;min-width:500px" id="home">
         <div class="w3-display-bottomleft w3-padding-large w3-opacity">
-            <h1 class="w3-xxlarge">Le Analyzer</h1>
+            <h1 class="w3-xxlarge">ESP32 CAN-Analyzer</h1>
         </div>
     </header>
 
@@ -69,18 +69,15 @@
         <div class="w3-container w3-padding-64">
             <h1 class="w3-center">Current Configuration</h1><br>
             <div class="w3-col l6 w3-padding-large">
-                <h4>Station SSID:</h4>
-                <p class="w3-text-grey">%STATION_SSID%</p><br>
+                <h4>Connected to: </h4>
+                <p class="w3-text-grey">%STATION_SSID%</p>
+                <br>
                 <h4>AP SSID:</h4>
-                <p class="w3-text-grey">%AP_SSID%</p><br>
+                <p class="w3-text-grey">%AP_SSID%</p>
+                <br>
                 <h4>AP Password:</h4>
-                <p class="w3-text-grey">%AP_PASS%</p><br>
-            </div>
-            <div class="w3-col l6 w3-padding-large">
-                <h4>Server Username:</h4>
-                <p class="w3-text-grey">%SERVER_USER%</p><br>
-                <h4>Server Password:</h4>
-                <p class="w3-text-grey">%SERVER_PASS%</p><br>
+                <p class="w3-text-grey">%AP_PASS%</p>
+                <br>
             </div>
         </div>
     </div>
@@ -90,18 +87,10 @@
     <!-- Communication Section -->
     <div class="w3-container w3-padding-64" id="contact">
         <h1>Communication</h1><br>
-        <p class="w3-text-blue-grey w3-large"><b>Refer to the Lawicel Handbook for a description of valid
-                commands</b>
-        </p>
-
+        
         <div style="width:100%;height:50px;border:1px solid #000;">
-            <textarea resize="none" rows=1 cols="100" placeholder="Incoming messages will be shown here"
-                readonly></textarea>
-        </div>
-
-        <div style="width:100%;height:50px;border:1px solid #000;">
-            <textarea resize="none" rows=1 cols="100" placeholder="Lawicel Command"></textarea>
-            <button type="submit" formenctype="text/plain" aling="center">Send Command</button>
+            <textarea resize="none" rows=1 cols="100" placeholder="Send CAN Message"></textarea>
+            <button type="button" formenctype="text/plain" aling="center">Send Command</button>
         </div>
     </div>
 
