@@ -38,17 +38,18 @@ Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/
 void restart();
+void setErrorLED();
 
 void setup()
 {
   Board::init();
   if (!protocolLawicel.begin())
   {
-    restart();
+    setErrorLED();
   }
   else if (!ESPServer::begin())
   {
-    restart();
+    setErrorLED();
   }
 }
 
@@ -71,7 +72,16 @@ void loop()
 
 void restart()
 {
+  delay(5000);
   protocolLawicel.end();
   ESPServer::end();
   Board::reset();
+}
+
+void setErrorLED()
+{
+  Board::errorLED.write(HIGH);
+  while (true)
+  {
+  }  
 }
