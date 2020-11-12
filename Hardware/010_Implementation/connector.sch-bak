@@ -34,7 +34,7 @@ Wire Notes Line
 Wire Notes Line
 	725  4425 2675 4425
 Text HLabel 6695 4515 0    50   Input ~ 0
-OBD-CAN_Switch
+~OBD~\CAN
 $Comp
 L Board:G5V-2-DC5 K2
 U 1 1 5FB1A5F7
@@ -43,7 +43,7 @@ F 0 "K2" V 9826 1990 50  0000 R CNN
 F 1 "G5V-2-DC5" V 9735 1990 50  0000 R CNN
 F 2 "Board:RELAY_G5V-2-DC5" H 9730 2620 50  0001 L BNN
 F 3 "Relay; E-Mech; Low Signal; DPDT; Cur-Rtg 0.5/2AAC/ADC; Ctrl-V 5DC; Vol-Rtg 125/30AC/DC" H 9730 2620 50  0001 L BNN
-F 4 "Omron Electronics" H 9730 2620 50  0001 L BNN "Field4"
+F 4 "" H 9730 2620 50  0001 L BNN "Field4"
 F 5 "QFN-68 Omron" H 9730 2620 50  0001 L BNN "Field5"
 F 6 "Unavailable" H 9730 2620 50  0001 L BNN "Field6"
 F 7 "None" H 9730 2620 50  0001 L BNN "Field7"
@@ -98,7 +98,7 @@ U 1 1 5FB372EA
 P 7995 4865
 F 0 "R18" H 8065 4911 50  0000 L CNN
 F 1 "150" H 8065 4820 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 7925 4865 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 7925 4865 50  0001 C CNN
 F 3 "~" H 7995 4865 50  0001 C CNN
 	1    7995 4865
 	1    0    0    -1  
@@ -109,7 +109,7 @@ U 1 1 5FB379FD
 P 7645 4515
 F 0 "R17" V 7438 4515 50  0000 C CNN
 F 1 "430" V 7529 4515 50  0000 C CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 7575 4515 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 7575 4515 50  0001 C CNN
 F 3 "~" H 7645 4515 50  0001 C CNN
 	1    7645 4515
 	0    1    1    0   
@@ -201,6 +201,7 @@ F 0 "D6" V 4089 5557 50  0000 R CNN
 F 1 "RED" V 3998 5557 50  0000 R CNN
 F 2 "LED_THT:LED_D3.0mm" H 4050 5675 50  0001 C CNN
 F 3 "~" H 4050 5675 50  0001 C CNN
+F 4 "Yes" H 4050 5675 50  0001 C CNN "Vorhanden"
 	1    4050 5675
 	0    -1   -1   0   
 $EndComp
@@ -212,7 +213,7 @@ AR Path="/5F52F099/5FB5FD29" Ref="R?"  Part="1"
 AR Path="/5FA55ABF/5FB5FD29" Ref="R16"  Part="1" 
 F 0 "R16" H 4120 6196 50  0000 L CNN
 F 1 "500" H 4120 6105 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3980 6150 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 3980 6150 50  0001 C CNN
 F 3 "~" H 4050 6150 50  0001 C CNN
 	1    4050 6150
 	1    0    0    -1  
@@ -258,23 +259,22 @@ P 1075 3775
 AR Path="/5F562A6B/5FA5ACF8" Ref="J?"  Part="1" 
 AR Path="/5FA55ABF/5FA5ACF8" Ref="J3"  Part="1" 
 F 0 "J3" H 967 3150 50  0000 C CNN
-F 1 "Conn_01x09_Female" H 967 3241 50  0000 C CNN
+F 1 "DSUB9" H 967 3241 50  0000 C CNN
 F 2 "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm" H 1075 3775 50  0001 C CNN
 F 3 "~" H 1075 3775 50  0001 C CNN
+F 4 "Yes" H 1075 3775 50  0001 C CNN "Vorhanden"
 	1    1075 3775
 	-1   0    0    1   
 $EndComp
 Text Notes 4360 5710 0    50   ~ 0
 ON when CAN is Active\nOFF when OBD ist Active
-Text Notes 6225 4410 0    50   ~ 0
-~OBD~/CAN
 $Comp
 L Device:C C11
 U 1 1 5FB18345
 P 8795 1655
 F 0 "C11" H 8680 1701 50  0000 R CNN
 F 1 "100n" H 8680 1610 50  0000 R CNN
-F 2 "" H 8833 1505 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" H 8833 1505 50  0001 C CNN
 F 3 "~" H 8795 1655 50  0001 C CNN
 	1    8795 1655
 	-1   0    0    -1  
@@ -317,7 +317,7 @@ F 0 "K1" V 7841 1985 50  0000 R CNN
 F 1 "G5V-2-DC5" V 7750 1985 50  0000 R CNN
 F 2 "Board:RELAY_G5V-2-DC5" H 7745 2615 50  0001 L BNN
 F 3 "Relay; E-Mech; Low Signal; DPDT; Cur-Rtg 0.5/2AAC/ADC; Ctrl-V 5DC; Vol-Rtg 125/30AC/DC" H 7745 2615 50  0001 L BNN
-F 4 "Omron Electronics" H 7745 2615 50  0001 L BNN "Field4"
+F 4 "" H 7745 2615 50  0001 L BNN "Field4"
 F 5 "QFN-68 Omron" H 7745 2615 50  0001 L BNN "Field5"
 F 6 "Unavailable" H 7745 2615 50  0001 L BNN "Field6"
 F 7 "None" H 7745 2615 50  0001 L BNN "Field7"
@@ -340,10 +340,10 @@ Wire Wire Line
 Wire Wire Line
 	8495 3650 8495 4315
 $Comp
-L power:GND #PWR?
+L power:GND #PWR031
 U 1 1 5FC17D18
 P 8795 1880
-F 0 "#PWR?" H 8795 1630 50  0001 C CNN
+F 0 "#PWR031" H 8795 1630 50  0001 C CNN
 F 1 "GND" H 8800 1707 50  0000 C CNN
 F 2 "" H 8795 1880 50  0001 C CNN
 F 3 "" H 8795 1880 50  0001 C CNN

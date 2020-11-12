@@ -11,7 +11,7 @@
     (via_costs 50)
     (plane_via_costs 5)
     (start_ripup_costs 100)
-    (start_pass_no 1143)
+    (start_pass_no 1302)
     (layer_rule F.Cu
       (active on)
       (preferred_direction horizontal)
@@ -66,9 +66,10 @@
     GND "/CAN_Transceiver/CAN_Tx" "/CAN_Transceiver/CAN_Rx" "/MCU/WiFi_Mode" /MCU/MTDI /MCU/MTDO /MCU/MTCK /MCU/MTMS
     "/CAN_Transceiver/BUS_H" "/CAN_Transceiver/BUS_L" "/MCU/Indicator_Error" "/MCU/Indicator_AP_Mode" "Net-(D4-Pad1)" "Net-(D5-Pad1)" "/MCU/Indicator_STA_Mode" +3V3
     "/Connector/OBD_VDD" "/MCU/GPIO_4" "/MCU/GPIO_3" "/MCU/GPIO_2" "/MCU/GPIO_1" "/MCU/OBD_Voltage_Check" "Net-(C6-Pad1)" "Net-(D6-Pad1)"
-    "/Connector/Pin_7" "/Connector/Pin_5" "/Connector/Pin_3" "/Connector/Pin_2" "/Connector/CAN_Mode" "Net-(Q1-Pad1)" "/Connector/OBD-CAN_Switch" +5V
-    "Net-(D2-PadC)" "Net-(D3-Pad1)" "Net-(D7-Pad2)" "Net-(C6-Pad2)" "Net-(C7-Pad1)" "Net-(J2-Pad2)" "Net-(J2-Pad4)" "Net-(J2-Pad6)"
-    "Net-(J2-Pad8)" "Net-(L1-Pad1)" "Net-(R3-Pad2)"
+    "/Connector/Pin_7" "/Connector/Pin_5" "/Connector/Pin_3" "/Connector/Pin_2" "/Connector/CAN_Mode" "Net-(Q1-Pad1)" +5V "Net-(D3-Pad1)"
+    "Net-(D7-Pad2)" "Net-(C6-Pad2)" "Net-(C7-Pad1)" "Net-(J2-Pad2)" "Net-(J2-Pad4)" "Net-(J2-Pad6)" "Net-(J2-Pad8)" "Net-(L1-Pad1)"
+    "Net-(R3-Pad2)" "Net-(C2-Pad1)" "Net-(C3-Pad1)" "Net-(C12-Pad1)" "Net-(D8-Pad1)" /Connector/~OBD~\CAN "Net-(C16-Pad1)" "Net-(IC1-Pad8)"
+    "Net-(R19-Pad2)"
     (clearance_class "kicad_default")
     (via_rule kicad_default)
     (rule
