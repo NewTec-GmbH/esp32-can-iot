@@ -38,5 +38,4 @@ STAState --> ConnectingState: [Connection lost]
 STAState --> RestartState: [Update finished]
 ErrorState --> [*]: [Restart]
 RestartState --> [*]: [Restart]
-
 @enduml
