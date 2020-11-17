@@ -10,9 +10,9 @@ package WebServer <<node>>
     Class CaptivePortal
 
     Application ..|> ESPServer : <<use>>
-    ESPServer ..> WebConfig : <<use>>
-    ESPServer ..> Pages : <<use>>
-    ESPServer ..> CaptivePortal : <<use>>
+    ESPServer 	*-- WebConfig : <<use>>
+    ESPServer 	*-- Pages : <<use>>
+    ESPServer 	*-- CaptivePortal : <<use>>
 }
 
 package Espressif_ESP32_Library{
@@ -32,6 +32,6 @@ package ESPAsyncWebServer <<folder>>
     Class AsyncWebServer
 }
 
-WebServer ..|> ESPAsyncWebServer : <<use>>
+WebServer 	*-- ESPAsyncWebServer : <<use>>
 
 @enduml

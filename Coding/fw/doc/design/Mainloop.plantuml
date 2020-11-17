@@ -2,11 +2,15 @@
 
 Title Mainloop Sequence
 
-group Setup
-    Mainloop --> Settings : importSettings()
-    Settings --> Mainloop : return bool success
+group Setup 
+    Mainloop --> Board : init()
     Mainloop --> Lawicel : begin()
+    Lawicel --> Mainloop : return bool success
     Mainloop --> ESPServer : begin()
+    ESPServer --> WebConfig : importSettings()
+    WebConfig --> ESPServer : return bool success
+    ESPServer --> ESPServer : Setup WiFi and Web Pages
+    ESPServer --> Mainloop : return bool success
 end
 
 group loop
@@ -21,11 +25,9 @@ group loop
 
     else Restart requested
     ESPServer --> Mainloop : restart()
-    Mainloop --> Settings : saveSettings();
-    Settings --> Mainloop : return bool success
     Mainloop --> Lawicel : end()
-    Lawicel --> Mainloop : return bool success
-    Mainloop --> Mainloop : esp.restart()
+    Mainloop --> ESPServer : end()
+    Mainloop --> Board : esp.restart()
 end
 
 @enduml
