@@ -11,6 +11,9 @@ group Setup
     WebConfig --> ESPServer : return bool success
     ESPServer --> ESPServer : Setup WiFi and Web Pages
     ESPServer --> Mainloop : return bool success
+    else Initialization returns false
+    Mainloop --> Board : set Error LED
+    Mainloop --> Mainloop : wait for error handling\nfrom user and restart
 end
 
 group loop
