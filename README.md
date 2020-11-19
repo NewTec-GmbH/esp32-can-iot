@@ -93,15 +93,33 @@ During the loop sequence, the system calls the Lawicel Cycle to read the CAN bus
 
 # Detailed Design
 ## Main Application
+
+The system follows the following procedure during the module setup:
+
 ![Setup](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/SetUpProcess.plantuml)
+
+it is important to note that the Error LED can alo be set during the looped programm if the wireless connection is lost and was not possible to reconnect after a pre-defined time. The states of the system can be seen in the next diagram.
 
 ![StateMachine](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/StateMachine.plantuml)
 
 ## Lawicel
+
+The Lawicel Module implements one of the most important components of this project. The Lawicel Protocol is used to communicate witha CAN Bus using ASCII symbols, as each command that is sent has a specific format which is interpreted by the module. 
+
+The module is composed by 4 main components: the implementation of the protocol, an interface for serial communication, an interface for CAN communication and an interface for Non-Volatile Memory. These Interfaces define the functions that the adapters must perform and are directly used by the protocol. Through the use of these, it is possible to treat the Lawicel Module as a completely independent component to which different adapters can be connected depending on the case and hardware used.
+
+
 ![Arch_Lawicel](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/Architecture_Lawicel.plantuml)
 
+In this case, the adapters are implemented for the ESP32 and the libraries used by it. In the case of the Serial Adapter, it employs directly th Serial hardware from the Arduino Library. For the NVM Adapter, the ESP32 offers a library for managing flash memory using keys, which is called "Preferences". Finally the CAN Adapter is an abstraction from sandeepmistry's [arduino-CAN](https://github.com/sandeepmistry/arduino-CAN), which manages the memory-mapped SJA1000 CAN Controller.
+
 ## Web Server
+The second most important module is the Webserver. The ESP32 offers the capability of hosting a server that manages the requests asynchron, meaning that it does not block the other tasks that the processor has to complete. This server is an implementation of me-no-dev's [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer).
+
 ![Arch_Webserver](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/Architecture_Webserver.plantuml)
+
+The server uses 3 service classes: WebConfig to store the credentials on the flash memory, Pages to serve the websites accesible while on Station Mode, and the CaptivePortal which serves only one website. The purpose of the Captive Portal is to provide the users with an interface to change the credentials for the Station Mode. In this module is the Settings class also uused to store the credentials, and the Serial Peripheral Interface Flash File System (SPIFFS) which stores the Webpages as HTML files and sends them to the web clients when requested.
+
 
 ![Arch_Webpages](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/Architecture_Webpages.plantuml)
 

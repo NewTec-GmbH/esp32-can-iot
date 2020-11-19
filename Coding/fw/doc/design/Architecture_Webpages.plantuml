@@ -2,41 +2,18 @@
 
 Title Webpages Navigation
 
-[*] --> Index
-Index : - Welcome Page
-Index : - General Information
-Index : - Shows Stored Credentials
-Index : - Links to other Webpages
+STACredentials : GUI to input new STA Credentials
+SetCredentials : Inform the user of\n the success of their request
+Index : Shows the basic information of the device
+Index : Links to the Lawicel_Communication
+Lawicel_Communication : Hosts the Websocket to use Lawicel \n to comunicate with CAN Bus
 
-state Index_fork <<fork>>
-    Index --> Index_fork
-
-    Index_fork --> AP_Credentials
-    Index_fork --> STA_Credentials
-    Index_fork --> Web_Credentials
-
-    Index_fork --> WebSocket
-    WebSocket --> [*]
-
-    Index_fork --> CAN_Settings
-    CAN_Settings --> [*]
-
-    AP_Credentials : Changes the Access-Point \n Credentials
-    STA_Credentials : Changes the Station \n Credentials
-    Web_Credentials : Changes the Web-Access \n Credentials
-    WebSocket : Communication with \n CAN Controller
-    CAN_Settings : Defines the CAN Controller COnfiguration \n such as Speed and Bus Mode
+[*] --> STACredentials : AP_Mode
+STACredentials --> SetCredentials : New Credentials set
+SetCredentials --> [*] : Restart
 
 
-state Set_Credentials_fork <<fork>>
-    AP_Credentials --> Set_Credentials_fork
-    STA_Credentials --> Set_Credentials_fork
-    Web_Credentials --> Set_Credentials_fork
-
-    Set_Credentials_fork --> Set_Credentials
-
-    Set_Credentials --> [*]
-
-    Set_Credentials : Saves the changed credentials \n and restarts the ESP32
+[*] --> Index : STA_Mode
+Index --> Lawicel_Communication
 
 @enduml

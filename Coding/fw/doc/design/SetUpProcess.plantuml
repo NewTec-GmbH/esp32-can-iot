@@ -5,26 +5,32 @@ start
 :Initialize hardware.;
 :Check user button state.;
 
-if (Is pressed?) then (yes)
+if (Is pressed?) then (no)
 
     :Check WiFi Credentials.;
 
-    if (Is available?) then (yes)
-
-        if (Connection successful established?) then (yes)
-
-        else (no)
-            :Set Error LED.;
-            stop
-        endif
-
-    else(no)
+    if (Valid Credentials?) then (no)
         :Set Error LED.;
         stop
 
+    else(yes)
+
+        if (Connection successful established?) then (no)
+            :Set Error LED.;
+            stop
+        else (yes)
+            :Start CAN-Controller to desired Bus Speed.;
+            if (successful) then (yes)
+                stop
+            else(no)
+                :Set Error LED.;
+                stop
+            endif
+        endif
+
     endif
 
-else(no)
+else(yes)
 
     :Setting up access-point (AP).;
 
@@ -32,15 +38,11 @@ else(no)
         :Set Error LED.;
         stop
     else (yes)
+        :Enter Credentials Setup.;
+        :Restart.;
+        stop
     endif
 
 endif
 
-:Start CAN-Controller to desired Bus Speed.;
-if (successful) then (yes)
-    stop
-else(no)
-    :Set Error LED.;
-    stop
-
-    @enduml
+@enduml
