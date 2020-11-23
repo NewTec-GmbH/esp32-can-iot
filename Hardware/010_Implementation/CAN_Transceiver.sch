@@ -27,12 +27,12 @@ $EndComp
 $Comp
 L power:+3.3V #PWR08
 U 1 1 5F913497
-P 8850 3150
-F 0 "#PWR08" H 8850 3000 50  0001 C CNN
-F 1 "+3.3V" H 8865 3323 50  0000 C CNN
-F 2 "" H 8850 3150 50  0001 C CNN
-F 3 "" H 8850 3150 50  0001 C CNN
-	1    8850 3150
+P 9450 2050
+F 0 "#PWR08" H 9450 1900 50  0001 C CNN
+F 1 "+3.3V" H 9465 2223 50  0000 C CNN
+F 2 "" H 9450 2050 50  0001 C CNN
+F 3 "" H 9450 2050 50  0001 C CNN
+	1    9450 2050
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -323,10 +323,6 @@ F 3 "https://www.ti.com/lit/ds/symlink/sn65hvd233-ht.pdf?HQS=TI-null-null-alldat
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	8505 3185 8850 3185
-Wire Wire Line
-	8850 3185 8850 3150
-Wire Wire Line
 	8520 3885 8520 4300
 $Comp
 L power:GND #PWR0102
@@ -362,4 +358,39 @@ Wire Wire Line
 	6600 3455 6600 3530
 Wire Wire Line
 	6390 3455 6600 3455
+$Comp
+L Device:C C17
+U 1 1 5FBA0AB2
+P 9450 2425
+F 0 "C17" H 9565 2471 50  0000 L CNN
+F 1 "100n" H 9565 2380 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 9488 2275 50  0001 C CNN
+F 3 "~" H 9450 2425 50  0001 C CNN
+	1    9450 2425
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9450 2050 9450 2175
+Wire Wire Line
+	9450 2175 8900 2175
+Connection ~ 9450 2175
+Wire Wire Line
+	9450 2175 9450 2275
+Wire Wire Line
+	8505 3185 8900 3185
+Wire Wire Line
+	8900 2175 8900 3185
+Wire Wire Line
+	9450 2575 9450 2700
+$Comp
+L power:GND #PWR0104
+U 1 1 5FBA5D45
+P 9450 2700
+F 0 "#PWR0104" H 9450 2450 50  0001 C CNN
+F 1 "GND" H 9455 2527 50  0000 C CNN
+F 2 "" H 9450 2700 50  0001 C CNN
+F 3 "" H 9450 2700 50  0001 C CNN
+	1    9450 2700
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
