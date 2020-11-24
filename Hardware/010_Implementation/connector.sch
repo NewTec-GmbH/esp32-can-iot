@@ -19,9 +19,9 @@ Text HLabel 1725 1350 1    50   Output ~ 0
 OBD_VDD
 Text Notes 1510 2935 2    50   ~ 0
 DSUB-9 Connector\n
-Text HLabel 10455 2320 2    50   BiDi ~ 0
-BUS_H
 Text HLabel 10455 2820 2    50   BiDi ~ 0
+BUS_H
+Text HLabel 10455 2320 2    50   BiDi ~ 0
 BUS_L
 Wire Wire Line
 	1275 3375 1725 3375
@@ -157,17 +157,17 @@ Pin_3
 Text Label 3100 4175 2    50   ~ 0
 Pin_2
 Wire Wire Line
-	10130 2320 10455 2320
+	10130 2820 10455 2820
 Wire Wire Line
-	10130 2120 10455 2120
-Text Label 10455 2120 2    50   ~ 0
+	10130 2620 10455 2620
+Text Label 10455 2620 2    50   ~ 0
 Pin_7
 Wire Wire Line
-	10130 2520 10455 2520
-Text Label 10455 2520 2    50   ~ 0
+	10130 3020 10455 3020
+Text Label 10455 3020 2    50   ~ 0
 Pin_3
 Wire Wire Line
-	10130 2820 10455 2820
+	10130 2320 10455 2320
 Wire Notes Line
 	2675 4425 2675 750 
 $Comp
@@ -182,12 +182,12 @@ F 3 "" H 6845 2865 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10130 2620 10455 2620
+	10130 2120 10455 2120
 Wire Wire Line
-	10130 3020 10455 3020
-Text Label 10455 2620 2    50   ~ 0
+	10130 2520 10455 2520
+Text Label 10455 2120 2    50   ~ 0
 Pin_2
-Text Label 10455 3020 2    50   ~ 0
+Text Label 10455 2520 2    50   ~ 0
 Pin_5
 Text Notes 5975 1175 0    50   ~ 0
 Pin 2:   OBD_GND        //    CAN_L\nPin 3:   OBD_H          //    CAN_GND\nPin 5:   OBD_L           //    ------ \nPin 7:   -------      //    CAN_H
