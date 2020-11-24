@@ -260,7 +260,7 @@ AR Path="/5F562A6B/5FA5ACF8" Ref="J?"  Part="1"
 AR Path="/5FA55ABF/5FA5ACF8" Ref="J3"  Part="1" 
 F 0 "J3" H 967 3150 50  0000 C CNN
 F 1 "DSUB9" H 967 3241 50  0000 C CNN
-F 2 "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm" H 1075 3775 50  0001 C CNN
+F 2 "Connector_Dsub:DSUB-9_Male_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm" H 1075 3775 50  0001 C CNN
 F 3 "~" H 1075 3775 50  0001 C CNN
 F 4 "Yes" H 1075 3775 50  0001 C CNN "Vorhanden"
 	1    1075 3775
