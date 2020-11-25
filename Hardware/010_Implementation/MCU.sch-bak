@@ -15,10 +15,8 @@ Comment4 ""
 $EndDescr
 Text Label 5125 3280 2    50   ~ 0
 WiFi_Mode
-Text Label 5125 3080 2    50   ~ 0
-Indicator_AP_Mode
 Text Label 5125 3180 2    50   ~ 0
-Indicator_STA_Mode
+Indicator_AP_Mode
 Text Label 5125 2580 2    50   ~ 0
 Indicator_Error
 Wire Wire Line
@@ -207,9 +205,7 @@ Wire Wire Line
 Wire Wire Line
 	4400 2980 5125 2980
 Wire Wire Line
-	5125 3080 4400 3080
-Wire Wire Line
-	4400 3180 5125 3180
+	5125 3180 4400 3180
 Wire Wire Line
 	4400 3280 5125 3280
 Wire Wire Line
@@ -741,4 +737,8 @@ F 3 "~" H 1125 5475 50  0001 C CNN
 $EndComp
 NoConn ~ 1325 5875
 NoConn ~ 1325 5775
+Wire Wire Line
+	4400 3080 5125 3080
+Text Label 5125 3080 2    50   ~ 0
+Indicator_STA_Mode
 $EndSCHEMATC
