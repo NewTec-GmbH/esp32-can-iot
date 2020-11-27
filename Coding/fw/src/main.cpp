@@ -17,6 +17,7 @@ Main Application
 #include <SerialAdapter.h>
 #include <CANAdapter.h>
 #include <NVMAdapter.h>
+#include <WSAdapter.h>
 #include <ESP_Server.h>
 #include <Settings.h>
 #include <io.h>
@@ -34,7 +35,9 @@ Main Application
 SerialAdapter serialAdapter;
 CANAdapter sja1000Adapter;
 NVMAdapter flashAdapter;
-Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
+WSAdapter websocketadapter;
+//Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
+Lawicel protocolLawicel(websocketadapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/
 void restart();
