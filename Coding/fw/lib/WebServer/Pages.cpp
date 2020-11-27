@@ -40,9 +40,9 @@ static void errorPage(AsyncWebServerRequest *request);
 void Pages::init(AsyncWebServer &server)
 {
     server.on("/", HTTP_GET, indexPage);
-
-    server.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
-    server.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
+    server.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
+    server.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
+    server.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
 
     server.onNotFound(errorPage);
 }
