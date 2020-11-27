@@ -7,7 +7,7 @@
       "Application": "Pcbnew",
       "Version":     "(5.1.6)-1"
     },
-    "CreationDate":  "2020-11-25T15:36:35+01:00"
+    "CreationDate":  "2020-11-27T13:46:48+01:00"
   },
   "GeneralSpecs":
   {
@@ -82,6 +82,11 @@
     {
       "Path":  "Board-Edge_Cuts.gbr",
       "FileFunction":  "Profile",
+      "FilePolarity":  "Positive"
+    },
+    {
+      "Path":  "Board-B_Fab.gbr",
+      "FileFunction":  "AssemblyDrawing,Bot",
       "FilePolarity":  "Positive"
     }
   ],
