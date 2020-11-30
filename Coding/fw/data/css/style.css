@@ -69,3 +69,9 @@ body {
     color: #8c8c8c;
     font-weight: bold;
 }
+
+table,
+th,
+td {
+    border: 1px solid black;
+}

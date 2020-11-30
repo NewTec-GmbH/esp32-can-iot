@@ -1,5 +1,6 @@
 var logMessages = [];
 var maxLogs = 40;
+var counter = 1;
 
 var gateway = `ws://${window.location.hostname}/ws`;
 var websocket;
@@ -31,35 +32,67 @@ function onMessage(event) {
     logMessages.push(event);
 
     if (maxLogs < logMessages.length) {
-        logMessages.shift();
-        table.deleteRow(1);
+        logMessages.pop();
+        table.deleteRow(-1);
     }
 
-    const message = event.data.split(';');
+    var frame = {
+        ID: "",
+        DLC: "",
+        DATA: "",
+        TIMESTAMP: ""
+    };
 
-    row = table.insertRow(-1);
+    switch (event.data[0]) {
+        case "t":
+            frame.ID = event.data.substr(1, 3);
+            frame.DLC = event.data[4];
+            frame.DATA = event.data.substr(5, frame.DLC * 2);
+            frame.TIMESTAMP = event.data.substr(5 + frame.DLC * 2, event.data.length);
+            break;
+
+        case "T":
+            frame.ID = event.data.substr(1, 8);
+            frame.DLC = event.data[9];
+            frame.DATA = event.data.substr(10, frame.DLC * 2);
+            frame.TIMESTAMP = event.data.substr(10 + frame.DLC * 2, event.data.length);
+            break;
+
+        case "r":
+            frame.ID = event.data.substr(1, 3);
+            frame.DLC = event.data[4];
+            frame.DATA = "RTR"
+            frame.TIMESTAMP = event.data.substr(5, event.data.length);
+            break;
+
+        case "R":
+            frame.ID = event.data.substr(1, 8);
+            frame.DLC = event.data[9];
+            frame.DATA = "RTR"
+            frame.TIMESTAMP = event.data.substr(10, event.data.length);
+            break;
+
+
+        default:
+            break;
+    }
+
+    row = table.insertRow(1);
 
     cell = row.insertCell(-1);
-    cell.innerHTML = message[0];
+    cell.innerHTML = counter;
     cell = row.insertCell(-1);
-    cell.innerHTML = message[1];
+    cell.innerHTML = frame.ID;
     cell = row.insertCell(-1);
-    cell.innerHTML = message[2];
+    cell.innerHTML = frame.DLC;
     cell = row.insertCell(-1);
-    cell.innerHTML = message[3];
+    cell.innerHTML = frame.DATA.toUpperCase();
     cell = row.insertCell(-1);
-    cell.innerHTML = message[4];
+    cell.innerHTML = frame.TIMESTAMP;
+
+    counter++;
 }
 
 function onLoad(event) {
     initWebSocket();
-    initButton();
-}
-
-function initButton() {
-    document.getElementById('button').addEventListener('click', toggle);
-}
-
-function toggle() {
-    websocket.send('toggle');
 }
