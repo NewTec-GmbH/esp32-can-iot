@@ -32,7 +32,7 @@ Preferences m_memory;
 
 /* PUBLIC METHODES ********************************************************************************/
 /**************************************************************************************************/
-bool Settings::save(const String directory, const String &key, const uint32_t &value)
+bool Settings::save(const String &directory, const String &key, const uint32_t &value)
 {
     bool success = false;
     if (m_memory.begin(directory.c_str(), false))
@@ -45,7 +45,7 @@ bool Settings::save(const String directory, const String &key, const uint32_t &v
 }
 
 /**************************************************************************************************/
-bool Settings::save(const String directory, const String &key, const String &value)
+bool Settings::save(const String &directory, const String &key, const String &value)
 {
     bool success = false;
     if (m_memory.begin(directory.c_str(), false))
@@ -58,7 +58,7 @@ bool Settings::save(const String directory, const String &key, const String &val
 }
 
 /**************************************************************************************************/
-bool Settings::get(const String directory, const String &key, uint32_t &value, const uint32_t defaultValue)
+bool Settings::get(const String &directory, const String &key, uint32_t &value, const uint32_t defaultValue)
 {
     bool success = false;
     if (m_memory.begin(directory.c_str(), false))
@@ -71,7 +71,7 @@ bool Settings::get(const String directory, const String &key, uint32_t &value, c
 }
 
 /**************************************************************************************************/
-bool Settings::get(const String directory, const String &key, String &value, const String defaultValue)
+bool Settings::get(const String &directory, const String &key, String &value, const String defaultValue)
 {
     bool success = false;
     if (m_memory.begin(directory.c_str(), false))
@@ -84,7 +84,7 @@ bool Settings::get(const String directory, const String &key, String &value, con
 }
 
 /**************************************************************************************************/
-bool Settings::clear(const String directory)
+bool Settings::clear(const String &directory)
 {
     bool success = false;
     if (m_memory.begin(directory.c_str(), false))
