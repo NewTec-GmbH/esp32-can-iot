@@ -26,8 +26,13 @@ extern "C"
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
-static void reqRestart();                                    /*< Changes the value of restartRequested to True*/
-static void credentialsProcessor(String name, String value); /*< Processor to save the required credentials */
+/**************************************************************************************************/
+/**
+*  Processor to save the required credentials incoming from the Webpage
+* @param name Name of the parameter
+* @param value Value of the parameter 
+*/
+static void credentialsProcessor(String name, String value);
 
 /**
 * Captive portal request handler.
@@ -86,13 +91,13 @@ public:
                     AsyncWebParameter *p = request->getParam(i);
                     credentialsProcessor(p->name(), p->value());
                 }
-                request->send(SPIFFS, "/setCredentials.html", String(), false, captivePageProcessor);
-                reqRestart();
+                request->send(SPIFFS, "/setCredentials.html");
+                restartRequested = true;
             }
         }
         else if (HTTP_GET == request->method())
         {
-            request->send(SPIFFS, "/STACredentials.html", String(), false, captivePageProcessor);
+            request->send(SPIFFS, "/STACredentials.html");
         }
         else
         {
@@ -100,17 +105,18 @@ public:
         }
     }
 
+/**
+* @brief Function tells the server if the Body of the request has to be parsed too. As this website uses a POST Request, body must be parsed.
+* 
+* @return true The Body is trivial and will not be parsed.
+* @return false The Body is important/not trivial and must be parsed.
+*/
     bool isRequestHandlerTrivial() override
     {
         return false;
     }
 
 private:
-    static String captivePageProcessor(const String &var)
-    {
-        String temp;
-        return temp;
-    }
 };
 
 /* PUBLIC METHODES ********************************************************************************/
@@ -123,7 +129,7 @@ private:
 
 /* VARIABLES **************************************************************************************/
 static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler */
-static bool restartRequested = false; /**<  Variable to call Restart */
+static bool restartRequested = false;                 /**<  Variable to call Restart */
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 /**
@@ -147,14 +153,6 @@ bool CaptivePortal::isRestartRequested()
 }
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
-
-/**
- * Request restart.
- */
-static void reqRestart()
-{
-    restartRequested = true;
-}
 
 /**
  * @brief Saves the Credentials given by the user to the Flash Memory
