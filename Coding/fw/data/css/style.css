@@ -1,22 +1,45 @@
 html {
     font-family: Arial, Helvetica, sans-serif;
-    text-align: center;
 }
 
 h1 {
     font-size: 1.8rem;
-    color: white;
+    color: black;
 }
 
 h2 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #143642;
+    color: white;
+}
+
+h4 {
+    float: left;
+    width: 33.33%;
 }
 
 .topnav {
     overflow: hidden;
     background-color: #143642;
+}
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: #4CAF50;
+    color: white;
 }
 
 body {
@@ -74,4 +97,22 @@ table,
 th,
 td {
     border: 1px solid black;
+}
+
+.table {
+    width: 100%;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+
+/* Clear floats after the columns */
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
 }
