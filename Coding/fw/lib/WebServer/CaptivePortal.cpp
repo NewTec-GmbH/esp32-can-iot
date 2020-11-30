@@ -26,6 +26,7 @@ extern "C"
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
+static bool restartRequested = false;                 /**<  Variable to call Restart */
 /**************************************************************************************************/
 /**
 *  Processor to save the required credentials incoming from the Webpage
@@ -129,7 +130,7 @@ private:
 
 /* VARIABLES **************************************************************************************/
 static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler */
-static bool restartRequested = false;                 /**<  Variable to call Restart */
+
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 /**

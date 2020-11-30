@@ -12,13 +12,13 @@ Handler for ESP32 WebServer. @ref ESPServer.h
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
-#include <ESP_Server.h>
+#include "ESP_Server.h"
 #include <DNSServer.h>
 #include <SPIFFS.h>
-#include <Board.h>
-#include <Web_config.h>
-#include <Pages.h>
-#include <CaptivePortal.h>
+#include "Board.h"
+#include "Web_config.h"
+#include "Pages.h"
+#include "CaptivePortal.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -39,7 +39,7 @@ static DNSServer dnsServer;                              /**< Instance of DNS Se
 *   Determines the state of the WiFiModeSelect Button to enter AP Mode
 *   @return bool AP Mode. If true, will request the AP mode. If false, requests STA Mode
 */
-static bool setAPMode();
+static bool getAPMode();
 
 /**
 *  Variable to call Restart
@@ -75,7 +75,7 @@ bool ESPServer::begin()
     bool success = true;
     WebConfig::importConfig(); /*< Imports Credentials from Flash Memory */
 
-    if (setAPMode())
+    if (getAPMode())
     {
         if (!WiFi.softAP(WebConfig::getAP_SSID().c_str(), WebConfig::getAP_PASS().c_str()))
         {
@@ -143,7 +143,7 @@ bool ESPServer::end()
 /**************************************************************************************************/
 /**
 *   Calls next request on DNS Server
-*   return true
+*   return true if a restart is requested
 */
 bool ESPServer::handleNextRequest()
 {
@@ -178,7 +178,7 @@ AsyncWebServer &ESPServer::getInstance()
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
 /**************************************************************************************************/
-static bool setAPMode()
+static bool getAPMode()
 {
 
     bool apMode = false;
