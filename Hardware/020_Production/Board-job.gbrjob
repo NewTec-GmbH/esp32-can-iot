@@ -7,7 +7,7 @@
       "Application": "Pcbnew",
       "Version":     "(5.1.6)-1"
     },
-    "CreationDate":  "2020-11-27T13:46:48+01:00"
+    "CreationDate":  "2020-12-01T15:16:14+01:00"
   },
   "GeneralSpecs":
   {
@@ -78,16 +78,6 @@
       "Path":  "Board-B_Mask.gbr",
       "FileFunction":  "SolderMask,Bot",
       "FilePolarity":  "Negative"
-    },
-    {
-      "Path":  "Board-Edge_Cuts.gbr",
-      "FileFunction":  "Profile",
-      "FilePolarity":  "Positive"
-    },
-    {
-      "Path":  "Board-B_Fab.gbr",
-      "FileFunction":  "AssemblyDrawing,Bot",
-      "FilePolarity":  "Positive"
     }
   ],
   "MaterialStackup":
