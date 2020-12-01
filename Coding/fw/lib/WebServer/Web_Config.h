@@ -25,20 +25,19 @@ extern "C"
 
 namespace WebConfig
 {
-  static const uint32_t DNS_PORT = 53U;
-  static const uint32_t WEBSERVER_PORT = 80U;
-  static const uint8_t WIFI_MODE_BUTTON = 21U;
-  static const uint16_t WIFI_TIMEOUT_MS = 20000;
+  static const uint32_t DNS_PORT = 53U;          /**< DNS Port */
+  static const uint32_t WEBSERVER_PORT = 80U;    /**< HTTP Port */
+  static const uint16_t WIFI_TIMEOUT_MS = 20000; /**< Maximum wait time to establish the WiFi connection */
 
-  String getSTA_SSID();
-  String getSTA_PASS();
-  String getAP_SSID();
-  String getAP_PASS();
-  String getWEB_USER();
-  String getWEB_PASS();
+  String &getSTA_SSID(); /**< Returns saved Station SSID */
+  String &getSTA_PASS(); /**< Returns saved Station Password */
+  String &getAP_SSID();  /**< Returns saved Access Point SSID */
+  String &getAP_PASS();  /**< Returns saved Access Point Password */
+  String &getWEB_USER(); /**< Returns saved Webserver Username */
+  String &getWEB_PASS(); /**< Returns saved Webserver Password */
 
-  void importConfig();
-  void saveConfig(const String &key, const String &value);
+  void importConfig();                                     /**< Loads the saved configuration from the flash memory */
+  void saveConfig(const String &key, const String &value); /**< Saves the desired value in the memory "key" */
 
 } // namespace WebConfig
 
