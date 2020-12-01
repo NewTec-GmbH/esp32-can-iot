@@ -1,3 +1,7 @@
+/*
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+*/
 var logMessages = [];
 var maxLogs = 40;
 var counter = 1;
