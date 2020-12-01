@@ -108,5 +108,5 @@ static void errorPage(AsyncWebServerRequest *request)
         return request->requestAuthentication();
     }
 
-    request->send(404, "text/plain", "Not Found");
+    request->send(WebConfig::HTTP_NOT_FOUND, "text/plain", "Not Found");
 }

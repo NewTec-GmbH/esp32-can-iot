@@ -102,7 +102,7 @@ public:
         }
         else
         {
-            request->send(400, "text/html", "\n Error. Bad Request");
+            request->send(WebConfig::HTTP_BAD_REQUEST, "text/html", "\n Error. Bad Request");
         }
     }
 
