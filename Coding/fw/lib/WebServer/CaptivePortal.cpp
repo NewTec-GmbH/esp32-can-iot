@@ -12,8 +12,8 @@ Captive Portal for ESP32 WebServer @ref CaptivePortal.h
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
-#include <CaptivePortal.h>
-#include <Web_Config.h>
+#include "CaptivePortal.h"
+#include "Web_Config.h"
 #include <SPIFFS.h>
 
 /* C-Interface ************************************************************************************/
@@ -138,11 +138,11 @@ static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler *
  * 
  * @param server AsyncWebserver Instance to initialize to
  */
-void CaptivePortal::init(AsyncWebServer &server)
+void CaptivePortal::init(AsyncWebServer &webServer)
 {
-    server.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
-    server.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
-    server.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
+    webServer.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
+    webServer.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
+    webServer.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 }
 
 /**

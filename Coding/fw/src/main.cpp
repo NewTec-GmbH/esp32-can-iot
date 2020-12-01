@@ -13,14 +13,14 @@ Main Application
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include <Arduino.h>
-#include <Lawicel.h>
-#include <SerialAdapter.h>
-#include <CANAdapter.h>
-#include <NVMAdapter.h>
-#include <ESP_Server.h>
-#include <Settings.h>
-#include <io.h>
-#include <Board.h>
+#include "Lawicel.h"
+#include "SerialAdapter.h"
+#include "CANAdapter.h"
+#include "NVMAdapter.h"
+#include "ESP_Server.h"
+#include "Settings.h"
+#include "io.h"
+#include "Board.h"
 
 /* CONSTANTS **************************************************************************************/
 

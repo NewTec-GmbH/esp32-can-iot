@@ -15,7 +15,7 @@ ESP32SJA1000 Adapter for Lawicel Protocol
 #define CAN_ADAPTER_H
 
 /* INCLUDES ***************************************************************************************/
-#include <CANInterface.h>
+#include "CANInterface.h"
 #include <CAN.h>
 
 /* C-Interface ************************************************************************************/

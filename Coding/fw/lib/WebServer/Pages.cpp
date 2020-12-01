@@ -12,10 +12,10 @@ Web Pages for ESP32 WebServer @ref Pages.h
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
-#include <Pages.h>
-#include <Web_Config.h>
+#include "Pages.h"
+#include "Web_Config.h"
 #include <SPIFFS.h>
-#include <Settings.h>
+#include "Settings.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -37,14 +37,14 @@ static void errorPage(AsyncWebServerRequest *request);
 
 /* PUBLIC METHODES ********************************************************************************/
 /**************************************************************************************************/
-void Pages::init(AsyncWebServer &server)
+void Pages::init(AsyncWebServer &webServer)
 {
-    server.on("/", HTTP_GET, indexPage);
+    webServer.on("/", HTTP_GET, indexPage);
 
-    server.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
-    server.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
+    webServer.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
+    webServer.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
 
-    server.onNotFound(errorPage);
+    webServer.onNotFound(errorPage);
 }
 
 /* PROTECTED METHODES *****************************************************************************/

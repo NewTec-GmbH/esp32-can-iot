@@ -27,7 +27,7 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
-static AsyncWebServer server(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
+static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
 static DNSServer dnsServer;                              /**< Instance of DNS Server*/
 
 /* MACROS *****************************************************************************************/
@@ -123,7 +123,7 @@ bool ESPServer::begin()
 
     Serial.println(m_serverIP);
 
-    server.begin();
+    webServer.begin();
     return success;
 }
 
@@ -134,7 +134,7 @@ bool ESPServer::begin()
 */
 bool ESPServer::end()
 {
-    server.end();
+    webServer.end();
     SPIFFS.end();
     dnsServer.stop();
     return WiFi.disconnect(true, true);
@@ -167,7 +167,7 @@ bool ESPServer::handleNextRequest()
 
 AsyncWebServer &ESPServer::getInstance()
 {
-    return server;
+    return webServer;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -218,11 +218,11 @@ bool initPages(bool apModeRequested)
 
     if (apModeRequested)
     {
-        CaptivePortal::init(server);
+        CaptivePortal::init(webServer);
     }
     else
     {
-        Pages::init(server);
+        Pages::init(webServer);
     }
 
     return success;
@@ -234,7 +234,7 @@ bool connectWiFi()
 
     unsigned long startAttempTime = millis();
 
-    while (WiFi.status() != WL_CONNECTED && (millis() - startAttempTime) < WebConfig::WIFI_TIMEOUT_MS)
+    while ((WiFi.status() != WL_CONNECTED) && ((millis() - startAttempTime) < WebConfig::WIFI_TIMEOUT_MS))
     {
     }
 
