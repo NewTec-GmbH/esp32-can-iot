@@ -96,7 +96,7 @@ public:
         }
         else
         {
-            request->send(400, "text/html", "\n Error. Bad Request");
+            request->send(400, "text/plain", "Error. Bad Request");
         }
     }
 
