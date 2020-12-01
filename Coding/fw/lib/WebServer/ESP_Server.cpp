@@ -142,11 +142,12 @@ bool ESPServer::end()
 */
 bool ESPServer::handleNextRequest()
 {
+    bool success = true;
     if (WiFi.status() != WL_CONNECTED)
     {
         if(!connectWiFi())
         {
-            Board::haltSystem();
+            success = false;
         }
     }
     else
@@ -155,6 +156,11 @@ bool ESPServer::handleNextRequest()
         restartRequested = CaptivePortal::isRestartRequested();
     }
 
+    return success;
+}
+
+bool ESPServer::isRestartRequested()
+{
     return restartRequested;
 }
 

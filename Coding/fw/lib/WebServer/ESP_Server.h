@@ -39,6 +39,7 @@ namespace ESPServer
   bool begin(void);                                             /**< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
   bool end(void);                                               /**< Disconnects and disables the WebServer */
   bool handleNextRequest(void);                                 /**< Calls next request on DNS Server */
+  bool isRestartRequested(void);                                /**< Returns true if restart requested by Web Server */
 
   // namespace
 } // namespace ESPServer

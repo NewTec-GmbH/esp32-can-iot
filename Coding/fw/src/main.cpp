@@ -52,8 +52,16 @@ void setup()
 
 void loop()
 {
-  protocolLawicel.executeCycle();
+  if(!protocolLawicel.executeCycle())
+  {
+    Board::blinkError(250);
+  }
   if (ESPServer::handleNextRequest())
+  {
+    Board::haltSystem();
+    
+  }
+  if(ESPServer::isRestartRequested())
   {
     Board::reset();
   }
