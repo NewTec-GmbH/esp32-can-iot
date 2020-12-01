@@ -146,9 +146,7 @@ bool ESPServer::handleNextRequest()
     {
         if(!connectWiFi())
         {
-            Board::errorLED.write(HIGH);
-            while(true)
-            {}
+            Board::haltSystem();
         }
     }
     else
