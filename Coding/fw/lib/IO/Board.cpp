@@ -82,4 +82,12 @@ extern void Board::reset()
     return;
 }
 
+extern void Board::haltSystem()
+{
+  errorLED.write(HIGH);
+  while (true)
+  {
+  }  
+}
+
 /* INTERNAL FUNCTIONS *****************************************************************************/

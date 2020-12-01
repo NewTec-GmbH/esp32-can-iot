@@ -107,6 +107,12 @@ namespace Board
     */
     extern void reset();
 
+    /**
+    * @brief Stops the runnung programm and sets the Error LED
+    * @author Gabryel Reyes
+    */
+    extern void haltSystem();
+
 }; // namespace Board
 
     /* INLINE FUNCTIONS *******************************************************************************/
