@@ -13,10 +13,8 @@ Handler for ESP32 WebServer. @ref ESPServer.h
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include "ESP_Server.h"
-#include <DNSServer.h>
 #include <SPIFFS.h>
 #include "Board.h"
-#include "Web_config.h"
 #include "Pages.h"
 #include "CaptivePortal.h"
 
@@ -26,9 +24,6 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-
-static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
-static DNSServer dnsServer;                              /**< Instance of DNS Server*/
 
 /* MACROS *****************************************************************************************/
 
@@ -110,7 +105,7 @@ bool ESPServer::begin()
         }
     }
 
-    dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
+    ESPServer::dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
 
     if (!dnsServer.start(WebConfig::DNS_PORT, "*", m_serverIP))
     {
@@ -136,7 +131,7 @@ bool ESPServer::end()
 {
     webServer.end();
     SPIFFS.end();
-    dnsServer.stop();
+    ESPServer::dnsServer.stop();
     return WiFi.disconnect(true, true);
 }
 
@@ -158,16 +153,11 @@ bool ESPServer::handleNextRequest()
     }
     else
     {
-        dnsServer.processNextRequest();
+        ESPServer::dnsServer.processNextRequest();
         restartRequested = CaptivePortal::isRestartRequested();
     }
 
     return restartRequested;
-}
-
-AsyncWebServer &ESPServer::getInstance()
-{
-    return webServer;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -218,11 +208,11 @@ bool initPages(bool apModeRequested)
 
     if (apModeRequested)
     {
-        CaptivePortal::init(webServer);
+        CaptivePortal::init(ESPServer::webServer);
     }
     else
     {
-        Pages::init(webServer);
+        Pages::init(ESPServer::webServer);
     }
 
     return success;

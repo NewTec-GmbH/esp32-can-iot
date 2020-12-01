@@ -16,6 +16,8 @@ Handler for ESP32 WebServer
 
 /* INCLUDES ***************************************************************************************/
 #include <ESPAsyncWebServer.h>
+#include <DNSServer.h>
+#include "Web_config.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -29,10 +31,16 @@ extern "C"
 */
 namespace ESPServer
 {
-    bool begin(void);                  /**< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
-    bool end(void);                    /**< Disconnects and disables the WebServer */
-    bool handleNextRequest(void);      /**< Calls next request on DNS Server */
-    AsyncWebServer &getInstance(void); /**< Returns server's instance */
+  namespace
+  {
+    static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
+    static DNSServer dnsServer;                                 /**< Instance of DNS Server*/
+  }                                                             // namespace
+  bool begin(void);                                             /**< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
+  bool end(void);                                               /**< Disconnects and disables the WebServer */
+  bool handleNextRequest(void);                                 /**< Calls next request on DNS Server */
+
+  // namespace
 } // namespace ESPServer
 
 /* INLINE FUNCTIONS ***************************************************************************/
