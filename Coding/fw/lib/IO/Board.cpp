@@ -90,4 +90,16 @@ extern void Board::haltSystem()
   }  
 }
 
+extern void Board::blinkError(uint32_t duration)
+{
+    errorLED.write(HIGH);
+
+    uint32_t startTime = millis();
+
+    while(millis() < (startTime + duration))
+    {
+    }
+    errorLED.write(LOW);
+}
+
 /* INTERNAL FUNCTIONS *****************************************************************************/

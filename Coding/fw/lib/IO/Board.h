@@ -113,6 +113,12 @@ namespace Board
     */
     extern void haltSystem();
 
+    /**
+    * @brief Blinks the Error LED without stoping the programm
+    * @author Gabryel Reyes
+    */
+    extern void blinkError(uint32_t duration);
+
 }; // namespace Board
 
     /* INLINE FUNCTIONS *******************************************************************************/
