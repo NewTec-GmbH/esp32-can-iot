@@ -16,11 +16,13 @@ bool websocket::init(AsyncWebServer &server)
 
     ws.onEvent(onEvent);
     server.addHandler(&ws);
+    return true; /**< No error handling when registering handlers */
 }
 
 bool websocket::cycle()
 {
     ws.cleanupClients();
+    return true; /**< No error handling on cleanup */
 }
 
 static String processor(const String &var)
