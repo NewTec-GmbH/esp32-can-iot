@@ -12,6 +12,127 @@
 
     <link rel="stylesheet" href="/css/style.css" />
     <script src="/js/ws.js"></script>
+    <script>
+        var logMessages = [];
+        var maxLogs = 40;
+        var counter = 1;
+        var enable = 1;
+
+        var gateway = `ws://${window.location.hostname}/ws`;
+        var websocket;
+        window.addEventListener('load', onLoad);
+
+        function initWebSocket() {
+            console.log('Trying to open a WebSocket connection...');
+            websocket = new WebSocket(gateway);
+            websocket.onopen = onOpen;
+            websocket.onclose = onClose;
+            websocket.onmessage = onMessage;
+        }
+
+        function onOpen(event) {
+            console.log('Connection opened');
+        }
+
+        function onClose(event) {
+            console.log('Connection closed');
+            setTimeout(initWebSocket, 2000);
+        }
+
+        function onLoad(event) {
+            initWebSocket();
+            setInterval(displayMessages,10);
+        }
+
+        function onMessage(event) {
+            logMessages.push(event.data);
+        }
+
+        function displayMessages() {
+            if (enable == 1) {
+                if (logMessages.length != 0) {
+
+                    var table = document.getElementById("CANLog");
+                    var row = null;
+                    var cell = null;
+
+                    var frame = {
+                        ID: "",
+                        DLC: "",
+                        DATA: "",
+                        TIMESTAMP: ""
+                    };
+
+                    console.log(logMessages[0]);
+
+                    switch (logMessages[0][0]) {
+                        case "t":
+                            frame.ID = logMessages[0].substr(1, 3);
+                            frame.DLC = logMessages[0][4];
+                            frame.DATA = logMessages[0].substr(5, frame.DLC * 2);
+                            frame.TIMESTAMP = logMessages[0].substr(5 + frame.DLC * 2, logMessages[0].length);
+                            break;
+
+                        case "T":
+                            frame.ID = logMessages[0].substr(1, 8);
+                            frame.DLC = logMessages[0][9];
+                            frame.DATA = logMessages[0].substr(10, frame.DLC * 2);
+                            frame.TIMESTAMP = logMessages[0].substr(10 + frame.DLC * 2, logMessages[0].length);
+                            break;
+
+                        case "r":
+                            frame.ID = logMessages[0].substr(1, 3);
+                            frame.DLC = logMessages[0][4];
+                            frame.DATA = "RTR"
+                            frame.TIMESTAMP = logMessages[0].substr(5, logMessages[0].length);
+                            break;
+
+                        case "R":
+                            frame.ID = logMessages[0].substr(1, 8);
+                            frame.DLC = logMessages[0][9];
+                            frame.DATA = "RTR"
+                            frame.TIMESTAMP = logMessages[0].substr(10, logMessages[0].length);
+                            break;
+
+
+                        default:
+                            frame.ID = undefined;
+                            frame.DLC = undefined;
+                            frame.DATA = undefined;
+                            frame.TIMESTAMP = undefined;
+                            break;
+                    }
+
+                    logMessages.shift();
+
+                    if (maxLogs < table.rows.length) {
+                        table.deleteRow(-1);
+                    }
+
+                    row = table.insertRow(1);
+
+                    cell = row.insertCell(-1);
+                    cell.innerHTML = counter;
+                    cell = row.insertCell(-1);
+                    cell.innerHTML = frame.ID;
+                    cell = row.insertCell(-1);
+                    cell.innerHTML = frame.DLC;
+                    cell = row.insertCell(-1);
+                    cell.innerHTML = frame.DATA.toUpperCase();
+                    cell = row.insertCell(-1);
+                    cell.innerHTML = frame.TIMESTAMP.toUpperCase();
+
+                    counter++;
+                }
+            }
+        }
+
+        function toggle() {
+            enable = !enable;
+            console.log("Button Toggled");
+        }
+    </script>
+
 </head>
 
 <body>
@@ -20,6 +141,7 @@
     </div>
     <h1>CAN Communication</h1>
     <div class="content">
+        <button class="button" type="button" onclick="toggle()">Pause</button>
         <div>
             <table id="CANLog" cellpadding="15px">
                 <tr>
