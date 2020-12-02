@@ -10,6 +10,7 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 
 bool websocket::init(AsyncWebServer &server)
 {
+    Serial.begin(115200);
     server.on("/communication", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(SPIFFS, "/ws.html", String(), false, processor);
     });

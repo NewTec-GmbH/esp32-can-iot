@@ -45,7 +45,6 @@ void setErrorLED();
 
 void setup()
 {
-  Serial.begin(115200);
   Board::init();
   if (!protocolLawicel.begin())
   {
