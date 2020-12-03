@@ -144,7 +144,7 @@ private:
     bool toggleAutoStartCmd(const String &lawicelCMD);   /**< Auto Startup feature (from power on) */
 
     bool autopoll();      /**< Frame Polling without any extra tags */
-    uint32_t getTimestamp(); /**< Returns Timestamp */
+    String getTimestamp(); /**< Returns Timestamp */
 
     bool m_timestamp = false;   /**< Toggle timestamp */
     bool m_autoPolling = true;  /**< Toggle Auto-Polling */

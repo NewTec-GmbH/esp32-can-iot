@@ -60,7 +60,8 @@
                         ID: "",
                         DLC: "",
                         DATA: "",
-                        TIMESTAMP: ""
+                        TIMESTAMP: "",
+                        SYSTIME: ""
                     };
 
                     console.log(logMessages[0]);
@@ -70,28 +71,32 @@
                             frame.ID = logMessages[0].substr(1, 3);
                             frame.DLC = logMessages[0][4];
                             frame.DATA = logMessages[0].substr(5, frame.DLC * 2);
-                            frame.TIMESTAMP = logMessages[0].substr(5 + frame.DLC * 2, logMessages[0].length);
+                            frame.TIMESTAMP = logMessages[0].substr(5 + frame.DLC * 2, 4);
+                            frame.SYSTIME = logMessages[0].substr(9 + frame.DLC * 2, 6);
                             break;
 
                         case "T":
                             frame.ID = logMessages[0].substr(1, 8);
                             frame.DLC = logMessages[0][9];
                             frame.DATA = logMessages[0].substr(10, frame.DLC * 2);
-                            frame.TIMESTAMP = logMessages[0].substr(10 + frame.DLC * 2, logMessages[0].length);
+                            frame.TIMESTAMP = logMessages[0].substr(10 + frame.DLC * 2, 4);
+                            frame.SYSTIME = logMessages[0].substr(14 + frame.DLC * 2, 6);
                             break;
 
                         case "r":
                             frame.ID = logMessages[0].substr(1, 3);
                             frame.DLC = logMessages[0][4];
                             frame.DATA = "RTR"
-                            frame.TIMESTAMP = logMessages[0].substr(5, logMessages[0].length);
+                            frame.TIMESTAMP = logMessages[0].substr(5, 4);
+                            frame.SYSTIME = logMessages[0].substr(9, 6);
                             break;
 
                         case "R":
                             frame.ID = logMessages[0].substr(1, 8);
                             frame.DLC = logMessages[0][9];
                             frame.DATA = "RTR"
-                            frame.TIMESTAMP = logMessages[0].substr(10, logMessages[0].length);
+                            frame.TIMESTAMP = logMessages[0].substr(10, 4);
+                            frame.SYSTIME = logMessages[0].substr(14, 8);
                             break;
 
 
@@ -100,6 +105,7 @@
                             frame.DLC = undefined;
                             frame.DATA = undefined;
                             frame.TIMESTAMP = undefined;
+                            frame.SYSTIME = undefined;
                             break;
                     }
 
@@ -121,6 +127,8 @@
                     cell.innerHTML = frame.DATA.toUpperCase();
                     cell = row.insertCell(-1);
                     cell.innerHTML = frame.TIMESTAMP.toUpperCase();
+                    cell = row.insertCell(-1);
+                    cell.innerHTML = frame.SYSTIME;
 
                     counter++;
                 }
@@ -150,6 +158,7 @@
                     <th>DLC</th>
                     <th>Data</th>
                     <th>Timestamp</th>
+                    <th>SysTime</th>
                 </tr>
             </table>
         </div>

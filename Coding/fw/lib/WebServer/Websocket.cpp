@@ -66,5 +66,7 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 
 void websocket::send(String message)
 {
+    String systime = String(millis());    
+    message += systime.substring(0,7);
     ws.textAll(message);
 }

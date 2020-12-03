@@ -840,7 +840,7 @@ bool Lawicel::singlePollCmd(const String &lawicelCMD)
 
             if (m_timestamp)
             {
-                m_serialReturn += String(getTimestamp(), HEX);
+                m_serialReturn += getTimestamp();
             }
         }
     }
@@ -1284,7 +1284,7 @@ bool Lawicel::autopoll()
 
             if (m_timestamp)
             {
-                m_serialReturn += String(getTimestamp(), HEX);
+                m_serialReturn += getTimestamp();
             }
         }
         else
@@ -1296,9 +1296,19 @@ bool Lawicel::autopoll()
 }
 
 /**************************************************************************************************/
-uint32_t Lawicel::getTimestamp()
+String Lawicel::getTimestamp()
 {
-    return millis() % MAX_TIMESTAMP;
+    String timestamp;
+    String temp = String(millis() % MAX_TIMESTAMP, HEX);
+    
+    for(int i = 0 ; i < (4 - temp.length()); i++)
+    {
+        timestamp += '0';
+    }
+
+    timestamp += temp;
+
+    return timestamp;
 }
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
