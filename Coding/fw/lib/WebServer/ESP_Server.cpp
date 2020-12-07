@@ -55,6 +55,8 @@ static bool connectWiFi();
 static bool initPages(bool apModeRequested);
 
 /* VARIABLES **************************************************************************************/
+static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
+static DNSServer dnsServer;
 IPAddress m_serverIP; /**< Stores the IP Address of the ESP32 */
 
 /* PUBLIC METHODES ********************************************************************************/
@@ -105,7 +107,7 @@ bool ESPServer::begin()
         }
     }
 
-    ESPServer::dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
+    dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
 
     if (!dnsServer.start(WebConfig::DNS_PORT, "*", m_serverIP))
     {
@@ -131,7 +133,7 @@ bool ESPServer::end()
 {
     webServer.end();
     SPIFFS.end();
-    ESPServer::dnsServer.stop();
+    dnsServer.stop();
     return WiFi.disconnect(true, true);
 }
 
@@ -145,14 +147,14 @@ bool ESPServer::handleNextRequest()
     bool success = true;
     if (WiFi.status() != WL_CONNECTED)
     {
-        if(!connectWiFi())
+        if (!connectWiFi())
         {
             success = false;
         }
     }
     else
     {
-        ESPServer::dnsServer.processNextRequest();
+        dnsServer.processNextRequest();
         restartRequested = CaptivePortal::isRestartRequested();
     }
 
@@ -212,11 +214,11 @@ bool initPages(bool apModeRequested)
 
     if (apModeRequested)
     {
-        CaptivePortal::init(ESPServer::webServer);
+        CaptivePortal::init(webServer);
     }
     else
     {
-        Pages::init(ESPServer::webServer);
+        Pages::init(webServer);
     }
 
     return success;

@@ -30,18 +30,11 @@ extern "C"
 * namespace for Methods in Async Server
 */
 namespace ESPServer
-{
-  namespace
-  {
-    static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
-    static DNSServer dnsServer;                                 /**< Instance of DNS Server*/
-  }                                                             // namespace
-  bool begin(void);                                             /**< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
-  bool end(void);                                               /**< Disconnects and disables the WebServer */
-  bool handleNextRequest(void);                                 /**< Calls next request on DNS Server */
-  bool isRestartRequested(void);                                /**< Returns true if restart requested by Web Server */
-
-  // namespace
+{                                
+  bool begin(void);              /**< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
+  bool end(void);                /**< Disconnects and disables the WebServer */
+  bool handleNextRequest(void);  /**< Calls next request on DNS Server */
+  bool isRestartRequested(void); /**< Returns true if restart requested by Web Server */
 } // namespace ESPServer
 
 /* INLINE FUNCTIONS ***************************************************************************/
