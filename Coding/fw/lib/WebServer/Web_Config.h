@@ -43,7 +43,7 @@ namespace WebConfig
   {
     HTTP_OK = 200,           /**< OK */
     HTTP_BAD_REQUEST = 400,  /**< Bad Request */
-    HTTP_UNAUTHORIZED = 401, /**< Unathorized */
+    HTTP_UNAUTHORIZED = 401, /**< Unauthorized */
     HTTP_NOT_FOUND = 404     /**< Not Found */
   };
 
