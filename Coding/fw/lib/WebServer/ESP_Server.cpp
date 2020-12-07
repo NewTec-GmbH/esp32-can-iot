@@ -37,11 +37,6 @@ extern "C"
 static bool getAPMode();
 
 /**
-*  Variable to call Restart
-*/
-static bool restartRequested = false;
-
-/**
 * Connects to the WiFi AP when requested
 * @return true when succesfully connected. False otherwise.
 */
@@ -155,7 +150,6 @@ bool ESPServer::handleNextRequest()
     else
     {
         dnsServer.processNextRequest();
-        restartRequested = CaptivePortal::isRestartRequested();
     }
 
     return success;
@@ -163,7 +157,7 @@ bool ESPServer::handleNextRequest()
 
 bool ESPServer::isRestartRequested()
 {
-    return restartRequested;
+    return CaptivePortal::isRestartRequested();
 }
 
 /* PROTECTED METHODES *****************************************************************************/
