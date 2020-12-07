@@ -56,7 +56,7 @@ void loop()
   {
     Board::blinkError(250);
   }
-  if (ESPServer::handleNextRequest())
+  if (!ESPServer::checkConnection())
   {
     Board::haltSystem();
     
