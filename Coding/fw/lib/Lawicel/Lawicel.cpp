@@ -127,7 +127,7 @@ bool Lawicel::begin()
             receiveCommand(m_selectedNVM->readString(INIT_FILTER_MODE));
 
             receiveCommand(m_selectedNVM->readString(INIT_FILTER_ACN));
-            
+
             receiveCommand(m_selectedNVM->readString(INIT_FILTER_AMN));
         }
 
@@ -1278,6 +1278,10 @@ bool Lawicel::autopoll()
             {
                 for (int i = 0; i < frame.m_dlc; i++)
                 {
+                    if (frame.m_data[i] <= 9)
+                    {
+                        m_serialReturn += '0';
+                    }                    
                     m_serialReturn += String(frame.m_data[i], HEX);
                 }
             }
@@ -1300,8 +1304,8 @@ String Lawicel::getTimestamp()
 {
     String timestamp;
     String temp = String(millis() % MAX_TIMESTAMP, HEX);
-    
-    for(int i = 0 ; i < (4 - temp.length()); i++)
+
+    for (int i = 0; i < (4 - temp.length()); i++)
     {
         timestamp += '0';
     }
