@@ -84,7 +84,13 @@ public:
     */
     bool read(char &c)
     {
-        bool success = true;
+        bool success = false;
+        char input;
+        if(websocket::receive(input))
+        {
+            c = input;
+            success = true;
+        }
         return success;
     }
 
