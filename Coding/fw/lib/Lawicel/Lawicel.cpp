@@ -391,6 +391,10 @@ bool Lawicel::receiveCommand(const String &lawicelCMD)
         success = toggleAutoStartCmd(lawicelCMD);
         break;
 
+    case CURRENT_PARAMS:
+        success = getCurrentParams(lawicelCMD);
+        break;
+
     default:
         success = false;
         break;
@@ -1281,7 +1285,7 @@ bool Lawicel::autopoll()
                     if (frame.m_data[i] <= 9)
                     {
                         m_serialReturn += '0';
-                    }                    
+                    }
                     m_serialReturn += String(frame.m_data[i], HEX);
                 }
             }
@@ -1296,6 +1300,26 @@ bool Lawicel::autopoll()
             success = false;
         }
     }
+    return success;
+}
+
+/**************************************************************************************************/
+bool Lawicel::getCurrentParams(const String &lawicelCMD)
+{
+    bool success = true;
+
+    if (lawicelCMD.length() != 1)
+    {
+        success = false;
+    }
+    else
+    {
+        m_serialReturn += 'D';
+        m_serialReturn += m_selectedNVM->readInt(INIT_AUTO_START);
+        m_serialReturn += m_selectedNVM->readString(INIT_CAN_BAUD);
+        m_serialReturn += m_selectedNVM->readInt(INIT_TIMESTAMP);
+    }
+
     return success;
 }
 

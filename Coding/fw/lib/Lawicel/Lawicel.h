@@ -82,11 +82,10 @@ public:
     }
 
     bool executeCycle(); /**< Handles the Serial Messages */
-    bool begin();           /**< Initializes Module */
-    bool end();             /**< Terminates Module */
+    bool begin();        /**< Initializes Module */
+    bool end();          /**< Terminates Module */
 
 private:
-
     /**
      * Enum of Possible Lawicel Commands to be received via Serial Adapter
      */
@@ -112,9 +111,10 @@ private:
         VERSION = 'V',          /**< Gets Version of Software and Hardware */
         SERIAL_NUMBER = 'N',    /**< Gets Serial Number of the Hardware */
         TOGGLE_TIMESTAMP = 'Z', /**< Sets Time Stamp ON/OFF */
-        AUTO_START = 'Q'        /**< Auto-Startup with CAN Channel open and filters */
+        AUTO_START = 'Q',       /**< Auto-Startup with CAN Channel open and filters */
+        /** Extension of the Lawicel Protocol **/
+        CURRENT_PARAMS = 'D', /**< Returns the current configuration of the CAN Bus */
     };
-
 
     bool charToByte(char msb, char lsb, uint8_t &result);                     /**< Translates char symbols of a Byte into hex values */
     bool charToInt(char symbol, uint8_t &result);                             /**< Translates char symbols of numbers into int values */
@@ -142,8 +142,9 @@ private:
     bool getSerialNumberCmd(const String &lawicelCMD);   /**< Sends Serial Number of Hardware */
     bool toggleTimeStampCmd(const String &lawicelCMD);   /**< Toggles Timestamp (and saves setting on EEPROM) */
     bool toggleAutoStartCmd(const String &lawicelCMD);   /**< Auto Startup feature (from power on) */
+    bool getCurrentParams(const String &lawicelCMD);     /**< Returns the current configuration of the CAN Bus */
 
-    bool autopoll();      /**< Frame Polling without any extra tags */
+    bool autopoll();       /**< Frame Polling without any extra tags */
     String getTimestamp(); /**< Returns Timestamp */
 
     bool m_timestamp = false;   /**< Toggle timestamp */
@@ -157,7 +158,6 @@ private:
     NVMInterface *m_selectedNVM;       /**< Active NVM Adapter */
 
 private:
-
     /**
      *  Preventing copying, assigning and using an empty constructor
      */
