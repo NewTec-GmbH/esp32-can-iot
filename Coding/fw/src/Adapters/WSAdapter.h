@@ -84,7 +84,7 @@ public:
     */
     bool read(char &c)
     {
-        uint8_t success = true;
+        bool success = true;
         return success;
     }
 
