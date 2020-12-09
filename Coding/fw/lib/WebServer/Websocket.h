@@ -6,5 +6,6 @@ namespace websocket
     bool init(AsyncWebServer &server);
     bool cycle();
     void send(String message);
+    bool receive(char &c);
 };
 #endif
