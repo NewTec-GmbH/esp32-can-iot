@@ -87,15 +87,12 @@ public:
     */
     bool read(char &c)
     {
-        bool success = true;
+        bool success = false;
         if ((Serial.available() > 0))
         {
             c = Serial.read();
-        }
-        else
-        {
-            success = false;
-        }
+            success = true;
+        }       
 
         return success;
     }
