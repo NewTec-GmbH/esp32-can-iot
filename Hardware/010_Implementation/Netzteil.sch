@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 7
+Sheet 5 5
 Title "CAN_Bus Analyzer - Power Supply"
 Date "2020-09-07"
 Rev "1.0"
@@ -13,351 +13,477 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text HLabel 3725 1850 0    50   Input ~ 0
+Text HLabel 1760 3200 0    50   Input ~ 0
 OBD_VDD
-Text HLabel 3725 2250 0    50   Input ~ 0
-OBD_GND
-Text HLabel 6325 1600 1    50   Input ~ 0
-EN_CAN
-$Comp
-L Board:G2R2A K1
-U 1 1 5F5A91AB
-P 4125 2050
-F 0 "K1" H 4125 2050 50  0001 L BNN
-F 1 "G2R2A" H 4305 2050 50  0000 L CNN
-F 2 "Board:G2R2A" H 4125 2050 50  0001 L BNN
-F 3 "36M5257" H 4125 2050 50  0001 L BNN
-F 4 "G2R-2A-DC24" H 4125 2050 50  0001 L BNN "Field4"
-F 5 "6985269" H 4125 2050 50  0001 L BNN "Field6"
-	1    4125 2050
-	1    0    0    -1  
-$EndComp
-$Comp
-L Board:G2R2A K1
-U 2 1 5F5A93DA
-P 4750 2250
-F 0 "K1" H 4750 2250 50  0001 L BNN
-F 1 "G2R2A" H 4826 2250 50  0000 L CNN
-F 2 "Board:G2R2A" H 4750 2250 50  0001 L BNN
-F 3 "36M5257" H 4750 2250 50  0001 L BNN
-F 4 "G2R-2A-DC24" H 4750 2250 50  0001 L BNN "Field4"
-F 5 "6985269" H 4750 2250 50  0001 L BNN "Field6"
-	2    4750 2250
-	0    1    1    0   
-$EndComp
-$Comp
-L Board:G2R2A K1
-U 3 1 5F5A9DB4
-P 4750 1850
-F 0 "K1" H 4750 1850 50  0001 L BNN
-F 1 "G2R2A" H 4826 1850 50  0000 L CNN
-F 2 "Board:G2R2A" H 4750 1850 50  0001 L BNN
-F 3 "36M5257" H 4750 1850 50  0001 L BNN
-F 4 "G2R-2A-DC24" H 4750 1850 50  0001 L BNN "Field4"
-F 5 "6985269" H 4750 1850 50  0001 L BNN "Field6"
-	3    4750 1850
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	4125 1850 4550 1850
-Wire Wire Line
-	4125 2250 4550 2250
-Wire Wire Line
-	3725 2250 4125 2250
-Connection ~ 4125 2250
-Wire Wire Line
-	4125 1850 3725 1850
-Connection ~ 4125 1850
-Wire Wire Line
-	5725 2150 5725 2250
-Wire Wire Line
-	4950 2250 5250 2250
-Wire Wire Line
-	6325 1850 6325 1600
-Connection ~ 6325 1850
-Wire Wire Line
-	6325 1850 6750 1850
-Wire Wire Line
-	5725 2250 6575 2250
-Connection ~ 5725 2250
-Connection ~ 6575 2250
-Wire Notes Line
-	3200 950  8075 950 
-Wire Notes Line
-	8075 950  8075 2800
-Wire Notes Line
-	8075 2800 3200 2800
-Wire Notes Line
-	3200 2800 3200 950 
-Text Notes 4625 1325 2    50   ~ 0
+Text Notes 4100 2510 2    50   ~ 0
 12V-OBD Power Supply
-Wire Wire Line
-	7600 1850 8475 1850
-Wire Wire Line
-	7600 5325 8475 5325
-Wire Wire Line
-	6325 5425 6750 5425
-Wire Wire Line
-	6750 5525 6200 5525
-Wire Notes Line
-	8075 3125 3200 3125
-Wire Notes Line
-	3200 3125 3200 4200
-Wire Notes Line
-	8075 4200 8075 3125
-Wire Notes Line
-	3200 4200 8075 4200
-Wire Notes Line
-	3200 4725 3200 6175
-Wire Notes Line
-	3200 6175 8075 6175
-Wire Notes Line
-	8075 6175 8075 4725
-Wire Notes Line
-	8075 4725 3200 4725
-Connection ~ 6200 3450
-Wire Wire Line
-	8475 5325 8475 3450
-Connection ~ 8475 3450
-Wire Wire Line
-	8475 3450 8900 3450
-Wire Wire Line
-	8475 3450 8475 1850
-Wire Wire Line
-	7875 3850 7875 5825
-Connection ~ 7875 3850
-Wire Wire Line
-	7875 3850 7875 2250
-Wire Wire Line
-	6575 2250 7875 2250
-Text Notes 5275 3325 2    50   ~ 0
-5V - External Power Supply
-Text Notes 4600 4875 2    50   ~ 0
-3.3V - MCU Power Supply
-$Sheet
-S 6750 1650 850  475 
-U 5F56212F
-F0 "OBD_MF_Switch" 50
-F1 "OBD_MF_Switch.sch" 50
-F2 "V_IN" I L 6750 1850 50 
-F3 "GND" I L 6750 1975 50 
-F4 "V_OUT" O R 7600 1850 50 
-$EndSheet
-Wire Wire Line
-	6575 1975 6750 1975
-Wire Wire Line
-	6575 1975 6575 2250
-$Sheet
-S 6750 3325 900  425 
-U 5F566EF5
-F0 "EXT_MF_Switch" 50
-F1 "EXT_MF_Switch.sch" 50
-F2 "V_OUT" O R 7650 3450 50 
-F3 "V_IN" I L 6750 3450 50 
-F4 "EN" I L 6750 3575 50 
-F5 "GND" I L 6750 3675 50 
-$EndSheet
-Wire Wire Line
-	6200 3450 6750 3450
-Wire Wire Line
-	6325 3575 6750 3575
-Wire Wire Line
-	6750 3675 6575 3675
-Wire Wire Line
-	6575 3675 6575 3850
-Connection ~ 6575 3850
-Wire Wire Line
-	6575 3850 7875 3850
-Wire Wire Line
-	7650 3450 8475 3450
-Wire Wire Line
-	6750 5625 6575 5625
-Wire Wire Line
-	6575 5625 6575 5825
-Wire Wire Line
-	6575 5825 7875 5825
-$Sheet
-S 6750 5200 850  525 
-U 5F5717B1
-F0 "USB_MF_Switch" 50
-F1 "USB_MF_Switch.sch" 50
-F2 "V_IN" I L 6750 5325 50 
-F3 "EN_1" I L 6750 5425 50 
-F4 "EN_2" I L 6750 5525 50 
-F5 "GND" I L 6750 5625 50 
-F6 "V_OUT" O R 7600 5325 50 
-$EndSheet
-Wire Wire Line
-	7875 3850 8900 3850
-Wire Notes Line
-	3900 1725 3900 2325
-Wire Notes Line
-	3900 2325 5050 2325
-Wire Notes Line
-	5050 2325 5050 1725
-Wire Notes Line
-	5050 1725 3900 1725
 $Comp
-L Device:C C2
-U 1 1 5F6072AC
-P 8900 3660
-F 0 "C2" H 9015 3706 50  0000 L CNN
-F 1 "100n" H 9015 3615 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 8938 3510 50  0001 C CNN
-F 3 "~" H 8900 3660 50  0001 C CNN
-	1    8900 3660
+L Device:R R1
+U 1 1 5FAFFDE5
+P 4455 3890
+F 0 "R1" H 4525 3936 50  0000 L CNN
+F 1 "10k" H 4525 3845 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 4385 3890 50  0001 C CNN
+F 3 "~" H 4455 3890 50  0001 C CNN
+	1    4455 3890
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 5FB008D2
+P 4560 4825
+F 0 "R2" H 4630 4871 50  0000 L CNN
+F 1 "1k" H 4630 4780 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 4490 4825 50  0001 C CNN
+F 3 "~" H 4560 4825 50  0001 C CNN
+	1    4560 4825
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8900 3450 8900 3510
-Connection ~ 8900 3450
+	4455 4040 4455 4600
 Wire Wire Line
-	8900 3810 8900 3850
-Connection ~ 8900 3850
-Wire Wire Line
-	8900 3850 9450 3850
-Text Notes 10490 3690 2    50   ~ 0
-3.3V Main Supply
-Wire Wire Line
-	6025 1850 6325 1850
-Wire Wire Line
-	6325 3575 6325 1850
-Connection ~ 6325 3575
-$Comp
-L Regulator_Linear:LT1086-3.3 U1
-U 1 1 5F5D8ABD
-P 5725 1850
-F 0 "U1" H 5725 2092 50  0000 C CNN
-F 1 "LT1086-3.3" H 5725 2001 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:TO-263-3_TabPin4" H 5725 2100 50  0001 C CIN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/1086ffs.pdf" H 5725 1850 50  0001 C CNN
-	1    5725 1850
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5250 1850 5250 1900
-Connection ~ 5250 1850
-Wire Wire Line
-	5250 1850 4950 1850
-Connection ~ 5250 2250
-Wire Wire Line
-	5250 2250 5725 2250
-Wire Wire Line
-	5250 2200 5250 2250
-$Comp
-L Device:C C1
-U 1 1 5F6089EB
-P 5250 2050
-F 0 "C1" H 5365 2096 50  0000 L CNN
-F 1 "100n" H 5365 2005 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 5288 1900 50  0001 C CNN
-F 3 "~" H 5250 2050 50  0001 C CNN
-	1    5250 2050
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6325 3575 6325 5425
-Wire Wire Line
-	6200 3450 6200 5525
-Text HLabel 3950 5825 0    50   Input ~ 0
-USB_GND
-Text HLabel 3950 5325 0    50   Input ~ 0
-USB_VDD
-Connection ~ 6575 5825
-Wire Wire Line
-	3950 5325 6750 5325
-Wire Wire Line
-	3950 5825 6575 5825
+	4455 4600 4560 4600
+Connection ~ 4455 4600
+Text HLabel 4880 4600 2    50   Output ~ 0
+OBD_Voltage_Check
 $Comp
 L power:PWR_FLAG #FLG01
-U 1 1 5F6C2967
-P 5250 1850
-F 0 "#FLG01" H 5250 1925 50  0001 C CNN
-F 1 "PWR_FLAG" H 5250 2023 50  0000 C CNN
-F 2 "" H 5250 1850 50  0001 C CNN
-F 3 "~" H 5250 1850 50  0001 C CNN
-	1    5250 1850
+U 1 1 5FB093DE
+P 5730 3200
+F 0 "#FLG01" H 5730 3275 50  0001 C CNN
+F 1 "PWR_FLAG" H 5730 3373 50  0000 C CNN
+F 2 "" H 5730 3200 50  0001 C CNN
+F 3 "~" H 5730 3200 50  0001 C CNN
+	1    5730 3200
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	5250 1850 5425 1850
-Wire Wire Line
-	6025 3450 6200 3450
-Wire Wire Line
-	5725 3750 5725 3850
-Connection ~ 5725 3850
-Wire Wire Line
-	5725 3850 6575 3850
-Wire Wire Line
-	4050 3850 5725 3850
 $Comp
-L Connector:USB_B_Mini J1
-U 1 1 5F5A0FAE
-P 3650 3650
-F 0 "J1" H 3707 4117 50  0000 C CNN
-F 1 "USB_B_Mini" H 3707 4026 50  0000 C CNN
-F 2 "Connector_USB:USB_Micro-B_Wuerth_629105150521_CircularHoles" H 3800 3600 50  0001 C CNN
-F 3 "~" H 3800 3600 50  0001 C CNN
-	1    3650 3650
+L Device:C C1
+U 1 1 5FB0CD60
+P 4080 4825
+F 0 "C1" H 4195 4871 50  0000 L CNN
+F 1 "100n" H 4195 4780 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" H 4118 4675 50  0001 C CNN
+F 3 "~" H 4080 4825 50  0001 C CNN
+	1    4080 4825
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3650 4050 4050 4050
+	4455 4600 4080 4600
 Wire Wire Line
-	4050 4050 4050 3850
-NoConn ~ 3950 3650
-NoConn ~ 3950 3750
-NoConn ~ 3950 3850
-NoConn ~ 3550 4050
+	4080 4600 4080 4675
 Wire Wire Line
-	3950 3450 5425 3450
+	4080 4975 4080 5100
 $Comp
-L Regulator_Linear:LM1085-3.3 U2
-U 1 1 5F5B4F9A
-P 5725 3450
-F 0 "U2" H 5725 3692 50  0000 C CNN
-F 1 "LM1085-3.3" H 5725 3601 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:TO-263-3_TabPin4" H 5725 3700 50  0001 C CIN
-F 3 "http://www.ti.com/lit/ds/symlink/lm1085.pdf" H 5725 3450 50  0001 C CNN
-	1    5725 3450
+L power:GND #PWR01
+U 1 1 5FB6777E
+P 4280 5275
+F 0 "#PWR01" H 4280 5025 50  0001 C CNN
+F 1 "GND" H 4285 5102 50  0000 C CNN
+F 2 "" H 4280 5275 50  0001 C CNN
+F 3 "" H 4280 5275 50  0001 C CNN
+	1    4280 5275
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	4280 5275 4280 5100
+Connection ~ 4280 5100
+Wire Wire Line
+	4280 5100 4080 5100
+$Comp
+L power:+5V #PWR05
+U 1 1 5FA170AE
+P 9795 3125
+F 0 "#PWR05" H 9795 2975 50  0001 C CNN
+F 1 "+5V" H 9810 3298 50  0000 C CNN
+F 2 "" H 9795 3125 50  0001 C CNN
+F 3 "" H 9795 3125 50  0001 C CNN
+	1    9795 3125
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:L L1
+U 1 1 5FB3AA0A
+P 7135 3200
+F 0 "L1" V 7325 3200 50  0000 C CNN
+F 1 "2.2u" V 7234 3200 50  0000 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 7135 3200 50  0001 C CNN
+F 3 "~" H 7135 3200 50  0001 C CNN
+	1    7135 3200
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 5FB3B31A
+P 6735 4600
+F 0 "R3" V 6528 4600 50  0000 C CNN
+F 1 "10k" V 6619 4600 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 6665 4600 50  0001 C CNN
+F 3 "~" H 6735 4600 50  0001 C CNN
+	1    6735 4600
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	7285 3200 7410 3200
+Wire Wire Line
+	6060 4600 6585 4600
+Wire Wire Line
+	7410 4600 7410 3300
+Connection ~ 7410 3200
+Wire Wire Line
+	6885 4600 7410 4600
+$Comp
+L power:GND #PWR03
+U 1 1 5FB3F4B3
+P 6460 4125
+F 0 "#PWR03" H 6460 3875 50  0001 C CNN
+F 1 "GND" H 6465 3952 50  0000 C CNN
+F 2 "" H 6460 4125 50  0001 C CNN
+F 3 "" H 6460 4125 50  0001 C CNN
+	1    6460 4125
+	1    0    0    -1  
+$EndComp
+Connection ~ 7410 3300
+Wire Wire Line
+	7410 3300 7410 3200
+$Comp
+L Device:C C2
+U 1 1 5FB43F56
+P 5460 3475
+F 0 "C2" H 5575 3521 50  0000 L CNN
+F 1 "10u" H 5575 3430 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 5498 3325 50  0001 C CNN
+F 3 "~" H 5460 3475 50  0001 C CNN
+	1    5460 3475
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5935 3300 5935 3200
+Connection ~ 5935 3200
+Wire Wire Line
+	5460 3325 5460 3200
+Wire Wire Line
+	5460 3200 5730 3200
 $Comp
 L power:GND #PWR02
-U 1 1 5F7C816E
-P 9450 3850
-F 0 "#PWR02" H 9450 3600 50  0001 C CNN
-F 1 "GND" H 9455 3677 50  0000 C CNN
-F 2 "" H 9450 3850 50  0001 C CNN
-F 3 "" H 9450 3850 50  0001 C CNN
-	1    9450 3850
+U 1 1 5FB459AA
+P 5460 3800
+F 0 "#PWR02" H 5460 3550 50  0001 C CNN
+F 1 "GND" H 5465 3627 50  0000 C CNN
+F 2 "" H 5460 3800 50  0001 C CNN
+F 3 "" H 5460 3800 50  0001 C CNN
+	1    5460 3800
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8900 3450 9125 3450
+	5460 3800 5460 3625
 $Comp
-L power:+3.3V #PWR01
-U 1 1 5F7FF608
-P 9450 3450
-F 0 "#PWR01" H 9450 3300 50  0001 C CNN
-F 1 "+3.3V" H 9465 3623 50  0000 C CNN
-F 2 "" H 9450 3450 50  0001 C CNN
-F 3 "" H 9450 3450 50  0001 C CNN
-	1    9450 3450
+L power:GND #PWR04
+U 1 1 5FB4620B
+P 8835 4175
+F 0 "#PWR04" H 8835 3925 50  0001 C CNN
+F 1 "GND" H 8840 4002 50  0000 C CNN
+F 2 "" H 8835 4175 50  0001 C CNN
+F 3 "" H 8835 4175 50  0001 C CNN
+	1    8835 4175
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:PWR_FLAG #FLG0101
-U 1 1 5F8BED6A
-P 9125 3450
-F 0 "#FLG0101" H 9125 3525 50  0001 C CNN
-F 1 "PWR_FLAG" H 9125 3623 50  0000 C CNN
-F 2 "" H 9125 3450 50  0001 C CNN
-F 3 "~" H 9125 3450 50  0001 C CNN
-	1    9125 3450
-	1    0    0    -1  
-$EndComp
-Connection ~ 9125 3450
 Wire Wire Line
-	9125 3450 9450 3450
+	9795 3200 9795 3125
+$Comp
+L Device:C C3
+U 1 1 5FB437F9
+P 8460 3400
+F 0 "C3" H 8575 3446 50  0000 L CNN
+F 1 "22u" H 8575 3355 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 8498 3250 50  0001 C CNN
+F 3 "~" H 8460 3400 50  0001 C CNN
+	1    8460 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7410 3200 7760 3200
+$Comp
+L power:PWR_FLAG #FLG02
+U 1 1 5FB4D740
+P 9620 3200
+F 0 "#FLG02" H 9620 3275 50  0001 C CNN
+F 1 "PWR_FLAG" H 9620 3373 50  0000 C CNN
+F 2 "" H 9620 3200 50  0001 C CNN
+F 3 "~" H 9620 3200 50  0001 C CNN
+	1    9620 3200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9620 3200 9795 3200
+Wire Wire Line
+	4280 5100 4560 5100
+Wire Wire Line
+	4560 4975 4560 5100
+Wire Wire Line
+	4560 4675 4560 4600
+Connection ~ 4560 4600
+Wire Wire Line
+	4560 4600 4880 4600
+Wire Wire Line
+	6060 3600 6060 4600
+Wire Wire Line
+	6860 3200 6985 3200
+Wire Wire Line
+	6860 3300 7410 3300
+Wire Wire Line
+	6560 3950 6560 3900
+Wire Wire Line
+	8460 3550 8460 4110
+Wire Wire Line
+	8835 4110 8835 4175
+$Comp
+L Device:C C9
+U 1 1 5FAD5DF4
+P 4770 3475
+F 0 "C9" H 4885 3521 50  0000 L CNN
+F 1 "100n" H 4885 3430 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" H 4808 3325 50  0001 C CNN
+F 3 "~" H 4770 3475 50  0001 C CNN
+	1    4770 3475
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0103
+U 1 1 5FAD82B6
+P 4770 3800
+F 0 "#PWR0103" H 4770 3550 50  0001 C CNN
+F 1 "GND" H 4775 3627 50  0000 C CNN
+F 2 "" H 4770 3800 50  0001 C CNN
+F 3 "" H 4770 3800 50  0001 C CNN
+	1    4770 3800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4770 3800 4770 3625
+Wire Wire Line
+	4770 3325 4770 3200
+$Comp
+L Device:Ferrite_Bead FB1
+U 1 1 5FADEE61
+P 5105 3200
+F 0 "FB1" V 4831 3200 50  0000 C CNN
+F 1 "Ferrite_Bead" V 4922 3200 50  0000 C CNN
+F 2 "Inductor_SMD:L_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 5035 3200 50  0001 C CNN
+F 3 "~" H 5105 3200 50  0001 C CNN
+	1    5105 3200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4770 3200 4955 3200
+Connection ~ 4770 3200
+Wire Wire Line
+	5460 3200 5255 3200
+Connection ~ 5460 3200
+Connection ~ 8460 4110
+Wire Wire Line
+	8460 3250 8460 3200
+$Comp
+L Device:Ferrite_Bead FB2
+U 1 1 5FAE6E42
+P 8775 3200
+F 0 "FB2" V 8501 3200 50  0000 C CNN
+F 1 "Ferrite_Bead" V 8592 3200 50  0000 C CNN
+F 2 "Inductor_SMD:L_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 8705 3200 50  0001 C CNN
+F 3 "~" H 8775 3200 50  0001 C CNN
+	1    8775 3200
+	0    1    1    0   
+$EndComp
+Connection ~ 8460 3200
+Wire Wire Line
+	8460 3200 8625 3200
+Wire Wire Line
+	9150 4110 9150 3550
+$Comp
+L Device:C C10
+U 1 1 5FAEA108
+P 9150 3400
+F 0 "C10" H 9265 3446 50  0000 L CNN
+F 1 "100n" H 9265 3355 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" H 9188 3250 50  0001 C CNN
+F 3 "~" H 9150 3400 50  0001 C CNN
+	1    9150 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9150 3200 9150 3250
+Wire Wire Line
+	8925 3200 9150 3200
+Connection ~ 9620 3200
+Connection ~ 9150 3200
+Wire Wire Line
+	9150 3200 9620 3200
+Wire Wire Line
+	7760 3245 7760 3200
+Wire Wire Line
+	6860 3595 6860 3400
+Wire Wire Line
+	7760 3595 7760 3645
+Connection ~ 7760 3595
+Wire Wire Line
+	7760 3595 6860 3595
+Wire Wire Line
+	7760 3945 7760 4110
+Wire Wire Line
+	7760 3545 7760 3595
+$Comp
+L Device:R R20
+U 1 1 5FAC2DDF
+P 7760 3795
+F 0 "R20" H 7830 3841 50  0000 L CNN
+F 1 "180k" H 7830 3750 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 7690 3795 50  0001 C CNN
+F 3 "~" H 7760 3795 50  0001 C CNN
+F 4 "NP" H 7760 3795 50  0000 C CNN "NP"
+	1    7760 3795
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R19
+U 1 1 5FAC28BD
+P 7760 3395
+F 0 "R19" H 7830 3441 50  0000 L CNN
+F 1 "953k" H 7830 3350 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 7690 3395 50  0001 C CNN
+F 3 "~" H 7760 3395 50  0001 C CNN
+F 4 "NP" H 7760 3395 50  0000 C CNN "NP"
+	1    7760 3395
+	1    0    0    -1  
+$EndComp
+Connection ~ 7760 3200
+Wire Wire Line
+	7760 3200 8460 3200
+Wire Wire Line
+	7760 4110 8460 4110
+Connection ~ 5730 3200
+Wire Wire Line
+	5730 3200 5935 3200
+Wire Wire Line
+	1760 3200 2080 3200
+$Comp
+L Device:Fuse F1
+U 1 1 5FCB2092
+P 2230 3200
+F 0 "F1" V 2033 3200 50  0000 C CNN
+F 1 "R452002" V 2124 3200 50  0000 C CNN
+F 2 "Fuse:Fuse_2512_6332Metric_Pad1.52x3.35mm_HandSolder" V 2160 3200 50  0001 C CNN
+F 3 "https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diodes/littelfuse_tvs_diode_smaj_datasheet.pdf.pdf" H 2230 3200 50  0001 C CNN
+F 4 "Yes" H 2230 3200 50  0001 C CNN "Vorhanden"
+	1    2230 3200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2380 3200 2530 3200
+Wire Wire Line
+	4455 3200 4455 3740
+Connection ~ 4455 3200
+Wire Wire Line
+	4455 3200 4770 3200
+$Comp
+L Device:D D8
+U 1 1 5FCB70B6
+P 2530 3480
+F 0 "D8" V 2484 3560 50  0000 L CNN
+F 1 "SMAJ16A" V 2575 3560 50  0000 L CNN
+F 2 "Diode_SMD:D_SMA" H 2530 3480 50  0001 C CNN
+F 3 "https://m.littelfuse.com/~/media/electronics/datasheets/tvs_diodes/littelfuse_tvs_diode_smaj_datasheet.pdf.pdf" H 2530 3480 50  0001 C CNN
+F 4 "Yes" H 2530 3480 50  0001 C CNN "Vorhanden"
+	1    2530 3480
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C16
+U 1 1 5FCB7C90
+P 3210 3485
+F 0 "C16" H 3325 3531 50  0000 L CNN
+F 1 "10u" H 3325 3440 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder" H 3248 3335 50  0001 C CNN
+F 3 "~" H 3210 3485 50  0001 C CNN
+	1    3210 3485
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:L_Core_Iron L3
+U 1 1 5FCB8E0F
+P 2890 3200
+F 0 "L3" V 2709 3200 50  0000 C CNN
+F 1 "5u" V 2800 3200 50  0000 C CNN
+F 2 "" H 2890 3200 50  0001 C CNN
+F 3 "~" H 2890 3200 50  0001 C CNN
+F 4 "Yes" H 2890 3200 50  0001 C CNN "Vorhanden"
+	1    2890 3200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3040 3200 3210 3200
+Wire Wire Line
+	3210 3335 3210 3200
+Connection ~ 3210 3200
+Wire Wire Line
+	3210 3200 4455 3200
+Wire Wire Line
+	2530 3330 2530 3200
+Connection ~ 2530 3200
+Wire Wire Line
+	2530 3200 2740 3200
+$Comp
+L power:GND #PWR032
+U 1 1 5FCBBE89
+P 2530 3775
+F 0 "#PWR032" H 2530 3525 50  0001 C CNN
+F 1 "GND" H 2535 3602 50  0000 C CNN
+F 2 "" H 2530 3775 50  0001 C CNN
+F 3 "" H 2530 3775 50  0001 C CNN
+	1    2530 3775
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR033
+U 1 1 5FCBCF3B
+P 3210 3780
+F 0 "#PWR033" H 3210 3530 50  0001 C CNN
+F 1 "GND" H 3215 3607 50  0000 C CNN
+F 2 "" H 3210 3780 50  0001 C CNN
+F 3 "" H 3210 3780 50  0001 C CNN
+	1    3210 3780
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3210 3780 3210 3635
+Wire Wire Line
+	2530 3630 2530 3775
+Wire Wire Line
+	8460 4110 8835 4110
+Connection ~ 8835 4110
+Wire Wire Line
+	8835 4110 9150 4110
+Text Notes 7645 4455 0    50   ~ 0
+180kOm for Adjustable Version. 0Ohm for fixed 5V\n
+$Comp
+L Board:TPS62170DGK U1
+U 1 1 5FB078C3
+P 6460 2950
+F 0 "U1" H 6460 2967 50  0000 C CNN
+F 1 "TPS62170DGK" H 6460 2876 50  0000 C CNN
+F 2 "Package_SO:VSSOP-8_3.0x3.0mm_P0.65mm" H 6210 2850 50  0001 C CNN
+F 3 "" H 6210 2850 50  0001 C CNN
+	1    6460 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6460 3900 6460 3950
+Wire Wire Line
+	5935 3300 6060 3300
+Wire Wire Line
+	5935 3200 6060 3200
+Wire Wire Line
+	6560 3950 6460 3950
+Connection ~ 6460 3950
+Wire Wire Line
+	6460 3950 6460 4125
 $EndSCHEMATC

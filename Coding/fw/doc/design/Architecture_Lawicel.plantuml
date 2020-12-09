@@ -36,9 +36,11 @@ package Lawicel_Library <<Folder>>{
         +enum BUS_STATE
         +struct Frame
     }
+    Interface NVMInterface
 
     Lawicel o--> SerialInterface : <<interface>>
     Lawicel o--> CANInterface : <<interface>>
+    Lawicel o--> NVMInterface : <<interface>>
 }
 
 Class SerialAdapter{
@@ -68,18 +70,25 @@ Class CANAdapter{
     +uint8_t setFiltermode(const bool)
     +uint8_t set State(const int)
 }
+
+Class NVMAdapter{
+    +bool save()
+    +bool getString()
+    +bool getInt()
+}
+
+NVMInterface <|.down. NVMAdapter : <<realize>>
 SerialInterface <|.down. SerialAdapter : <<realize>>
 CANInterface <|.down. CANAdapter : <<realize>>
 
 package Espressif_ESP32_Library{
-    Class EEPROM_h{
-        +begin(EEPROM_SIZE)
-        +write(address, value)
-        +commit()
-        +read(address)
+    Class Settings{
+
+        -Preferences flashMemory
     }
-    CANAdapter ..|> EEPROM_h : <<use>>
 }
+
+NVMAdapter ..|> Settings : <<use>>
 
 package Arduino_Library{
     Class Arduino_h
@@ -113,14 +122,14 @@ package CAN_Library <<Folder>>{
     Arduino_h  <|.up. CANController_h: <<use>>
 }
 
-package Web <<Node>>{
-    Class Webpages
-    Class Websocket
-    Interface WebInterface
-    Webpages ..|> Websocket : <<use>>
-    WebInterface <|.. CANAdapter : <<realize>>
-    Websocket o--> WebInterface
-    Application ..> Webpages : <<use>>
+
+package Espressif_ESP32_Library{
+    Class Settings{
+
+        -Preferences flashMemory
+    }
 }
+
+
 
 @enduml

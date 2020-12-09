@@ -16,7 +16,7 @@ F https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_es
 $ENDCMP
 #
 $CMP FDV304P
-D Digital FET, P-Channel 
+D Digital FET, P-Channel
 F https://www.onsemi.com/pub/Collateral/FDV304P-D.PDF
 $ENDCMP
 #

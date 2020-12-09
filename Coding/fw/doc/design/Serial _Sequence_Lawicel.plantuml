@@ -11,6 +11,6 @@ alt "c" equals "CR"
     Lawicel --> Lawicel : process Message
     Lawicel --> serialAdapter : return answer
 end
-Lawicel --> mainloop : return 0
+Lawicel --> mainloop : return bool success
 
 @enduml

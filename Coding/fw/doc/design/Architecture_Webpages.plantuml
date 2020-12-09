@@ -1,0 +1,19 @@
+@startuml
+
+Title Webpages Navigation
+
+STACredentials : GUI to input new STA Credentials
+SetCredentials : Inform the user of\n the success of their request
+Index : Shows the basic information of the device
+Index : Links to the Lawicel_Communication
+Lawicel_Communication : Hosts the Websocket to use Lawicel \n to comunicate with CAN Bus
+
+[*] --> STACredentials : AP_Mode
+STACredentials --> SetCredentials : New Credentials set
+SetCredentials --> [*] : Restart
+
+
+[*] --> Index : STA_Mode
+Index --> Lawicel_Communication
+
+@enduml

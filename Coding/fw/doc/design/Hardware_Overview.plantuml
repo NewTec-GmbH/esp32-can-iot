@@ -1,0 +1,46 @@
+@startuml
+
+title ESP CAN-Bus Adapter
+
+component "External CAN/OBD-II Bus" as CANBUS
+
+interface "DSUB-9" as DSUB
+interface "USB" as usb
+interface "WiFi" as internet
+
+package "PCB" {
+
+    package "Power Supply"{
+        component "Step-Down Converter" as PowerSupply
+    }
+
+    package "CAN Transceiver" as Transceiver
+
+    component "ESP32 DevKitV1" as esp32
+
+
+    interface "JTAG" as iJtag
+
+    interface "GPIO" as GPIO
+
+    interface "WiFi Mode Button" as userButton
+
+    interface "WiFi Mode LEDs" as LEDs
+
+}
+
+CANBUS --( DSUB
+DSUB -- PowerSupply : 12V VCC (only with OBD)
+DSUB -- Transceiver : Data
+
+PowerSupply -- esp32 : 5V
+
+esp32 -- iJtag : input/output
+esp32 -- Transceiver : Data and 3V3
+esp32 -- userButton: input
+esp32 -- GPIO : input/output
+esp32 -- LEDs : output
+esp32 -- usb
+esp32 -- internet
+
+@enduml

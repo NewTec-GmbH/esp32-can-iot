@@ -1,0 +1,36 @@
+@startuml
+
+Title Mainloop Sequence
+
+group Setup 
+    Mainloop --> Board : init()
+    Mainloop --> Lawicel : begin()
+    Lawicel --> Mainloop : return bool success
+    Mainloop --> ESPServer : begin()
+    ESPServer --> WebConfig : importSettings()
+    WebConfig --> ESPServer : return bool success
+    ESPServer --> ESPServer : Setup WiFi and Web Pages
+    ESPServer --> Mainloop : return bool success
+    else Initialization returns false
+    Mainloop --> Board : set Error LED
+    Mainloop --> Mainloop : wait for error handling\nfrom user and restart
+end
+
+group loop
+    Mainloop --> Lawicel : executeCycle()
+    Lawicel --> Mainloop : return bool success
+    Mainloop --> ESPServer : handleRequest()
+    note right
+        Process next request to DNS Server
+        and restarts the ESP32 in case
+        settings were changed
+    end note
+
+    else Restart requested
+    ESPServer --> Mainloop : restart()
+    Mainloop --> Lawicel : end()
+    Mainloop --> ESPServer : end()
+    Mainloop --> Board : esp.restart()
+end
+
+@enduml

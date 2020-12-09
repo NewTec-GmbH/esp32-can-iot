@@ -1,0 +1,48 @@
+@startuml
+title Startup
+
+start
+:Initialize hardware.;
+:Check user button state.;
+
+if (Is pressed?) then (no)
+
+    :Check WiFi Credentials.;
+
+    if (Valid Credentials?) then (no)
+        :Set Error LED.;
+        stop
+
+    else(yes)
+
+        if (Connection successful established?) then (no)
+            :Set Error LED.;
+            stop
+        else (yes)
+            :Start CAN-Controller to desired Bus Speed.;
+            if (successful) then (yes)
+                stop
+            else(no)
+                :Set Error LED.;
+                stop
+            endif
+        endif
+
+    endif
+
+else(yes)
+
+    :Setting up access-point (AP).;
+
+    if (successful?) then (no)
+        :Set Error LED.;
+        stop
+    else (yes)
+        :Enter Credentials Setup.;
+        :Restart.;
+        stop
+    endif
+
+endif
+
+@enduml

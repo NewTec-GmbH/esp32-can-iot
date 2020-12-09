@@ -2,41 +2,38 @@
 
 title System State Machine
 
-InitState: /entry: Initialize HAL.
+InitState: /entry: Initialize Modules.
 InitState: /do: Get button state.
 
 APState: /entry: Setup access point.
+APState: /entry: Setup Captive Portal.
 APState: /entry: Start server.
 APState: /do: Handle client requests.
-APState: /do: Handle CAN-Controller
-APState: exit/: Stop CAN-Controller
+APState: /do: Save new Credentials when given by user.
 APState: /exit: Stop server.
 APState: /exit: Shutdown access point.
 
-ConnectingState: /entry: Get remote WiFi SSID and passphrase.
-ConnectingState: /do: Connect every 30 s to remote WiFi network.
+ConnectingState: /entry: Get Access Point SSID and Password.
+ConnectingState: /do: Connect to Network.
 
+STAState: /entry: Setup Webpages.
+STAState: /entry: Setup Websocket.
 STAState: /entry: Start server.
 STAState: /do: Handle client requests.
 STAState: /do: Handle CAN-Controller
-STAState: exit/: Stop CAN-Controller
+STAState: /exit: Stop CAN-Controller
 STAState: /exit: Stop server.
 
 ErrorState: /do: Wait for manual reset.
 
-RestartState: /entry: Unmount filesystem
-RestartState: /do: Restart
 
 [*] --> InitState: Power up
-InitState --> APState: [Button released]
-InitState -> ConnectingState: [Button pressed]
+InitState --> APState: [Button pressed]
+InitState -> ConnectingState: [Button released]
 APState --> ErrorState: [Failed to start\nwifi access point]
-APState --> RestartState: [Update finished]
 STAState --> ErrorState: [Remote wifi SSID or\npassword missing]
 ConnectingState --> STAState: [Connection successful established]
 STAState --> ConnectingState: [Connection lost]
-STAState --> RestartState: [Update finished]
+ConnectingState --> ErrorState : [Timeout]
 ErrorState --> [*]: [Restart]
-RestartState --> [*]: [Restart]
-
 @enduml

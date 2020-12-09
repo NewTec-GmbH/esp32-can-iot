@@ -13,10 +13,14 @@ Main Application
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include <Arduino.h>
-#include <Lawicel.h>
-#include <SerialAdapter.h>
-#include <CANAdapter.h>
-#include <NVMAdapter.h>
+#include "Lawicel.h"
+#include "SerialAdapter.h"
+#include "CANAdapter.h"
+#include "NVMAdapter.h"
+#include "ESP_Server.h"
+#include "Settings.h"
+#include "io.h"
+#include "Board.h"
 
 /* CONSTANTS **************************************************************************************/
 
@@ -27,22 +31,40 @@ Main Application
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-
 SerialAdapter serialAdapter;
 CANAdapter sja1000Adapter;
 NVMAdapter flashAdapter;
 Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/
-
 void setup()
 {
-  protocolLawicel.begin();
+  Board::init();
+  if (!protocolLawicel.begin())
+  {
+    Board::haltSystem();
+  }
+  else if (!ESPServer::begin())
+  {
+    Board::haltSystem();
+  }
 }
 
 void loop()
 {
-  protocolLawicel.executeCycle();
+  if(!protocolLawicel.executeCycle())
+  {
+    Board::blinkError(250);
+  }
+  if (!ESPServer::checkConnection())
+  {
+    Board::haltSystem();
+    
+  }
+  if(ESPServer::isRestartRequested())
+  {
+    Board::reset();
+  }
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -52,3 +74,4 @@ void loop()
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
+

@@ -1,0 +1,108 @@
+<!--
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+-->
+<!DOCTYPE html>
+<html>
+<title>ESP32 CAN-Analyzer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/w3.css">
+<style>
+    body {
+        font-family: "Arial", Georgia, Serif;
+    }
+    
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: "Arial";
+        letter-spacing: 5px;
+    }
+</style>
+
+<body>
+
+    <!-- Navbar (sit on top) -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+            <a href="#home" class="w3-bar-item w3-button">ESP32 CAN-Analyzer</a>
+            <!-- Right-sided navbar links. Hide them on small screens -->
+            <div class="w3-right w3-hide-small">
+                <a href="#about" class="w3-bar-item w3-button">About</a>
+                <a href="#menu" class="w3-bar-item w3-button">Settings</a>
+                <a href="#contact" class="w3-bar-item w3-button">Communication</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="w3-display-container w3-content w3-wide" style="max-width:1600px;min-width:500px" id="home">
+        <div class="w3-display-bottomleft w3-padding-large w3-opacity">
+            <h1 class="w3-xxlarge">ESP32 CAN-Analyzer</h1>
+        </div>
+    </header>
+
+    <!-- Page content -->
+    <div class="w3-content" style="max-width:1100px">
+
+        <!-- About Section -->
+        <div class="w3-row w3-padding-64" id="about">
+            <div class="w3-col m6 w3-padding-large w3-hide-small">
+                <br><br><br>
+                <img src="/pictures/NewTec_Logo.png" vertical-align=text-bottom alt="NT-Logo" width="400" height="auto">
+            </div>
+
+            <div class="w3-col m6 w3-padding-large">
+                <h1 class="w3-center">About this Project</h1><br>
+                <h5 class="w3-center">ISO 11898-2 Compliant</h5>
+                <p class="w3-large">This is a CAN-Bus Analyzer based on the ESP32 microcontroller. Communication is done either through USB or an on-board server so that the CAN messages are interpreted or sent.
+                    <p class="w3-large w3-text-grey w3-hide-medium">For more information, please refer to the <a href="https://github.com/NewTec-GmbH/esp32-can-iot" target="_blank">Github Repository.</a> </p>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="w3-container w3-padding-64">
+            <h1 class="w3-center">Current Configuration</h1><br>
+            <div class="w3-col l6 w3-padding-large">
+                <h4>Connected to: </h4>
+                <p class="w3-text-grey">%STATION_SSID%</p>
+                <br>
+                <h4>AP SSID:</h4>
+                <p class="w3-text-grey">%AP_SSID%</p>
+                <br>
+                <h4>AP Password:</h4>
+                <p class="w3-text-grey">%AP_PASS%</p>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Communication Section -->
+    <div class="w3-container w3-padding-64" id="contact">
+        <h1>Communication</h1><br>
+
+        <div style="width:100%;height:50px;border:1px solid #000;">
+            <textarea resize="none" rows=1 cols="100" placeholder="Send CAN Message"></textarea>
+            <button type="button" formenctype="text/plain" aling="center">Send Command</button>
+        </div>
+    </div>
+
+    <!-- End page content -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-center w3-light-grey w3-padding-32">
+        <p>NewTec GmbH.</p>
+    </footer>
+
+</body>
+
+</html>

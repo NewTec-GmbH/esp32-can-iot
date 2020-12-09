@@ -4,12 +4,10 @@ title Hierarchy Diagram
 
 node {
     package Application{
-        component Webpages
         component ESP_CAN_Analyzer as ESP_CAN
-
     }
 
-    package ?{
+    package Modules{
         component ESPAsyncServer
         component Lawicel_h
         component CAN_h
@@ -19,6 +17,7 @@ node {
     package Service{
         component IP_Stack
         component ESP32SJA1000_h
+        component Board
     }
 
 
@@ -73,12 +72,12 @@ AsyncTCP --> IP_Stack
 Arduino_h --> CANController_h
 ESP32SJA1000_h --> Arduino_h
 
-
-Webpages --> ESPAsyncServer
 CAN_h --> ESP32SJA1000_h
+Board --> Arduino_h
+ESP_CAN --> Board
 
 ESP_CAN --> Lawicel_h
-ESP_CAN --> Webpages
+ESP_CAN --> ESPAsyncServer
 
 
 @enduml
