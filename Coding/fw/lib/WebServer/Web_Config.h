@@ -29,12 +29,12 @@ namespace WebConfig
   static const uint32_t WEBSERVER_PORT = 80U;    /**< HTTP Port */
   static const uint16_t WIFI_TIMEOUT_MS = 20000; /**< Maximum wait time to establish the WiFi connection */
 
-  String &getSTA_SSID(); /**< Returns saved Station SSID */
-  String &getSTA_PASS(); /**< Returns saved Station Password */
-  String &getAP_SSID();  /**< Returns saved Access Point SSID */
-  String &getAP_PASS();  /**< Returns saved Access Point Password */
-  String &getWEB_USER(); /**< Returns saved Webserver Username */
-  String &getWEB_PASS(); /**< Returns saved Webserver Password */
+  const String &getSTA_SSID(); /**< Returns saved Station SSID */
+  const String &getSTA_PASS(); /**< Returns saved Station Password */
+  const String &getAP_SSID();  /**< Returns saved Access Point SSID */
+  const String &getAP_PASS();  /**< Returns saved Access Point Password */
+  const String &getWEB_USER(); /**< Returns saved Webserver Username */
+  const String &getWEB_PASS(); /**< Returns saved Webserver Password */
 
   void importConfig();                                     /**< Loads the saved configuration from the flash memory */
   void saveConfig(const String &key, const String &value); /**< Saves the desired value in the memory "key" */

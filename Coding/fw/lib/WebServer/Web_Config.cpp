@@ -46,36 +46,36 @@ void WebConfig::importConfig()
 }
 
 /**************************************************************************************************/
-String &WebConfig::getSTA_SSID()
+const String &WebConfig::getSTA_SSID()
 {
     return STA_SSID;
 }
 /**************************************************************************************************/
-String &WebConfig::getSTA_PASS()
+const String &WebConfig::getSTA_PASS()
 {
     return STA_PASSWORD;
 }
 
 /**************************************************************************************************/
-String &WebConfig::getAP_SSID()
+const String &WebConfig::getAP_SSID()
 {
     return AP_SSID;
 }
 
 /**************************************************************************************************/
-String &WebConfig::getAP_PASS()
+const String &WebConfig::getAP_PASS()
 {
     return AP_PASSWORD;
 }
 
 /**************************************************************************************************/
-String &WebConfig::getWEB_USER()
+const String &WebConfig::getWEB_USER()
 {
     return WEB_USER;
 }
 
 /**************************************************************************************************/
-String &WebConfig::getWEB_PASS()
+const String &WebConfig::getWEB_PASS()
 {
     return WEB_PASSWORD;
 }
