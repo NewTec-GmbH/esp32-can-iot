@@ -39,7 +39,7 @@ namespace WebConfig
   void importConfig();                                     /**< Loads the saved configuration from the flash memory */
   void saveConfig(const String &key, const String &value); /**< Saves the desired value in the memory "key" */
 
-  enum stausCodes
+  enum StatusCodes
   {
     HTTP_OK = 200,           /**< OK */
     HTTP_BAD_REQUEST = 400,  /**< Bad Request */
