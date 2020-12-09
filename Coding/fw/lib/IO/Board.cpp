@@ -102,4 +102,24 @@ extern void Board::reset()
     return;
 }
 
+extern void Board::haltSystem()
+{
+  errorLED.write(HIGH);
+  while (true)
+  {
+  }  
+}
+
+extern void Board::blinkError(uint32_t duration)
+{
+    errorLED.write(HIGH);
+
+    uint32_t startTime = millis();
+
+    while(millis() < (startTime + duration))
+    {
+    }
+    errorLED.write(LOW);
+}
+
 /* INTERNAL FUNCTIONS *****************************************************************************/

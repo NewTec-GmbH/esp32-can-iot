@@ -12,10 +12,10 @@ Web Pages for ESP32 WebServer @ref Pages.h
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
-#include <Pages.h>
-#include <Web_Config.h>
+#include "Pages.h"
+#include "Web_Config.h"
 #include <SPIFFS.h>
-#include <Settings.h>
+#include "Settings.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -29,22 +29,36 @@ extern "C"
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+/**
+*   Processor for the Webpages, in order to replace the Templates in HTML (%TEMPLATE%) with their correct value.
+*   Function given by the AsyncWebServer Library
+*   @param [in] var: Webpage to be displayed before replacing the Templates
+*   return Webpage with replaced Templates
+*/
 static String pageProcessor(const String &var);
+
+/**
+* Handles the request when the index page is requested
+*/
 static void indexPage(AsyncWebServerRequest *request);
+
+/**
+* Handles the request when the error page is requested
+*/
 static void errorPage(AsyncWebServerRequest *request);
 
 /* VARIABLES **************************************************************************************/
 
 /* PUBLIC METHODES ********************************************************************************/
 /**************************************************************************************************/
-void Pages::init(AsyncWebServer &server)
+void Pages::init(AsyncWebServer &webServer)
 {
-    server.on("/", HTTP_GET, indexPage);
-    server.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
-    server.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
-    server.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
+    webServer.on("/", HTTP_GET, indexPage);
+    webServer.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
+    webServer.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
+    webServer.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
 
-    server.onNotFound(errorPage);
+    webServer.onNotFound(errorPage);
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -108,5 +122,5 @@ static void errorPage(AsyncWebServerRequest *request)
         return request->requestAuthentication();
     }
 
-    request->send(404, "text/plain", "Not Found");
+    request->send(WebConfig::HTTP_NOT_FOUND, "text/plain", "Not Found");
 }

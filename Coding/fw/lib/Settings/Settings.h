@@ -29,12 +29,30 @@ extern "C"
 */
 namespace Settings
 {
-    bool save(const String directory, const String &key, const uint32_t &value);                            /**< Saves uint32_t value to Flash memory on location "key" */
-    bool save(const String directory, const String &key, const String &value);                              /**< Saves String to Flash memory on location "key" */
-    bool get(const String directory, const String &key, uint32_t &value, const uint32_t defaultValue = 0U); /**< Gets uint32_t value from Flash memory on location "key". Writes it in "value" */
-    bool get(const String directory, const String &key, String &value, const String defaultValue = "");     /**< Gets String from Flash memory on location "key". Writes it in "value" */
-    bool clear(const String directory);                                                                     /**< Clears all entries on a directory */
-};                                                                                                         // namespace Settings
+    bool save(                         /**< Saves uint32_t value to Flash memory */
+              const String &directory, /**< Directory where information is stored */
+              const String &key,       /**< Name of Memory Location */
+              const uint32_t &value);  /**< Value to be stored */
+
+    bool save(                         /**< Saves uint32_t value to Flash memory */
+              const String &directory, /**< Directory where information is stored */
+              const String &key,       /**< Name of Memory Location */
+              const String &value);    /**< String to be stored */
+
+    bool get(                                   /**< Gets uint32_t value from Flash memory */
+             const String &directory,           /**< Directory where information is stored */
+             const String &key,                 /**< Name of Memory Location */
+             uint32_t &value,                   /**< Variable to write the value to */
+             const uint32_t defaultValue = 0U); /**< Default value returned if no value stored in memory */
+
+    bool get(                                 /**< Gets uint32_t value from Flash memory */
+             const String &directory,         /**< Directory where information is stored */
+             const String &key,               /**< Name of Memory Location */
+             String &value,                   /**< Variable to write the String to */
+             const String defaultValue = ""); /**< Default String returned if no String stored in memory */
+
+    bool clear(const String &directory); /**< Clears all entries on a directory */
+};                                       // namespace Settings
 
     /* INLINE FUNCTIONS ***************************************************************************/
 

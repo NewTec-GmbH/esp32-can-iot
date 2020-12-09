@@ -13,15 +13,15 @@ Main Application
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include <Arduino.h>
-#include <Lawicel.h>
-#include <SerialAdapter.h>
-#include <CANAdapter.h>
-#include <NVMAdapter.h>
-#include <WSAdapter.h>
-#include <ESP_Server.h>
-#include <Settings.h>
-#include <io.h>
-#include <Board.h>
+#include "Lawicel.h"
+#include "SerialAdapter.h"
+#include "CANAdapter.h"
+#include "NVMAdapter.h"
+#include "WSAdapter.h"
+#include "ESP_Server.h"
+#include "Settings.h"
+#include "io.h"
+#include "Board.h"
 
 /* CONSTANTS **************************************************************************************/
 
@@ -40,28 +40,33 @@ WSAdapter websocketadapter;
 Lawicel protocolLawicel(websocketadapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/
-void restart();
-void setErrorLED();
-
 void setup()
 {
   Board::init();
   if (!protocolLawicel.begin())
   {
-    setErrorLED();
+    Board::haltSystem();
   }
   else if (!ESPServer::begin())
   {
-    setErrorLED();
+    Board::haltSystem();
   }
 }
 
 void loop()
 {
-  protocolLawicel.executeCycle();
-  if (ESPServer::handleNextRequest())
+  if(!protocolLawicel.executeCycle())
   {
-    restart();
+    Board::blinkError(250);
+  }
+  if (!ESPServer::checkConnection())
+  {
+    Board::haltSystem();
+    
+  }
+  if(ESPServer::isRestartRequested())
+  {
+    Board::reset();
   }
 }
 
@@ -73,18 +78,3 @@ void loop()
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
 
-void restart()
-{
-  delay(5000);
-  protocolLawicel.end();
-  ESPServer::end();
-  Board::reset();
-}
-
-void setErrorLED()
-{
-  Board::errorLED.write(HIGH);
-  while (true)
-  {
-  }  
-}

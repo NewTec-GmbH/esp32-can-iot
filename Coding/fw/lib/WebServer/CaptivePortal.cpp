@@ -12,8 +12,8 @@ Captive Portal for ESP32 WebServer @ref CaptivePortal.h
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
-#include <CaptivePortal.h>
-#include <Web_Config.h>
+#include "CaptivePortal.h"
+#include "Web_Config.h"
 #include <SPIFFS.h>
 
 /* C-Interface ************************************************************************************/
@@ -26,8 +26,14 @@ extern "C"
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
-static void reqRestart();                                    /*< Changes the value of restartRequested to True*/
-static void credentialsProcessor(String name, String value); /*< Processor to save the required credentials */
+static bool restartRequested = false;                 /**<  Variable to call Restart */
+/**************************************************************************************************/
+/**
+*  Processor to save the required credentials incoming from the Webpage
+* @param name Name of the parameter
+* @param value Value of the parameter 
+*/
+static void credentialsProcessor(String name, String value);
 
 /**
 * Captive portal request handler.
@@ -86,31 +92,32 @@ public:
                     AsyncWebParameter *p = request->getParam(i);
                     credentialsProcessor(p->name(), p->value());
                 }
-                request->send(SPIFFS, "/setCredentials.html", String(), false, captivePageProcessor);
-                reqRestart();
+                request->send(SPIFFS, "/setCredentials.html");
+                restartRequested = true;
             }
         }
         else if (HTTP_GET == request->method())
         {
-            request->send(SPIFFS, "/STACredentials.html", String(), false, captivePageProcessor);
+            request->send(SPIFFS, "/STACredentials.html");
         }
         else
         {
-            request->send(400, "text/plain", "Error. Bad Request");
+            request->send((WebConfig::HTTP_BAD_REQUEST, "text/plain", "Error. Bad Request");
         }
     }
 
+/**
+* @brief Function tells the server if the Body of the request has to be parsed too. As this website uses a POST Request, body must be parsed.
+* 
+* @return true The Body is trivial and will not be parsed.
+* @return false The Body is important/not trivial and must be parsed.
+*/
     bool isRequestHandlerTrivial() override
     {
         return false;
     }
 
 private:
-    static String captivePageProcessor(const String &var)
-    {
-        String temp;
-        return temp;
-    }
 };
 
 /* PUBLIC METHODES ********************************************************************************/
@@ -123,7 +130,7 @@ private:
 
 /* VARIABLES **************************************************************************************/
 static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler */
-static bool restartRequested = false; /**<  Variable to call Restart */
+
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 /**
@@ -131,11 +138,11 @@ static bool restartRequested = false; /**<  Variable to call Restart */
  * 
  * @param server AsyncWebserver Instance to initialize to
  */
-void CaptivePortal::init(AsyncWebServer &server)
+void CaptivePortal::init(AsyncWebServer &webServer)
 {
-    server.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
-    server.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
-    server.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
+    webServer.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
+    webServer.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
+    webServer.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 }
 
 /**
@@ -147,14 +154,6 @@ bool CaptivePortal::isRestartRequested()
 }
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
-
-/**
- * Request restart.
- */
-static void reqRestart()
-{
-    restartRequested = true;
-}
 
 /**
  * @brief Saves the Credentials given by the user to the Flash Memory

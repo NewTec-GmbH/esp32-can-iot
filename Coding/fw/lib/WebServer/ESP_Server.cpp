@@ -12,14 +12,13 @@ Handler for ESP32 WebServer. @ref ESPServer.h
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
-#include <ESP_Server.h>
-#include <DNSServer.h>
+#include "ESP_Server.h"
 #include <SPIFFS.h>
-#include <Board.h>
-#include <Web_config.h>
-#include <Pages.h>
-#include <CaptivePortal.h>
-#include <Websocket.h>
+#include "Board.h"
+#include "Web_config.h"
+#include "Pages.h"
+#include "CaptivePortal.h"
+#include "Websocket.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -27,9 +26,6 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-
-static AsyncWebServer server(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
-static DNSServer dnsServer;                              /**< Instance of DNS Server*/
 
 /* MACROS *****************************************************************************************/
 
@@ -40,12 +36,7 @@ static DNSServer dnsServer;                              /**< Instance of DNS Se
 *   Determines the state of the WiFiModeSelect Button to enter AP Mode
 *   @return bool AP Mode. If true, will request the AP mode. If false, requests STA Mode
 */
-static bool setAPMode();
-
-/**
-*  Variable to call Restart
-*/
-static bool restartRequested = false;
+static bool getAPMode();
 
 /**
 * Connects to the WiFi AP when requested
@@ -61,6 +52,7 @@ static bool connectWiFi();
 static bool initPages(bool apModeRequested);
 
 /* VARIABLES **************************************************************************************/
+static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
 IPAddress m_serverIP; /**< Stores the IP Address of the ESP32 */
 
 /* PUBLIC METHODES ********************************************************************************/
@@ -76,7 +68,7 @@ bool ESPServer::begin()
     bool success = true;
     WebConfig::importConfig(); /*< Imports Credentials from Flash Memory */
 
-    if (setAPMode())
+    if (getAPMode())
     {
         if (!WiFi.softAP(WebConfig::getAP_SSID().c_str(), WebConfig::getAP_PASS().c_str()))
         {
@@ -110,21 +102,14 @@ bool ESPServer::begin()
             success = false;
         }
     }
-
-    dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
-
-    if (!dnsServer.start(WebConfig::DNS_PORT, "*", m_serverIP))
-    {
-        success = false;
-    }
-    else if (!SPIFFS.begin())
+    if (!SPIFFS.begin())
     {
         success = false;
     }
 
     Serial.println(m_serverIP);
 
-    server.begin();
+    webServer.begin();
     return success;
 }
 
@@ -135,40 +120,32 @@ bool ESPServer::begin()
 */
 bool ESPServer::end()
 {
-    server.end();
+    webServer.end();
     SPIFFS.end();
-    dnsServer.stop();
     return WiFi.disconnect(true, true);
 }
 
 /**************************************************************************************************/
 /**
 *   Calls next request on DNS Server
-*   return true
+*   return true if a restart is requested
 */
-bool ESPServer::handleNextRequest()
+bool ESPServer::checkConnection()
 {
-    if (WiFi.getMode() == WIFI_STA && WiFi.status() != WL_CONNECTED)
+    bool success = true;
+     if (WiFi.getMode() == WIFI_STA && WiFi.status() != WL_CONNECTED)
     {
-        if(!connectWiFi())
+        if (!connectWiFi())
         {
-            Board::errorLED.write(HIGH);
-            while(true)
-            {}
+            success = false;
         }
     }
-    else
-    {
-        dnsServer.processNextRequest();
-        restartRequested = CaptivePortal::isRestartRequested();
-    }
-
-    return restartRequested;
+    return success;
 }
 
-AsyncWebServer &ESPServer::getInstance()
+bool ESPServer::isRestartRequested()
 {
-    return server;
+    return CaptivePortal::isRestartRequested();
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -179,7 +156,7 @@ AsyncWebServer &ESPServer::getInstance()
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
 /**************************************************************************************************/
-static bool setAPMode()
+static bool getAPMode()
 {
 
     bool apMode = false;
@@ -219,13 +196,13 @@ bool initPages(bool apModeRequested)
 
     if (apModeRequested)
     {
-        CaptivePortal::init(server);
+        CaptivePortal::init(webServer);
     }
     else
     {
-        Pages::init(server);
+        Pages::init(webServer);
         
-        if(!websocket::init(server))
+        if(!websocket::init(webServer))
         {
             success = false;
         }
@@ -240,7 +217,7 @@ bool connectWiFi()
 
     unsigned long startAttempTime = millis();
 
-    while (WiFi.status() != WL_CONNECTED && (millis() - startAttempTime) < WebConfig::WIFI_TIMEOUT_MS)
+    while ((WiFi.status() != WL_CONNECTED) && ((millis() - startAttempTime) < WebConfig::WIFI_TIMEOUT_MS))
     {
     }
 

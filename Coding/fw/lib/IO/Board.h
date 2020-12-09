@@ -127,6 +127,18 @@ namespace Board
     */
     extern void reset();
 
+    /**
+    * @brief Stops the runnung programm and sets the Error LED
+    * @author Gabryel Reyes
+    */
+    extern void haltSystem();
+
+    /**
+    * @brief Blinks the Error LED without stoping the programm
+    * @author Gabryel Reyes
+    */
+    extern void blinkError(uint32_t duration);
+
 }; // namespace Board
 
     /* INLINE FUNCTIONS *******************************************************************************/

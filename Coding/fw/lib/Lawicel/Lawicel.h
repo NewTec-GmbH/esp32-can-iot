@@ -16,10 +16,9 @@ Driver for Lawicel Protocol
 
 /* INCLUDES ***************************************************************************************/
 #include <Arduino.h>
-#include <string.h>
-#include <CANInterface.h>
-#include <SerialInterface.h>
-#include <NVMInterface.h>
+#include "CANInterface.h"
+#include "SerialInterface.h"
+#include "NVMInterface.h"
 
 /**
 * Key Definition (Adresses) to be read by NVM Adapter for initialization
