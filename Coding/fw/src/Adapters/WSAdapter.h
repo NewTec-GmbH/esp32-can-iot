@@ -56,6 +56,7 @@ public:
     */
     bool begin()
     {
+        Serial.begin(115200);
         return true;
     }
 
