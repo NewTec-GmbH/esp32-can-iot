@@ -29,8 +29,22 @@ extern "C"
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+/**
+*   Processor for the Webpages, in order to replace the Templates in HTML (%TEMPLATE%) with their correct value.
+*   Function given by the AsyncWebServer Library
+*   @param [in] var: Webpage to be displayed before replacing the Templates
+*   return Webpage with replaced Templates
+*/
 static String pageProcessor(const String &var);
+
+/**
+* Handles the request when the index page is requested
+*/
 static void indexPage(AsyncWebServerRequest *request);
+
+/**
+* Handles the request when the error page is requested
+*/
 static void errorPage(AsyncWebServerRequest *request);
 
 /* VARIABLES **************************************************************************************/
