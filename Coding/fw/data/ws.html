@@ -32,7 +32,7 @@
 
         function onOpen(event) {
             console.log('Connection opened');
-            websocket.send("D.");
+            websocket.send("D\r");
         }
 
         function onClose(event) {
@@ -42,133 +42,170 @@
 
         function onLoad(event) {
             initWebSocket();
-            setInterval(displayMessages, 10);            
+            setInterval(getCMD, 10);
         }
 
         function onMessage(event) {
             logMessages.push(event.data);
         }
 
+        function getCMD() {
+            if (logMessages.length != 0) {
+
+                console.log(logMessages[0]);
+
+                switch (logMessages[0][0]) {
+                    case '\r':
+                        console.log("OK");
+                        break;
+                    case '\a':
+                        console.log("Error");
+                        break;
+
+                    case "t":
+                    case "T":
+                    case "r":
+                    case "R":
+                        displayMessages();
+                        break;
+
+                    case "D":
+                        displaySettings();
+                        break;
+
+                    default:
+                        console.log("Unrecognized Lawicel Command");
+                        break;
+                }
+                logMessages.shift();
+            }
+        }
+
         function displayMessages() {
             if (enable == 1) {
-                if (logMessages.length != 0) {
 
-                    var table = document.getElementById("CANLog");
-                    var row = null;
-                    var cell = null;
+                var table = document.getElementById("CANLog");
+                var row = null;
+                var cell = null;
 
-                    var frame = {
-                        ID: "",
-                        RTR: "-",
-                        DLC: "",
-                        DATA: "",
-                        BYTES: ["-", "-", "-", "-", "-", "-", "-", "-"],
-                        TIMESTAMP: "",
-                        SYSTIME: ""
-                    };
+                var frame = {
+                    ID: "",
+                    RTR: "-",
+                    DLC: "",
+                    DATA: "",
+                    BYTES: ["-", "-", "-", "-", "-", "-", "-", "-"],
+                    TIMESTAMP: "",
+                    SYSTIME: ""
+                };
 
-                    console.log(logMessages[0]);
+                switch (logMessages[0][0]) {
+                    case "t":
+                        frame.ID = logMessages[0].substr(1, 3);
+                        frame.DLC = logMessages[0][4];
+                        frame.DATA = logMessages[0].substr(5, frame.DLC * 2);
+                        frame.TIMESTAMP = logMessages[0].substr(5 + frame.DLC * 2, 4);
+                        frame.SYSTIME = logMessages[0].substr(9 + frame.DLC * 2, 6);
+                        break;
 
-                    switch (logMessages[0][0]) {
-                        case "t":
-                            frame.ID = logMessages[0].substr(1, 3);
-                            frame.DLC = logMessages[0][4];
-                            frame.DATA = logMessages[0].substr(5, frame.DLC * 2);
-                            frame.TIMESTAMP = logMessages[0].substr(5 + frame.DLC * 2, 4);
-                            frame.SYSTIME = logMessages[0].substr(9 + frame.DLC * 2, 6);
-                            break;
+                    case "T":
+                        frame.ID = logMessages[0].substr(1, 8);
+                        frame.DLC = logMessages[0][9];
+                        frame.DATA = logMessages[0].substr(10, frame.DLC * 2);
+                        frame.TIMESTAMP = logMessages[0].substr(10 + frame.DLC * 2, 4);
+                        frame.SYSTIME = logMessages[0].substr(14 + frame.DLC * 2, 6);
+                        break;
 
-                        case "T":
-                            frame.ID = logMessages[0].substr(1, 8);
-                            frame.DLC = logMessages[0][9];
-                            frame.DATA = logMessages[0].substr(10, frame.DLC * 2);
-                            frame.TIMESTAMP = logMessages[0].substr(10 + frame.DLC * 2, 4);
-                            frame.SYSTIME = logMessages[0].substr(14 + frame.DLC * 2, 6);
-                            break;
+                    case "r":
+                        frame.ID = logMessages[0].substr(1, 3);
+                        frame.RTR = "Yes";
+                        frame.TIMESTAMP = logMessages[0].substr(5, 4);
+                        frame.SYSTIME = logMessages[0].substr(9, 6);
+                        break;
 
-                        case "r":
-                            frame.ID = logMessages[0].substr(1, 3);
-                            frame.RTR = "Yes";
-                            frame.TIMESTAMP = logMessages[0].substr(5, 4);
-                            frame.SYSTIME = logMessages[0].substr(9, 6);
-                            break;
+                    case "R":
+                        frame.ID = logMessages[0].substr(1, 8);
+                        frame.RTR = "Yes";
+                        frame.DLC = logMessages[0][9];
+                        frame.TIMESTAMP = logMessages[0].substr(10, 4);
+                        frame.SYSTIME = logMessages[0].substr(14, 8);
+                        break;
 
-                        case "R":
-                            frame.ID = logMessages[0].substr(1, 8);
-                            frame.RTR = "Yes";
-                            frame.DLC = logMessages[0][9];
-                            frame.TIMESTAMP = logMessages[0].substr(10, 4);
-                            frame.SYSTIME = logMessages[0].substr(14, 8);
-                            break;
-
-                        case "D":
-                            console.log("got it");
-                            logMessages.shift();
-                            return;
-
-
-                        default:
-                            frame.ID = undefined;
-                            frame.DLC = undefined;
-                            frame.DATA = undefined;
-                            frame.TIMESTAMP = undefined;
-                            frame.SYSTIME = undefined;
-                            break;
-                    }
-
-                    if (frame.RTR == "-") {
-
-                        var position = 0;
-                        var byte = 0;
-                        frame.DATA.toUpperCase();
-
-                        while (position < (frame.DLC * 2)) {
-                            frame.BYTES[byte] = frame.DATA.substr(position, 2);
-                            byte++;
-                            position = position + 2;
-                        }
-                    }
-
-                    logMessages.shift();
-
-                    if (maxLogs < table.rows.length) {
-                        table.deleteRow(-1);
-                    }
-
-                    row = table.insertRow(1);
-
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = counter;
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.ID;
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.RTR;
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.DLC;
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.BYTES[0];
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.BYTES[1];
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.BYTES[2];
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.BYTES[3];
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.BYTES[4];
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.BYTES[5];
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.BYTES[6];
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.BYTES[7];
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.TIMESTAMP.toUpperCase();
-                    cell = row.insertCell(-1);
-                    cell.innerHTML = frame.SYSTIME;
-
-                    counter++;
+                    default:
+                        frame.ID = undefined;
+                        frame.DLC = undefined;
+                        frame.DATA = undefined;
+                        frame.TIMESTAMP = undefined;
+                        frame.SYSTIME = undefined;
+                        break;
                 }
+
+                if (frame.RTR == "-") {
+
+                    var position = 0;
+                    var byte = 0;
+                    frame.DATA.toUpperCase();
+
+                    while (position < (frame.DLC * 2)) {
+                        frame.BYTES[byte] = frame.DATA.substr(position, 2);
+                        byte++;
+                        position = position + 2;
+                    }
+                }
+
+                if (maxLogs < table.rows.length) {
+                    table.deleteRow(-1);
+                }
+
+                row = table.insertRow(1);
+
+                cell = row.insertCell(-1);
+                cell.innerHTML = counter;
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.ID;
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.RTR;
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.DLC;
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.BYTES[0];
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.BYTES[1];
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.BYTES[2];
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.BYTES[3];
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.BYTES[4];
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.BYTES[5];
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.BYTES[6];
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.BYTES[7];
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.TIMESTAMP.toUpperCase();
+                cell = row.insertCell(-1);
+                cell.innerHTML = frame.SYSTIME;
+
+                counter++;
+
             }
+        }
+
+        function displaySettings() {
+            var temp = document.getElementById("Sys_Auto");
+            temp.innerHTML = logMessages[0][1];
+            temp = document.getElementById("Sys_CBaud");
+            temp.innerHTML = logMessages[0].substr(2, 2);
+            temp = document.getElementById("Sys_TStmp");
+            temp.innerHTML = logMessages[0][4];
+        }
+
+        function sendCMD() {
+            var input = document.getElementById("LawicelCMD").value;
+            input += '\r';
+            console.log(input);
+            websocket.send(input);
         }
 
         function toggle() {
@@ -184,6 +221,30 @@
         <a href="/">Home</a>
     </div>
     <h1>CAN Communication</h1>
+
+    <div>
+        <form>
+            <label for="LawicelCMD">Lawicel Command:</label><br>
+            <input type="text" id="LawicelCMD" name="LawicelCMD" placeholder="LawicelCMD"><br>
+        </form>
+        <button type="button" onclick="sendCMD()">Send</button>
+    </div>
+
+    <div>
+        <table id="SystemData" cellpadding="15px">
+            <tr>
+                <th>AutoStart</th>
+                <th>CAN Baudrate</th>
+                <th>Timestamp</th>
+            </tr>
+            <tr>
+                <td id="Sys_Auto"></td>
+                <td id="Sys_CBaud"></td>
+                <td id="Sys_TStmp"></td>
+            </tr>
+        </table>
+    </div>
+
     <div>
         <button class="button" type="button" onclick="toggle()">Pause</button>
         <div>
