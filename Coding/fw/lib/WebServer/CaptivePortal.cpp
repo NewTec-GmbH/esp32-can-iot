@@ -26,7 +26,7 @@ extern "C"
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
-static bool restartRequested = false;                 /**<  Variable to call Restart */
+static bool restartRequested = false; /**<  Variable to call Restart */
 /**************************************************************************************************/
 /**
 *  Processor to save the required credentials incoming from the Webpage
@@ -90,7 +90,10 @@ public:
                 for (int i = 0; i < params; i++)
                 {
                     AsyncWebParameter *p = request->getParam(i);
-                    credentialsProcessor(p->name(), p->value());
+                    if (nullptr != p)
+                    {
+                        credentialsProcessor(p->name(), p->value());
+                    }
                 }
                 request->send(SPIFFS, "/setCredentials.html");
                 restartRequested = true;
@@ -106,7 +109,7 @@ public:
         }
     }
 
-/**
+    /**
 * @brief Function tells the server if the Body of the request has to be parsed too. As this website uses a POST Request, body must be parsed.
 * 
 * @return true The Body is trivial and will not be parsed.
@@ -130,7 +133,6 @@ private:
 
 /* VARIABLES **************************************************************************************/
 static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler */
-
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 /**
