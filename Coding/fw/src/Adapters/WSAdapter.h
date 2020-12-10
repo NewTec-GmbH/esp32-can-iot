@@ -126,8 +126,6 @@ public:
 
 protected:
 private:
-    long m_baudrate;
-    String currentCommand = "";
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

@@ -32,6 +32,7 @@
 
         function onOpen(event) {
             console.log('Connection opened');
+            websocket.send("D.");
         }
 
         function onClose(event) {
@@ -41,7 +42,7 @@
 
         function onLoad(event) {
             initWebSocket();
-            setInterval(displayMessages, 10);
+            setInterval(displayMessages, 10);            
         }
 
         function onMessage(event) {
@@ -99,6 +100,11 @@
                             frame.TIMESTAMP = logMessages[0].substr(10, 4);
                             frame.SYSTIME = logMessages[0].substr(14, 8);
                             break;
+
+                        case "D":
+                            console.log("got it");
+                            logMessages.shift();
+                            return;
 
 
                         default:

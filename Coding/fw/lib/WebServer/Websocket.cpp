@@ -42,7 +42,6 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
     {
-        Serial.println((char *)data);
         inputBuffer += (char *)data;
     }
 }
@@ -69,7 +68,7 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 
 void websocket::send(String message)
 {
-    String systime = String(millis());    
+    String systime = String(millis());
     message += systime.substring(0,7);
     ws.textAll(message);
 }
@@ -77,11 +76,20 @@ void websocket::send(String message)
 bool websocket::receive(char &c)
 {
     bool available = false;
-    if(inputBuffer.length() != 0)
+    if (inputBuffer.length() != 0)
     {
         available = true;
-        c = inputBuffer[0];
-        inputBuffer.remove(0,1);
+        if (inputBuffer[0] == '.')
+        {
+            c = '\r';
+            inputBuffer = "";
+        }
+        else
+        {
+            c = inputBuffer[0];
+        }
+        inputBuffer.remove(0, 1);
+        Serial.println(c);
     }
 
     return available;

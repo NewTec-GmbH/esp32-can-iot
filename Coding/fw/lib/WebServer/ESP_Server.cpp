@@ -92,9 +92,9 @@ bool ESPServer::begin()
         {
             success = false;
         }
-        else
+        else if(!connectWiFi())
         {
-            success = connectWiFi();
+            success = false;
         }
 
         if (!initPages(false))
