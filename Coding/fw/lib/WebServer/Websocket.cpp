@@ -71,7 +71,6 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 
 void websocket::send(String message)
 {
-    Serial.println(message);
     String systime = String(millis());
     if (message[0] == (char)7)
     {
