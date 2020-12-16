@@ -112,8 +112,6 @@ bool ESPServer::begin()
         success = false;
     }
 
-    Serial.println(m_serverIP);
-
     webServer.begin();
     return success;
 }
@@ -151,6 +149,11 @@ bool ESPServer::checkConnection()
 bool ESPServer::isRestartRequested()
 {
     return CaptivePortal::isRestartRequested();
+}
+
+IPAddress ESPServer::getIPAddress()
+{
+    return m_serverIP;
 }
 
 /* PROTECTED METHODES *****************************************************************************/

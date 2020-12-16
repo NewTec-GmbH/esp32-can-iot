@@ -51,6 +51,11 @@ void setup()
   {
     Board::haltSystem();
   }
+  else
+  {
+    Serial.println(ESPServer::getIPAddress());
+  }
+  
 }
 
 void loop()
