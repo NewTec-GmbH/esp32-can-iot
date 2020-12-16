@@ -43,11 +43,11 @@ Lawicel protocolLawicel(websocketadapter, sja1000Adapter, flashAdapter);
 void setup()
 {
   Board::init();
-  if (!protocolLawicel.begin())
+  if (!ESPServer::begin())
   {
     Board::haltSystem();
   }
-  else if (!ESPServer::begin())
+  else if (!protocolLawicel.begin())
   {
     Board::haltSystem();
   }
