@@ -59,10 +59,10 @@ namespace Board
         static const uint8_t indicatorError = 2U;
 
         /** Pin number of AP-Mode LED */
-        static const uint8_t indicatorAPMode = 18U;
+        static const uint8_t indicatorAPMode = 19U;
 
         /** Pin number of STA-Mode LED */
-        static const uint8_t indicatorSTAMode = 19U;
+        static const uint8_t indicatorSTAMode = 18U;
 
         /** Pin number of WiFi-Mode Button */
         static const uint8_t userButton = 21U;

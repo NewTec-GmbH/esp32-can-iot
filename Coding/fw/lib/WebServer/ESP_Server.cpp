@@ -53,7 +53,7 @@ static bool initPages(bool apModeRequested);
 
 /* VARIABLES **************************************************************************************/
 static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
-IPAddress m_serverIP; /**< Stores the IP Address of the ESP32 */
+IPAddress m_serverIP;                                       /**< Stores the IP Address of the ESP32 */
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -68,8 +68,12 @@ bool ESPServer::begin()
     bool success = true;
     WebConfig::importConfig(); /*< Imports Credentials from Flash Memory */
 
+    Board::apLED.write(HIGH);
+    Board::staLED.write(HIGH);
+
     if (getAPMode())
     {
+        Board::staLED.write(LOW);
         if (!WiFi.softAP(WebConfig::getAP_SSID().c_str(), WebConfig::getAP_PASS().c_str()))
         {
             success = false;
@@ -84,6 +88,7 @@ bool ESPServer::begin()
     }
     else
     {
+        Board::apLED.write(LOW);
         if (!WiFi.mode(WIFI_STA))
         {
             success = false;
@@ -92,7 +97,7 @@ bool ESPServer::begin()
         {
             success = false;
         }
-        else if(!connectWiFi())
+        else if (!connectWiFi())
         {
             success = false;
         }
@@ -133,7 +138,7 @@ bool ESPServer::end()
 bool ESPServer::checkConnection()
 {
     bool success = true;
-     if (WiFi.getMode() == WIFI_STA && WiFi.status() != WL_CONNECTED)
+    if (WiFi.getMode() == WIFI_STA && WiFi.status() != WL_CONNECTED)
     {
         if (!connectWiFi())
         {
@@ -186,7 +191,7 @@ static bool getAPMode()
         previousBtnState = currentBtnState;
     }
 
-    return apMode;
+    return !apMode;
 }
 
 /**************************************************************************************************/
@@ -201,8 +206,8 @@ bool initPages(bool apModeRequested)
     else
     {
         Pages::init(webServer);
-        
-        if(!websocket::init(webServer))
+
+        if (!websocket::init(webServer))
         {
             success = false;
         }
