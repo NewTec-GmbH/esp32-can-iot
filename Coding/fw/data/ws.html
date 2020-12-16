@@ -21,7 +21,7 @@
         var gateway = `ws://${window.location.hostname}/ws`;
         var websocket;
         window.addEventListener('load', onLoad);
-        window.addEventListener("keyup", function (event) {
+        window.addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
                 document.getElementById("sendButton").click();
@@ -211,57 +211,53 @@
 
         function sendCMD() {
             var input = "";
-            var extInput = document.getElementById("FRAME_EXT").checked;
-            var rtrInput = document.getElementById("FRAME_RTR").checked;
-            if (extInput == true) {
-                if (rtrInput == true) {
-                    input += 'R';
+            input = document.getElementById("LawicelCMD").value;
+            if (input.length == 0) {
+                var extInput = document.getElementById("FRAME_EXT").checked;
+                var rtrInput = document.getElementById("FRAME_RTR").checked;
+                if (extInput == true) {
+                    if (rtrInput == true) {
+                        input += 'R';
+                    } else {
+                        input += 'T';
+                    }
+                } else {
+                    if (rtrInput == true) {
+                        input += 'r';
+                    } else {
+                        input += 't';
+                    }
                 }
-                else {
-                    input += 'T';
-                }
-            }
-            else {
-                if (rtrInput == true) {
-                    input += 'r';
-                }
-                else {
-                    input += 't';
-                }
-            }
 
-            input += document.getElementById("FRAME_ID").value;
-            var frameLength = document.getElementById("FRAME_DLC").value;
-            input += frameLength;
+                input += document.getElementById("FRAME_ID").value;
+                var frameLength = document.getElementById("FRAME_DLC").value;
+                input += frameLength;
 
-            var frameData = [
-                document.getElementById("FRAME_DATA0").value,
-                document.getElementById("FRAME_DATA1").value,
-                document.getElementById("FRAME_DATA2").value,
-                document.getElementById("FRAME_DATA3").value,
-                document.getElementById("FRAME_DATA4").value,
-                document.getElementById("FRAME_DATA5").value,
-                document.getElementById("FRAME_DATA6").value,
-                document.getElementById("FRAME_DATA7").value
-            ]
+                var frameData = [
+                    document.getElementById("FRAME_DATA0").value,
+                    document.getElementById("FRAME_DATA1").value,
+                    document.getElementById("FRAME_DATA2").value,
+                    document.getElementById("FRAME_DATA3").value,
+                    document.getElementById("FRAME_DATA4").value,
+                    document.getElementById("FRAME_DATA5").value,
+                    document.getElementById("FRAME_DATA6").value,
+                    document.getElementById("FRAME_DATA7").value
+                ]
 
-            for(count = 0; count < frameLength; count++)
-            {
-                input += frameData[count];
+                for (count = 0; count < frameLength; count++) {
+                    input += frameData[count];
+                }
             }
 
             input += '\r';
             console.log(input);
             websocket.send(input);
-            console.log("t2EF5557e9621FF doesnt work. dont know why");
         }
 
         function toggle() {
             enable = !enable;
             console.log("Button Toggled");
         }
-
-
     </script>
 
 </head>
@@ -271,6 +267,13 @@
         <a href="/">Home</a>
     </div>
     <h1>CAN Communication</h1>
+
+    <div>
+        <form>
+            <label for="LawicelCMD">Lawicel Command:</label><br>
+            <input type="text" id="LawicelCMD" name="LawicelCMD" placeholder="LawicelCMD"><br>
+        </form>
+    </div>
 
     <div>
         <table class="table2">

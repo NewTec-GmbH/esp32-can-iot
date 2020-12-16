@@ -12,13 +12,13 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 
 bool websocket::init(AsyncWebServer &server)
 {
-    Serial.begin(115200);
     server.on("/communication", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(SPIFFS, "/ws.html", String(), false, processor);
     });
 
     ws.onEvent(onEvent);
     server.addHandler(&ws);
+    inputBuffer = "";
     return true; /**< No error handling when registering handlers */
 }
 
@@ -30,7 +30,6 @@ bool websocket::cycle()
 
 static String processor(const String &var)
 {
-    Serial.println(var);
     if (var == "STATE")
     {
     }
@@ -39,10 +38,14 @@ static String processor(const String &var)
 
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
+    String temp;
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
     {
-        inputBuffer += (char *)data;
+        for (int i = 0; i < len; i++)
+        {
+            inputBuffer += (char)data[i];
+        }
     }
 }
 
@@ -68,12 +71,13 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 
 void websocket::send(String message)
 {
+    Serial.println(message);
     String systime = String(millis());
-    if(message[0] == (char)7)
+    if (message[0] == (char)7)
     {
         message = '.';
     }
-    else 
+    else
     {
         message += systime.substring(0, 7);
     }
