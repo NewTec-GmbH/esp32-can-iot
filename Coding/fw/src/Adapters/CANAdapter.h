@@ -106,7 +106,7 @@ public:
 
         if (success)
         {
-            if (m_Can_Controller.write(frame.m_data, frame.m_dlc))
+            if (0 == m_Can_Controller.write(frame.m_data, frame.m_dlc))
             {
                 success = false;
             }
