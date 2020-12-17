@@ -22,6 +22,7 @@ Main Application
 #include "Settings.h"
 #include "io.h"
 #include "Board.h"
+#include "WLAN.h"
 
 /* CONSTANTS **************************************************************************************/
 
@@ -53,7 +54,7 @@ void setup()
   }
   else
   {
-    Serial.println(ESPServer::getIPAddress());
+    Serial.println(wlan::getIPAddress());
   }
   
 }
@@ -64,7 +65,7 @@ void loop()
   {
     Board::blinkError(250);
   }
-  if (!ESPServer::checkConnection())
+  if (!wlan::checkConnection())
   {
     Board::haltSystem();
     

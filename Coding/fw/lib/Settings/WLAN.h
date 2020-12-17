@@ -3,19 +3,18 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup Webserver
+@addtogroup Settings
 @{
-@file       Web_config.h
+@file       WLAN.h
 
-Configuration of ESP32 WebServer
+WiFi configuration of ESP32
 
 * @}
 ***************************************************************************************************/
-#ifndef WEB_CONFIG_H_
-#define WEB_CONFIG_H_
+#ifndef WLAN_H_
+#define WLAN_H_
 
 /* INCLUDES ***************************************************************************************/
-#include "Settings.h"
 /* C-Interface ************************************************************************************/
 extern "C"
 {
@@ -23,23 +22,18 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
-namespace WebConfig
+namespace wlan
 {
-  static const uint32_t DNS_PORT = 53U;          /**< DNS Port */
-  static const uint32_t WEBSERVER_PORT = 80U;    /**< HTTP Port */
-  
-  const String &getWEB_USER(); /**< Returns saved Webserver Username */
-  const String &getWEB_PASS(); /**< Returns saved Webserver Password */
-
-  enum StatusCodes
-  {
-    HTTP_OK = 200,           /**< OK */
-    HTTP_BAD_REQUEST = 400,  /**< Bad Request */
-    HTTP_UNAUTHORIZED = 401, /**< Unauthorized */
-    HTTP_NOT_FOUND = 404     /**< Not Found */
-  };
-
-} // namespace WebConfig
+    const String &getSTA_SSID();                             /**< Returns saved Station SSID */
+    const String &getSTA_PASS();                             /**< Returns saved Station Password */
+    const String &getAP_SSID();                              /**< Returns saved Access Point SSID */
+    const String &getAP_PASS();                              /**< Returns saved Access Point Password */
+    const bool &getAP_MODE();                                /**< Returns Access Point Mode Status */
+    bool checkConnection(void);                              /**< Calls next request on DNS Server */
+    IPAddress getIPAddress(void);                            /**< Returns the IP Address of the ESP */
+    void saveConfig(const String &key, const String &value); /**< Saves the desired value in the memory "key" */
+    bool begin();                                            /**< Starts the WiFi Connection */
+} // namespace wlan
 
 /* FORWARD DECLARATIONS **************************************************************************/
 

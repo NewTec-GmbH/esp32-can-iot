@@ -16,6 +16,7 @@ Web Pages for ESP32 WebServer @ref Pages.h
 #include "Web_Config.h"
 #include <SPIFFS.h>
 #include "Settings.h"
+#include "WLAN.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -74,15 +75,15 @@ static String pageProcessor(const String &var)
 
     if (var == "STATION_SSID")
     {
-        temp = WebConfig::getSTA_SSID();
+        temp = wlan::getSTA_SSID();
     }
     else if (var == "AP_SSID")
     {
-       temp = WebConfig::getAP_SSID();
+       temp = wlan::getAP_SSID();
     }
     else if (var == "AP_PASS")
     {
-        temp = WebConfig::getAP_PASS();
+        temp = wlan::getAP_PASS();
     }
     else if (var == "SERVER_USER")
     {

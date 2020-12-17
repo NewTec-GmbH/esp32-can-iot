@@ -15,6 +15,7 @@ Captive Portal for ESP32 WebServer @ref CaptivePortal.h
 #include "CaptivePortal.h"
 #include "Web_Config.h"
 #include <SPIFFS.h>
+#include "WLAN.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -168,6 +169,6 @@ static void credentialsProcessor(String name, String value)
     if (name == "STA_SSID" ||
         name == "STA_Password")
     {
-        WebConfig::saveConfig(name, value);
+        wlan::saveConfig(name, value);
     }
 }
