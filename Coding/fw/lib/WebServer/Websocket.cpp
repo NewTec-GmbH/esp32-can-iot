@@ -10,7 +10,7 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len);
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len);
 
-bool websocket::init(AsyncWebServer &server)
+void websocket::init(AsyncWebServer &server)
 {
     server.on("/communication", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(SPIFFS, "/ws.html", String(), false, processor);
@@ -19,7 +19,6 @@ bool websocket::init(AsyncWebServer &server)
     ws.onEvent(onEvent);
     server.addHandler(&ws);
     inputBuffer = "";
-    return true; /**< No error handling when registering handlers */
 }
 
 bool websocket::cycle()
