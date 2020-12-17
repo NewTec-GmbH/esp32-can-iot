@@ -24,7 +24,8 @@
         window.addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
-                document.getElementById("sendButton").click();
+                document.getElementById("sendCommandButton").click();
+                document.getElementById("sendFrameButton").click();
             }
         });
 
@@ -300,11 +301,13 @@
 
         function sendCMD() {
             var input = document.getElementById("LawicelCMD").value;
-            input += '\r';
-            console.log(input);
-            websocket.send(input);
-            websocket.send('D\r');
-            document.getElementById("LawicelCMD").value = "";
+            if (input != "") {
+                input += '\r';
+                console.log(input);
+                websocket.send(input);
+                websocket.send('D\r');
+                document.getElementById("LawicelCMD").value = "";
+            }
         }
 
         function sendFrame() {
@@ -355,11 +358,12 @@
 
         function toggle() {
             enable = !enable;
-            console.log("Button Toggled");
             if (enable) {
                 document.getElementById("PauseBtn").innerHTML = "Pause";
+                console.log("Display Resumed");
             } else {
                 document.getElementById("PauseBtn").innerHTML = "Play";
+                console.log("Display Paused");
             }
         }
     </script>
@@ -397,7 +401,7 @@
     <div>
         <label for="LawicelCMD">Lawicel Command:</label><br>
         <input type="text" id="LawicelCMD" name="LawicelCMD" placeholder="LawicelCMD"><br>
-        <button id="sendButton" type="button" onclick="sendCMD()">Send Command</button>
+        <button id="sendCommandButton" type="button" onclick="sendCMD()">Send Command</button>
     </div>
 
     <hr>
@@ -412,19 +416,20 @@
                 <td><input type="checkbox" id="FRAME_EXT" name="FRAME_EXT"></td>
                 <td><label for="FRAME_EXT">Extended Frame</label></td>
 
-                <td rowspan="2"><button id="sendButton" type="button" onclick="sendFrame()">Send Frame</button></td>
+                <td rowspan="2"><button id="sendFrameButton" type="button" onclick="sendFrame()">Send Frame</button>
+                </td>
             </tr>
             <tr>
                 <td><input type="text" id="FRAME_ID" name="FRAME_ID" placeholder="000" size="8"></td>
-                <td><input type="number" id="FRAME_DLC" name="FRAME_DLC" value="0" min="0" max="8"></td>
-                <td><input type="text" id="FRAME_DATA0" name="FRAME_DATA0" placeholder="00" size="2"></td>
-                <td><input type="text" id="FRAME_DATA1" name="FRAME_DATA1" placeholder="00" size="2"></td>
-                <td><input type="text" id="FRAME_DATA2" name="FRAME_DATA2" placeholder="00" size="2"></td>
-                <td><input type="text" id="FRAME_DATA3" name="FRAME_DATA3" placeholder="00" size="2"></td>
-                <td><input type="text" id="FRAME_DATA4" name="FRAME_DATA4" placeholder="00" size="2"></td>
-                <td><input type="text" id="FRAME_DATA5" name="FRAME_DATA5" placeholder="00" size="2"></td>
-                <td><input type="text" id="FRAME_DATA6" name="FRAME_DATA6" placeholder="00" size="2"></td>
-                <td><input type="text" id="FRAME_DATA7" name="FRAME_DATA7" placeholder="00" size="2"></td>
+                <td><input type="number" id="FRAME_DLC" name="FRAME_DLC" value="0" min="0" max="8" maxlength="1"></td>
+                <td><input type="text" id="FRAME_DATA0" name="FRAME_DATA0" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA1" name="FRAME_DATA1" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA2" name="FRAME_DATA2" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA3" name="FRAME_DATA3" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA4" name="FRAME_DATA4" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA5" name="FRAME_DATA5" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA6" name="FRAME_DATA6" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA7" name="FRAME_DATA7" placeholder="00" size="2" maxlength="2"></td>
 
                 <td><input type="checkbox" id="FRAME_RTR" name="FRAME_RTR"> </td>
                 <td><label for="FRAME_RTR">Remote Request</label></td>
