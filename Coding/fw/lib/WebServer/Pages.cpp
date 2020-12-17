@@ -17,6 +17,7 @@ Web Pages for ESP32 WebServer @ref Pages.h
 #include <SPIFFS.h>
 #include "Settings.h"
 #include "WLAN.h"
+#include "Websocket.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -58,7 +59,7 @@ void Pages::init(AsyncWebServer &webServer)
     webServer.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
     webServer.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
     webServer.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
-
+    websocket::init(webServer);
     webServer.onNotFound(errorPage);
 }
 
@@ -79,7 +80,7 @@ static String pageProcessor(const String &var)
     }
     else if (var == "AP_SSID")
     {
-       temp = wlan::getAP_SSID();
+        temp = wlan::getAP_SSID();
     }
     else if (var == "AP_PASS")
     {

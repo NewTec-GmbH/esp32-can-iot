@@ -18,7 +18,6 @@ Handler for ESP32 WebServer. @ref ESPServer.h
 #include "Web_config.h"
 #include "Pages.h"
 #include "CaptivePortal.h"
-#include "Websocket.h"
 #include "WLAN.h"
 
 /* C-Interface ************************************************************************************/
@@ -121,12 +120,7 @@ bool initPages(bool apModeRequested)
     }
     else
     {
-        Pages::init(webServer);
-
-        if (!websocket::init(webServer))
-        {
-            success = false;
-        }
+        Pages::init(webServer);     
     }
 
     return success;
