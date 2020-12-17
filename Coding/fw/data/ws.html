@@ -199,7 +199,6 @@
 
         }
 
-
         function displaySettings() {
             var cell = document.getElementById("Sys_Auto");
             var temp = logMessages[0][1];
@@ -300,9 +299,17 @@
         }
 
         function sendCMD() {
-            var input = "";
-            input = document.getElementById("LawicelCMD").value;
-            if (input.length == 0) {
+            var input = document.getElementById("LawicelCMD").value;
+            input += '\r';
+            console.log(input);
+            websocket.send(input);
+            websocket.send('D\r');
+            document.getElementById("LawicelCMD").value = "";
+        }
+
+        function sendFrame() {
+            if (document.getElementById("FRAME_ID").value != "") {
+                var input = "";
                 var extInput = document.getElementById("FRAME_EXT").checked;
                 var rtrInput = document.getElementById("FRAME_RTR").checked;
                 if (extInput == true) {
@@ -337,16 +344,23 @@
                 for (count = 0; count < frameLength; count++) {
                     input += frameData[count];
                 }
-            }
 
-            input += '\r';
-            console.log(input);
-            websocket.send(input);
+                input += '\r';
+                console.log(input);
+                websocket.send(input);
+                websocket.send('D\r');
+                document.getElementById("LawicelCMD").value = "";
+            }
         }
 
         function toggle() {
             enable = !enable;
             console.log("Button Toggled");
+            if (enable) {
+                document.getElementById("PauseBtn").innerHTML = "Pause";
+            } else {
+                document.getElementById("PauseBtn").innerHTML = "Play";
+            }
         }
     </script>
 
@@ -356,6 +370,7 @@
     <div class="topnav">
         <a href="/">Home</a>
     </div>
+
     <h1>CAN Communication</h1>
 
     <div>
@@ -382,7 +397,7 @@
     <div>
         <label for="LawicelCMD">Lawicel Command:</label><br>
         <input type="text" id="LawicelCMD" name="LawicelCMD" placeholder="LawicelCMD"><br>
-        <button id="sendButton" type="button" onclick="sendCMD()">Send</button>
+        <button id="sendButton" type="button" onclick="sendCMD()">Send Command</button>
     </div>
 
     <hr>
@@ -397,7 +412,7 @@
                 <td><input type="checkbox" id="FRAME_EXT" name="FRAME_EXT"></td>
                 <td><label for="FRAME_EXT">Extended Frame</label></td>
 
-                <td rowspan="2"><button id="sendButton" type="button" onclick="sendCMD()">Send</button></td>
+                <td rowspan="2"><button id="sendButton" type="button" onclick="sendFrame()">Send Frame</button></td>
             </tr>
             <tr>
                 <td><input type="text" id="FRAME_ID" name="FRAME_ID" placeholder="000" size="8"></td>
@@ -420,7 +435,7 @@
     <hr>
 
     <div>
-        <button class="button" type="button" onclick="toggle()">Pause</button>
+        <button id="PauseBtn" class="button" type="button" onclick="toggle()">Pause</button>
         <div>
             <table id="CANLog" cellpadding="15px">
                 <tr>
