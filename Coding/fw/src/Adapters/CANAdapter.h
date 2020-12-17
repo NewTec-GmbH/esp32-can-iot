@@ -247,7 +247,7 @@ public:
     {
         bool success = false;
 
-        if (m_Can_Controller.parsePacket() != -1)
+        if (m_Can_Controller.parsePacket() != -1)  /**< Return changed to -1 to differenciate from DLC = 0 */
         {
             frame.m_id = m_Can_Controller.packetId();
             frame.m_dlc = m_Can_Controller.packetDlc();

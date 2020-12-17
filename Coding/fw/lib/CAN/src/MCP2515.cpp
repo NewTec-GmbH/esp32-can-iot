@@ -225,7 +225,7 @@ int MCP2515Class::parsePacket()
     _rxExtended = false;
     _rxRtr = false;
     _rxLength = 0;
-    return -1;
+    return -1; // Return changed to -1 to differenciate from DLC = 0
   }
 
   _rxExtended = (readRegister(REG_RXBnSIDL(n)) & FLAG_IDE) ? true : false;
