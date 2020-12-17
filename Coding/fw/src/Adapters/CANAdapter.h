@@ -58,7 +58,7 @@ public:
     bool begin()
     {
         bool success = true;
-        m_Can_Controller.setPins(5,4);
+        m_Can_Controller.setPins(5, 4);
         if (m_Can_Controller.begin(m_baudRate) == 0) /**< Starts CAN channel with 500kbps Baudrate */
         {
             success = false;
@@ -106,11 +106,13 @@ public:
 
         if (success)
         {
-            if (0 == m_Can_Controller.write(frame.m_data, frame.m_dlc))
+            if (0 != frame.m_dlc)
             {
-                success = false;
+                if (0 == m_Can_Controller.write(frame.m_data, frame.m_dlc))
+                {
+                    success = false;
+                }
             }
-
             if (0 == m_Can_Controller.endPacket())
             {
                 success = false;
