@@ -18,9 +18,6 @@ Main Application
 #include "CANAdapter.h"
 #include "NVMAdapter.h"
 #include "WSAdapter.h"
-#include "ESP_Server.h"
-#include "Settings.h"
-#include "io.h"
 #include "Board.h"
 #include "WLAN.h"
 
@@ -44,11 +41,7 @@ Lawicel protocolLawicel(websocketadapter, sja1000Adapter, flashAdapter);
 void setup()
 {
   Board::init();
-  if (!ESPServer::begin())
-  {
-    Board::haltSystem();
-  }
-  else if (!protocolLawicel.begin())
+  if (!protocolLawicel.begin())
   {
     Board::haltSystem();
   }
@@ -56,21 +49,19 @@ void setup()
   {
     Serial.println(wlan::getIPAddress());
   }
-  
 }
 
 void loop()
 {
-  if(!protocolLawicel.executeCycle())
+  if (!protocolLawicel.executeCycle())
   {
     Board::blinkError(250);
   }
   if (!wlan::checkConnection())
   {
     Board::haltSystem();
-    
   }
-  if(ESPServer::isRestartRequested())
+  if (ESPServer::isRestartRequested())
   {
     Board::reset();
   }
@@ -83,4 +74,3 @@ void loop()
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
-

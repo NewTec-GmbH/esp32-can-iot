@@ -16,7 +16,8 @@ ESP32 WebSocket Adapter for Lawicel Protocol
 
 /* INCLUDES ***************************************************************************************/
 #include <Serialinterface.h>
-#include <Websocket.h>
+#include "Websocket.h"
+#include "ESP_Server.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -56,8 +57,15 @@ public:
     */
     bool begin()
     {
+        bool success = true;
         Serial.begin(115200);
-        return true;
+
+        if (!ESPServer::begin())
+        {
+            success = false;
+        }
+
+        return success;
     }
 
     /**
@@ -87,7 +95,7 @@ public:
     {
         bool success = false;
         char input;
-        if(websocket::receive(input))
+        if (websocket::receive(input))
         {
             c = input;
             success = true;
@@ -110,7 +118,7 @@ public:
     */
     void print(uint32_t num)
     {
-        String tmp (num);
+        String tmp(num);
         websocket::send(tmp);
     }
 
@@ -120,7 +128,7 @@ public:
     */
     void print(char c)
     {
-        String tmp (c);
+        String tmp(c);
         websocket::send(tmp);
     }
 
