@@ -201,12 +201,102 @@
 
 
         function displaySettings() {
-            var temp = document.getElementById("Sys_Auto");
-            temp.innerHTML = logMessages[0][1];
-            temp = document.getElementById("Sys_CBaud");
-            temp.innerHTML = logMessages[0].substr(2, 2);
-            temp = document.getElementById("Sys_TStmp");
-            temp.innerHTML = logMessages[0][4];
+            var cell = document.getElementById("Sys_Auto");
+            var temp = logMessages[0][1];
+            var output = "";
+            switch (temp) {
+                case '0':
+                    output = "Deactivated";
+                    break;
+                case '1':
+                    output = "Normal";
+                    break;
+                case '2':
+                    output = "Listen Only";
+                    break;
+                default:
+                    output = "Error";
+                    break;
+            }
+            cell.innerHTML = output;
+
+            cell = document.getElementById("Sys_CBaud");
+            temp = logMessages[0][3];
+            switch (temp) {
+                case '0':
+                    output = "10";
+                    break;
+
+                case '1':
+                    output = "20";
+                    break;
+
+                case '2':
+                    output = "50";
+                    break;
+
+                case '3':
+                    output = "100";
+                    break;
+
+                case '4':
+                    output = "125";
+                    break;
+
+                case '5':
+                    output = "250";
+                    break;
+
+                case '6':
+                    output = "500";
+                    break;
+
+                case '7':
+                    output = "800";
+                    break;
+
+                case '8':
+                    output = "1000";
+                    break;
+
+                default:
+                    output = "Error";
+                    break;
+            }
+            cell.innerHTML = output;
+
+            cell = document.getElementById("Sys_TStmp");
+            temp = logMessages[0][4];
+            switch (temp) {
+                case '0':
+                    output = "Deactivated";
+                    break;
+                case '1':
+                    output = "Activated";
+                    break;
+                default:
+                    output = "Error";
+                    break;
+            }
+            cell.innerHTML = output;
+
+            cell = document.getElementById("Sys_CChannel");
+            temp = logMessages[0][5];
+            switch (temp) {
+                case '0':
+                    output = "Closed";
+                    break;
+                case '1':
+                    output = "Normal";
+                    break;
+                case '2':
+                    output = "Listen Only";
+                    break;
+                default:
+                    output = "Error";
+                    break;
+            }
+            cell.innerHTML = output;
         }
 
         function sendCMD() {
@@ -269,11 +359,33 @@
     <h1>CAN Communication</h1>
 
     <div>
-        <form>
-            <label for="LawicelCMD">Lawicel Command:</label><br>
-            <input type="text" id="LawicelCMD" name="LawicelCMD" placeholder="LawicelCMD"><br>
-        </form>
+        <table id="SystemData" cellpadding="15px">
+            <tr>
+                <th>AutoStart</th>
+                <th>CAN Baudrate [kbps]</th>
+                <th>Timestamp</th>
+                <th>Channel</th>
+            </tr>
+            <tr>
+                <td id="Sys_Auto"></td>
+                <td id="Sys_CBaud"></td>
+                <td id="Sys_TStmp"></td>
+                <td id="Sys_CChannel"></td>
+            </tr>
+        </table>
+
+
     </div>
+
+    <hr>
+
+    <div>
+        <label for="LawicelCMD">Lawicel Command:</label><br>
+        <input type="text" id="LawicelCMD" name="LawicelCMD" placeholder="LawicelCMD"><br>
+        <button id="sendButton" type="button" onclick="sendCMD()">Send</button>
+    </div>
+
+    <hr>
 
     <div>
         <table class="table2">
@@ -281,10 +393,15 @@
                 <td><label for="FRAME_ID">ID:</label></td>
                 <td><label for="FRAME_DLC">Length:</label></td>
                 <td colspan="8"><label for="FRAME_DATA0">Data:</label></td>
+
+                <td><input type="checkbox" id="FRAME_EXT" name="FRAME_EXT"></td>
+                <td><label for="FRAME_EXT">Extended Frame</label></td>
+
+                <td rowspan="2"><button id="sendButton" type="button" onclick="sendCMD()">Send</button></td>
             </tr>
             <tr>
                 <td><input type="text" id="FRAME_ID" name="FRAME_ID" placeholder="000" size="8"></td>
-                <td><input type="number" id="FRAME_DLC" name="FRAME_DLC" min="0" max="8"></td>
+                <td><input type="number" id="FRAME_DLC" name="FRAME_DLC" value="0" min="0" max="8"></td>
                 <td><input type="text" id="FRAME_DATA0" name="FRAME_DATA0" placeholder="00" size="2"></td>
                 <td><input type="text" id="FRAME_DATA1" name="FRAME_DATA1" placeholder="00" size="2"></td>
                 <td><input type="text" id="FRAME_DATA2" name="FRAME_DATA2" placeholder="00" size="2"></td>
@@ -293,40 +410,14 @@
                 <td><input type="text" id="FRAME_DATA5" name="FRAME_DATA5" placeholder="00" size="2"></td>
                 <td><input type="text" id="FRAME_DATA6" name="FRAME_DATA6" placeholder="00" size="2"></td>
                 <td><input type="text" id="FRAME_DATA7" name="FRAME_DATA7" placeholder="00" size="2"></td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td><input type="checkbox" id="FRAME_EXT" name="FRAME_EXT"></td>
-                <td><label for="FRAME_EXT">Extended Frame</label></td>
-            </tr>
-            <tr>
+
                 <td><input type="checkbox" id="FRAME_RTR" name="FRAME_RTR"> </td>
                 <td><label for="FRAME_RTR">Remote Request</label></td>
             </tr>
-            <tr>
-                <td><button id="sendButton" type="button" onclick="sendCMD()">Send</button></td>
-            </tr>
         </table>
     </div>
 
-    <div>
-        <table id="SystemData" cellpadding="15px">
-            <tr>
-                <th>AutoStart</th>
-                <th>CAN Baudrate</th>
-                <th>Timestamp</th>
-            </tr>
-            <tr>
-                <td id="Sys_Auto"></td>
-                <td id="Sys_CBaud"></td>
-                <td id="Sys_TStmp"></td>
-            </tr>
-        </table>
-
-
-    </div>
-
+    <hr>
 
     <div>
         <button class="button" type="button" onclick="toggle()">Pause</button>

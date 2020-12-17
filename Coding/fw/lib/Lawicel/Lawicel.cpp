@@ -1318,6 +1318,7 @@ bool Lawicel::getCurrentParams(const String &lawicelCMD)
         m_serialReturn += m_selectedNVM->readInt(INIT_AUTO_START);
         m_serialReturn += m_selectedNVM->readString(INIT_CAN_BAUD);
         m_serialReturn += m_selectedNVM->readInt(INIT_TIMESTAMP);
+        m_serialReturn += (uint8_t)m_selectedCAN->getChannelState();
     }
 
     return success;
