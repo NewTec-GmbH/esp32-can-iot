@@ -41,9 +41,9 @@ Text Notes 8540 1140 2    50   ~ 0
 Status LEDs
 Text Notes 4050 4775 2    50   ~ 0
 WiFi-Mode Button
-Text HLabel 5125 2680 2    50   Output ~ 0
+Text HLabel 5125 2980 2    50   Output ~ 0
 CAN_Tx
-Text HLabel 5125 2980 2    50   Input ~ 0
+Text HLabel 5125 2680 2    50   Input ~ 0
 CAN_Rx
 Text Label 1875 2880 0    50   ~ 0
 GPIO_2
@@ -201,9 +201,9 @@ Wire Wire Line
 Wire Wire Line
 	4400 2580 5125 2580
 Wire Wire Line
-	5125 2680 4400 2680
+	5125 2980 4400 2980
 Wire Wire Line
-	4400 2980 5125 2980
+	4400 2680 5125 2680
 Wire Wire Line
 	5125 3180 4400 3180
 Wire Wire Line
@@ -531,21 +531,21 @@ $EndComp
 $Comp
 L Board:SS24 D2
 U 1 1 5FB70E5B
-P 1665 1350
-F 0 "D2" H 1665 1567 50  0000 C CNN
-F 1 "SS24" H 1665 1476 50  0000 C CNN
-F 2 "Board:DIOM5336X265N" H 1665 1350 50  0001 L BNN
-F 3 "https://www.onsemi.com/pub/Collateral/SS24-D.PDF" H 1665 1350 50  0001 L BNN
-F 4 "" H 1665 1350 50  0001 L BNN "Field4"
-F 5 "ON Semiconductor" H 1665 1350 50  0001 L BNN "Field5"
-F 6 "1.1.2" H 1665 1350 50  0001 L BNN "Field6"
-	1    1665 1350
+P 1347 1350
+F 0 "D2" H 1347 1567 50  0000 C CNN
+F 1 "SS24" H 1347 1476 50  0000 C CNN
+F 2 "Board:DIOM5336X265N" H 1347 1350 50  0001 L BNN
+F 3 "https://www.onsemi.com/pub/Collateral/SS24-D.PDF" H 1347 1350 50  0001 L BNN
+F 4 "" H 1347 1350 50  0001 L BNN "Field4"
+F 5 "ON Semiconductor" H 1347 1350 50  0001 L BNN "Field5"
+F 6 "1.1.2" H 1347 1350 50  0001 L BNN "Field6"
+	1    1347 1350
 	1    0    0    1   
 $EndComp
 Wire Wire Line
-	1865 1350 1990 1350
+	1547 1350 1595 1350
 Wire Wire Line
-	1465 1350 1090 1350
+	1147 1350 1090 1350
 $Comp
 L power:PWR_FLAG #FLG03
 U 1 1 5FB78D65
@@ -741,4 +741,11 @@ Wire Wire Line
 	4400 3080 5125 3080
 Text Label 5125 3080 2    50   ~ 0
 Indicator_STA_Mode
+Wire Wire Line
+	1595 1350 1595 1055
+Connection ~ 1595 1350
+Wire Wire Line
+	1595 1350 1990 1350
+Text HLabel 1595 1055 1    50   Output ~ 0
+Relay_Supply
 $EndSCHEMATC
