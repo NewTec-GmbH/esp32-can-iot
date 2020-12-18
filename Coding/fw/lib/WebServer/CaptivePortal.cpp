@@ -143,8 +143,9 @@ static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler *
  */
 void CaptivePortal::init(AsyncWebServer &webServer)
 {
-    webServer.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
-    webServer.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
+    webServer.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
+    webServer.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
+    webServer.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
     webServer.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 }
 
