@@ -46,7 +46,7 @@ package Lawicel_Library <<Folder>>{
 Class SerialAdapter{
     -String m_name
     -long m_baudrate
-    +SerialAdapter(const String name, long baudrate)
+    +SerialAdapter()
     +~SerialAdapter()
     +void send(char* str)
     +void setBaudrate(long _baudrate)
@@ -57,8 +57,8 @@ Class CANAdapter{
     -String m_name
     -long m_baudrate
     -BUS_STATE m_currentstate
-    +CANInterface(String name, long baudrate)
-    +~CANinterface()
+    +CANAdapter()
+    +~CANAdapter()
     +uint8_t getChannelState()
     +String getName()
     +uint8_t getStatusFlags(bool*)
@@ -77,9 +77,18 @@ Class NVMAdapter{
     +bool getInt()
 }
 
+Class WSAdapter{
+    -String m_name
+    +WSAdapter()
+    +~WSAdapter()
+    +void send(char* str)
+    +uint8_t read (char* Buffer)
+}
+
 NVMInterface <|.down. NVMAdapter : <<realize>>
 SerialInterface <|.down. SerialAdapter : <<realize>>
 CANInterface <|.down. CANAdapter : <<realize>>
+SerialInterface <|.down. WSAdapter : <<realize>>
 
 package Espressif_ESP32_Library{
     Class Settings{
@@ -122,14 +131,14 @@ package CAN_Library <<Folder>>{
     Arduino_h  <|.up. CANController_h: <<use>>
 }
 
+package AsyncWebServer_Library <<Folder>>{
+    class AsyncWebServer
+    class AsyncWebSocket
 
-package Espressif_ESP32_Library{
-    Class Settings{
-
-        -Preferences flashMemory
-    }
+    AsyncWebSocket <.. AsyncWebServer : <<use>>
 }
 
+WSAdapter ..|> AsyncWebServer_Library : <<use>>
 
 
 @enduml

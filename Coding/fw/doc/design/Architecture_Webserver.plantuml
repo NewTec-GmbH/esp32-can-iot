@@ -13,6 +13,7 @@ package WebServer <<node>>
     ESPServer 	*-- WebConfig : <<use>>
     ESPServer 	*-- Pages : <<use>>
     ESPServer 	*-- CaptivePortal : <<use>>
+    ESPServer 	*-- WebSocket : <<use>>
 }
 
 package Espressif_ESP32_Library{
