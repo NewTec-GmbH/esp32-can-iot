@@ -1,6 +1,28 @@
 @startuml
-title Use Case for ESP32 Software
+title Use Case for ESP32 Software/Hardware
+left to right direction
 
+package ESP_CAN_Analyzer{
+    usecase "System State" as UC1
+    usecase "WiFi Mode" as UC2
+    usecase "CAN Communication" as UC3
+    usecase "CAN Mode" as UC4
+}
 
+actor "Error LED" as error
+actor "CAN Mode LED" as CANMode
+actor "CAN Transceiver" as Transceiver
+actor "WiFi Anthena" as Wifi
+actor "Application" as app
+
+app --> UC1
+app --> UC2
+app --> UC3
+app --> UC4
+
+UC1 --> error
+UC2 --> Wifi
+UC3 --> Transceiver
+UC4 --> CANMode
 
 @enduml
