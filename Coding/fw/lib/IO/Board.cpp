@@ -43,12 +43,16 @@ using namespace Board;
 
 /* CONSTANTS **************************************************************************************/
 
+static const uint16_t OBD_SUPPLY_THRESHOLD = 1000; /**< Voltage [mv] measured to change to OBD Mode */
+
 /* MACROS *****************************************************************************************/
 #define UTIL_ARRAY_NUM(__arr) (sizeof(__arr) / sizeof((__arr)[0]))
 
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+
+void setBusMode(); /**< Switch between CAN or OBD Modes */
 
 /* VARIABLES **************************************************************************************/
 
@@ -85,6 +89,7 @@ extern void Board::init()
         }
     }
 
+    setBusMode();
     return;
 }
 
@@ -104,10 +109,10 @@ extern void Board::reset()
 
 extern void Board::haltSystem()
 {
-  errorLED.write(HIGH);
-  while (true)
-  {
-  }  
+    errorLED.write(HIGH);
+    while (true)
+    {
+    }
 }
 
 extern void Board::blinkError(uint32_t duration)
@@ -116,10 +121,36 @@ extern void Board::blinkError(uint32_t duration)
 
     uint32_t startTime = millis();
 
-    while(millis() < (startTime + duration))
+    while (millis() < (startTime + duration))
     {
     }
     errorLED.write(LOW);
 }
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
+
+/**************************************************************************************************/
+
+/**
+* @brief Switch between CAN or OBD Modes
+* @author Gabryel Reyes
+*/
+void setBusMode()
+{
+    uint16_t supplyVoltage = obdSupply.read();
+    uint16_t threshold = (OBD_SUPPLY_THRESHOLD * (adcResolution - 1U)) / adcRefVoltage;
+
+    if (supplyVoltage >= threshold)
+    {
+        /**
+        * There is a voltage greater than the threshold on the Power Supply, meaning that the
+        * System is connected to an OBD Bus
+        */
+
+        obdSwitch.write(LOW); /**< In OBD Mode, the Relays should be in a Open State */
+    }
+    else
+    {
+        obdSwitch.write(HIGH); /**< In CAN Mode, the Relays should be in a Closed State */
+    }
+}
