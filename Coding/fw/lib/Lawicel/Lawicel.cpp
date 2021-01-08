@@ -838,6 +838,10 @@ bool Lawicel::singlePollCmd(const String &lawicelCMD)
             {
                 for (int i = 0; i < frame.m_dlc; i++)
                 {
+                    if (frame.m_data[i] < 0x10)
+                    {
+                        m_serialReturn += '0';
+                    }
                     m_serialReturn += String(frame.m_data[i], HEX);
                 }
             }
@@ -1282,7 +1286,7 @@ bool Lawicel::autopoll()
             {
                 for (int i = 0; i < frame.m_dlc; i++)
                 {
-                    if (frame.m_data[i] <= 9)
+                    if (frame.m_data[i] <= 0x10)
                     {
                         m_serialReturn += '0';
                     }
