@@ -240,7 +240,14 @@ public:
     */
     bool setAMn(const filterData &amn)
     {
-        return false;
+        bool success = true;
+
+        for(uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
+        {
+            m_amn[i] = amn[i];
+        }
+
+        return success;
     }
 
     /**
