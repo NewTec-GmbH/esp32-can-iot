@@ -946,7 +946,7 @@ bool Lawicel::getFlagsCmd(const String &lawicelCMD)
 bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
 {
     bool success = true;
-    bool filterMode;
+    CANInterface::FILTER_MODE filterMode;
     if (lawicelCMD.length() != 2)
     {
         success = false;
@@ -960,11 +960,11 @@ bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
         switch (lawicelCMD.charAt(1))
         {
         case '0':
-            filterMode = 0;
+            filterMode = CANInterface::DUAL_FILTER;
             break;
 
         case '1':
-            filterMode = 1;
+            filterMode = CANInterface::SINGLE_FILTER;
             break;
 
         default:

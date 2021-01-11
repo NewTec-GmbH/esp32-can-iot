@@ -71,7 +71,7 @@ public:
     };
 
     /** 
-    * Definition of Filter Registers
+    * Array for the Definition of Filter Registers ACn and AMn
     */
     struct FILTER
     {
@@ -79,7 +79,7 @@ public:
     };
 
     /** 
-    * Enum of Possible CAN Frame Filters
+    * Enum of Possible CAN Frame Filters. See SJA1000 Datasheet for explanation
     */
     enum FILTER_MODE
     {
