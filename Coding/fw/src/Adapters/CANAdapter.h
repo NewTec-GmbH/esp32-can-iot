@@ -44,9 +44,7 @@ public:
                    m_baudRate(500000),
                    m_currentState(CLOSED),
                    m_Can_Controller(CAN),
-                   m_filterMode(DUAL_FILTER),
-                   m_acn({0, 0, 0, 0}),
-                   m_amn({255, 255, 255, 255})
+                   m_filterMode(DUAL_FILTER)
     {
     }
 
@@ -225,15 +223,22 @@ public:
     /**
     * Set the Acceptance Code Register.
     */
-    bool setACn(const FILTER &acn)
+    bool setACn(const filterData &acn)
     {
-        return false;
+        bool success = true;
+
+        for(uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
+        {
+            m_acn[i] = acn[i];
+        }
+
+        return success;
     }
 
     /**
     * Set the Acceptance Mask Register.
     */
-    bool setAMn(const FILTER &amn)
+    bool setAMn(const filterData &amn)
     {
         return false;
     }
@@ -291,8 +296,8 @@ private:
     ESP32SJA1000Class &m_Can_Controller;
 
     FILTER_MODE m_filterMode;
-    FILTER m_acn;
-    FILTER m_amn;
+    filterData m_acn;
+    filterData m_amn;
 
     bool filterFrame(Frame &frame)
     {

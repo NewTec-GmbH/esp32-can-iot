@@ -996,21 +996,21 @@ bool Lawicel::setACnCmd(const String &lawicelCMD)
     }
     else
     {
-        CANInterface::FILTER acn;
+        CANInterface::filterData acn;
 
-        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), acn.data[0]))
+        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), acn[0]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), acn.data[1]))
+        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), acn[1]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), acn.data[2]))
+        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), acn[2]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), acn.data[3]))
+        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), acn[3]))
         {
             success = false;
         }
@@ -1039,21 +1039,21 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
     }
     else
     {
-        CANInterface::FILTER amn;
+        CANInterface::filterData amn;
 
-        if (charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), amn.data[0]))
+        if (charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), amn[0]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), amn.data[1]))
+        if (charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), amn[1]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), amn.data[2]))
+        if (charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), amn[2]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), amn.data[3]))
+        if (charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), amn[3]))
         {
             success = false;
         }

@@ -73,10 +73,7 @@ public:
     /** 
     * Array for the Definition of Filter Registers ACn and AMn
     */
-    struct FILTER
-    {
-        uint8_t data[FILTER_DATA_SIZE];
-    };
+    typedef uint8_t filterData[FILTER_DATA_SIZE];
 
     /** 
     * Enum of Possible CAN Frame Filters. See SJA1000 Datasheet for explanation
@@ -154,14 +151,14 @@ public:
     * @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
     * @return bool 
     */
-    virtual bool setACn(const FILTER &acn) = 0;
+    virtual bool setACn(const filterData &acn) = 0;
 
     /**
     * Set the Acceptance Mask Register.
     * @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
     * @return bool
     */
-    virtual bool setAMn(const FILTER &acn) = 0;
+    virtual bool setAMn(const filterData &acn) = 0;
 
     /**
     * Gets the Channel State from the CAN Controller.
