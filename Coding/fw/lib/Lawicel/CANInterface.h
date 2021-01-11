@@ -144,10 +144,10 @@ public:
 
     /**
     * Set the Filter Mode of the CAN Channel.
-    * @param[in] Filter        When FALSE (default), set to Dual Filter Mode. When TRUE, Single Filter Mode
+    * @param[in] filter       Defines Filter based on FILTER_MODE Enum.
     * @return bool
     */
-    virtual bool setFilterMode(uint8_t filter) = 0;
+    virtual bool setFilterMode(FILTER_MODE filter) = 0;
 
     /**
     * Set the Acceptance Code Register.

@@ -40,7 +40,13 @@ public:
     * Uses CANInterface constructor as its the implementation of an Interface.
     * @param m_baudrate         Defines the Default baudrate of the CAN Channel
     */
-    CANAdapter() : CANInterface(), m_baudRate(500000), m_currentState(CLOSED), m_Can_Controller(CAN)
+    CANAdapter() : CANInterface(),
+                   m_baudRate(500000),
+                   m_currentState(CLOSED),
+                   m_Can_Controller(CAN),
+                   m_filterMode(DUAL_FILTER),
+                   m_acn({0, 0, 0, 0}),
+                   m_amn({255, 255, 255, 255})
     {
     }
 
@@ -197,12 +203,23 @@ public:
 
     /**
     * Set the Filter Mode of the CAN Channel.
-    * @param filter       Defines Filter mode. 0 for DualMode, 1 for SingleMode. Default 0.
+    * @param filter       Defines Filter based on FILTER_MODE Enum.
     * @return 0 for OK, 1 for Error 
     */
-    bool setFilterMode(uint8_t filter)
+    bool setFilterMode(FILTER_MODE filter)
     {
-        return false; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
+        bool success = true;
+
+        if (filter == m_filterMode)
+        {
+            success = false;
+        }
+        else
+        {
+            m_filterMode = filter;
+        }
+
+        return success;
     }
 
     /**
@@ -247,7 +264,7 @@ public:
     {
         bool success = false;
 
-        if (m_Can_Controller.parsePacket() != -1)  /**< Return changed to -1 to differenciate from DLC = 0 */
+        if (m_Can_Controller.parsePacket() != -1) /**< Return changed to -1 to differenciate from DLC = 0 */
         {
             frame.m_id = m_Can_Controller.packetId();
             frame.m_dlc = m_Can_Controller.packetDlc();
@@ -258,7 +275,11 @@ public:
             {
                 frame.m_data[i] = m_Can_Controller.read();
             }
-            success = true;
+
+            if (filterFrame(frame))
+            {
+                success = true;
+            }
         }
 
         return success;
@@ -268,6 +289,15 @@ private:
     uint32_t m_baudRate;
     BUS_STATE m_currentState;
     ESP32SJA1000Class &m_Can_Controller;
+
+    FILTER_MODE m_filterMode;
+    FILTER m_acn;
+    FILTER m_amn;
+
+    bool filterFrame(Frame &frame)
+    {
+        return true;
+    }
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/
