@@ -72,7 +72,6 @@ function decodePIDResponse(frame) {
     console.log('PID:' + frame.BYTES[2].toUpperCase());
     if (parseInt(frame.BYTES[2], 16) == 0x0D) {
         console.log('Speed: ' + parseInt(frame.BYTES[3], 16) + ' km/h')
-        gauge.set(parseInt(frame.BYTES[3], 16));
     }
     else if (parseInt(frame.BYTES[2], 16) == 0xA6) {
         var sum = 0;
