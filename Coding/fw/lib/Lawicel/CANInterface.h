@@ -74,6 +74,12 @@ public:
         uint8_t data[FILTER_DATA_SIZE];
     };
 
+    enum FILTER_MODE
+    {
+        DUAL_FILTER = 0,
+        SINGLE_FILTER
+    };
+
     /**
     * Default constructor creates instance of the class using default values.
     */
