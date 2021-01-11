@@ -1041,19 +1041,19 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
     {
         CANInterface::filterData amn;
 
-        if (charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), amn[0]))
+        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), amn[0]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), amn[1]))
+        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), amn[1]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), amn[2]))
+        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), amn[2]))
         {
             success = false;
         }
-        if (charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), amn[3]))
+        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), amn[3]))
         {
             success = false;
         }
@@ -1061,7 +1061,7 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
         if (success)
         {
             m_selectedNVM->save(INIT_FILTER_AMN, lawicelCMD);
-            success = m_selectedCAN->setACn(amn);
+            success = m_selectedCAN->setAMn(amn);
         }
     }
 
