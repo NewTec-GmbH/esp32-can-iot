@@ -227,7 +227,7 @@ public:
     {
         bool success = true;
 
-        for(uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
+        for (uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
         {
             m_acn[i] = acn[i];
         }
@@ -242,7 +242,7 @@ public:
     {
         bool success = true;
 
-        for(uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
+        for (uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
         {
             m_amn[i] = amn[i];
         }
@@ -303,12 +303,79 @@ private:
     ESP32SJA1000Class &m_Can_Controller;
 
     FILTER_MODE m_filterMode;
-    filterData m_acn;
-    filterData m_amn;
+    filterData m_acn = {0, 0, 0, 0};
+    filterData m_amn = {255, 255, 255, 255};
 
-    bool filterFrame(Frame &frame)
+    bool filterFrame(const Frame &frame)
     {
-        return true;
+        bool success = true;
+
+        if (m_filterMode == DUAL_FILTER)
+        {
+            if (!frame.m_extended)
+            {
+                /** Dual Filter on Standard Frame */
+                success = false;
+            }
+            else
+            {
+                /** Dual Filter on Extended Frame */
+                success = false;
+            }
+        }
+        else if (m_filterMode == SINGLE_FILTER)
+        {
+            if (!frame.m_extended)
+            {
+                /** Single Filter on Standard Frame */
+
+                uint8_t ac1_upperBits = 0;
+                ac1_upperBits = m_acn[1];
+                ac1_upperBits = ac1_upperBits >> 4;
+
+                uint16_t acrFilter = 0;
+                acrFilter = m_acn[0];
+                acrFilter = acrFilter << 4;
+                acrFilter += ac1_upperBits;
+
+                uint8_t am1_upperBits = 0;
+                am1_upperBits = m_amn[1];
+                am1_upperBits = am1_upperBits >> 4;
+
+                uint16_t amnFilter = 0xF00;
+                amnFilter += m_amn[0];
+                amnFilter = amnFilter << 4;
+                amnFilter += am1_upperBits;
+
+                uint16_t idToFilter = 0;
+                idToFilter = frame.m_id;
+                idToFilter = idToFilter << 1;
+
+                if (frame.m_rtr)
+                {
+                    idToFilter += 1;
+                }
+
+                uint16_t filteredID = ~(idToFilter ^ acrFilter);
+                filteredID = filteredID | amnFilter;
+
+                if (filteredID != 0xFFFF)
+                {
+                    success = false;
+                }
+            }
+            else
+            {
+                /** Single Filter on Extended Frame */
+                success = false;
+            }
+        }
+        else
+        {
+            success = false;
+        }
+
+        return success;
     }
 };
 
