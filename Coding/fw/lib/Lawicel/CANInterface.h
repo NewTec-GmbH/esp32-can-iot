@@ -37,8 +37,9 @@ public:
 
     /* TYPES **********************************************************************************/
 
-    /** Enum of Possible States of the CAN Channel
-     */
+    /** 
+    * Enum of Possible States of the CAN Channel
+    */
     enum BUS_STATE
     {
         CLOSED = 0, /**< No messages are received or transmitted to the Bus from the controller. */
@@ -69,11 +70,17 @@ public:
         }
     };
 
+    /** 
+    * Definition of Filter Registers
+    */
     struct FILTER
     {
         uint8_t data[FILTER_DATA_SIZE];
     };
 
+    /** 
+    * Enum of Possible CAN Frame Filters
+    */
     enum FILTER_MODE
     {
         DUAL_FILTER = 0,
