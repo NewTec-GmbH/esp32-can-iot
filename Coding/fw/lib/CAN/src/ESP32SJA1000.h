@@ -11,7 +11,8 @@
 #define DEFAULT_CAN_RX_PIN GPIO_NUM_4
 #define DEFAULT_CAN_TX_PIN GPIO_NUM_5
 
-class ESP32SJA1000Class : public CANControllerClass {
+class ESP32SJA1000Class : public CANControllerClass
+{
 
 public:
   ESP32SJA1000Class();
@@ -24,12 +25,16 @@ public:
 
   virtual int parsePacket();
 
-  virtual void onReceive(void(*callback)(int));
+  virtual void onReceive(void (*callback)(int));
 
   using CANControllerClass::filter;
   virtual int filter(int id, int mask);
   using CANControllerClass::filterExtended;
   virtual int filterExtended(long id, long mask);
+
+  bool setFilterMode(const uint8_t &mode);                /**< Sets the Filter Mode for the SJA1000 CAN Controller of the ESP32. */
+  bool setACRn(const uint8_t *acn);  /**< Sets the Acceptance Register of the SJA1000 CAN Controller of the ESP32. */
+  bool setAMRn(const uint8_t *amn);  /**< Sets the Acceptance Mask Register of the SJA1000 CAN Controller of the ESP32 */
 
   virtual int observe();
   virtual int loopback();
@@ -38,7 +43,7 @@ public:
 
   void setPins(int rx, int tx);
 
-  void dumpRegisters(Stream& out);
+  void dumpRegisters(Stream &out);
 
 private:
   void reset();
@@ -49,7 +54,7 @@ private:
   void modifyRegister(uint8_t address, uint8_t mask, uint8_t value);
   void writeRegister(uint8_t address, uint8_t value);
 
-  static void onInterrupt(void* arg);
+  static void onInterrupt(void *arg);
 
 private:
   gpio_num_t _rxPin;
