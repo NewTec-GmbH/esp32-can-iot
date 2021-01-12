@@ -67,8 +67,7 @@ public:
     CANAdapter() : CANInterface(),
                    m_baudRate(500000),
                    m_currentState(CLOSED),
-                   m_Can_Controller(CAN),
-                   m_filterMode(DUAL_FILTER)
+                   m_Can_Controller(CAN)
     {
     }
 
@@ -231,18 +230,7 @@ public:
     */
     bool setFilterMode(FILTER_MODE filter)
     {
-        bool success = true;
-
-        if (filter == m_filterMode)
-        {
-            success = false;
-        }
-        else
-        {
-            m_filterMode = filter;
-        }
-
-        return success;
+        return m_Can_Controller.setFilterMode(filter);
     }
 
     /**
@@ -298,11 +286,7 @@ public:
             {
                 frame.m_data[i] = m_Can_Controller.read();
             }
-
-            if (filterFrame(frame))
-            {
-                success = true;
-            }
+            success = true;
         }
 
         return success;
@@ -312,16 +296,6 @@ private:
     uint32_t m_baudRate;
     BUS_STATE m_currentState;
     ESP32SJA1000Class &m_Can_Controller;
-
-    FILTER_MODE m_filterMode;
-
-    bool filterFrame(const Frame &frame)
-    {
-
-        bool success = true;
-
-        return success;
-    }
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

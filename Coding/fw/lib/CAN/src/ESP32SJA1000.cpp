@@ -359,6 +359,8 @@ bool ESP32SJA1000Class::setFilterMode(const uint8_t &mode)
 {
     bool success = true;
 
+    modifyRegister(REG_MOD, 0x18, mode); // reset
+
     return success;
 }
 
