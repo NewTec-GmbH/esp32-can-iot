@@ -18,6 +18,30 @@ ESP32SJA1000 Adapter for Lawicel Protocol
 #include "CANInterface.h"
 #include <CAN.h>
 
+#define REG_BASE 0x3ff6b000
+
+#define REG_MOD 0x00
+#define REG_CMR 0x01
+#define REG_SR 0x02
+#define REG_IR 0x03
+#define REG_IER 0x04
+
+#define REG_BTR0 0x06
+#define REG_BTR1 0x07
+#define REG_OCR 0x08
+
+#define REG_ALC 0x0b
+#define REG_ECC 0x0c
+#define REG_EWLR 0x0d
+#define REG_RXERR 0x0e
+#define REG_TXERR 0x0f
+#define REG_SFF 0x10
+#define REG_EFF 0x10
+#define REG_ACRn(n) (0x10 + n)
+#define REG_AMRn(n) (0x14 + n)
+
+#define REG_CDR 0x1F
+
 /* C-Interface ************************************************************************************/
 extern "C"
 {
@@ -69,6 +93,7 @@ public:
         }
         else
         {
+            m_Can_Controller.filter(0x7DF);
             m_Can_Controller.sleep();
         }
 
@@ -225,14 +250,7 @@ public:
     */
     bool setACn(const filterData &acn)
     {
-        bool success = true;
-
-        for (uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
-        {
-            m_acn[i] = acn[i];
-        }
-
-        return success;
+        return m_Can_Controller.setACRn(acn);
     }
 
     /**
@@ -240,14 +258,7 @@ public:
     */
     bool setAMn(const filterData &amn)
     {
-        bool success = true;
-
-        for (uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
-        {
-            m_amn[i] = amn[i];
-        }
-
-        return success;
+        return m_Can_Controller.setAMRn(amn);
     }
 
     /**
@@ -303,77 +314,11 @@ private:
     ESP32SJA1000Class &m_Can_Controller;
 
     FILTER_MODE m_filterMode;
-    filterData m_acn = {0, 0, 0, 0};
-    filterData m_amn = {255, 255, 255, 255};
 
     bool filterFrame(const Frame &frame)
     {
+
         bool success = true;
-
-        if (m_filterMode == DUAL_FILTER)
-        {
-            if (!frame.m_extended)
-            {
-                /** Dual Filter on Standard Frame */
-                success = false;
-            }
-            else
-            {
-                /** Dual Filter on Extended Frame */
-                success = false;
-            }
-        }
-        else if (m_filterMode == SINGLE_FILTER)
-        {
-            if (!frame.m_extended)
-            {
-                /** Single Filter on Standard Frame */
-
-                uint8_t ac1_upperBits = 0;
-                ac1_upperBits = m_acn[1];
-                ac1_upperBits = ac1_upperBits >> 4;
-
-                uint16_t acrFilter = 0;
-                acrFilter = m_acn[0];
-                acrFilter = acrFilter << 4;
-                acrFilter += ac1_upperBits;
-
-                uint8_t am1_upperBits = 0;
-                am1_upperBits = m_amn[1];
-                am1_upperBits = am1_upperBits >> 4;
-
-                uint16_t amnFilter = 0xF00;
-                amnFilter += m_amn[0];
-                amnFilter = amnFilter << 4;
-                amnFilter += am1_upperBits;
-
-                uint16_t idToFilter = 0;
-                idToFilter = frame.m_id;
-                idToFilter = idToFilter << 1;
-
-                if (frame.m_rtr)
-                {
-                    idToFilter += 1;
-                }
-
-                uint16_t filteredID = ~(idToFilter ^ acrFilter);
-                filteredID = filteredID | amnFilter;
-
-                if (filteredID != 0xFFFF)
-                {
-                    success = false;
-                }
-            }
-            else
-            {
-                /** Single Filter on Extended Frame */
-                success = false;
-            }
-        }
-        else
-        {
-            success = false;
-        }
 
         return success;
     }
