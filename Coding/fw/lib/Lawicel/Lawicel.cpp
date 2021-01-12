@@ -996,21 +996,21 @@ bool Lawicel::setACnCmd(const String &lawicelCMD)
     }
     else
     {
-        CANInterface::filterData acn;
+        CANInterface::Filter acn;
 
-        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), acn[0]))
+        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), acn.m_filterBytes[0]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), acn[1]))
+        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), acn.m_filterBytes[1]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), acn[2]))
+        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), acn.m_filterBytes[2]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), acn[3]))
+        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), acn.m_filterBytes[3]))
         {
             success = false;
         }
@@ -1039,21 +1039,21 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
     }
     else
     {
-        CANInterface::filterData amn;
+        CANInterface::Filter amn;
 
-        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), amn[0]))
+        if (!charToByte(lawicelCMD.charAt(1), lawicelCMD.charAt(2), amn.m_filterBytes[0]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), amn[1]))
+        if (!charToByte(lawicelCMD.charAt(3), lawicelCMD.charAt(4), amn.m_filterBytes[1]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), amn[2]))
+        if (!charToByte(lawicelCMD.charAt(5), lawicelCMD.charAt(6), amn.m_filterBytes[2]))
         {
             success = false;
         }
-        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), amn[3]))
+        if (!charToByte(lawicelCMD.charAt(7), lawicelCMD.charAt(8), amn.m_filterBytes[3]))
         {
             success = false;
         }

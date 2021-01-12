@@ -236,17 +236,17 @@ public:
     /**
     * Set the Acceptance Code Register.
     */
-    bool setACn(const filterData &acn)
+    bool setACn(const Filter &acn)
     {
-        return m_Can_Controller.setACRn(acn);
+        return m_Can_Controller.setACRn(acn.m_filterBytes);
     }
 
     /**
     * Set the Acceptance Mask Register.
     */
-    bool setAMn(const filterData &amn)
+    bool setAMn(const Filter &amn)
     {
-        return m_Can_Controller.setAMRn(amn);
+        return m_Can_Controller.setAMRn(amn.m_filterBytes);
     }
 
     /**
