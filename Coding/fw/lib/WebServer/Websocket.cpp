@@ -33,7 +33,8 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
                     void *arg, uint8_t *data, size_t len);
 
 /* VARIABLES **************************************************************************************/
-static String inputBuffer;
+
+static QueueHandle_t inputQueue;
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -50,7 +51,11 @@ void websocket::init(AsyncWebServer &server)
 
     ws.onEvent(onEvent);
     server.addHandler(&ws);
-    inputBuffer = "";
+    inputQueue = xQueueCreate(100, sizeof(char));
+    if(NULL == inputQueue)
+    {
+        Serial.println("Error at creating the Queue");
+    }
 }
 
 /**************************************************************************************************/
@@ -71,15 +76,7 @@ void websocket::send(const String &message)
 */
 bool websocket::receive(char &c)
 {
-    bool available = false;
-    if (0 != inputBuffer.length())
-    {
-        available = true;
-        c = inputBuffer[0];
-        inputBuffer.remove(0, 1);
-    }
-
-    return available;
+    return xQueueReceive(inputQueue, &c, 100);;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -99,11 +96,11 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
     String temp;
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
-    if ((info->final) && (0 == info->index) && (len == info->len) && ( WS_TEXT == info->opcode))
+    if ((info->final) && (0 == info->index) && (len == info->len) && (WS_TEXT == info->opcode))
     {
         for (int i = 0; i < len; i++)
         {
-            inputBuffer += (char)data[i];
+            xQueueSendToBack(inputQueue, &data[i], 100);
         }
     }
 }
