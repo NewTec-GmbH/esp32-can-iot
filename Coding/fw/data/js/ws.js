@@ -1,19 +1,54 @@
-/*
+/***************************************************************************************************
   (c) NewTec GmbH 2020   -   www.newtec.de
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+***************************************************************************************************/
+/**
+* @addtogroup js
+* @{
+* @file       ws.js
+* @brief      JavaScript for Websocket Webpage (ws.html)
+* @}
+***************************************************************************************************/
+
+/* CONSTANTS **************************************************************************************/
+var maxLogs = 40;   /**< Maximum Amount of Displayed and Buffered Messages */
+var counter = 1;    /**< Table Position */
+var enable = 1;     /**< Enables the display of Frames */
+var gateway = `ws://${window.location.hostname}/ws`;     /**< GateWay for WebSocket */
+
+/* MACROS *****************************************************************************************/
+
+/* TYPES ******************************************************************************************/
+
+/* PROTOTYPES *************************************************************************************/
+
+/* VARIABLES **************************************************************************************/
+
+var logMessages = [];   /**< Lawicel Message Buffer */
+var canvas;             /**< Var for the LED Indicator */
+var context;            /**< Context of the LED Indicator */
+var websocket;          /**< Instance of WebSocket */
+
+/* PUBLIC METHODES ********************************************************************************/
+
+/**************************************************************************************************/
+/*****************************  WebSocket and WebPage Setup Methodes ******************************/
+/**************************************************************************************************/
+
+/**
+*   Function runs when window is loaded on browser
 */
+function onLoad(event) {
+    initWebSocket();            /**< Init. WebSocket */
+    drawCircle();               /**< Draws Circle as an LED Indicator */
+    setInterval(getCMD, 10);    /**< Process a message every 10ms */
+}
 
-var logMessages = [];
-var maxLogs = 40;
-var counter = 1;
-var enable = 1;
+/**************************************************************************************************/
 
-var canvas;
-var context;
-
-var gateway = `ws://${window.location.hostname}/ws`;
-var websocket;
-
+/**
+*   Initialize WebSocket
+*/
 function initWebSocket() {
     console.log('Trying to open a WebSocket connection...');
     websocket = new WebSocket(gateway);
@@ -22,22 +57,47 @@ function initWebSocket() {
     websocket.onmessage = onMessage;
 }
 
+/**************************************************************************************************/
+
+/**
+*   Function runs when Websocket is connected
+*/
 function onOpen(event) {
     console.log('Connection opened');
-    websocket.send("D\r");
+    websocket.send("D\r");  /**< Request Lawicel Status */
 }
 
+/**************************************************************************************************/
+
+/**
+*   Function runs when Websocket is disconnected
+*/
 function onClose(event) {
     console.log('Connection closed');
-    setTimeout(initWebSocket, 2000);
+    setTimeout(initWebSocket, 2000); /**< Two Seconds timeout for reconnecting Websocket*/
 }
 
-function onLoad(event) {
-    initWebSocket();
-    drawCircle();
-    setInterval(getCMD, 10);
+/**************************************************************************************************/
+
+/**
+*   Websocket Message Handler. Pushes received messages to queue
+*   @param event     Message Received by Websocket (event.data)
+*/
+function onMessage(event) {
+    if (logMessages.length >= maxLogs) {
+        logMessages.shift();
+    }
+    logMessages.push(event.data);
 }
 
+
+/**************************************************************************************************/
+/****************************** LED Indicator Methodes ********************************************/
+/**************************************************************************************************/
+
+/**
+*   Draws Circle as an LED Indicator
+*/
 function drawCircle() {
     canvas = document.getElementById("led");
     context = canvas.getContext("2d");
@@ -49,6 +109,11 @@ function drawCircle() {
     context.fill();
 }
 
+/**************************************************************************************************/
+
+/**
+*   Blink Indicator RED for 150ms when a command is not valid
+*/
 function errorBlink() {
     context.fillStyle = "red";
     context.fill();
@@ -58,6 +123,11 @@ function errorBlink() {
     }, 150);
 }
 
+/**************************************************************************************************/
+
+/**
+*   Blink Indicator GREEN for 150ms when a command is accepted
+*/
 function okBlink() {
     context.fillStyle = "green";
     context.fill();
@@ -67,53 +137,14 @@ function okBlink() {
     }, 150);
 }
 
-function decodePIDResponse(frame) {
-    console.log(frame.ID.toUpperCase());
-    console.log('PID:' + frame.BYTES[2].toUpperCase());
-    if (parseInt(frame.BYTES[2], 16) == 0x0D) {
-        console.log('Speed: ' + parseInt(frame.BYTES[3], 16) + ' km/h')
-    }
-    else if (parseInt(frame.BYTES[2], 16) == 0xA6) {
-        var sum = 0;
 
-        sum += (parseInt(frame.BYTES[3], 16) * (2 ^ 24));
-        sum += (parseInt(frame.BYTES[4], 16) * (2 ^ 16));
-        sum += (parseInt(frame.BYTES[5], 16) * (2 ^ 8));
-        sum += (parseInt(frame.BYTES[6], 16) * (2 ^ 1));
+/**************************************************************************************************/
+/****************************** Receive Lawicel Message *******************************************/
+/**************************************************************************************************/
 
-        console.log('Odometer: ' + sum + ' km')
-
-    }
-    else {
-        console.log('Data0: ' + frame.BYTES[3] + 'h');
-        console.log('Data1: ' + frame.BYTES[4] + 'h');
-        console.log('Data2: ' + frame.BYTES[5] + 'h');
-        console.log('Data3: ' + frame.BYTES[6] + 'h');
-    }
-}
-
-function obdDataRequest(frame) {
-    document.getElementById("LawicelCMD").value = "";
-    var cmd = "";
-    cmd += 't7E98';
-    if (parseInt(frame.BYTES[2], 16) == 0x0D) {
-        cmd += '0341'
-        cmd += frame.BYTES[2];
-        var rndSpeed = Math.floor(Math.random() * 100) + 16;
-        cmd += rndSpeed.toString(16);
-        cmd += '00000000';
-    }
-    document.getElementById("LawicelCMD").value = cmd;
-    sendCMD();
-}
-
-function onMessage(event) {
-    if (logMessages.length >= maxLogs) {
-        logMessages.shift();
-    }
-    logMessages.push(event.data);
-}
-
+/**
+*   Decodes Lawicel Command
+*/
 function getCMD() {
     if (logMessages.length != 0) {
         console.log(logMessages[0]);
@@ -147,6 +178,114 @@ function getCMD() {
     }
 }
 
+/**************************************************************************************************/
+
+/**
+*   Decodes a PID Response from OBD Bus
+*/
+function decodePIDResponse(frame) {
+    console.log(frame.ID.toUpperCase());
+    console.log('PID:' + frame.BYTES[2].toUpperCase());
+    if (parseInt(frame.BYTES[2], 16) == 0x0D) {
+        console.log('Speed: ' + parseInt(frame.BYTES[3], 16) + ' km/h')
+    }
+    else if (parseInt(frame.BYTES[2], 16) == 0xA6) {
+        var sum = 0;
+
+        sum += (parseInt(frame.BYTES[3], 16) * (2 ^ 24));
+        sum += (parseInt(frame.BYTES[4], 16) * (2 ^ 16));
+        sum += (parseInt(frame.BYTES[5], 16) * (2 ^ 8));
+        sum += (parseInt(frame.BYTES[6], 16) * (2 ^ 1));
+
+        console.log('Odometer: ' + sum + ' km')
+
+    }
+    else {
+        console.log('Data0: ' + frame.BYTES[3] + 'h');
+        console.log('Data1: ' + frame.BYTES[4] + 'h');
+        console.log('Data2: ' + frame.BYTES[5] + 'h');
+        console.log('Data3: ' + frame.BYTES[6] + 'h');
+    }
+}
+
+
+/**************************************************************************************************/
+/********************************* Send Lawicel Message *******************************************/
+/**************************************************************************************************/
+
+/**
+*   Sends Lawicel Command found in the input text box
+*/
+function sendCMD() {
+    var input = document.getElementById("LawicelCMD").value;
+    if (input != "") {
+        input += '\r';
+        console.log(input);
+        websocket.send(input);
+        websocket.send('D\r');
+        document.getElementById("LawicelCMD").value = "";
+    }
+}
+
+/**************************************************************************************************/
+
+/**
+*   Sends CAN Frame described in the Data Table
+*/
+function sendFrame() {
+    if (document.getElementById("FRAME_ID").value != "") {
+        var input = "";
+        var extInput = document.getElementById("FRAME_EXT").checked;
+        var rtrInput = document.getElementById("FRAME_RTR").checked;
+        if (extInput == true) {
+            if (rtrInput == true) {
+                input += 'R';
+            } else {
+                input += 'T';
+            }
+        } else {
+            if (rtrInput == true) {
+                input += 'r';
+            } else {
+                input += 't';
+            }
+        }
+
+        input += document.getElementById("FRAME_ID").value;
+        var frameLength = document.getElementById("FRAME_DLC").value;
+        input += frameLength;
+
+        var frameData = [
+            document.getElementById("FRAME_DATA0").value,
+            document.getElementById("FRAME_DATA1").value,
+            document.getElementById("FRAME_DATA2").value,
+            document.getElementById("FRAME_DATA3").value,
+            document.getElementById("FRAME_DATA4").value,
+            document.getElementById("FRAME_DATA5").value,
+            document.getElementById("FRAME_DATA6").value,
+            document.getElementById("FRAME_DATA7").value
+        ]
+
+        for (count = 0; count < frameLength; count++) {
+            input += frameData[count];
+        }
+
+        input += '\r';
+        console.log(input);
+        websocket.send(input);
+        websocket.send('D\r');
+        document.getElementById("LawicelCMD").value = "";
+    }
+}
+
+
+/**************************************************************************************************/
+/****************************** Display Message Information ***************************************/
+/**************************************************************************************************/
+
+/**
+*   Displays Received CAN Frames in a Table
+*/
 function displayMessages() {
 
     if (enable == 1) {
@@ -222,9 +361,6 @@ function displayMessages() {
         if (0x7E8 <= parseInt(frame.ID, 16) && parseInt(frame.ID, 16) <= 0x7EF) {
             decodePIDResponse(frame);
         }
-        else if (0x7DF == parseInt(frame.ID, 16)) {
-            obdDataRequest(frame);
-        }
 
         if (maxLogs < table.rows.length) {
             table.deleteRow(-1);
@@ -265,6 +401,11 @@ function displayMessages() {
     }
 }
 
+/**************************************************************************************************/
+
+/**
+*   Displays System Data
+*/
 function displaySettings() {
     var cell = document.getElementById("Sys_Auto");
     var temp = logMessages[0][1];
@@ -364,63 +505,11 @@ function displaySettings() {
     cell.innerHTML = output;
 }
 
-function sendCMD() {
-    var input = document.getElementById("LawicelCMD").value;
-    if (input != "") {
-        input += '\r';
-        console.log(input);
-        websocket.send(input);
-        websocket.send('D\r');
-        document.getElementById("LawicelCMD").value = "";
-    }
-}
+/**************************************************************************************************/
 
-function sendFrame() {
-    if (document.getElementById("FRAME_ID").value != "") {
-        var input = "";
-        var extInput = document.getElementById("FRAME_EXT").checked;
-        var rtrInput = document.getElementById("FRAME_RTR").checked;
-        if (extInput == true) {
-            if (rtrInput == true) {
-                input += 'R';
-            } else {
-                input += 'T';
-            }
-        } else {
-            if (rtrInput == true) {
-                input += 'r';
-            } else {
-                input += 't';
-            }
-        }
-
-        input += document.getElementById("FRAME_ID").value;
-        var frameLength = document.getElementById("FRAME_DLC").value;
-        input += frameLength;
-
-        var frameData = [
-            document.getElementById("FRAME_DATA0").value,
-            document.getElementById("FRAME_DATA1").value,
-            document.getElementById("FRAME_DATA2").value,
-            document.getElementById("FRAME_DATA3").value,
-            document.getElementById("FRAME_DATA4").value,
-            document.getElementById("FRAME_DATA5").value,
-            document.getElementById("FRAME_DATA6").value,
-            document.getElementById("FRAME_DATA7").value
-        ]
-
-        for (count = 0; count < frameLength; count++) {
-            input += frameData[count];
-        }
-
-        input += '\r';
-        console.log(input);
-        websocket.send(input);
-        websocket.send('D\r');
-        document.getElementById("LawicelCMD").value = "";
-    }
-}
-
+/**
+*   Toggles Pause for the display of Frames
+*/
 function toggle() {
     enable = !enable;
     if (enable) {
@@ -431,5 +520,3 @@ function toggle() {
         console.log("Display Paused");
     }
 }
-
-
