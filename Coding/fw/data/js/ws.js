@@ -146,7 +146,7 @@ function okBlink() {
 *   Decodes Lawicel Command
 */
 function getCMD() {
-    if (logMessages.length != 0) {
+    if ((0 != logMessages.length) && (websocket.readyState === WebSocket.OPEN)) {
         console.log(logMessages[0]);
 
         switch (logMessages[0][0]) {
