@@ -88,11 +88,11 @@ public:
     bool read(char &c)
     {
         bool success = false;
-        if ((Serial.available() > 0))
+        if (0 < Serial.available())
         {
             c = Serial.read();
             success = true;
-        }       
+        }
 
         return success;
     }

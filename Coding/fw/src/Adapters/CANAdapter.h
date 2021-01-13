@@ -86,7 +86,7 @@ public:
     {
         bool success = true;
         m_Can_Controller.setPins(5, 4);
-        if (m_Can_Controller.begin(m_baudRate) == 0) /**< Starts CAN channel with 500kbps Baudrate */
+        if (0 == m_Can_Controller.begin(m_baudRate)) /**< Starts CAN channel with 500kbps Baudrate */
         {
             success = false;
         }
@@ -119,14 +119,14 @@ public:
         bool success = true;
         if (frame.m_extended)
         {
-            if (m_Can_Controller.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            if (0 == m_Can_Controller.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr))
             {
                 success = false;
             }
         }
         else
         {
-            if (m_Can_Controller.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            if (0 == m_Can_Controller.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr))
             {
                 success = false;
             }
@@ -166,7 +166,7 @@ public:
             break;
 
         case NORMAL:
-            if (m_baudRate == 0)
+            if (0 == m_baudRate)
             {
                 success = false;
             }
@@ -178,7 +178,7 @@ public:
             break;
 
         case LISTEN_ONLY:
-            if (m_baudRate == 0)
+            if (0 == m_baudRate)
             {
                 success = false;
             }
@@ -206,7 +206,7 @@ public:
         bool success = true;
         m_baudRate = baudrate;
         m_Can_Controller.end();
-        if (m_Can_Controller.begin(m_baudRate) == 0)
+        if (0 == m_Can_Controller.begin(m_baudRate))
         {
             success = false;
         }
@@ -275,7 +275,7 @@ public:
     {
         bool success = false;
 
-        if (m_Can_Controller.parsePacket() != -1) /**< Return changed to -1 to differenciate from DLC = 0 */
+        if (-1 != m_Can_Controller.parsePacket()) /**< Return changed to -1 to differenciate from DLC = 0 */
         {
             frame.m_id = m_Can_Controller.packetId();
             frame.m_dlc = m_Can_Controller.packetDlc();
