@@ -39,7 +39,7 @@ static String AP_PASSWORD = "hochschuleulm";
 *   Determines the state of the WiFiModeSelect Button to enter AP Mode
 *   @return bool AP Mode. If true, will request the AP mode. If false, requests STA Mode
 */
-static void readWiFiMode();
+static bool readWiFiMode();
 
 /**
 * Connects to the WiFi AP when requested
@@ -91,7 +91,7 @@ bool wlan::begin()
     Settings::get(DIRECTORY, "STA_SSID", STA_SSID, "");
     Settings::get(DIRECTORY, "STA_Password", STA_PASSWORD, "");
 
-    readWiFiMode();
+    m_APMode = readWiFiMode();
     if (m_APMode)
     {
         Board::staLED.write(LOW);
@@ -159,32 +159,41 @@ void wlan::saveConfig(const String &key, const String &value)
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
 /**************************************************************************************************/
-static void readWiFiMode()
+static bool readWiFiMode()
 {
-    uint8_t currentBtnState = LOW;
-    uint8_t previousBtnState = LOW;
-    uint32_t lastDebounceTime = 0;
+    bool pressedButton = false;
 
-    const uint8_t DEBOUNCE_DELAY = 50;
+    uint8_t btnState1 = LOW;
+    uint8_t btnState2 = LOW;
+
+    const uint8_t DEBOUNCE_DELAY = 100;
     const uint32_t SETUP_TIME = 2000;
     const uint32_t START_TIME = millis();
 
     while ((millis() - START_TIME) < SETUP_TIME)
     {
-        currentBtnState = Board::wifiModeSelect.read();
+        btnState1 = Board::wifiModeSelect.read();
 
-        if (currentBtnState != previousBtnState)
+        delay(DEBOUNCE_DELAY);
+
+        btnState2 = Board::wifiModeSelect.read();
+
+        if (btnState1 == btnState2)
         {
-            lastDebounceTime = millis();
+            if(HIGH == btnState1)
+            {
+                pressedButton = true;
+            }
+            else
+            {
+                pressedButton = false;
+            }
+            
         }
 
-        if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY)
-        {
-            m_APMode = !currentBtnState;
-        }
-
-        previousBtnState = currentBtnState;
     }
+
+    return pressedButton;
 }
 
 /**************************************************************************************************/
