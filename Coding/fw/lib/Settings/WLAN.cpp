@@ -180,7 +180,7 @@ static bool readWiFiMode()
 
         if (btnState1 == btnState2)
         {
-            if(HIGH == btnState1)
+            if(LOW == btnState1)
             {
                 pressedButton = true;
             }
