@@ -489,6 +489,18 @@ String(unsigned long value, unsigned char base) {
     *this = buf;
 }
 
+bool isEmpty()
+{
+    bool isEmpty = false;
+
+    if(length() == 0)
+    {
+        isEmpty = true;
+    }
+
+    return isEmpty;
+}
+
 
 private:
     size_t m_size;  /**< String buffer size */
