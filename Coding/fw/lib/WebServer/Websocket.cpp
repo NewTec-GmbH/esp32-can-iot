@@ -72,7 +72,7 @@ void websocket::send(const String &message)
 bool websocket::receive(char &c)
 {
     bool available = false;
-    if (inputBuffer.length() != 0)
+    if (0 != inputBuffer.length())
     {
         available = true;
         c = inputBuffer[0];
@@ -99,7 +99,7 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
     String temp;
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
-    if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
+    if ((info->final) && (0 == info->index) && (len == info->len) && ( WS_TEXT == info->opcode))
     {
         for (int i = 0; i < len; i++)
         {
