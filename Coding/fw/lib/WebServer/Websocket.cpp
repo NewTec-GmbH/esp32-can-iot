@@ -28,7 +28,6 @@ AsyncWebSocket ws("/ws");
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
-static String processor(const String &var);
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len);
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len);
@@ -46,7 +45,7 @@ static String inputBuffer;
 void websocket::init(AsyncWebServer &server)
 {
     server.on("/communication", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(SPIFFS, "/ws.html", String(), false, processor);
+        request->send(SPIFFS, "/ws.html");
     });
 
     ws.onEvent(onEvent);
@@ -91,19 +90,6 @@ bool websocket::receive(char &c)
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
-
-/**************************************************************************************************/
-
-/*
-*   Page Processor
-*/
-static String processor(const String &var)
-{
-    if (var == "STATE")
-    {
-    }
-    return "";
-}
 
 /**************************************************************************************************/
 
