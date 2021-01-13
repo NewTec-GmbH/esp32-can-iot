@@ -95,6 +95,12 @@ bool ESPServer::end()
     return WiFi.disconnect(true, true);
 }
 
+
+/**************************************************************************************************/
+
+/*
+*   Returns True is Restart is requested by the Captive Portal
+*/
 bool ESPServer::isRestartRequested()
 {
     return CaptivePortal::isRestartRequested();
@@ -107,9 +113,12 @@ bool ESPServer::isRestartRequested()
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
-/**************************************************************************************************/
 
 /**************************************************************************************************/
+
+/*
+*   Initializes the corresponding Webpages, depending on the WiFi Mode specified by user
+*/
 bool initPages(bool apModeRequested)
 {
     bool success = true;

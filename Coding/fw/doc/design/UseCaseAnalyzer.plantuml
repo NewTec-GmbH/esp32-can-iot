@@ -1,6 +1,26 @@
 @startuml
 title Use Case for ESP32 CAN-Analyzer
+left to right direction
 
+actor user as user
+actor CAN_Bus as bus
+
+package ESP_CAN_Analyzer{
+    usecase "Send CAN Frame" as UC1
+    usecase "Receive CAN Frame" as UC2
+    usecase "Set Up CAN-Bus" as UC3
+    usecase "Set up Credentials" as UC4
+    usecase "Set Up CAN Mode" as UC5
+}
+
+user <--> UC1
+user <--> UC2
+user --> UC3
+user --> UC4
+
+UC1 <--> bus
+UC2 <--> bus
+UC5 <-- bus
 
 
 @enduml

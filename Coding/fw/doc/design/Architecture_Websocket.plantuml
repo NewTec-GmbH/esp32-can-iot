@@ -1,3 +1,38 @@
 @startuml
 title Architecture Websocket
+
+package Lawicel <<folder>>{
+    Class SerialInterface
+}
+
+Class WSAdapter{
+    -String m_name
+    +WSAdapter()
+    +~WSAdapter()
+    +void send(char* str)
+    +uint8_t read (char* Buffer)
+}
+
+SerialInterface <|.down. WSAdapter : <<realize>>
+
+package AsyncWebServer <<folder>>{
+    class AsyncWebServer
+    class AsyncWebSocket
+}
+
+package WebServer <<node>>{
+    Class ESPServer
+    Class WebSocket{
+        +bool init()
+        +void send(String Mesage)
+        +bool receive(char &c)
+    }
+
+    ESPServer 	*-- WebSocket : <<use>>
+}
+
+AsyncWebSocket --* AsyncWebServer : <<use>>
+WebSocket --|> AsyncWebSocket : <<use>>
+WSAdapter --|> AsyncWebSocket : <<use>>
+
 @enduml

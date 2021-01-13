@@ -18,6 +18,30 @@ ESP32SJA1000 Adapter for Lawicel Protocol
 #include "CANInterface.h"
 #include <CAN.h>
 
+#define REG_BASE 0x3ff6b000
+
+#define REG_MOD 0x00
+#define REG_CMR 0x01
+#define REG_SR 0x02
+#define REG_IR 0x03
+#define REG_IER 0x04
+
+#define REG_BTR0 0x06
+#define REG_BTR1 0x07
+#define REG_OCR 0x08
+
+#define REG_ALC 0x0b
+#define REG_ECC 0x0c
+#define REG_EWLR 0x0d
+#define REG_RXERR 0x0e
+#define REG_TXERR 0x0f
+#define REG_SFF 0x10
+#define REG_EFF 0x10
+#define REG_ACRn(n) (0x10 + n)
+#define REG_AMRn(n) (0x14 + n)
+
+#define REG_CDR 0x1F
+
 /* C-Interface ************************************************************************************/
 extern "C"
 {
@@ -40,7 +64,10 @@ public:
     * Uses CANInterface constructor as its the implementation of an Interface.
     * @param m_baudrate         Defines the Default baudrate of the CAN Channel
     */
-    CANAdapter() : CANInterface(), m_baudRate(500000), m_currentState(CLOSED), m_Can_Controller(CAN)
+    CANAdapter() : CANInterface(),
+                   m_baudRate(500000),
+                   m_currentState(CLOSED),
+                   m_Can_Controller(CAN)
     {
     }
 
@@ -65,6 +92,7 @@ public:
         }
         else
         {
+            m_Can_Controller.filter(0x7DF);
             m_Can_Controller.sleep();
         }
 
@@ -197,28 +225,28 @@ public:
 
     /**
     * Set the Filter Mode of the CAN Channel.
-    * @param filter       Defines Filter mode. 0 for DualMode, 1 for SingleMode. Default 0.
+    * @param filter       Defines Filter based on FILTER_MODE Enum.
     * @return 0 for OK, 1 for Error 
     */
-    bool setFilterMode(uint8_t filter)
+    bool setFilterMode(FILTER_MODE filter)
     {
-        return false; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
+        return m_Can_Controller.setFilterMode(filter);
     }
 
     /**
     * Set the Acceptance Code Register.
     */
-    bool setACn(const FILTER &acn)
+    bool setACn(const Filter &acn)
     {
-        return false;
+        return m_Can_Controller.setACRn(acn.m_filterBytes);
     }
 
     /**
     * Set the Acceptance Mask Register.
     */
-    bool setAMn(const FILTER &amn)
+    bool setAMn(const Filter &amn)
     {
-        return false;
+        return m_Can_Controller.setAMRn(amn.m_filterBytes);
     }
 
     /**
@@ -247,7 +275,7 @@ public:
     {
         bool success = false;
 
-        if (m_Can_Controller.parsePacket() != -1)  /**< Return changed to -1 to differenciate from DLC = 0 */
+        if (m_Can_Controller.parsePacket() != -1) /**< Return changed to -1 to differenciate from DLC = 0 */
         {
             frame.m_id = m_Can_Controller.packetId();
             frame.m_dlc = m_Can_Controller.packetDlc();

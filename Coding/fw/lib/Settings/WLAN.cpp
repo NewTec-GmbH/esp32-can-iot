@@ -76,7 +76,7 @@ const String &wlan::getAP_PASS()
 }
 
 /**************************************************************************************************/
-const bool &wlan::getAP_MODE()
+bool wlan::getAP_MODE()
 {
     return m_APMode;
 }

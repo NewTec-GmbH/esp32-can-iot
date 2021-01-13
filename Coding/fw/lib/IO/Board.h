@@ -77,7 +77,7 @@ namespace Board
         static const uint8_t canSelector = 32U;
 
         /** Pin number of OBD Supply in */
-        static const uint8_t analogSupplyCheck = 34U;
+        static const uint8_t analogSupplyCheck = 35U;
 
     }; // namespace Pin
 

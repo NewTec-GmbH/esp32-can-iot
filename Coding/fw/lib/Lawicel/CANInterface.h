@@ -37,8 +37,9 @@ public:
 
     /* TYPES **********************************************************************************/
 
-    /** Enum of Possible States of the CAN Channel
-     */
+    /** 
+    * Enum of Possible States of the CAN Channel
+    */
     enum BUS_STATE
     {
         CLOSED = 0, /**< No messages are received or transmitted to the Bus from the controller. */
@@ -69,9 +70,21 @@ public:
         }
     };
 
-    struct FILTER
+    /** 
+    * Array for the Definition of Filter Registers ACn and AMn
+    */
+    struct Filter
     {
-        uint8_t data[FILTER_DATA_SIZE];
+        uint8_t m_filterBytes[FILTER_DATA_SIZE];
+    };
+
+    /** 
+    * Enum of Possible CAN Frame Filters. See SJA1000 Datasheet for explanation
+    */
+    enum FILTER_MODE
+    {
+        DUAL_FILTER = 0,
+        SINGLE_FILTER
     };
 
     /**
@@ -131,24 +144,24 @@ public:
 
     /**
     * Set the Filter Mode of the CAN Channel.
-    * @param[in] Filter        When FALSE (default), set to Dual Filter Mode. When TRUE, Single Filter Mode
+    * @param[in] filter       Defines Filter based on FILTER_MODE Enum.
     * @return bool
     */
-    virtual bool setFilterMode(uint8_t filter) = 0;
+    virtual bool setFilterMode(FILTER_MODE filter) = 0;
 
     /**
     * Set the Acceptance Code Register.
     * @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
     * @return bool 
     */
-    virtual bool setACn(const FILTER &acn) = 0;
+    virtual bool setACn(const Filter &acn) = 0;
 
     /**
     * Set the Acceptance Mask Register.
     * @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
     * @return bool
     */
-    virtual bool setAMn(const FILTER &acn) = 0;
+    virtual bool setAMn(const Filter &acn) = 0;
 
     /**
     * Gets the Channel State from the CAN Controller.

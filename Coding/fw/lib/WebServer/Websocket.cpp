@@ -1,15 +1,48 @@
-#include <Websocket.h>
+/***************************************************************************************************
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+***************************************************************************************************/
+/**
+@addtogroup Webserver
+@{
+@file       Websocket.cpp
+
+Configuration of ESP32 WebSocket. @ref Websocket.h
+
+* @}
+***************************************************************************************************/
+/* INCLUDES ***************************************************************************************/
+#include "Websocket.h"
 #include <SPIFFS.h>
 
+/* C-Interface ************************************************************************************/
+extern "C"
+{
+}
+
+/* CONSTANTS **************************************************************************************/
 AsyncWebSocket ws("/ws");
 
-static String inputBuffer;
+/* MACROS *****************************************************************************************/
 
+/* TYPES ******************************************************************************************/
+
+/* PROTOTYPES *************************************************************************************/
 static String processor(const String &var);
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len);
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len);
 
+/* VARIABLES **************************************************************************************/
+static String inputBuffer;
+
+/* PUBLIC METHODES ********************************************************************************/
+
+/**************************************************************************************************/
+
+/*
+*   Initializes the WebSocket Service
+*/
 void websocket::init(AsyncWebServer &server)
 {
     server.on("/communication", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -21,12 +54,49 @@ void websocket::init(AsyncWebServer &server)
     inputBuffer = "";
 }
 
-bool websocket::cycle()
+/**************************************************************************************************/
+
+/*
+*   Send WebSocket Message
+*/
+void websocket::send(String message)
 {
-    ws.cleanupClients();
-    return true; /**< No error handling on cleanup */
+    String systime = String(millis());
+    message += systime.substring(0, 7);
+    ws.textAll(message);
 }
 
+/**************************************************************************************************/
+
+/*
+*   Receive WebSocket Message
+*/
+bool websocket::receive(char &c)
+{
+    bool available = false;
+    if (inputBuffer.length() != 0)
+    {
+        available = true;
+        c = inputBuffer[0];
+        inputBuffer.remove(0, 1);
+    }
+
+    return available;
+}
+
+/* PROTECTED METHODES *****************************************************************************/
+
+/* PRIVATE METHODES *******************************************************************************/
+
+/* EXTERNAL FUNCTIONS *****************************************************************************/
+
+/* INTERNAL FUNCTIONS *****************************************************************************/
+
+/**************************************************************************************************/
+
+/*
+*   Page Processor
+*/
 static String processor(const String &var)
 {
     if (var == "STATE")
@@ -35,6 +105,11 @@ static String processor(const String &var)
     return "";
 }
 
+/**************************************************************************************************/
+
+/*
+*   Handler for incoming Web Socket Message
+*/
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
     String temp;
@@ -48,6 +123,11 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
     }
 }
 
+/**************************************************************************************************/
+
+/*
+*   Handler for Web Socket Event
+*/
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len)
 {
@@ -66,31 +146,4 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
     case WS_EVT_ERROR:
         break;
     }
-}
-
-void websocket::send(String message)
-{
-    String systime = String(millis());
-    if (message[0] == (char)7)
-    {
-        message = '.';
-    }
-    else
-    {
-        message += systime.substring(0, 7);
-    }
-    ws.textAll(message);
-}
-
-bool websocket::receive(char &c)
-{
-    bool available = false;
-    if (inputBuffer.length() != 0)
-    {
-        available = true;
-        c = inputBuffer[0];
-        inputBuffer.remove(0, 1);
-    }
-
-    return available;
 }

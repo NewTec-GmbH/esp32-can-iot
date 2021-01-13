@@ -33,13 +33,22 @@ static String WEB_PASSWORD = "admin";
 /* VARIABLES **************************************************************************************/
 
 /* PUBLIC METHODES ********************************************************************************/
+
 /**************************************************************************************************/
+
+/*
+*   Returns Username for Authentification of Webpages
+*/
 const String &WebConfig::getWEB_USER()
 {
     return WEB_USER;
 }
 
 /**************************************************************************************************/
+
+/*
+*   Returns Password for Authentification of Webpages
+*/
 const String &WebConfig::getWEB_PASS()
 {
     return WEB_PASSWORD;

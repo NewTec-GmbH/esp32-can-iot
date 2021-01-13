@@ -41,9 +41,9 @@ Text Notes 8540 1140 2    50   ~ 0
 Status LEDs
 Text Notes 4050 4775 2    50   ~ 0
 WiFi-Mode Button
-Text HLabel 5125 2680 2    50   Output ~ 0
+Text HLabel 5125 2980 2    50   Output ~ 0
 CAN_Tx
-Text HLabel 5125 2980 2    50   Input ~ 0
+Text HLabel 5125 2680 2    50   Input ~ 0
 CAN_Rx
 Text Label 1875 2880 0    50   ~ 0
 GPIO_2
@@ -201,9 +201,9 @@ Wire Wire Line
 Wire Wire Line
 	4400 2580 5125 2580
 Wire Wire Line
-	5125 2680 4400 2680
+	5125 2980 4400 2980
 Wire Wire Line
-	4400 2980 5125 2980
+	4400 2680 5125 2680
 Wire Wire Line
 	5125 3180 4400 3180
 Wire Wire Line
