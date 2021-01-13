@@ -58,11 +58,10 @@ void websocket::init(AsyncWebServer &server)
 /*
 *   Send WebSocket Message
 */
-void websocket::send(String message)
+void websocket::send(const String &message)
 {
     String systime = String(millis());
-    message += systime.substring(0, 7);
-    ws.textAll(message);
+    ws.textAll(message + systime);
 }
 
 /**************************************************************************************************/
