@@ -186,10 +186,10 @@ function getCMD() {
 function decodePIDResponse(frame) {
     console.log(frame.ID.toUpperCase());
     console.log('PID:' + frame.BYTES[2].toUpperCase());
-    if (parseInt(frame.BYTES[2], 16) == 0x0D) {
+    if (0x0D == parseInt(frame.BYTES[2], 16)) {
         console.log('Speed: ' + parseInt(frame.BYTES[3], 16) + ' km/h')
     }
-    else if (parseInt(frame.BYTES[2], 16) == 0xA6) {
+    else if (0xA6 == parseInt(frame.BYTES[2], 16)) {
         var sum = 0;
 
         sum += (parseInt(frame.BYTES[3], 16) * (2 ^ 24));
@@ -218,7 +218,7 @@ function decodePIDResponse(frame) {
 */
 function sendCMD() {
     var input = document.getElementById("LawicelCMD").value;
-    if (input != "") {
+    if ("" != input) {
         input += '\r';
         console.log(input);
         websocket.send(input);
@@ -237,14 +237,14 @@ function sendFrame() {
         var input = "";
         var extInput = document.getElementById("FRAME_EXT").checked;
         var rtrInput = document.getElementById("FRAME_RTR").checked;
-        if (extInput == true) {
-            if (rtrInput == true) {
+        if (true == extInput) {
+            if (true == rtrInput) {
                 input += 'R';
             } else {
                 input += 'T';
             }
         } else {
-            if (rtrInput == true) {
+            if (true == rtrInput) {
                 input += 'r';
             } else {
                 input += 't';
@@ -288,7 +288,7 @@ function sendFrame() {
 */
 function displayMessages() {
 
-    if (enable == 1) {
+    if (1 == enable) {
         var table = document.getElementById("CANLog");
         var row = null;
         var cell = null;
@@ -345,7 +345,7 @@ function displayMessages() {
                 break;
         }
 
-        if (frame.RTR == "-") {
+        if ("-" == frame.RTR) {
 
             var position = 0;
             var byte = 0;
@@ -512,7 +512,7 @@ function displaySettings() {
 */
 function toggle() {
     enable = !enable;
-    if (enable) {
+    if (1 == enable) {
         document.getElementById("PauseBtn").innerHTML = "Pause";
         console.log("Display Resumed");
     } else {
