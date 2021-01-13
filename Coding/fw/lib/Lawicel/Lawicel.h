@@ -144,7 +144,7 @@ private:
     bool getCurrentParams(const String &lawicelCMD);     /**< Returns the current configuration of the CAN Bus */
 
     bool autopoll();       /**< Frame Polling without any extra tags */
-    String getTimestamp(); /**< Returns Timestamp */
+    String getFormattedTimestamp(); /**< Returns Timestamp */
 
     bool m_timestamp = false;   /**< Toggle timestamp */
     bool m_autoPolling = true;  /**< Toggle Auto-Polling */

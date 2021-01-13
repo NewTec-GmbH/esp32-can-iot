@@ -848,7 +848,7 @@ bool Lawicel::singlePollCmd(const String &lawicelCMD)
 
             if (m_timestamp)
             {
-                m_serialReturn += getTimestamp();
+                m_serialReturn += getFormattedTimestamp();
             }
         }
     }
@@ -1296,7 +1296,7 @@ bool Lawicel::autopoll()
 
             if (m_timestamp)
             {
-                m_serialReturn += getTimestamp();
+                m_serialReturn += getFormattedTimestamp();
             }
         }
         else
@@ -1329,7 +1329,7 @@ bool Lawicel::getCurrentParams(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
-String Lawicel::getTimestamp()
+String Lawicel::getFormattedTimestamp()
 {
     String timestamp;
     String temp = String(millis() % MAX_TIMESTAMP, HEX);
