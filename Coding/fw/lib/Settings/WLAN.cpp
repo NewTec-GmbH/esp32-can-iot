@@ -131,7 +131,7 @@ bool wlan::begin()
 bool wlan::checkConnection()
 {
     bool success = true;
-    if (WiFi.getMode() == WIFI_STA && WiFi.status() != WL_CONNECTED)
+    if ((WiFi.getMode() == WIFI_STA) && (WiFi.status() != WL_CONNECTED))
     {
         if (!connectWiFi())
         {
