@@ -41,7 +41,7 @@ var websocket;          /**< Instance of WebSocket */
 function onLoad(event) {
     initWebSocket();            /**< Init. WebSocket */
     drawCircle();               /**< Draws Circle as an LED Indicator */
-    setInterval(getCMD, 10);    /**< Process a message every 10ms */
+    setInterval(processCMD, 10);    /**< Process a message every 10ms */
 }
 
 /**************************************************************************************************/
@@ -143,9 +143,9 @@ function okBlink() {
 /**************************************************************************************************/
 
 /**
-*   Decodes Lawicel Command
+*   Processes Lawicel Command
 */
-function getCMD() {
+function processCMD() {
     if ((0 != logMessages.length) && (websocket.readyState === WebSocket.OPEN)) {
         console.log(logMessages[0]);
 
@@ -163,11 +163,11 @@ function getCMD() {
             case "T":
             case "r":
             case "R":
-                displayMessages();
+                displayMessages(logMessages[0]);
                 break;
 
             case "D":
-                displaySettings();
+                displaySettings(logMessages[0]);
                 break;
 
             default:
@@ -286,7 +286,7 @@ function sendFrame() {
 /**
 *   Displays Received CAN Frames in a Table
 */
-function displayMessages() {
+function displayMessages(lawicelFrame) {
 
     if (1 == enable) {
         var table = document.getElementById("CANLog");
@@ -303,37 +303,37 @@ function displayMessages() {
             SYSTIME: ""
         };
 
-        switch (logMessages[0][0]) {
+        switch (lawicelFrame[0]) {
             case "t":
-                frame.ID = logMessages[0].substr(1, 3);
-                frame.DLC = logMessages[0][4];
-                frame.DATA = logMessages[0].substr(5, frame.DLC * 2);
-                frame.TIMESTAMP = logMessages[0].substr(5 + frame.DLC * 2, 4);
-                frame.SYSTIME = logMessages[0].substr(9 + frame.DLC * 2, 6);
+                frame.ID = lawicelFrame.substr(1, 3);
+                frame.DLC = lawicelFrame[4];
+                frame.DATA = lawicelFrame.substr(5, frame.DLC * 2);
+                frame.TIMESTAMP = lawicelFrame.substr(5 + frame.DLC * 2, 4);
+                frame.SYSTIME = lawicelFrame.substr(9 + frame.DLC * 2, 6);
                 break;
 
             case "T":
-                frame.ID = logMessages[0].substr(1, 8);
-                frame.DLC = logMessages[0][9];
-                frame.DATA = logMessages[0].substr(10, frame.DLC * 2);
-                frame.TIMESTAMP = logMessages[0].substr(10 + frame.DLC * 2, 4);
-                frame.SYSTIME = logMessages[0].substr(14 + frame.DLC * 2, 6);
+                frame.ID = lawicelFrame.substr(1, 8);
+                frame.DLC = lawicelFrame[9];
+                frame.DATA = lawicelFrame.substr(10, frame.DLC * 2);
+                frame.TIMESTAMP = lawicelFrame.substr(10 + frame.DLC * 2, 4);
+                frame.SYSTIME = lawicelFrame.substr(14 + frame.DLC * 2, 6);
                 break;
 
             case "r":
-                frame.ID = logMessages[0].substr(1, 3);
+                frame.ID = lawicelFrame.substr(1, 3);
                 frame.RTR = "Yes";
-                frame.DLC = logMessages[0][4];
-                frame.TIMESTAMP = logMessages[0].substr(5, 4);
-                frame.SYSTIME = logMessages[0].substr(9, 6);
+                frame.DLC = lawicelFrame[4];
+                frame.TIMESTAMP = lawicelFrame.substr(5, 4);
+                frame.SYSTIME = lawicelFrame.substr(9, 6);
                 break;
 
             case "R":
-                frame.ID = logMessages[0].substr(1, 8);
+                frame.ID = lawicelFrame.substr(1, 8);
                 frame.RTR = "Yes";
-                frame.DLC = logMessages[0][9];
-                frame.TIMESTAMP = logMessages[0].substr(10, 4);
-                frame.SYSTIME = logMessages[0].substr(14, 8);
+                frame.DLC = lawicelFrame[9];
+                frame.TIMESTAMP = lawicelFrame.substr(10, 4);
+                frame.SYSTIME = lawicelFrame.substr(14, 8);
                 break;
 
             default:
@@ -406,9 +406,9 @@ function displayMessages() {
 /**
 *   Displays System Data
 */
-function displaySettings() {
+function displaySettings(lawicelFrame) {
     var cell = document.getElementById("Sys_Auto");
-    var temp = logMessages[0][1];
+    var temp = lawicelFrame[1];
     var output = "";
     switch (temp) {
         case '0':
@@ -427,7 +427,7 @@ function displaySettings() {
     cell.innerHTML = output;
 
     cell = document.getElementById("Sys_CBaud");
-    temp = logMessages[0][3];
+    temp = lawicelFrame[3];
     switch (temp) {
         case '0':
             output = "10";
@@ -472,7 +472,7 @@ function displaySettings() {
     cell.innerHTML = output;
 
     cell = document.getElementById("Sys_TStmp");
-    temp = logMessages[0][4];
+    temp = lawicelFrame[4];
     switch (temp) {
         case '0':
             output = "Deactivated";
@@ -487,7 +487,7 @@ function displaySettings() {
     cell.innerHTML = output;
 
     cell = document.getElementById("Sys_CChannel");
-    temp = logMessages[0][5];
+    temp = lawicelFrame[5];
     switch (temp) {
         case '0':
             output = "Closed";
