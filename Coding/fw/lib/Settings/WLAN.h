@@ -24,15 +24,15 @@ extern "C"
 
 namespace wlan
 {
-    const String &getSTA_SSID();                             /**< Returns saved Station SSID */
-    const String &getSTA_PASS();                             /**< Returns saved Station Password */
-    const String &getAP_SSID();                              /**< Returns saved Access Point SSID */
-    const String &getAP_PASS();                              /**< Returns saved Access Point Password */
-    bool getAP_MODE();                                       /**< Returns Access Point Mode Status */
-    bool checkConnection(void);                              /**< Calls next request on DNS Server */
-    IPAddress getIPAddress(void);                            /**< Returns the IP Address of the ESP */
-    void saveConfig(const String &key, const String &value); /**< Saves the desired value in the memory "key" */
-    bool begin();                                            /**< Starts the WiFi Connection */
+  const String &getSTA_SSID();                             /**< Returns saved Station SSID */
+  const String &getSTA_PASS();                             /**< Returns saved Station Password */
+  const String &getAP_SSID();                              /**< Returns saved Access Point SSID */
+  const String &getAP_PASS();                              /**< Returns saved Access Point Password */
+  bool getAP_MODE();                                       /**< Returns Access Point Mode Status */
+  bool checkConnection(void);                              /**< Calls next request on DNS Server */
+  const IPAddress &getIPAddress(void);                     /**< Returns the IP Address of the ESP */
+  void saveConfig(const String &key, const String &value); /**< Saves the desired value in the memory "key" */
+  bool begin();                                            /**< Starts the WiFi Connection */
 } // namespace wlan
 
 /* FORWARD DECLARATIONS **************************************************************************/

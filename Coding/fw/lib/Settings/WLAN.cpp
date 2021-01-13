@@ -81,7 +81,13 @@ bool wlan::getAP_MODE()
     return m_APMode;
 }
 
+
 /**************************************************************************************************/
+
+/**
+*   Start the WiFi Conenction
+*   @return bool success
+*/
 bool wlan::begin()
 {
     bool success = true;
@@ -141,11 +147,13 @@ bool wlan::checkConnection()
     return success;
 }
 
-IPAddress wlan::getIPAddress()
+/**************************************************************************************************/
+const IPAddress &wlan::getIPAddress()
 {
     return m_serverIP;
 }
 
+/**************************************************************************************************/
 void wlan::saveConfig(const String &key, const String &value)
 {
     Settings::save(DIRECTORY, key, value);
@@ -158,7 +166,13 @@ void wlan::saveConfig(const String &key, const String &value)
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
+
 /**************************************************************************************************/
+
+/**
+*   Read Button State and return it to define WiFi Mode
+*   @return  bool pressedButton
+*/
 static bool readWiFiMode()
 {
     bool pressedButton = false;
