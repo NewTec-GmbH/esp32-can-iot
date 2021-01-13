@@ -1,176 +1,181 @@
-#ifndef TEST_CAN_ADAPTER_H_
-#define TEST_CAN_ADAPTER_H_
+/***************************************************************************************************
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+***************************************************************************************************/
+/**
+@addtogroup Test
+@{
+@file       test_can_adapter.h
 
-#include <CANInterface.h>
+Native Test CAN Adapter for Lawicel Protocol
+
+* @}
+***************************************************************************************************/
+#ifndef TEST_CAN_ADAPTER_H
+#define TEST_CAN_ADAPTER_H
+
+/* INCLUDES ***************************************************************************************/
+#include "CANInterface.h"
 #include <stdint.h>
 
-class testCAN : public CANInterface
+/* C-Interface ************************************************************************************/
+extern "C"
+{
+}
+
+/* FORWARD DECLARATIONS ***************************************************************************/
+
+/**
+*  Native Adapter as implementation of CANInterface for the Lawicel Protocol.
+*/
+class TestCANAdapter : public CANInterface
 {
 public:
-    testCAN() : CANInterface(),
-                m_baudrate(0),
-                m_currentstate(CLOSED),
-                m_BTR0(0),
-                m_BTR1(0)
+    /* CONSTANTS ******************************************************************************/
+
+    /* TYPES **********************************************************************************/
+
+    /**
+    * Default constructor creates instance of the class using default values.
+    * Uses CANInterface constructor as its the implementation of an Interface.
+    * @param m_baudrate         Defines the Default baudrate of the CAN Channel
+    */
+    TestCANAdapter() : CANInterface()
     {
     }
 
-    ~testCAN()
+    /**
+    * Default destructor deletes instance of the class.
+    */
+    ~TestCANAdapter()
     {
     }
 
-    uint8_t begin()
+    /** 
+    * Configures and starts the CAN Controller to use the user values.
+    * @return isError = 0 for OK, 1 for Error 
+    */
+    bool begin()
     {
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    uint8_t end()
+    /** 
+    * Stops the Controller Module without destroying the instance.
+    * @return isError = 0 for OK, 1 for Error 
+    */
+    bool end()
     {
-        return 0;
+        return true;
     }
 
-    uint8_t send(const Frame &frame)
+    /**
+    * Send a Frame from Serial to CAN Channel
+    * @param &Frame     Reference to the Frame to be sended
+    * @return isError = 0 for OK, 1 for Error 
+    */
+    bool send(const Frame &frame)
     {
-        m_outputFrame = frame;
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    uint8_t setState(BUS_STATE state)
+    /**
+    * Set the State of the CAN Channel.
+    * @param state          BUS_STATE to be set to the CAN Channel
+    * @return isError = 0 for OK, 1 for Error 
+    */
+    bool setState(BUS_STATE state)
     {
-        switch (state)
-        {
-        case CLOSED:
-            m_currentstate = CLOSED;
-            return 0;
-
-        case NORMAL:
-            if (m_baudrate == 0)
-            {
-                return 1;
-            }
-            m_currentstate = NORMAL;
-            return 0;
-
-        case LISTEN_ONLY:
-            if (m_baudrate == 0)
-            {
-                return 1;
-            }
-            m_currentstate = LISTEN_ONLY;
-            return 0;
-
-        default:
-            return 1;
-        }
+        bool success = true;
+        return success;
     }
 
-    uint8_t setBaudrate(uint32_t baudrate)
+    /**
+    * Set the Baudrate of the CAN Channel.
+    * @return isError = 0 for OK, 1 for Error 
+    */
+    bool setBaudrate(uint32_t baudrate)
     {
-        m_baudrate = baudrate;
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    uint8_t setBTR(uint8_t btr0, uint8_t btr1)
+    /**
+    * Sent the BTR Registers of the CAN Channel.
+    * @return 0 for OK, 1 for Error 
+    */
+    bool setBTR(uint8_t btr0, uint8_t btr1)
     {
-        m_BTR0 = btr0;
-        m_BTR1 = btr1;
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    uint8_t setFilterMode(uint8_t filter)
+    /**
+    * Set the Filter Mode of the CAN Channel.
+    * @param filter       Defines Filter based on FILTER_MODE Enum.
+    * @return 0 for OK, 1 for Error 
+    */
+    bool setFilterMode(FILTER_MODE filter)
     {
-        m_filtermode = filter;
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    uint8_t setACn(const uint8_t *acn)
+    /**
+    * Set the Acceptance Code Register.
+    */
+    bool setACn(const Filter &acn)
     {
-        for (int i = 0; i < 4; i++)
-        {
-            m_ACn[i] = acn[i];
-        }
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    uint8_t setAMn(const uint8_t *amn)
+    /**
+    * Set the Acceptance Mask Register.
+    */
+    bool setAMn(const Filter &amn)
     {
-        for (int i = 0; i < 4; i++)
-        {
-            m_AMn[i] = amn[i];
-        }
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    uint8_t getChannelState()
+    /**
+    * Gets the Channel State from the CAN Controller.
+    * @return BUS_STATE m_currentState stores the state of the CAN Channel.
+    */
+    BUS_STATE getChannelState()
     {
-        return m_currentstate;
+        return m_currentState;
     }
 
+    /**
+    * Gets the Status and Error Flags from the CAN Controller.
+    * @return 0 for OK, 1 for Error 
+    */
     uint8_t getStatusFlags()
     {
         return 0;
     }
 
-    uint8_t pollSingle(Frame& frame)
+    /**
+    * Polls one Message from the FIFO Buffer.
+    * @return availableFrames. 0 for No new Frames.
+    */
+    bool pollSingle(Frame &frame)
     {
-        frame = m_inputFrame;
-        return 0;
+        bool success = false;
+        return success;
     }
-
-    void writeInputFrame(uint32_t _id, bool _rtr, bool _ext, uint8_t _dlc, uint8_t _data[8])
-    {
-        m_inputFrame.m_id = _id;
-        m_inputFrame.m_rtr = _rtr;
-        m_inputFrame.m_extended = _ext;
-        m_inputFrame.m_dlc = _dlc;
-        for (int i = 0; i < 8; i++)
-        {
-            m_inputFrame.m_data[i] = _data[i];
-        }
-    }
-
-    void writeFlags(bool _flags[8])
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            m_flags[i] = _flags[i];
-        }
-    }
-
-    Frame getOutputFrame()
-    {
-        return m_outputFrame;
-    }
-
-    long getBaudrate()
-    {
-        return m_baudrate;
-    }
-
-    void clearOutputframe()
-    {
-        m_outputFrame.m_id = 0x000;
-        m_outputFrame.m_dlc = 0;
-        m_outputFrame.m_extended = false;
-        m_outputFrame.m_rtr = false;
-        for (int i = 0; i < 8; i++)
-        {
-            m_outputFrame.m_data[i] = 0;
-        }
-    }
-
-    long m_baudrate;
-    uint8_t m_BTR0;
-    uint8_t m_BTR1;
-    BUS_STATE m_currentstate;
-    bool m_filtermode;
-    uint8_t m_ACn[4];
-    uint8_t m_AMn[4];
-    bool m_flags[8] = {1, 1, 1, 1, 1, 1, 1, 1};
-    Frame m_inputFrame;
-    Frame m_outputFrame;
 
 private:
+    uint32_t m_baudRate;
+    BUS_STATE m_currentState;
 };
 
-#endif
+/* INLINE FUNCTIONS ***************************************************************************/
+
+/* PROTOTYPES *********************************************************************************/
+
+#endif /* TEST_CAN_ADAPTER_H */
