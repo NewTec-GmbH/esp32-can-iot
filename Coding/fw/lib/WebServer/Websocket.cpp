@@ -51,11 +51,7 @@ void websocket::init(AsyncWebServer &server)
 
     ws.onEvent(onEvent);
     server.addHandler(&ws);
-    inputQueue = xQueueCreate(100, sizeof(char));
-    if(NULL == inputQueue)
-    {
-        Serial.println("Error at creating the Queue");
-    }
+    inputQueue = xQueueCreate(100, sizeof(char));    
 }
 
 /**************************************************************************************************/
@@ -76,7 +72,7 @@ void websocket::send(const String &message)
 */
 bool websocket::receive(char &c)
 {
-    return xQueueReceive(inputQueue, &c, 100);;
+    return xQueueReceive(inputQueue, &c, 0 ) == pdTRUE;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -100,7 +96,11 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
     {
         for (int i = 0; i < len; i++)
         {
-            xQueueSendToBack(inputQueue, &data[i], 100);
+            if(errQUEUE_FULL == xQueueSendToBack(inputQueue, &data[i], 0))
+            {
+                Serial.println("Queue Full");
+                break;
+            }
         }
     }
 }
