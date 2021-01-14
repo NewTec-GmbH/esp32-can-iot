@@ -233,7 +233,7 @@ function sendCMD() {
 *   Sends CAN Frame described in the Data Table
 */
 function sendFrame() {
-    if (document.getElementById("FRAME_ID").value != "") {
+    if ("" != document.getElementById("FRAME_ID").value) {
         var input = "";
         var extInput = document.getElementById("FRAME_EXT").checked;
         var rtrInput = document.getElementById("FRAME_RTR").checked;
@@ -358,7 +358,12 @@ function displayMessages(lawicelFrame) {
             }
         }
 
-        if (0x7E8 <= parseInt(frame.ID, 16) && parseInt(frame.ID, 16) <= 0x7EF) {
+        var parsedID = parseInt(frame.ID, 16);
+        /**
+        *   The VCU can answer to the Request with an ID between 0x7E8 and 0x7EF.
+        *   This depends on the Manufaturer.
+        */
+        if ((0x7E8 <= parsedID) && (0x7EF >= parsedID)) {
             decodePIDResponse(frame);
         }
 
