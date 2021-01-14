@@ -25,6 +25,7 @@ const String Lawicel::X_VERSION = "V0101";
 const String Lawicel::X_SERIAL_NUMBER = "NNT32";
 const char Lawicel::CR = 13;
 const char Lawicel::BELL = 7;
+const uint8_t Lawicel::MAX_COMMAND_LENGTH = 30;
 
 const String Lawicel::INIT_SERIAL_BAUD = "SerialBaud";
 const String Lawicel::INIT_TIMESTAMP = "ToggleTime";
@@ -80,7 +81,7 @@ bool Lawicel::executeCycle()
 
             m_serialInput = "";
         }
-        else if (30 < m_serialInput.length())
+        else if (MAX_COMMAND_LENGTH < m_serialInput.length())
         {
             success = false;
             m_serialInput = "";

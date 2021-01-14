@@ -38,11 +38,12 @@ class Lawicel
 {
 public:
     /* CONSTANTS ******************************************************************************/
-    static const uint16_t MAX_TIMESTAMP; /**< Maximum value of a Timestamp, representing 1 Minute. */
-    static const String X_VERSION;       /**< Hardware and Software Version. */
-    static const String X_SERIAL_NUMBER; /**< Hardware Serial Number. */
-    static const char CR;                /**< CR Character as OK Line Terminator */
-    static const char BELL;              /**< BEL Character as ERROR Line Terminator */
+    static const uint16_t MAX_TIMESTAMP;     /**< Maximum value of a Timestamp, representing 1 Minute. */
+    static const String X_VERSION;           /**< Hardware and Software Version. */
+    static const String X_SERIAL_NUMBER;     /**< Hardware Serial Number. */
+    static const char CR;                    /**< CR Character as OK Line Terminator */
+    static const char BELL;                  /**< BEL Character as ERROR Line Terminator */
+    static const uint8_t MAX_COMMAND_LENGTH; /**< Maximum Length of a Lawicel Command */
 
     /**
     * Key Definition (Addresses) to be read by NVM Adapter for initialization
@@ -143,7 +144,7 @@ private:
     bool toggleAutoStartCmd(const String &lawicelCMD);   /**< Auto Startup feature (from power on) */
     bool getCurrentParams(const String &lawicelCMD);     /**< Returns the current configuration of the CAN Bus */
 
-    bool autopoll();       /**< Frame Polling without any extra tags */
+    bool autopoll();                /**< Frame Polling without any extra tags */
     String getFormattedTimestamp(); /**< Returns Timestamp */
 
     bool m_timestamp = false;   /**< Toggle timestamp */
