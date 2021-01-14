@@ -61,7 +61,11 @@ public:
     bool begin()
     {
         bool success = true;
-        /** m_Can_Controller.setPins(5, 4);  Fix for Hardware version 1.0. Fixed for Version 1.1 */
+        if(1.0 == HARDWARE_VERSION)
+        {
+         m_Can_Controller.setPins(5, 4);  /**< Fix for Hardware version 1.0. Fixed for Version 1.1 */
+        }
+
         if (0 == m_Can_Controller.begin(m_baudRate)) /**< Starts CAN channel with 500kbps Baudrate */
         {
             success = false;
