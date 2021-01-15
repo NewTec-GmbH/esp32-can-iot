@@ -14,6 +14,7 @@ Configuration of ESP32 WebSocket. @ref Websocket.h
 /* INCLUDES ***************************************************************************************/
 #include "Websocket.h"
 #include <SPIFFS.h>
+#include "Board.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -28,13 +29,13 @@ AsyncWebSocket ws("/ws");
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
-static String processor(const String &var);
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len);
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len);
 
 /* VARIABLES **************************************************************************************/
-static String inputBuffer;
+
+static QueueHandle_t inputQueue;
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -46,12 +47,12 @@ static String inputBuffer;
 void websocket::init(AsyncWebServer &server)
 {
     server.on("/communication", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(SPIFFS, "/ws.html", String(), false, processor);
+        request->send(SPIFFS, "/ws.html");
     });
 
     ws.onEvent(onEvent);
     server.addHandler(&ws);
-    inputBuffer = "";
+    inputQueue = xQueueCreate(100, sizeof(char));
 }
 
 /**************************************************************************************************/
@@ -59,11 +60,10 @@ void websocket::init(AsyncWebServer &server)
 /*
 *   Send WebSocket Message
 */
-void websocket::send(String message)
+void websocket::send(const String &message)
 {
     String systime = String(millis());
-    message += systime.substring(0, 7);
-    ws.textAll(message);
+    ws.textAll(message + systime);
 }
 
 /**************************************************************************************************/
@@ -73,15 +73,7 @@ void websocket::send(String message)
 */
 bool websocket::receive(char &c)
 {
-    bool available = false;
-    if (inputBuffer.length() != 0)
-    {
-        available = true;
-        c = inputBuffer[0];
-        inputBuffer.remove(0, 1);
-    }
-
-    return available;
+    return xQueueReceive(inputQueue, &c, 0) == pdTRUE;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
@@ -95,30 +87,22 @@ bool websocket::receive(char &c)
 /**************************************************************************************************/
 
 /*
-*   Page Processor
-*/
-static String processor(const String &var)
-{
-    if (var == "STATE")
-    {
-    }
-    return "";
-}
-
-/**************************************************************************************************/
-
-/*
 *   Handler for incoming Web Socket Message
 */
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
     String temp;
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
-    if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
+    if ((info->final) && (0 == info->index) && (len == info->len) && (WS_TEXT == info->opcode))
     {
         for (int i = 0; i < len; i++)
         {
-            inputBuffer += (char)data[i];
+            if (errQUEUE_FULL == xQueueSendToBack(inputQueue, &data[i], 0))
+            {
+                Serial.println("Queue Full");
+                Board::blinkError(250);
+                break;
+            }
         }
     }
 }

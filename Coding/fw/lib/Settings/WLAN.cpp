@@ -12,7 +12,7 @@ WiFi configuration of ESP32
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
-#include "Settings.h"
+#include "FlashMem.h"
 #include "WLAN.h"
 #include <WiFi.h>
 #include "Board.h"
@@ -39,7 +39,7 @@ static String AP_PASSWORD = "hochschuleulm";
 *   Determines the state of the WiFiModeSelect Button to enter AP Mode
 *   @return bool AP Mode. If true, will request the AP mode. If false, requests STA Mode
 */
-static void readWiFiMode();
+static bool readWiFiMode();
 
 /**
 * Connects to the WiFi AP when requested
@@ -81,7 +81,13 @@ bool wlan::getAP_MODE()
     return m_APMode;
 }
 
+
 /**************************************************************************************************/
+
+/**
+*   Start the WiFi Conenction
+*   @return bool success
+*/
 bool wlan::begin()
 {
     bool success = true;
@@ -91,7 +97,7 @@ bool wlan::begin()
     Settings::get(DIRECTORY, "STA_SSID", STA_SSID, "");
     Settings::get(DIRECTORY, "STA_Password", STA_PASSWORD, "");
 
-    readWiFiMode();
+    m_APMode = readWiFiMode();
     if (m_APMode)
     {
         Board::staLED.write(LOW);
@@ -131,7 +137,7 @@ bool wlan::begin()
 bool wlan::checkConnection()
 {
     bool success = true;
-    if (WiFi.getMode() == WIFI_STA && WiFi.status() != WL_CONNECTED)
+    if ((WiFi.getMode() == WIFI_STA) && (WiFi.status() != WL_CONNECTED))
     {
         if (!connectWiFi())
         {
@@ -141,11 +147,13 @@ bool wlan::checkConnection()
     return success;
 }
 
-IPAddress wlan::getIPAddress()
+/**************************************************************************************************/
+const IPAddress &wlan::getIPAddress()
 {
     return m_serverIP;
 }
 
+/**************************************************************************************************/
 void wlan::saveConfig(const String &key, const String &value)
 {
     Settings::save(DIRECTORY, key, value);
@@ -158,33 +166,48 @@ void wlan::saveConfig(const String &key, const String &value)
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
-/**************************************************************************************************/
-static void readWiFiMode()
-{
-    uint8_t currentBtnState = LOW;
-    uint8_t previousBtnState = LOW;
-    uint32_t lastDebounceTime = 0;
 
-    const uint8_t DEBOUNCE_DELAY = 50;
+/**************************************************************************************************/
+
+/**
+*   Read Button State and return it to define WiFi Mode
+*   @return  bool pressedButton
+*/
+static bool readWiFiMode()
+{
+    bool pressedButton = false;
+
+    uint8_t btnState1 = LOW;
+    uint8_t btnState2 = LOW;
+
+    const uint8_t DEBOUNCE_DELAY = 100;
     const uint32_t SETUP_TIME = 2000;
     const uint32_t START_TIME = millis();
 
     while ((millis() - START_TIME) < SETUP_TIME)
     {
-        currentBtnState = Board::wifiModeSelect.read();
+        btnState1 = Board::wifiModeSelect.read();
 
-        if (currentBtnState != previousBtnState)
+        delay(DEBOUNCE_DELAY);
+
+        btnState2 = Board::wifiModeSelect.read();
+
+        if (btnState1 == btnState2)
         {
-            lastDebounceTime = millis();
+            if(LOW == btnState1)
+            {
+                pressedButton = true;
+            }
+            else
+            {
+                pressedButton = false;
+            }
+            
         }
 
-        if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY)
-        {
-            m_APMode = !currentBtnState;
-        }
-
-        previousBtnState = currentBtnState;
     }
+
+    return pressedButton;
 }
 
 /**************************************************************************************************/

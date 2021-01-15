@@ -18,10 +18,9 @@
     <script>
         window.addEventListener('load', onLoad);
         window.addEventListener("keyup", function (event) {
-            if (event.keyCode === 13) {
+            if (event.keyCode === 13) {     /**< ASCII Symbol 13 is the Return. Used to Send the Message */
                 event.preventDefault();
                 document.getElementById("sendCommandButton").click();
-                //document.getElementById("sendFrameButton").click();
             }
         });
     </script>

@@ -15,7 +15,6 @@ Web Pages for ESP32 WebServer @ref Pages.h
 #include "Pages.h"
 #include "Web_Config.h"
 #include <SPIFFS.h>
-#include "Settings.h"
 #include "WLAN.h"
 #include "Websocket.h"
 

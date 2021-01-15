@@ -18,30 +18,6 @@ ESP32SJA1000 Adapter for Lawicel Protocol
 #include "CANInterface.h"
 #include <CAN.h>
 
-#define REG_BASE 0x3ff6b000
-
-#define REG_MOD 0x00
-#define REG_CMR 0x01
-#define REG_SR 0x02
-#define REG_IR 0x03
-#define REG_IER 0x04
-
-#define REG_BTR0 0x06
-#define REG_BTR1 0x07
-#define REG_OCR 0x08
-
-#define REG_ALC 0x0b
-#define REG_ECC 0x0c
-#define REG_EWLR 0x0d
-#define REG_RXERR 0x0e
-#define REG_TXERR 0x0f
-#define REG_SFF 0x10
-#define REG_EFF 0x10
-#define REG_ACRn(n) (0x10 + n)
-#define REG_AMRn(n) (0x14 + n)
-
-#define REG_CDR 0x1F
-
 /* C-Interface ************************************************************************************/
 extern "C"
 {
@@ -85,8 +61,12 @@ public:
     bool begin()
     {
         bool success = true;
-        m_Can_Controller.setPins(5, 4);
-        if (m_Can_Controller.begin(m_baudRate) == 0) /**< Starts CAN channel with 500kbps Baudrate */
+        if(0x0100 == HARDWARE_VERSION)
+        {
+         m_Can_Controller.setPins(5, 4);  /* Fix for Hardware version 1.0. Fixed for Version 1.1 */
+        }
+
+        if (0 == m_Can_Controller.begin(m_baudRate)) /**< Starts CAN channel with 500kbps Baudrate */
         {
             success = false;
         }
@@ -118,14 +98,14 @@ public:
         bool success = true;
         if (frame.m_extended)
         {
-            if (m_Can_Controller.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            if (0 == m_Can_Controller.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr))
             {
                 success = false;
             }
         }
         else
         {
-            if (m_Can_Controller.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            if (0 == m_Can_Controller.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr))
             {
                 success = false;
             }
@@ -165,7 +145,7 @@ public:
             break;
 
         case NORMAL:
-            if (m_baudRate == 0)
+            if (0 == m_baudRate)
             {
                 success = false;
             }
@@ -177,7 +157,7 @@ public:
             break;
 
         case LISTEN_ONLY:
-            if (m_baudRate == 0)
+            if (0 == m_baudRate)
             {
                 success = false;
             }
@@ -205,7 +185,7 @@ public:
         bool success = true;
         m_baudRate = baudrate;
         m_Can_Controller.end();
-        if (m_Can_Controller.begin(m_baudRate) == 0)
+        if (0 == m_Can_Controller.begin(m_baudRate))
         {
             success = false;
         }
@@ -274,7 +254,7 @@ public:
     {
         bool success = false;
 
-        if (m_Can_Controller.parsePacket() != -1) /**< Return changed to -1 to differenciate from DLC = 0 */
+        if (-1 != m_Can_Controller.parsePacket()) /**< Return changed to -1 to differenciate from DLC = 0 */
         {
             frame.m_id = m_Can_Controller.packetId();
             frame.m_dlc = m_Can_Controller.packetDlc();

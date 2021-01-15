@@ -15,7 +15,7 @@ Configuration of ESP32 WebServer
 #define WEB_CONFIG_H_
 
 /* INCLUDES ***************************************************************************************/
-#include "Settings.h"
+#include "FlashMem.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"

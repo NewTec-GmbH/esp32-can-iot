@@ -85,7 +85,7 @@ public:
 
         if (HTTP_POST == request->method())
         {
-            if (request->args() != 0)
+            if (0 != request->args())
             {
                 int params = request->params();
                 for (int i = 0; i < params; i++)
@@ -167,8 +167,7 @@ bool CaptivePortal::isRestartRequested()
  */
 static void credentialsProcessor(String name, String value)
 {
-    if (name == "STA_SSID" ||
-        name == "STA_Password")
+    if ((name == "STA_SSID") || (name == "STA_Password"))
     {
         wlan::saveConfig(name, value);
     }

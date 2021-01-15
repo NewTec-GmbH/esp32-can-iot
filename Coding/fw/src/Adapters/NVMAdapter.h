@@ -16,7 +16,7 @@ ESP32 NVM Adapter for Lawicel Protocol
 
 /* INCLUDES ***************************************************************************************/
 #include "NVMInterface.h"
-#include "Settings.h"
+#include "FlashMem.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"

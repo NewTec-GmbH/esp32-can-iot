@@ -138,9 +138,9 @@ extern void Board::blinkError(uint32_t duration)
 void setBusMode()
 {
     uint16_t supplyVoltage = obdSupply.read();
-    uint16_t threshold = (OBD_SUPPLY_THRESHOLD * (adcResolution - 1U)) / adcRefVoltage;
+    const uint16_t threshold = (OBD_SUPPLY_THRESHOLD * (adcResolution - 1U)) / adcRefVoltage;
 
-    if (supplyVoltage >= threshold)
+    if (threshold <= supplyVoltage)
     {
         /**
         * There is a voltage greater than the threshold on the Power Supply, meaning that the
