@@ -368,7 +368,11 @@ public:
         return success;
     }
 
-private:
+    uint32_t getBaudrate(){
+        return m_baudRate;
+    }
+
+
     uint32_t m_baudRate;
     uint8_t m_btr0;
     uint8_t m_btr1;

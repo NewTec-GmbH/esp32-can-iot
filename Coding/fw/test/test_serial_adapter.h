@@ -96,7 +96,7 @@ public:
             c = m_inputString[position];
             position++;
         }
-
+        
         return available;
     }
 
@@ -129,10 +129,12 @@ public:
 
     void writeInput(String input)
     {
-        m_inputString = input;
+        m_inputString = "";
+        position = 0;
+        m_inputString = input + '\r';
     }
 
-private:
+
     String m_inputString;
     String m_outputString;
     uint32_t m_serialBaudrate;

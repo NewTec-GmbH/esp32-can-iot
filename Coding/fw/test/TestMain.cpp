@@ -32,15 +32,21 @@ TestCANAdapter testingCANAdapter;
 TestNVMAdapter testingNVMAdapter;
 Lawicel ProtocolTest(testingSerialAdapter, testingCANAdapter, testingNVMAdapter);
 
+void test_can_baudrate(void);
+void test_can_btr(void);
+void test_can_open_normal(void);
+void test_can_open_listen_only(void);
+void test_can_close(void);
+
 int main(int argc, char **argv)
 {
 
   UNITY_BEGIN();
-  //RUN_TEST(test_can_baudrate);
-  //RUN_TEST(test_can_btr);
-  //RUN_TEST(test_can_open_normal);
-  //RUN_TEST(test_can_open_listen_only);
-  //RUN_TEST(test_can_close);
+  RUN_TEST(test_can_baudrate);
+  RUN_TEST(test_can_btr);
+  RUN_TEST(test_can_open_normal);
+  RUN_TEST(test_can_open_listen_only);
+  RUN_TEST(test_can_close);
   //RUN_TEST(test_tx_std);
   //RUN_TEST(test_tx_ext);
   //RUN_TEST(test_tx_std_rtr);
@@ -55,123 +61,125 @@ int main(int argc, char **argv)
   return UNITY_END();
 }
 
-/*
+void runProtocolExecute(uint8_t cycles)
+{
+  for (uint8_t i = 0; i < cycles; i++)
+  {
+    ProtocolTest.executeCycle();
+  }
+}
+
 void test_can_baudrate(void)
 {
+  testingCANAdapter.m_currentState = CANInterface::CLOSED;
+  testingCANAdapter.m_baudRate = 0;
+
   testingSerialAdapter.writeInput("S0");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(10E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(10E3, testingCANAdapter.m_baudRate);
 
   testingSerialAdapter.writeInput("S1");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(20E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(20E3, testingCANAdapter.m_baudRate);
 
   testingSerialAdapter.writeInput("S2");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(50E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(50E3, testingCANAdapter.m_baudRate);
 
   testingSerialAdapter.writeInput("S3");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(100E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(100E3, testingCANAdapter.m_baudRate);
 
   testingSerialAdapter.writeInput("S4");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(125E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(125E3, testingCANAdapter.m_baudRate);
 
   testingSerialAdapter.writeInput("S5");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(250E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(250E3, testingCANAdapter.m_baudRate);
 
   testingSerialAdapter.writeInput("S6");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(500E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(500E3, testingCANAdapter.m_baudRate);
 
   testingSerialAdapter.writeInput("S7");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(800E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(800E3, testingCANAdapter.m_baudRate);
 
   testingSerialAdapter.writeInput("S8");
-  ProtocolTest.executeCycle();
-  TEST_ASSERT_EQUAL(1000E3, testingCANAdapter.getBaudrate());
+  runProtocolExecute(3);
+  TEST_ASSERT_EQUAL(1000E3, testingCANAdapter.m_baudRate);
 }
 
 void test_can_btr(void)
 {
   testingSerialAdapter.writeInput("s0000");
-  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL(0x00, testingCANAdapter.m_BTR0);
-  TEST_ASSERT_EQUAL(0x00, testingCANAdapter.m_BTR1);
+  runProtocolExecute(6);
+  TEST_ASSERT_EQUAL(0x00, testingCANAdapter.m_btr0);
+  TEST_ASSERT_EQUAL(0x00, testingCANAdapter.m_btr1);
 
   testingSerialAdapter.writeInput("s031C");
-  TEST_ASSERT_FALSE(ProtocolTest.executeCycle());
-  TEST_ASSERT_EQUAL(0x03, testingCANAdapter.m_BTR0);
-  TEST_ASSERT_EQUAL(0x1C, testingCANAdapter.m_BTR1);
+  runProtocolExecute(6);
+  TEST_ASSERT_EQUAL(0x03, testingCANAdapter.m_btr0);
+  TEST_ASSERT_EQUAL(0x1C, testingCANAdapter.m_btr1);
 
   testingSerialAdapter.writeInput("sFFFF");
-  TEST_ASSERT_FALSE(ProtocolTest.executeCycle());
-  TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_BTR0);
-  TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_BTR1);
-
-  testingSerialAdapter.writeInput("s00000");
-  TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
-
-  testingSerialAdapter.writeInput("s000");
-  TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
+  runProtocolExecute(6);
+  TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_btr0);
+  TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_btr1);
 }
 
 void test_can_open_normal(void)
 {
-  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
+  testingCANAdapter.m_currentState = CANInterface::CLOSED;
   testingSerialAdapter.writeInput("O");
-  TEST_ASSERT_FALSE(ProtocolTest.executeCycle());
+  runProtocolExecute(2);
+  TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
+  
+  testingCANAdapter.m_currentState = CANInterface::NORMAL;
+  testingSerialAdapter.writeInput("O");
+  runProtocolExecute(2);
   TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
 
-  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
-  testingSerialAdapter.writeInput("O0");
-  TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
-  TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
-
-  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
   testingSerialAdapter.writeInput("O");
-  TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
-  TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
-
-  testingCANAdapter.m_currentstate = CANInterface::LISTEN_ONLY;
-  testingSerialAdapter.writeInput("O");
-  TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
+  runProtocolExecute(2);
   TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
+
 
 void test_can_open_listen_only(void)
 {
-  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
+  testingCANAdapter.m_currentState = CANInterface::CLOSED;
   testingSerialAdapter.writeInput("L");
-  TEST_ASSERT_FALSE(ProtocolTest.executeCycle());
+  runProtocolExecute(2);
   TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 
-  testingCANAdapter.m_currentstate = CANInterface::CLOSED;
+  testingCANAdapter.m_currentState = CANInterface::CLOSED;
   testingSerialAdapter.writeInput("L0");
-  TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
+  runProtocolExecute(2);
   TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
 
-  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingCANAdapter.m_currentState = CANInterface::NORMAL;
   testingSerialAdapter.writeInput("L");
-  TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
+  runProtocolExecute(2);
   TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
 
-  testingCANAdapter.m_currentstate = CANInterface::LISTEN_ONLY;
+  testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
   testingSerialAdapter.writeInput("L");
-  TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
+  runProtocolExecute(2);
   TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
 
+
 void test_can_close(void)
 {
-  testingCANAdapter.m_currentstate = CANInterface::NORMAL;
+  testingCANAdapter.m_currentState = CANInterface::NORMAL;
   testingSerialAdapter.writeInput("C");
-  TEST_ASSERT_FALSE(ProtocolTest.executeCycle());
+  runProtocolExecute(2);
   TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
 
+/*
   testingCANAdapter.setState(CANInterface::LISTEN_ONLY);
   testingSerialAdapter.writeInput("C");
   TEST_ASSERT_FALSE(ProtocolTest.executeCycle());
@@ -186,8 +194,10 @@ void test_can_close(void)
   testingSerialAdapter.writeInput("L0");
   TEST_ASSERT_TRUE(ProtocolTest.executeCycle());
   TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
+  */
 }
 
+/*
 void test_tx_std(void)
 {
   testingCANAdapter.clearOutputframe();
@@ -579,81 +589,87 @@ void test_filter_mode(void)
   testingCANAdapter.m_filtermode = false;
   testingSerialAdapter.writeInput("W0");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode,"FilterMode Dual");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode, "FilterMode Dual");
 
   testingCANAdapter.m_filtermode = false;
   testingSerialAdapter.writeInput("W1");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_filtermode,"FilterMode Dual");
+  TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_filtermode, "FilterMode Dual");
 
   testingCANAdapter.m_filtermode = false;
   testingSerialAdapter.writeInput("W");
   TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode,"FilterMode Dual");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode, "FilterMode Dual");
 
   testingCANAdapter.m_filtermode = false;
   testingSerialAdapter.writeInput("W2");
   TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode,"FilterMode Dual");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode, "FilterMode Dual");
 
   testingCANAdapter.m_filtermode = false;
   testingSerialAdapter.writeInput("W20");
   TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode,"FilterMode Dual");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode, "FilterMode Dual");
 
   testingCANAdapter.m_currentstate = CANInterface::NORMAL;
   testingCANAdapter.m_filtermode = false;
   testingSerialAdapter.writeInput("W0");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode,"FilterMode Dual");
+  TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_filtermode, "FilterMode Dual");
 }
 
 void test_acn_register(void)
 {
-  for(int i = 0; i < 4; i++){
-  testingCANAdapter.m_ACn[i] = 0;
+  for (int i = 0; i < 4; i++)
+  {
+    testingCANAdapter.m_ACn[i] = 0;
   }
   testingCANAdapter.m_currentstate = CANInterface::CLOSED;
   testingSerialAdapter.writeInput("MFFFFFFFF");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  for(int i = 0; i < 4; i++){
-  TEST_ASSERT_EQUAL_UINT8(0xFF, testingCANAdapter.m_ACn[i]);   
+  for (int i = 0; i < 4; i++)
+  {
+    TEST_ASSERT_EQUAL_UINT8(0xFF, testingCANAdapter.m_ACn[i]);
   }
 
-  for(int i = 0; i < 4; i++){
-  testingCANAdapter.m_ACn[i] = 0;
+  for (int i = 0; i < 4; i++)
+  {
+    testingCANAdapter.m_ACn[i] = 0;
   }
   testingCANAdapter.m_currentstate = CANInterface::CLOSED;
   testingSerialAdapter.writeInput("MABCDEF01");
-  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");  
+  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT8(0xAB, testingCANAdapter.m_ACn[0]);
-  TEST_ASSERT_EQUAL_UINT8(0xCD, testingCANAdapter.m_ACn[1]); 
-  TEST_ASSERT_EQUAL_UINT8(0xEF, testingCANAdapter.m_ACn[2]); 
-  TEST_ASSERT_EQUAL_UINT8(0x01, testingCANAdapter.m_ACn[3]); 
+  TEST_ASSERT_EQUAL_UINT8(0xCD, testingCANAdapter.m_ACn[1]);
+  TEST_ASSERT_EQUAL_UINT8(0xEF, testingCANAdapter.m_ACn[2]);
+  TEST_ASSERT_EQUAL_UINT8(0x01, testingCANAdapter.m_ACn[3]);
 }
 
 void test_amn_register(void)
 {
-  for(int i = 0; i < 4; i++){
-  testingCANAdapter.m_AMn[i] = 0;
+  for (int i = 0; i < 4; i++)
+  {
+    testingCANAdapter.m_AMn[i] = 0;
   }
   testingCANAdapter.m_currentstate = CANInterface::CLOSED;
   testingSerialAdapter.writeInput("mFFFFFFFF");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  for(int i = 0; i < 4; i++){
-  TEST_ASSERT_EQUAL_UINT8(0xFF, testingCANAdapter.m_AMn[i]);   
+  for (int i = 0; i < 4; i++)
+  {
+    TEST_ASSERT_EQUAL_UINT8(0xFF, testingCANAdapter.m_AMn[i]);
   }
 
-  for(int i = 0; i < 4; i++){
-  testingCANAdapter.m_AMn[i] = 0;
+  for (int i = 0; i < 4; i++)
+  {
+    testingCANAdapter.m_AMn[i] = 0;
   }
   testingCANAdapter.m_currentstate = CANInterface::CLOSED;
   testingSerialAdapter.writeInput("mABCDEF01");
-  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");  
+  TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT8(0xAB, testingCANAdapter.m_AMn[0]);
-  TEST_ASSERT_EQUAL_UINT8(0xCD, testingCANAdapter.m_AMn[1]); 
-  TEST_ASSERT_EQUAL_UINT8(0xEF, testingCANAdapter.m_AMn[2]); 
-  TEST_ASSERT_EQUAL_UINT8(0x01, testingCANAdapter.m_AMn[3]); 
+  TEST_ASSERT_EQUAL_UINT8(0xCD, testingCANAdapter.m_AMn[1]);
+  TEST_ASSERT_EQUAL_UINT8(0xEF, testingCANAdapter.m_AMn[2]);
+  TEST_ASSERT_EQUAL_UINT8(0x01, testingCANAdapter.m_AMn[3]);
 }
 
 void test_serial_baudrate(void)
@@ -661,71 +677,70 @@ void test_serial_baudrate(void)
   testingSerialAdapter.writeInput("U0");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT32(230400, testingSerialAdapter.m_baudrate);
-  TEST_ASSERT_EQUAL_STRING("U0",testingNVMAdapter.m_outputString.c_str());
+  TEST_ASSERT_EQUAL_STRING("U0", testingNVMAdapter.m_outputString.c_str());
 
-  testingSerialAdapter.m_baudrate =115200;
+  testingSerialAdapter.m_baudrate = 115200;
   testingSerialAdapter.writeInput("U1");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT32(115200, testingSerialAdapter.m_baudrate);
-  TEST_ASSERT_EQUAL_STRING("U1",testingNVMAdapter.m_outputString.c_str());
+  TEST_ASSERT_EQUAL_STRING("U1", testingNVMAdapter.m_outputString.c_str());
 
-  testingSerialAdapter.m_baudrate =115200;
+  testingSerialAdapter.m_baudrate = 115200;
   testingSerialAdapter.writeInput("U2");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT32(57600, testingSerialAdapter.m_baudrate);
-  testingSerialAdapter.m_baudrate =115200;
-  TEST_ASSERT_EQUAL_STRING("U2",testingNVMAdapter.m_outputString.c_str());
+  testingSerialAdapter.m_baudrate = 115200;
+  TEST_ASSERT_EQUAL_STRING("U2", testingNVMAdapter.m_outputString.c_str());
 
   testingSerialAdapter.writeInput("U3");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT32(38400, testingSerialAdapter.m_baudrate);
-  testingSerialAdapter.m_baudrate =115200;
-  TEST_ASSERT_EQUAL_STRING("U3",testingNVMAdapter.m_outputString.c_str());
+  testingSerialAdapter.m_baudrate = 115200;
+  TEST_ASSERT_EQUAL_STRING("U3", testingNVMAdapter.m_outputString.c_str());
 
   testingSerialAdapter.writeInput("U4");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_baudrate);
-  TEST_ASSERT_EQUAL_STRING("U4",testingNVMAdapter.m_outputString.c_str());
+  TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
 
   testingSerialAdapter.writeInput("U");
   TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_baudrate);
-  TEST_ASSERT_EQUAL_STRING("U4",testingNVMAdapter.m_outputString.c_str());
+  TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
 
   testingSerialAdapter.writeInput("U54");
   TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
   TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_baudrate);
-  TEST_ASSERT_EQUAL_STRING("U4",testingNVMAdapter.m_outputString.c_str());
+  TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
 }
 
 void test_version(void)
 {
   testingSerialAdapter.writeInput("V");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_STRING("V0101\r",testingSerialAdapter.outputString.c_str());
+  TEST_ASSERT_EQUAL_STRING("V0101\r", testingSerialAdapter.outputString.c_str());
 }
 
 void test_serialnumber(void)
 {
   testingSerialAdapter.writeInput("N");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_STRING("NNT32\r",testingSerialAdapter.outputString.c_str());
+  TEST_ASSERT_EQUAL_STRING("NNT32\r", testingSerialAdapter.outputString.c_str());
 }
 
 void test_timestamp(void)
 {
   testingSerialAdapter.writeInput("Z0");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_UINT32(0,testingNVMAdapter.m_outputInt);
+  TEST_ASSERT_EQUAL_UINT32(0, testingNVMAdapter.m_outputInt);
 
   testingSerialAdapter.writeInput("Z1");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_UINT32(1,testingNVMAdapter.m_outputInt);
+  TEST_ASSERT_EQUAL_UINT32(1, testingNVMAdapter.m_outputInt);
 
   testingSerialAdapter.writeInput("Z2");
   TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_UINT32(1,testingNVMAdapter.m_outputInt);
-
+  TEST_ASSERT_EQUAL_UINT32(1, testingNVMAdapter.m_outputInt);
 }
 
 void test_autostart(void)
@@ -733,18 +748,18 @@ void test_autostart(void)
   testingCANAdapter.m_currentstate = CANInterface::NORMAL;
   testingSerialAdapter.writeInput("Q0");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_UINT32(0,testingNVMAdapter.m_outputInt);
+  TEST_ASSERT_EQUAL_UINT32(0, testingNVMAdapter.m_outputInt);
 
   testingSerialAdapter.writeInput("Q1");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_UINT32(1,testingNVMAdapter.m_outputInt);
+  TEST_ASSERT_EQUAL_UINT32(1, testingNVMAdapter.m_outputInt);
 
   testingSerialAdapter.writeInput("Q2");
   TEST_ASSERT_FALSE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_UINT32(2,testingNVMAdapter.m_outputInt);
+  TEST_ASSERT_EQUAL_UINT32(2, testingNVMAdapter.m_outputInt);
 
   testingSerialAdapter.writeInput("Q3");
   TEST_ASSERT_TRUE_MESSAGE(ProtocolTest.executeCycle(), "Handler");
-  TEST_ASSERT_EQUAL_UINT32(2,testingNVMAdapter.m_outputInt);
+  TEST_ASSERT_EQUAL_UINT32(2, testingNVMAdapter.m_outputInt);
 }
 */
