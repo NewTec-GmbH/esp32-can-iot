@@ -34,7 +34,11 @@ public:
     /* CONSTANTS ******************************************************************************/
 
     /* TYPES **********************************************************************************/
-    bool compareFrames(const Frame &frame1, const Frame &frame2);
+    /**************************************************************************************************/
+
+    /**
+    *   Edit input Frame for Testing
+    */
     bool enterInputFrame(uint32_t id,   /**< CAN ID */
                          bool rtr,      /**< Identifies a RTR Frame */
                          bool extended, /**< Identifies an Extended Frame */
@@ -46,8 +50,31 @@ public:
                          uint8_t byte4,
                          uint8_t byte5,
                          uint8_t byte6,
-                         uint8_t byte7);
+                         uint8_t byte7)
+    {
+        bool success = true;
 
+        m_inputFrame.m_id = id;
+        m_inputFrame.m_rtr = rtr;
+        m_inputFrame.m_extended = extended;
+        m_inputFrame.m_dlc = dlc;
+        m_inputFrame.m_data[0] = byte0;
+        m_inputFrame.m_data[1] = byte1;
+        m_inputFrame.m_data[2] = byte2;
+        m_inputFrame.m_data[3] = byte3;
+        m_inputFrame.m_data[4] = byte4;
+        m_inputFrame.m_data[5] = byte5;
+        m_inputFrame.m_data[6] = byte6;
+        m_inputFrame.m_data[7] = byte7;
+
+        return success;
+    }
+
+    /**************************************************************************************************/
+
+    /**
+    *   Edit output (expected) Frame for Testing
+    */
     bool enterOutputFrame(uint32_t id,   /**< CAN ID */
                           bool rtr,      /**< Identifies a RTR Frame */
                           bool extended, /**< Identifies an Extended Frame */
@@ -59,10 +86,104 @@ public:
                           uint8_t byte4,
                           uint8_t byte5,
                           uint8_t byte6,
-                          uint8_t byte7);
+                          uint8_t byte7)
+    {
+        bool success = true;
 
-    bool checkFilter(Filter inputFilter, Filter adapterFilter);
-    bool copyFrames(const Frame &input, Frame &output);
+        m_outputFrame.m_id = id;
+        m_outputFrame.m_rtr = rtr;
+        m_outputFrame.m_extended = extended;
+        m_outputFrame.m_dlc = dlc;
+        m_outputFrame.m_data[0] = byte0;
+        m_outputFrame.m_data[1] = byte1;
+        m_outputFrame.m_data[2] = byte2;
+        m_outputFrame.m_data[3] = byte3;
+        m_outputFrame.m_data[4] = byte4;
+        m_outputFrame.m_data[5] = byte5;
+        m_outputFrame.m_data[6] = byte6;
+        m_outputFrame.m_data[7] = byte7;
+
+        return success;
+    }
+
+    /**************************************************************************************************/
+
+    /**
+    *   Clears input Frame
+    */
+    bool clearInputFrame()
+    {
+        return enterInputFrame(0, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
+
+    /**************************************************************************************************/
+
+    /**
+    *   Compared Frames
+    */
+    bool compareFrames(const Frame &frame1, const Frame &frame2)
+    {
+        bool success = true;
+
+        if (frame1.m_id == frame2.m_id)
+        {
+            success = false;
+        }
+        else if (frame1.m_rtr == frame2.m_rtr)
+        {
+            success = false;
+        }
+        else if (frame1.m_extended == frame2.m_extended)
+        {
+            success = false;
+        }
+        else if (frame1.m_dlc == frame2.m_dlc)
+        {
+            success = false;
+        }
+        else
+        {
+            for (uint8_t i = 0; i < frame1.m_dlc; i++)
+            {
+                if (frame1.m_data[i] != frame2.m_data[i])
+                {
+                    success = false;
+                    break;
+                }
+            }
+        }
+
+        return success;
+    }
+
+    bool checkFilter(Filter inputFilter, Filter adapterFilter)
+    {
+        bool success = true;
+
+        for (uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
+        {
+            if (inputFilter.m_filterBytes[i] != adapterFilter.m_filterBytes[i])
+            {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
+    }
+
+    bool copyFrames(const Frame &input, Frame &output)
+    {
+        output.m_id = input.m_id;
+        output.m_rtr = input.m_rtr;
+        output.m_extended = input.m_extended;
+        output.m_dlc = input.m_dlc;
+
+        for (uint8_t i = 0; i < FRAME_DATA_SIZE; i++)
+        {
+            output.m_data[i] = input.m_data[i];
+        }
+    }
 
     /**
     * Default constructor creates instance of the class using default values.
@@ -241,161 +362,10 @@ public:
     bool pollSingle(Frame &frame)
     {
         bool success = false;
-        
+
         copyFrames(m_inputFrame, frame);
 
         return success;
-    }
-
-    /**************************************************************************************************/
-
-    /**
-    *   Edit input Frame for Testing
-    */
-    bool enterInputFrame(uint32_t id,   /**< CAN ID */
-                         bool rtr,      /**< Identifies a RTR Frame */
-                         bool extended, /**< Identifies an Extended Frame */
-                         uint8_t dlc,   /**< Data Length */
-                         uint8_t byte0, /**< Data of the Frame */
-                         uint8_t byte1,
-                         uint8_t byte2,
-                         uint8_t byte3,
-                         uint8_t byte4,
-                         uint8_t byte5,
-                         uint8_t byte6,
-                         uint8_t byte7)
-    {
-        bool success = true;
-
-        m_inputFrame.m_id = id;
-        m_inputFrame.m_rtr = rtr;
-        m_inputFrame.m_extended = extended;
-        m_inputFrame.m_dlc = dlc;
-        m_inputFrame.m_data[0] = byte0;
-        m_inputFrame.m_data[1] = byte1;
-        m_inputFrame.m_data[2] = byte2;
-        m_inputFrame.m_data[3] = byte3;
-        m_inputFrame.m_data[4] = byte4;
-        m_inputFrame.m_data[5] = byte5;
-        m_inputFrame.m_data[6] = byte6;
-        m_inputFrame.m_data[7] = byte7;
-
-        return success;
-    }
-
-    /**************************************************************************************************/
-
-    /**
-    *   Edit output (expected) Frame for Testing
-    */
-    bool enterOutputFrame(uint32_t id,   /**< CAN ID */
-                          bool rtr,      /**< Identifies a RTR Frame */
-                          bool extended, /**< Identifies an Extended Frame */
-                          uint8_t dlc,   /**< Data Length */
-                          uint8_t byte0, /**< Data of the Frame */
-                          uint8_t byte1,
-                          uint8_t byte2,
-                          uint8_t byte3,
-                          uint8_t byte4,
-                          uint8_t byte5,
-                          uint8_t byte6,
-                          uint8_t byte7)
-    {
-        bool success = true;
-
-        m_outputFrame.m_id = id;
-        m_outputFrame.m_rtr = rtr;
-        m_outputFrame.m_extended = extended;
-        m_outputFrame.m_dlc = dlc;
-        m_outputFrame.m_data[0] = byte0;
-        m_outputFrame.m_data[1] = byte1;
-        m_outputFrame.m_data[2] = byte2;
-        m_outputFrame.m_data[3] = byte3;
-        m_outputFrame.m_data[4] = byte4;
-        m_outputFrame.m_data[5] = byte5;
-        m_outputFrame.m_data[6] = byte6;
-        m_outputFrame.m_data[7] = byte7;
-
-        return success;
-    }
-
-    /**************************************************************************************************/
-
-    /**
-    *   Clears input Frame
-    */
-    bool clearInputFrame()
-    {
-        return enterInputFrame(0, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    }
-
-    /**************************************************************************************************/
-
-    /**
-    *   Compared Frames
-    */
-    bool compareFrames(const Frame &frame1, const Frame &frame2)
-    {
-        bool success = true;
-
-        if (frame1.m_id == frame2.m_id)
-        {
-            success = false;
-        }
-        else if (frame1.m_rtr == frame2.m_rtr)
-        {
-            success = false;
-        }
-        else if (frame1.m_extended == frame2.m_extended)
-        {
-            success = false;
-        }
-        else if (frame1.m_dlc == frame2.m_dlc)
-        {
-            success = false;
-        }
-        else
-        {
-            for (uint8_t i = 0; i < frame1.m_dlc; i++)
-            {
-                if (frame1.m_data[i] != frame2.m_data[i])
-                {
-                    success = false;
-                    break;
-                }
-            }
-        }
-
-        return success;
-    }
-
-    bool checkFilter(Filter inputFilter, Filter adapterFilter)
-    {
-        bool success = true;
-
-        for (uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
-        {
-            if (inputFilter.m_filterBytes[i] != adapterFilter.m_filterBytes[i])
-            {
-                success = false;
-                break;
-            }
-        }
-
-        return success;
-    }
-
-    bool copyFrames(const Frame &input, Frame &output)
-    {
-        output.m_id = input.m_id;
-        output.m_rtr = input.m_rtr;
-        output.m_extended = input.m_extended;
-        output.m_dlc = input.m_dlc;
-
-        for (uint8_t i = 0; i < FRAME_DATA_SIZE; i++)
-        {
-            output.m_data[i] = input.m_data[i];
-        }
     }
 
 private:

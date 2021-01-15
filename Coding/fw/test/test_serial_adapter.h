@@ -57,7 +57,7 @@ public:
     */
     bool begin()
     {
-        bool success = false;
+        bool success = true;
         return success;
     }
 
@@ -67,7 +67,7 @@ public:
     */
     bool end()
     {
-        bool success = false;
+        bool success = true;
         return success;
     }
 
@@ -78,7 +78,8 @@ public:
     */
     bool setBaudrate(uint32_t baudrate)
     {
-        bool success = false;
+        bool success = true;
+        m_serialBaudrate = baudrate;
         return success;
     }
 
@@ -88,8 +89,15 @@ public:
     */
     bool read(char &c)
     {
-        bool success = false;
-        return success;
+        bool available = false;
+        if (0 != m_inputString.length())
+        {
+            available = true;
+            c = m_inputString[0];
+            //m_inputString.remove(0, 1);
+        }
+
+        return available;
     }
 
     /**
@@ -98,6 +106,7 @@ public:
     */
     void print(const String &string)
     {
+        m_outputString = string;
     }
 
     /**
@@ -106,6 +115,7 @@ public:
     */
     void print(uint32_t num)
     {
+        m_outputString = String(num);
     }
 
     /**
@@ -114,10 +124,13 @@ public:
     */
     void print(char c)
     {
+        m_outputString = String(c);
     }
 
-protected:
 private:
+    String m_inputString;
+    String m_outputString;
+    uint32_t m_serialBaudrate;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

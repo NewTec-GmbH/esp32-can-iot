@@ -73,6 +73,8 @@ public:
     */
     bool save(const String &name, int32_t value)
     {
+        bool success = true;
+        return success;
     }
 
     /**
