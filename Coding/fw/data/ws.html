@@ -1,0 +1,123 @@
+<!--
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>ESP Web Server</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="/pictures/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/pictures/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/ws.js"></script>
+    <script>
+        window.addEventListener('load', onLoad);
+        window.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {     /**< ASCII Symbol 13 is the Return. Used to Send the Message */
+                event.preventDefault();
+                document.getElementById("sendCommandButton").click();
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div class="topnav">
+        <a href="/">Home</a>
+    </div>
+
+    <h1>CAN Communication</h1>
+
+    <div>
+        <table id="SystemData" cellpadding="15px">
+            <tr>
+                <th>AutoStart</th>
+                <th>CAN Baudrate [kbps]</th>
+                <th>Timestamp</th>
+                <th>Channel</th>
+                <th rowspan="2"><canvas id="led" width="100" height="100"></canvas></th>
+            </tr>
+            <tr>
+                <td id="Sys_Auto"></td>
+                <td id="Sys_CBaud"></td>
+                <td id="Sys_TStmp"></td>
+                <td id="Sys_CChannel"></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <hr>
+
+    <div>
+        <label for="LawicelCMD">Lawicel Command:</label><br>
+        <input type="text" id="LawicelCMD" name="LawicelCMD" placeholder="LawicelCMD" autofocus="autofocus"><br>
+        <button id="sendCommandButton" type="button" onclick="sendCMD()">Send Command</button>
+    </div>
+
+    <hr>
+
+    <div>
+        <table class="table2">
+            <tr>
+                <td><label for="FRAME_ID">ID:</label></td>
+                <td><label for="FRAME_DLC">Length:</label></td>
+                <td colspan="8"><label for="FRAME_DATA0">Data:</label></td>
+
+                <td><input type="checkbox" id="FRAME_EXT" name="FRAME_EXT"></td>
+                <td><label for="FRAME_EXT">Extended Frame</label></td>
+
+                <td rowspan="2"><button id="sendFrameButton" type="button" onclick="sendFrame()">Send Frame</button>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" id="FRAME_ID" name="FRAME_ID" placeholder="000" size="8"></td>
+                <td><input type="number" id="FRAME_DLC" name="FRAME_DLC" value="0" min="0" max="8" maxlength="1"></td>
+                <td><input type="text" id="FRAME_DATA0" name="FRAME_DATA0" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA1" name="FRAME_DATA1" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA2" name="FRAME_DATA2" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA3" name="FRAME_DATA3" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA4" name="FRAME_DATA4" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA5" name="FRAME_DATA5" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA6" name="FRAME_DATA6" placeholder="00" size="2" maxlength="2"></td>
+                <td><input type="text" id="FRAME_DATA7" name="FRAME_DATA7" placeholder="00" size="2" maxlength="2"></td>
+
+                <td><input type="checkbox" id="FRAME_RTR" name="FRAME_RTR"> </td>
+                <td><label for="FRAME_RTR">Remote Request</label></td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div>
+        <button id="PauseBtn" class="button" type="button" onclick="toggle()">Pause</button>
+        <div>
+            <table id="CANLog" cellpadding="15px">
+                <tr>
+                    <th>Msg</th>
+                    <th>ID</th>
+                    <th>RTR</th>
+                    <th>DLC</th>
+                    <th>Byte 1</th>
+                    <th>Byte 2</th>
+                    <th>Byte 3</th>
+                    <th>Byte 4</th>
+                    <th>Byte 5</th>
+                    <th>Byte 6</th>
+                    <th>Byte 7</th>
+                    <th>Byte 8</th>
+                    <th>Timestamp</th>
+                    <th>SysTime</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -30,10 +30,9 @@ extern "C"
 * namespace for Methods in Async Server
 */
 namespace ESPServer
-{                                
+{
   bool begin(void);              /**< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
   bool end(void);                /**< Disconnects and disables the WebServer */
-  bool checkConnection(void);  /**< Calls next request on DNS Server */
   bool isRestartRequested(void); /**< Returns true if restart requested by Web Server */
 } // namespace ESPServer
 

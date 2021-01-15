@@ -15,6 +15,7 @@ Captive Portal for ESP32 WebServer @ref CaptivePortal.h
 #include "CaptivePortal.h"
 #include "Web_Config.h"
 #include <SPIFFS.h>
+#include "WLAN.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -26,7 +27,7 @@ extern "C"
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
-static bool restartRequested = false;                 /**<  Variable to call Restart */
+static bool restartRequested = false; /**<  Variable to call Restart */
 /**************************************************************************************************/
 /**
 *  Processor to save the required credentials incoming from the Webpage
@@ -84,13 +85,16 @@ public:
 
         if (HTTP_POST == request->method())
         {
-            if (request->args() != 0)
+            if (0 != request->args())
             {
                 int params = request->params();
                 for (int i = 0; i < params; i++)
                 {
                     AsyncWebParameter *p = request->getParam(i);
-                    credentialsProcessor(p->name(), p->value());
+                    if (nullptr != p)
+                    {
+                        credentialsProcessor(p->name(), p->value());
+                    }
                 }
                 request->send(SPIFFS, "/setCredentials.html");
                 restartRequested = true;
@@ -102,11 +106,11 @@ public:
         }
         else
         {
-            request->send(WebConfig::HTTP_BAD_REQUEST, "text/html", "\n Error. Bad Request");
+            request->send(WebConfig::HTTP_BAD_REQUEST, "text/plain", "Error. Bad Request");
         }
     }
 
-/**
+    /**
 * @brief Function tells the server if the Body of the request has to be parsed too. As this website uses a POST Request, body must be parsed.
 * 
 * @return true The Body is trivial and will not be parsed.
@@ -131,7 +135,6 @@ private:
 /* VARIABLES **************************************************************************************/
 static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler */
 
-
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 /**
  * @brief Links the Captive Portal handler to the Server
@@ -140,8 +143,9 @@ static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler *
  */
 void CaptivePortal::init(AsyncWebServer &webServer)
 {
-    webServer.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
-    webServer.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
+    webServer.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
+    webServer.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
+    webServer.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
     webServer.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 }
 
@@ -163,9 +167,8 @@ bool CaptivePortal::isRestartRequested()
  */
 static void credentialsProcessor(String name, String value)
 {
-    if (name == "STA_SSID" ||
-        name == "STA_Password")
+    if ((name == "STA_SSID") || (name == "STA_Password"))
     {
-        WebConfig::saveConfig(name, value);
+        wlan::saveConfig(name, value);
     }
 }

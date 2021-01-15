@@ -15,7 +15,8 @@ Web Pages for ESP32 WebServer @ref Pages.h
 #include "Pages.h"
 #include "Web_Config.h"
 #include <SPIFFS.h>
-#include "Settings.h"
+#include "WLAN.h"
+#include "Websocket.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -54,10 +55,10 @@ static void errorPage(AsyncWebServerRequest *request);
 void Pages::init(AsyncWebServer &webServer)
 {
     webServer.on("/", HTTP_GET, indexPage);
-
-    webServer.serveStatic("/css/w3.css", SPIFFS, "/css/w3.css", "max-age = 3600");
-    webServer.serveStatic("/pictures/NewTec_Logo.png", SPIFFS, "/pictures/NewTec_Logo.png", "max-age = 3600");
-
+    webServer.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
+    webServer.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
+    webServer.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
+    websocket::init(webServer);
     webServer.onNotFound(errorPage);
 }
 
@@ -74,15 +75,15 @@ static String pageProcessor(const String &var)
 
     if (var == "STATION_SSID")
     {
-        temp = WebConfig::getSTA_SSID();
+        temp = wlan::getSTA_SSID();
     }
     else if (var == "AP_SSID")
     {
-       temp = WebConfig::getAP_SSID();
+        temp = wlan::getAP_SSID();
     }
     else if (var == "AP_PASS")
     {
-        temp = WebConfig::getAP_PASS();
+        temp = wlan::getAP_PASS();
     }
     else if (var == "SERVER_USER")
     {

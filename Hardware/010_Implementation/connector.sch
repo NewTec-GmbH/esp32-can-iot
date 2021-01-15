@@ -19,9 +19,9 @@ Text HLabel 1725 1350 1    50   Output ~ 0
 OBD_VDD
 Text Notes 1510 2935 2    50   ~ 0
 DSUB-9 Connector\n
-Text HLabel 10455 2320 2    50   BiDi ~ 0
-BUS_H
 Text HLabel 10455 2820 2    50   BiDi ~ 0
+BUS_H
+Text HLabel 10455 2320 2    50   BiDi ~ 0
 BUS_L
 Wire Wire Line
 	1275 3375 1725 3375
@@ -157,17 +157,17 @@ Pin_3
 Text Label 3100 4175 2    50   ~ 0
 Pin_2
 Wire Wire Line
-	10130 2320 10455 2320
+	10130 2820 10455 2820
 Wire Wire Line
-	10130 2120 10455 2120
-Text Label 10455 2120 2    50   ~ 0
+	10130 2620 10455 2620
+Text Label 10455 2620 2    50   ~ 0
 Pin_7
 Wire Wire Line
-	10130 2520 10455 2520
-Text Label 10455 2520 2    50   ~ 0
+	10130 3020 10455 3020
+Text Label 10455 3020 2    50   ~ 0
 Pin_3
 Wire Wire Line
-	10130 2820 10455 2820
+	10130 2320 10455 2320
 Wire Notes Line
 	2675 4425 2675 750 
 $Comp
@@ -182,12 +182,12 @@ F 3 "" H 6845 2865 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10130 2620 10455 2620
+	10130 2120 10455 2120
 Wire Wire Line
-	10130 3020 10455 3020
-Text Label 10455 2620 2    50   ~ 0
+	10130 2520 10455 2520
+Text Label 10455 2120 2    50   ~ 0
 Pin_2
-Text Label 10455 3020 2    50   ~ 0
+Text Label 10455 2520 2    50   ~ 0
 Pin_5
 Text Notes 5975 1175 0    50   ~ 0
 Pin 2:   OBD_GND        //    CAN_L\nPin 3:   OBD_H          //    CAN_GND\nPin 5:   OBD_L           //    ------ \nPin 7:   -------      //    CAN_H
@@ -237,17 +237,6 @@ F 3 "" H 4050 5200 50  0001 C CNN
 	1    4050 5200
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:+5V #PWR024
-U 1 1 5FA1A73B
-P 8530 1420
-F 0 "#PWR024" H 8530 1270 50  0001 C CNN
-F 1 "+5V" H 8545 1593 50  0000 C CNN
-F 2 "" H 8530 1420 50  0001 C CNN
-F 3 "" H 8530 1420 50  0001 C CNN
-	1    8530 1420
-	1    0    0    -1  
-$EndComp
 NoConn ~ 1275 4175
 NoConn ~ 1275 3875
 NoConn ~ 1275 3475
@@ -260,7 +249,7 @@ AR Path="/5F562A6B/5FA5ACF8" Ref="J?"  Part="1"
 AR Path="/5FA55ABF/5FA5ACF8" Ref="J3"  Part="1" 
 F 0 "J3" H 967 3150 50  0000 C CNN
 F 1 "DSUB9" H 967 3241 50  0000 C CNN
-F 2 "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm" H 1075 3775 50  0001 C CNN
+F 2 "Connector_Dsub:DSUB-9_Male_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm" H 1075 3775 50  0001 C CNN
 F 3 "~" H 1075 3775 50  0001 C CNN
 F 4 "Yes" H 1075 3775 50  0001 C CNN "Vorhanden"
 	1    1075 3775
@@ -354,8 +343,6 @@ Wire Wire Line
 	8795 1805 8795 1880
 Wire Wire Line
 	8795 1505 8795 1470
-Wire Wire Line
-	8795 1470 8530 1470
 Connection ~ 8530 1470
 Wire Wire Line
 	8530 1470 8530 1420
@@ -365,10 +352,66 @@ Connection ~ 8725 2215
 Wire Wire Line
 	8725 2215 9105 2215
 Wire Wire Line
-	8045 2215 8530 2215
+	8045 2215 8298 2215
 Wire Wire Line
 	8530 1470 8530 2215
 Connection ~ 8530 2215
 Wire Wire Line
 	8530 2215 8725 2215
+$Comp
+L Diode:1N4148 D9
+U 1 1 5FBF12D3
+P 8297 2773
+F 0 "D9" V 8251 2853 50  0000 L CNN
+F 1 "1N4148" V 8342 2853 50  0000 L CNN
+F 2 "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal" H 8297 2598 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf" H 8297 2773 50  0001 C CNN
+	1    8297 2773
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8297 2623 8298 2623
+Wire Wire Line
+	8298 2623 8298 2215
+Connection ~ 8298 2215
+Wire Wire Line
+	8298 2215 8530 2215
+Wire Wire Line
+	8297 2923 8297 3015
+Wire Wire Line
+	8297 3015 8245 3015
+Connection ~ 8245 3015
+$Comp
+L Device:C C18
+U 1 1 5FBF7A1C
+P 9341 1653
+F 0 "C18" H 9226 1699 50  0000 R CNN
+F 1 "100n" H 9226 1608 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" H 9379 1503 50  0001 C CNN
+F 3 "~" H 9341 1653 50  0001 C CNN
+	1    9341 1653
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0105
+U 1 1 5FBF7A22
+P 9341 1878
+F 0 "#PWR0105" H 9341 1628 50  0001 C CNN
+F 1 "GND" H 9346 1705 50  0000 C CNN
+F 2 "" H 9341 1878 50  0001 C CNN
+F 3 "" H 9341 1878 50  0001 C CNN
+	1    9341 1878
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9341 1803 9341 1878
+Wire Wire Line
+	9341 1503 9341 1470
+Wire Wire Line
+	8530 1470 8795 1470
+Connection ~ 8795 1470
+Wire Wire Line
+	8795 1470 9341 1470
+Text HLabel 8530 1420 1    50   Input ~ 0
+Relay_Supply
 $EndSCHEMATC

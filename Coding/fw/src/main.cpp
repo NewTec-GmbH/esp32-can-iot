@@ -17,10 +17,9 @@ Main Application
 #include "SerialAdapter.h"
 #include "CANAdapter.h"
 #include "NVMAdapter.h"
-#include "ESP_Server.h"
-#include "Settings.h"
-#include "io.h"
+#include "WSAdapter.h"
 #include "Board.h"
+#include "WLAN.h"
 
 /* CONSTANTS **************************************************************************************/
 
@@ -34,7 +33,9 @@ Main Application
 SerialAdapter serialAdapter;
 CANAdapter sja1000Adapter;
 NVMAdapter flashAdapter;
-Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
+WSAdapter websocketadapter;
+//Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
+Lawicel protocolLawicel(websocketadapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/
 void setup()
@@ -44,24 +45,23 @@ void setup()
   {
     Board::haltSystem();
   }
-  else if (!ESPServer::begin())
+  else
   {
-    Board::haltSystem();
+    Serial.println(wlan::getIPAddress());
   }
 }
 
 void loop()
 {
-  if(!protocolLawicel.executeCycle())
+  if (!protocolLawicel.executeCycle())
   {
     Board::blinkError(250);
   }
-  if (!ESPServer::checkConnection())
+  if (!wlan::checkConnection())
   {
     Board::haltSystem();
-    
   }
-  if(ESPServer::isRestartRequested())
+  if (ESPServer::isRestartRequested())
   {
     Board::reset();
   }
@@ -74,4 +74,3 @@ void loop()
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
-

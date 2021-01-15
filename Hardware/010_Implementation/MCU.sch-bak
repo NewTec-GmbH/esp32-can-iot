@@ -15,10 +15,8 @@ Comment4 ""
 $EndDescr
 Text Label 5125 3280 2    50   ~ 0
 WiFi_Mode
-Text Label 5125 3080 2    50   ~ 0
-Indicator_AP_Mode
 Text Label 5125 3180 2    50   ~ 0
-Indicator_STA_Mode
+Indicator_AP_Mode
 Text Label 5125 2580 2    50   ~ 0
 Indicator_Error
 Wire Wire Line
@@ -43,9 +41,9 @@ Text Notes 8540 1140 2    50   ~ 0
 Status LEDs
 Text Notes 4050 4775 2    50   ~ 0
 WiFi-Mode Button
-Text HLabel 5125 2680 2    50   Output ~ 0
+Text HLabel 5125 2980 2    50   Output ~ 0
 CAN_Tx
-Text HLabel 5125 2980 2    50   Input ~ 0
+Text HLabel 5125 2680 2    50   Input ~ 0
 CAN_Rx
 Text Label 1875 2880 0    50   ~ 0
 GPIO_2
@@ -203,13 +201,11 @@ Wire Wire Line
 Wire Wire Line
 	4400 2580 5125 2580
 Wire Wire Line
-	5125 2680 4400 2680
+	5125 2980 4400 2980
 Wire Wire Line
-	4400 2980 5125 2980
+	4400 2680 5125 2680
 Wire Wire Line
-	5125 3080 4400 3080
-Wire Wire Line
-	4400 3180 5125 3180
+	5125 3180 4400 3180
 Wire Wire Line
 	4400 3280 5125 3280
 Wire Wire Line
@@ -227,18 +223,18 @@ Wire Wire Line
 Text Label 1875 3080 0    50   ~ 0
 GPIO_4
 Wire Wire Line
-	1325 5375 1925 5375
+	1325 5275 1925 5275
 Wire Wire Line
 	1325 5175 1925 5175
 $Comp
 L power:GND #PWR012
 U 1 1 5F86CB8D
-P 1925 5375
-F 0 "#PWR012" H 1925 5125 50  0001 C CNN
-F 1 "GND" H 1930 5202 50  0000 C CNN
-F 2 "" H 1925 5375 50  0001 C CNN
-F 3 "" H 1925 5375 50  0001 C CNN
-	1    1925 5375
+P 1925 5275
+F 0 "#PWR012" H 1925 5025 50  0001 C CNN
+F 1 "GND" H 1930 5102 50  0000 C CNN
+F 2 "" H 1925 5275 50  0001 C CNN
+F 3 "" H 1925 5275 50  0001 C CNN
+	1    1925 5275
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -484,20 +480,18 @@ Wire Notes Line
 Wire Notes Line
 	775  4400 2125 4400
 Wire Wire Line
+	1325 5675 1675 5675
+Wire Wire Line
 	1325 5575 1675 5575
 Wire Wire Line
-	1325 5775 1675 5775
-Wire Wire Line
-	1325 5975 1675 5975
-Wire Wire Line
-	1325 6175 1675 6175
-Text Label 1675 5575 2    50   ~ 0
+	1325 5475 1675 5475
+Text Label 1675 5675 2    50   ~ 0
 GPIO_4
-Text Label 1675 5775 2    50   ~ 0
+Text Label 1675 5575 2    50   ~ 0
 GPIO_3
-Text Label 1675 5975 2    50   ~ 0
+Text Label 1675 5475 2    50   ~ 0
 GPIO_2
-Text Label 1675 6175 2    50   ~ 0
+Text Label 1680 5375 2    50   ~ 0
 GPIO_1
 Wire Wire Line
 	3525 5700 3525 5775
@@ -602,25 +596,6 @@ NoConn ~ 2800 3680
 NoConn ~ 2800 3580
 NoConn ~ 2800 3480
 NoConn ~ 2800 3380
-$Comp
-L Board-rescue:2606-3356-2020-11-09_14-09-29 J1
-U 1 1 5FB5C146
-P 1325 6275
-AR Path="/5FB5C146" Ref="J1"  Part="1" 
-AR Path="/5F52F099/5FB5C146" Ref="J1"  Part="1" 
-F 0 "J1" H 1567 4888 60  0000 C CNN
-F 1 "2606-3356" H 1567 4994 60  0000 C CNN
-F 2 "Board:2606-3356" H 1725 5415 60  0001 C CNN
-F 3 "https://www.wago.com/global/pcb-terminal-blocks-and-pluggable-connectors/pcb-terminal-block/p/2606-3356" H 1325 6275 60  0001 C CNN
-	1    1325 6275
-	-1   0    0    1   
-$EndComp
-NoConn ~ 1325 5275
-NoConn ~ 1325 5475
-NoConn ~ 1325 5675
-NoConn ~ 1325 5875
-NoConn ~ 1325 6075
-NoConn ~ 1325 6275
 $Comp
 L Device:C C14
 U 1 1 5FBFD557
@@ -747,4 +722,23 @@ Wire Wire Line
 Connection ~ 2460 1350
 Wire Wire Line
 	2460 1350 2800 1350
+Wire Wire Line
+	1680 5375 1325 5375
+$Comp
+L Connector:Conn_01x08_Female J1
+U 1 1 5FC7E1BA
+P 1125 5475
+F 0 "J1" H 1017 4850 50  0000 C CNN
+F 1 "Conn_01x08_Female" H 1017 4941 50  0000 C CNN
+F 2 "Board:AST 045-08" H 1125 5475 50  0001 C CNN
+F 3 "~" H 1125 5475 50  0001 C CNN
+	1    1125 5475
+	-1   0    0    -1  
+$EndComp
+NoConn ~ 1325 5875
+NoConn ~ 1325 5775
+Wire Wire Line
+	4400 3080 5125 3080
+Text Label 5125 3080 2    50   ~ 0
+Indicator_STA_Mode
 $EndSCHEMATC

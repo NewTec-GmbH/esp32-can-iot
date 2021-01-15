@@ -3,16 +3,16 @@
   $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
 ***************************************************************************************************/
 /**
-@addtogroup SETTINGS
+@addtogroup Settings
 @{
-@file       ISETTINGS.h
+@file       FlashMem.h
 
 Handler for ESP32 Preferences in Flash Memory
 
 * @}
 ***************************************************************************************************/
-#ifndef SETTINGS_H_
-#define SETTINGS_H_
+#ifndef FLASH_MEM_H_
+#define FLASH_MEM_H_
 
 /* INCLUDES ***************************************************************************************/
 #include <Preferences.h>
@@ -58,4 +58,4 @@ namespace Settings
 
     /* PROTOTYPES *********************************************************************************/
 
-#endif /* SETTINGS_H */
+#endif /* FLASH_MEM_H_ */

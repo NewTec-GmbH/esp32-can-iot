@@ -1,0 +1,130 @@
+/*
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+*/
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: black;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+h4 {
+    float: left;
+    width: 33.33%;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #143642;
+}
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+body {
+    margin: 0;
+}
+
+.content {
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #F8F7F9;
+    ;
+    box-shadow: 2px 2px 12px 1px rgba(140, 140, 140, .5);
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.button {
+    padding: 15px 50px;
+    font-size: 24px;
+    text-align: center;
+    outline: none;
+    color: #fff;
+    background-color: #0f8b8d;
+    border: none;
+    border-radius: 5px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+
+/*.button:hover {background-color: #0f8b8d}*/
+
+.button:active {
+    background-color: #0f8b8d;
+    box-shadow: 2 2px #CDCDCD;
+    transform: translateY(2px);
+}
+
+.state {
+    font-size: 1.5rem;
+    color: #8c8c8c;
+    font-weight: bold;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+
+}
+ 
+
+.table {
+    width: 100%;
+}
+
+.table2 {
+    border: none !important;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+
+/* Clear floats after the columns */
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}

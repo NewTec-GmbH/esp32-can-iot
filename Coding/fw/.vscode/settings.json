@@ -22,7 +22,8 @@
         "new": "cpp",
         "cmath": "cpp",
         "functional": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "ostream": "cpp"
     },
     "cmake.configureOnOpen": false
 }

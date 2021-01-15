@@ -40,7 +40,10 @@ public:
     * Uses CANInterface constructor as its the implementation of an Interface.
     * @param m_baudrate         Defines the Default baudrate of the CAN Channel
     */
-    CANAdapter() : CANInterface(), m_baudRate(500000), m_currentState(CLOSED), m_Can_Controller(CAN)
+    CANAdapter() : CANInterface(),
+                   m_baudRate(500000),
+                   m_currentState(CLOSED),
+                   m_Can_Controller(CAN)
     {
     }
 
@@ -58,12 +61,18 @@ public:
     bool begin()
     {
         bool success = true;
-        if (m_Can_Controller.begin(m_baudRate) == 0) /**< Starts CAN channel with 500kbps Baudrate */
+        if(0x0100 == HARDWARE_VERSION)
+        {
+         m_Can_Controller.setPins(5, 4);  /* Fix for Hardware version 1.0. Fixed for Version 1.1 */
+        }
+
+        if (0 == m_Can_Controller.begin(m_baudRate)) /**< Starts CAN channel with 500kbps Baudrate */
         {
             success = false;
         }
         else
         {
+            m_Can_Controller.filter(0x7DF);
             m_Can_Controller.sleep();
         }
 
@@ -90,14 +99,14 @@ public:
         bool success = true;
         if (frame.m_extended)
         {
-            if (m_Can_Controller.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            if (0 == m_Can_Controller.beginExtendedPacket(frame.m_id, frame.m_dlc, frame.m_rtr))
             {
                 success = false;
             }
         }
         else
         {
-            if (m_Can_Controller.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr) == 0)
+            if (0 == m_Can_Controller.beginPacket(frame.m_id, frame.m_dlc, frame.m_rtr))
             {
                 success = false;
             }
@@ -105,11 +114,13 @@ public:
 
         if (success)
         {
-            if (m_Can_Controller.write(frame.m_data, frame.m_dlc))
+            if (0 != frame.m_dlc)
             {
-                success = false;
+                if (0 == m_Can_Controller.write(frame.m_data, frame.m_dlc))
+                {
+                    success = false;
+                }
             }
-
             if (0 == m_Can_Controller.endPacket())
             {
                 success = false;
@@ -135,7 +146,7 @@ public:
             break;
 
         case NORMAL:
-            if (m_baudRate == 0)
+            if (0 == m_baudRate)
             {
                 success = false;
             }
@@ -147,7 +158,7 @@ public:
             break;
 
         case LISTEN_ONLY:
-            if (m_baudRate == 0)
+            if (0 == m_baudRate)
             {
                 success = false;
             }
@@ -175,7 +186,7 @@ public:
         bool success = true;
         m_baudRate = baudrate;
         m_Can_Controller.end();
-        if (m_Can_Controller.begin(m_baudRate) == 0)
+        if (0 == m_Can_Controller.begin(m_baudRate))
         {
             success = false;
         }
@@ -194,28 +205,28 @@ public:
 
     /**
     * Set the Filter Mode of the CAN Channel.
-    * @param filter       Defines Filter mode. 0 for DualMode, 1 for SingleMode. Default 0.
+    * @param filter       Defines Filter based on FILTER_MODE Enum.
     * @return 0 for OK, 1 for Error 
     */
-    bool setFilterMode(uint8_t filter)
+    bool setFilterMode(FILTER_MODE filter)
     {
-        return false; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
+        return m_Can_Controller.setFilterMode(filter);
     }
 
     /**
     * Set the Acceptance Code Register.
     */
-    bool setACn(const FILTER &acn)
+    bool setACn(const Filter &acn)
     {
-        return false;
+        return m_Can_Controller.setACRn(acn.m_filterBytes);
     }
 
     /**
     * Set the Acceptance Mask Register.
     */
-    bool setAMn(const FILTER &amn)
+    bool setAMn(const Filter &amn)
     {
-        return false;
+        return m_Can_Controller.setAMRn(amn.m_filterBytes);
     }
 
     /**
@@ -244,7 +255,7 @@ public:
     {
         bool success = false;
 
-        if (m_Can_Controller.parsePacket() != 0)
+        if (-1 != m_Can_Controller.parsePacket()) /**< Return changed to -1 to differenciate from DLC = 0 */
         {
             frame.m_id = m_Can_Controller.packetId();
             frame.m_dlc = m_Can_Controller.packetDlc();

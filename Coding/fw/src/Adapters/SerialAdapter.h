@@ -87,14 +87,11 @@ public:
     */
     bool read(char &c)
     {
-        uint8_t success = true;
-        if ((Serial.available() > 0))
+        bool success = false;
+        if (0 < Serial.available())
         {
             c = Serial.read();
-        }
-        else
-        {
-            success = false;
+            success = true;
         }
 
         return success;
