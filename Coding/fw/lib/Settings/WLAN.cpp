@@ -49,7 +49,7 @@ static bool connectWiFi();
 
 /* VARIABLES **************************************************************************************/
 IPAddress m_serverIP; /**< Stores the IP Address of the ESP32 */
-bool m_APMode = true;
+static bool m_APMode = true;
 
 /* PUBLIC METHODES ********************************************************************************/
 /**************************************************************************************************/
@@ -131,7 +131,7 @@ bool wlan::begin()
 
 /**************************************************************************************************/
 /**
-*   Calls next request on DNS Server
+*   Checks WiFi Connection
 *   return true if a restart is requested
 */
 bool wlan::checkConnection()

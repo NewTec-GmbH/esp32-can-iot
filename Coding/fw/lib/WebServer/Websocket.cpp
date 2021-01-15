@@ -15,6 +15,7 @@ Configuration of ESP32 WebSocket. @ref Websocket.h
 #include "Websocket.h"
 #include <SPIFFS.h>
 #include "Board.h"
+#include "WLAN.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"
@@ -73,7 +74,18 @@ void websocket::send(const String &message)
 */
 bool websocket::receive(char &c)
 {
-    return xQueueReceive(inputQueue, &c, 0) == pdTRUE;
+    bool success = false;
+
+    if (!wlan::getAP_MODE()) 
+    {
+        /* If system is on STA_Mode, Queue is initialized */
+        if(xQueueReceive(inputQueue, &c, 0) == pdTRUE)
+        {
+            success = true;
+        }
+    }
+
+    return success;
 }
 
 /* PROTECTED METHODES *****************************************************************************/
