@@ -93,8 +93,8 @@ public:
         if (0 != m_inputString.length())
         {
             available = true;
-            c = m_inputString[0];
-            //m_inputString.remove(0, 1);
+            c = m_inputString[position];
+            position++;
         }
 
         return available;
@@ -127,10 +127,16 @@ public:
         m_outputString = String(c);
     }
 
+    void writeInput(String input)
+    {
+        m_inputString = input;
+    }
+
 private:
     String m_inputString;
     String m_outputString;
     uint32_t m_serialBaudrate;
+    uint8_t position = 0;
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/
