@@ -172,7 +172,7 @@ public:
         return success;
     }
 
-    bool copyFrames(const Frame &input, Frame &output)
+    void copyFrames(const Frame &input, Frame &output)
     {
         output.m_id = input.m_id;
         output.m_rtr = input.m_rtr;
