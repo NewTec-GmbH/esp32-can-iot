@@ -12,47 +12,68 @@ Main Test entry point
 * @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
+
+/* System Includes */
 #include <unity.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <Lawicel.h>
-#include <Arduino.h>
-#include <Print.h>
-#include <WString.h>
 #include <math.h>
 #include <cmath>
 
+/* Custom Arduino Includes for Compatibility. Located in lib/Test */
+#include "Lawicel.h"
+#include "Arduino.h"
+#include "Print.h"
+#include "WString.h"
+
+/* Test Adapters for Lawicel Protocol */
 #include "test_serial_adapter.h"
 #include "test_can_adapter.h"
 #include "test_nvm_adapter.h"
 
-TestSerialAdapter testingSerialAdapter;
-TestCANAdapter testingCANAdapter;
-TestNVMAdapter testingNVMAdapter;
-Lawicel ProtocolTest(testingSerialAdapter, testingCANAdapter, testingNVMAdapter);
+/* CONSTANTS **************************************************************************************/
 
-void test_can_baudrate(void);
-void test_can_btr(void);
-void test_can_open_normal(void);
-void test_can_open_listen_only(void);
-void test_can_close(void);
-void test_tx_std(void);
-void test_tx_ext(void);
-void test_tx_std_rtr(void);
-void test_tx_ext_rtr(void);
-void test_filter_mode(void);
-void test_acn_register(void);
-void test_amn_register(void);
-void test_serial_baudrate(void);
-void test_version(void);
-void test_serialnumber(void);
-void test_timestamp(void);
-void test_autostart(void);
+TestSerialAdapter testingSerialAdapter;                                           /**< Serial Adapter */
+TestCANAdapter testingCANAdapter;                                                 /**< CAN Adapter */
+TestNVMAdapter testingNVMAdapter;                                                 /**< NVM Adapter */
+Lawicel ProtocolTest(testingSerialAdapter, testingCANAdapter, testingNVMAdapter); /**< Lawicel Protocol Instance */
 
+/* MACROS *****************************************************************************************/
+
+/* TYPES ******************************************************************************************/
+
+/* PROTOTYPES *************************************************************************************/
+
+void runProtocolExecute(uint8_t cycles); /**< Runs Lawicel Cycle the amount of times specified */
+void test_can_baudrate(void);            /**< Test set CAN Baudrate */
+void test_can_btr(void);                 /**< Test set CAN BTR Registers */
+void test_can_open_normal(void);         /**< Test Open Normal CAN Channel */
+void test_can_open_listen_only(void);    /**< Test Open Listen Only CAN Channel */
+void test_can_close(void);               /**< Test Close CAN Channel */
+void test_tx_std(void);                  /**< Test Send STD Frame */
+void test_tx_ext(void);                  /**< Test Send EXT Frame */
+void test_tx_std_rtr(void);              /**< Test Send STD RTR Frame */
+void test_tx_ext_rtr(void);              /**< Test Send EXT RTR Frame */
+void test_filter_mode(void);             /**< Test set Filter Mode */
+void test_acn_register(void);            /**< Test set ACRn */
+void test_amn_register(void);            /**< Test set AMRn */
+void test_serial_baudrate(void);         /**< Test set Serial Baudrate */
+void test_version(void);                 /**< Test get Version */
+void test_serialnumber(void);            /**< Test get Serial number */
+void test_timestamp(void);               /**< Test set Timestamp mode */
+void test_autostart(void);               /**< Test set Autostart Mode */
+
+/* VARIABLES **************************************************************************************/
+
+/* PUBLIC METHODES ********************************************************************************/
+
+/**************************************************************************************************/
+
+/**
+*   Main Testing Programm. Runs the Different Unity Tests
+*/
 int main(int argc, char **argv)
 {
-
     UNITY_BEGIN();
     RUN_TEST(test_can_baudrate);
     RUN_TEST(test_can_btr);
@@ -63,7 +84,7 @@ int main(int argc, char **argv)
     RUN_TEST(test_tx_ext);
     RUN_TEST(test_tx_std_rtr);
     RUN_TEST(test_tx_ext_rtr);
-    RUN_TEST(test_filter_mode); 
+    RUN_TEST(test_filter_mode);
     RUN_TEST(test_acn_register);
     RUN_TEST(test_amn_register);
     RUN_TEST(test_serial_baudrate);
@@ -74,14 +95,15 @@ int main(int argc, char **argv)
     return UNITY_END();
 }
 
-void runProtocolExecute(uint8_t cycles)
-{
-    for (uint8_t i = 0; i < cycles; i++)
-    {
-        ProtocolTest.executeCycle();
-    }
-}
+/* PROTECTED METHODES *****************************************************************************/
 
+/* PRIVATE METHODES *******************************************************************************/
+
+/**************************************************************************************************/
+
+/**
+*   Test set CAN Baudrate
+*/
 void test_can_baudrate(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -115,6 +137,11 @@ void test_can_baudrate(void)
     TEST_ASSERT_EQUAL(1000E3, testingCANAdapter.m_baudRate);
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test set CAN BTR Registers
+*/
 void test_can_btr(void)
 {
     runProtocolExecute(testingSerialAdapter.writeInput("s0000"));
@@ -130,6 +157,11 @@ void test_can_btr(void)
     TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_btr1);
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test Open Normal CAN Channel
+*/
 void test_can_open_normal(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -145,6 +177,11 @@ void test_can_open_normal(void)
     TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test Open Listen Only CAN Channel
+*/
 void test_can_open_listen_only(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -164,6 +201,11 @@ void test_can_open_listen_only(void)
     TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test Close CAN Channel
+*/
 void test_can_close(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
@@ -175,6 +217,11 @@ void test_can_close(void)
     TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test Send STD Frame
+*/
 void test_tx_std(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
@@ -258,6 +305,11 @@ void test_tx_std(void)
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test Send EXT Frame
+*/
 void test_tx_ext(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
@@ -344,6 +396,11 @@ void test_tx_ext(void)
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test Send STD RTR Frame
+*/
 void test_tx_std_rtr(void)
 {
     testingCANAdapter.clearOutputFrame();
@@ -443,6 +500,11 @@ void test_tx_std_rtr(void)
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test Send EXT RTR Frame
+*/
 void test_tx_ext_rtr(void)
 {
     testingCANAdapter.clearOutputFrame();
@@ -542,6 +604,11 @@ void test_tx_ext_rtr(void)
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test set Filter Mode
+*/
 void test_filter_mode(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -571,6 +638,11 @@ void test_filter_mode(void)
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(1, testingCANAdapter.m_filterMode, "FilterMode Dual");
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test set ACRn
+*/
 void test_acn_register(void)
 {
     for (int i = 0; i < 4; i++)
@@ -596,6 +668,11 @@ void test_acn_register(void)
     TEST_ASSERT_EQUAL_UINT8(0x01, testingCANAdapter.m_ACRn.m_filterBytes[3]);
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test set AMRn
+*/
 void test_amn_register(void)
 {
     for (int i = 0; i < 4; i++)
@@ -621,6 +698,11 @@ void test_amn_register(void)
     TEST_ASSERT_EQUAL_UINT8(0x01, testingCANAdapter.m_AMRn.m_filterBytes[3]);
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test set Serial Baudrate
+*/
 void test_serial_baudrate(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -634,7 +716,7 @@ void test_serial_baudrate(void)
     TEST_ASSERT_EQUAL_STRING("U1", testingNVMAdapter.m_outputString.c_str());
 
     testingSerialAdapter.m_serialBaudrate = 115200;
-    
+
     runProtocolExecute(testingSerialAdapter.writeInput("U2"));
     TEST_ASSERT_EQUAL_UINT32(57600, testingSerialAdapter.m_serialBaudrate);
     testingSerialAdapter.m_serialBaudrate = 115200;
@@ -645,7 +727,6 @@ void test_serial_baudrate(void)
     testingSerialAdapter.m_serialBaudrate = 115200;
     TEST_ASSERT_EQUAL_STRING("U3", testingNVMAdapter.m_outputString.c_str());
 
-    
     runProtocolExecute(testingSerialAdapter.writeInput("U4"));
     TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_serialBaudrate);
     TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
@@ -654,26 +735,38 @@ void test_serial_baudrate(void)
     TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_serialBaudrate);
     TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
 
-    
     runProtocolExecute(testingSerialAdapter.writeInput("'U54'"));
     TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_serialBaudrate);
     TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
 }
 
+/**************************************************************************************************/
 
+/**
+*   Test get Version
+*/
 void test_version(void)
 {
     runProtocolExecute(testingSerialAdapter.writeInput("V"));
     TEST_ASSERT_EQUAL_STRING("V0101\r", testingSerialAdapter.m_outputString.c_str());
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test get Serial number
+*/
 void test_serialnumber(void)
 {
     runProtocolExecute(testingSerialAdapter.writeInput("N"));
     TEST_ASSERT_EQUAL_STRING("NNT32\r", testingSerialAdapter.m_outputString.c_str());
 }
 
+/**************************************************************************************************/
 
+/**
+*   Test set Timestamp mode
+*/
 void test_timestamp(void)
 {
     runProtocolExecute(testingSerialAdapter.writeInput("Z0"));
@@ -686,6 +779,11 @@ void test_timestamp(void)
     TEST_ASSERT_EQUAL_UINT32(1, testingNVMAdapter.m_outputInt);
 }
 
+/**************************************************************************************************/
+
+/**
+*   Test set Autostart Mode
+*/
 void test_autostart(void)
 {
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
@@ -700,4 +798,21 @@ void test_autostart(void)
 
     runProtocolExecute(testingSerialAdapter.writeInput("Q3"));
     TEST_ASSERT_EQUAL_UINT32(2, testingNVMAdapter.m_outputInt);
+}
+
+/* EXTERNAL FUNCTIONS *****************************************************************************/
+
+/* INTERNAL FUNCTIONS *****************************************************************************/
+
+/**************************************************************************************************/
+
+/**
+*   Runs Lawicel Cycle the amount of times specified
+*/
+void runProtocolExecute(uint8_t cycles)
+{
+    for (uint8_t i = 0; i < cycles; i++)
+    {
+        ProtocolTest.executeCycle();
+    }
 }
