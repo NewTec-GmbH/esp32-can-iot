@@ -76,13 +76,9 @@ bool websocket::receive(char &c)
 {
     bool success = false;
 
-    if (!wlan::getAP_MODE()) 
+    if (xQueueReceive(inputQueue, &c, 0) == pdTRUE)
     {
-        /* If system is on STA_Mode, Queue is initialized */
-        if(xQueueReceive(inputQueue, &c, 0) == pdTRUE)
-        {
-            success = true;
-        }
+        success = true;
     }
 
     return success;
