@@ -129,7 +129,7 @@ public:
     /**************************************************************************************************/
 
     /**
-    *   Compared Frames
+    *   Compare Frames
     */
     bool compareFrames(const Frame &frame1, const Frame &frame2)
     {
@@ -166,22 +166,11 @@ public:
         return success;
     }
 
-    bool checkFilter(Filter inputFilter, Filter adapterFilter)
-    {
-        bool success = true;
+    /**************************************************************************************************/
 
-        for (uint8_t i = 0; i < FILTER_DATA_SIZE; i++)
-        {
-            if (inputFilter.m_filterBytes[i] != adapterFilter.m_filterBytes[i])
-            {
-                success = false;
-                break;
-            }
-        }
-
-        return success;
-    }
-
+    /**
+    *   Copies CAN Frames
+    */
     void copyFrames(const Frame &input, Frame &output)
     {
         output.m_id = input.m_id;
@@ -378,10 +367,10 @@ public:
         return success;
     }
 
-    uint32_t getBaudrate(){
+    uint32_t getBaudrate()
+    {
         return m_baudRate;
     }
-
 
     uint32_t m_baudRate;
     uint8_t m_btr0;
