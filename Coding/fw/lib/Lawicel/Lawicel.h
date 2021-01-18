@@ -45,17 +45,6 @@ public:
     static const char BELL;                  /**< BEL Character as ERROR Line Terminator */
     static const uint8_t MAX_COMMAND_LENGTH; /**< Maximum Length of a Lawicel Command */
 
-    /**
-    * Key Definition (Addresses) to be read by NVM Adapter for initialization
-    */
-    static const String INIT_SERIAL_BAUD; /**< Initial Serial Baudrate*/
-    static const String INIT_TIMESTAMP;   /**< Initial State of Timestamp*/
-    static const String INIT_AUTO_START;  /**< Initial State of Autostart*/
-    static const String INIT_CAN_BAUD;    /**< Initial CAN Baudrate*/
-    static const String INIT_FILTER_MODE; /**< Initial Filter Mode*/
-    static const String INIT_FILTER_ACN;  /**< Initial Filter Address*/
-    static const String INIT_FILTER_AMN;  /**< Initial Filter Mask*/
-
     /* TYPES **********************************************************************************/
 
     /**

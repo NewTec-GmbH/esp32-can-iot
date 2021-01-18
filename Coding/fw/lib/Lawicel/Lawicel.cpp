@@ -27,13 +27,6 @@ const char Lawicel::CR = 13;
 const char Lawicel::BELL = 7;
 const uint8_t Lawicel::MAX_COMMAND_LENGTH = 30;
 
-const String Lawicel::INIT_SERIAL_BAUD = "SerialBaud";
-const String Lawicel::INIT_TIMESTAMP = "ToggleTime";
-const String Lawicel::INIT_AUTO_START = "AutoStart";
-const String Lawicel::INIT_CAN_BAUD = "CanBaud";
-const String Lawicel::INIT_FILTER_MODE = "FilterMode";
-const String Lawicel::INIT_FILTER_ACN = "FilterACn";
-const String Lawicel::INIT_FILTER_AMN = "FilterAMn";
 
 /* MACROS *****************************************************************************************/
 
@@ -103,7 +96,7 @@ bool Lawicel::begin()
     {
         success = false;
     }
-    receiveCommand(m_selectedNVM->readString(INIT_SERIAL_BAUD));
+    receiveCommand(m_selectedNVM->readString(m_selectedNVM->INIT_SERIAL_BAUD));
 
     if (!m_selectedSerial->begin())
     {
@@ -115,21 +108,21 @@ bool Lawicel::begin()
     }
     else
     {
-        m_timestamp = m_selectedNVM->readInt(INIT_TIMESTAMP);
+        m_timestamp = m_selectedNVM->readInt(m_selectedNVM->INIT_TIMESTAMP);
 
-        m_autoStart = m_selectedNVM->readInt(INIT_AUTO_START);
+        m_autoStart = m_selectedNVM->readInt(m_selectedNVM->INIT_AUTO_START);
 
         if (0 < m_autoStart)
         {
             m_autoPolling = true;
 
-            receiveCommand(m_selectedNVM->readString(INIT_CAN_BAUD));
+            receiveCommand(m_selectedNVM->readString(m_selectedNVM->INIT_CAN_BAUD));
 
-            receiveCommand(m_selectedNVM->readString(INIT_FILTER_MODE));
+            receiveCommand(m_selectedNVM->readString(m_selectedNVM->INIT_FILTER_MODE));
 
-            receiveCommand(m_selectedNVM->readString(INIT_FILTER_ACN));
+            receiveCommand(m_selectedNVM->readString(m_selectedNVM->INIT_FILTER_ACN));
 
-            receiveCommand(m_selectedNVM->readString(INIT_FILTER_AMN));
+            receiveCommand(m_selectedNVM->readString(m_selectedNVM->INIT_FILTER_AMN));
         }
 
         if (1 == m_autoStart)
@@ -467,7 +460,7 @@ bool Lawicel::setBaudrateCmd(const String &lawicelCMD)
 
     if (success)
     {
-        m_selectedNVM->save(INIT_CAN_BAUD, lawicelCMD);
+        m_selectedNVM->save(m_selectedNVM->INIT_CAN_BAUD, lawicelCMD);
         success = m_selectedCAN->setBaudrate(baudrate);
     }
 
@@ -975,7 +968,7 @@ bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
 
         if (success)
         {
-            m_selectedNVM->save(INIT_FILTER_MODE, lawicelCMD);
+            m_selectedNVM->save(m_selectedNVM->INIT_FILTER_MODE, lawicelCMD);
             success = m_selectedCAN->setFilterMode(filterMode);
         }
     }
@@ -1018,7 +1011,7 @@ bool Lawicel::setACnCmd(const String &lawicelCMD)
 
         if (success)
         {
-            m_selectedNVM->save(INIT_FILTER_ACN, lawicelCMD);
+            m_selectedNVM->save(m_selectedNVM->INIT_FILTER_ACN, lawicelCMD);
             success = m_selectedCAN->setACn(acn);
         }
     }
@@ -1061,7 +1054,7 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
 
         if (success)
         {
-            m_selectedNVM->save(INIT_FILTER_AMN, lawicelCMD);
+            m_selectedNVM->save(m_selectedNVM->INIT_FILTER_AMN, lawicelCMD);
             success = m_selectedCAN->setAMn(amn);
         }
     }
@@ -1122,7 +1115,7 @@ bool Lawicel::setSerialBaudrateCmd(const String &lawicelCMD)
 
         if (success)
         {
-            m_selectedNVM->save(INIT_SERIAL_BAUD, lawicelCMD);
+            m_selectedNVM->save(m_selectedNVM->INIT_SERIAL_BAUD, lawicelCMD);
             success = m_selectedSerial->setBaudrate(_baudrate);
         }
     }
@@ -1183,12 +1176,12 @@ bool Lawicel::toggleTimeStampCmd(const String &lawicelCMD)
         {
         case '0':
             m_timestamp = false;
-            m_selectedNVM->save(INIT_TIMESTAMP, 0);
+            m_selectedNVM->save(m_selectedNVM->INIT_TIMESTAMP, 0);
             break;
 
         case '1':
             m_timestamp = true;
-            m_selectedNVM->save(INIT_TIMESTAMP, 1);
+            m_selectedNVM->save(m_selectedNVM->INIT_TIMESTAMP, 1);
             break;
 
         default:
@@ -1219,17 +1212,17 @@ bool Lawicel::toggleAutoStartCmd(const String &lawicelCMD)
         {
         case '0':
             m_autoStart = 0;
-            m_selectedNVM->save(INIT_AUTO_START, 0);
+            m_selectedNVM->save(m_selectedNVM->INIT_AUTO_START, 0);
             break;
 
         case '1':
             m_autoStart = 1;
-            m_selectedNVM->save(INIT_AUTO_START, 1);
+            m_selectedNVM->save(m_selectedNVM->INIT_AUTO_START, 1);
             break;
 
         case '2':
             m_autoStart = 2;
-            m_selectedNVM->save(INIT_AUTO_START, 2);
+            m_selectedNVM->save(m_selectedNVM->INIT_AUTO_START, 2);
             break;
 
         default:
@@ -1320,9 +1313,9 @@ bool Lawicel::getCurrentParams(const String &lawicelCMD)
     else
     {
         m_serialReturn += 'D';
-        m_serialReturn += m_selectedNVM->readInt(INIT_AUTO_START);
-        m_serialReturn += m_selectedNVM->readString(INIT_CAN_BAUD);
-        m_serialReturn += m_selectedNVM->readInt(INIT_TIMESTAMP);
+        m_serialReturn += m_selectedNVM->readInt(m_selectedNVM->INIT_AUTO_START);
+        m_serialReturn += m_selectedNVM->readString(m_selectedNVM->INIT_CAN_BAUD);
+        m_serialReturn += m_selectedNVM->readInt(m_selectedNVM->INIT_TIMESTAMP);
         m_serialReturn += (uint8_t)m_selectedCAN->getChannelState();
     }
 
