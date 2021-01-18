@@ -74,6 +74,7 @@ public:
     bool save(const String &name, int32_t value)
     {
         bool success = true;
+        m_outputInt = value;
         return success;
     }
 
@@ -83,6 +84,7 @@ public:
     bool save(const String &name, const String &value)
     {
         bool success = true;
+        m_outputString = value;
         return success;
     }
 
@@ -91,7 +93,17 @@ public:
     */
     uint32_t readInt(const String &name)
     {
-        uint32_t result;
+        uint32_t result = 0;
+
+        if( name == INIT_AUTO_START)
+        {
+            result = 0;
+        }
+
+        if(name == INIT_TIMESTAMP)
+        {
+            result = 0;
+        }
         return result;
     }
 
@@ -100,7 +112,29 @@ public:
     */
     String readString(const String &name)
     {
-        String result;
+        String result = "";
+
+        if(name == INIT_SERIAL_BAUD)
+        {
+            result = "U2";
+        }
+        if(name == INIT_CAN_BAUD)
+        {
+            result = "S6";
+        }
+        if(name == INIT_FILTER_MODE)
+        {
+            result = "W0";
+        }
+        if(name == INIT_FILTER_ACN)
+        {
+            result = "M00000000";
+        }
+        if(name == INIT_FILTER_AMN)
+        {
+            result = "mFFFFFFFF";
+        }
+
         return result;
     }
 
@@ -112,6 +146,9 @@ public:
         bool success = true;
         return success;
     }
+
+    String m_outputString = "";
+    uint32_t m_outputInt = 0;
 
 private:
 };
