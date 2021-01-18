@@ -119,6 +119,16 @@ public:
     /**************************************************************************************************/
 
     /**
+    *   Clears output Frame
+    */
+    bool clearOutputFrame()
+    {
+        return enterOutputFrame(0, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
+
+    /**************************************************************************************************/
+
+    /**
     *   Compared Frames
     */
     bool compareFrames(const Frame &frame1, const Frame &frame2)
@@ -226,7 +236,7 @@ public:
     */
     bool send(const Frame &frame)
     {
-
+        copyFrames(frame, m_outputFrame);
         return true;
     }
 

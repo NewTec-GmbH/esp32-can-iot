@@ -127,11 +127,12 @@ public:
         m_outputString = String(c);
     }
 
-    void writeInput(String input)
+    int writeInput(String input)
     {
         m_inputString = "";
         position = 0;
         m_inputString = input + '\r';
+        return input.length() + 1;
     }
 
 
