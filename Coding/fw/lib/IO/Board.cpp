@@ -43,7 +43,7 @@ using namespace Board;
 
 /* CONSTANTS **************************************************************************************/
 
-static const uint16_t OBD_SUPPLY_THRESHOLD = 1000; /**< Voltage [mv] measured to change to OBD Mode */
+static const uint16_t OBD_SUPPLY_THRESHOLD = 800; /**< Voltage [mv] measured to change to OBD Mode */
 
 /* MACROS *****************************************************************************************/
 #define UTIL_ARRAY_NUM(__arr) (sizeof(__arr) / sizeof((__arr)[0]))
