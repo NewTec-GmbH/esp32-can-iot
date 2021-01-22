@@ -46,7 +46,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 /******************************************************************************
  * Macros
  *****************************************************************************/
@@ -258,6 +257,11 @@ public:
         return singleChar;
     }
 
+    /**************************************************************************************************/
+
+    /**
+    *   Concatenation of Strings
+    */
     String &operator+=(const String &str)
     {
         if (nullptr != str.m_buffer)
@@ -278,6 +282,11 @@ public:
         return *this;
     }
 
+    /**************************************************************************************************/
+
+    /**
+    *   Concatenation of a char to an String
+    */
     String &operator+=(char c)
     {
         char *tmp = new char[m_size + 1];
@@ -297,6 +306,11 @@ public:
         return *this;
     }
 
+    /**************************************************************************************************/
+
+    /**
+    *   Concatenation of Strings
+    */
     String operator+(const String &str) const
     {
         String tmp = *this;
@@ -445,62 +459,83 @@ public:
         return;
     }
 
+    /**************************************************************************************************/
+
+    /**
+    *   Returns character on the String
+    */
     char charAt(unsigned int loc) const
     {
         return operator[](loc);
     }
 
-void reverse(char* begin, char* end) {
-    char *is = begin;
-    char *ie = end - 1;
-    while(is < ie) {
-        char tmp = *ie;
-        *ie = *is;
-        *is = tmp;
-        ++is;
-        --ie;
+    /**************************************************************************************************/
+
+    /**
+    *   The built-in reverse function reverse() in C++ directly reverses a string
+    */
+    void reverse(char *begin, char *end)
+    {
+        char *is = begin;
+        char *ie = end - 1;
+        while (is < ie)
+        {
+            char tmp = *ie;
+            *ie = *is;
+            *is = tmp;
+            ++is;
+            --ie;
+        }
     }
-}
-    
-char* ultoa(unsigned long value, char* result, int base) {
-    if(base < 2 || base > 16) {
-        *result = 0;
+
+    /**************************************************************************************************/
+
+    /**
+    *   Convert an unsigned long integer into a string, using a given base
+    */
+    char *ultoa(unsigned long value, char *result, int base)
+    {
+        if (base < 2 || base > 16)
+        {
+            *result = 0;
+            return result;
+        }
+
+        char *out = result;
+        unsigned long quotient = value;
+
+        do
+        {
+            const unsigned long tmp = quotient / base;
+            *out = "0123456789abcdef"[quotient - (tmp * base)];
+            ++out;
+            quotient = tmp;
+        } while (quotient);
+
+        reverse(result, out);
+        *out = 0;
         return result;
     }
 
-    char* out = result;
-    unsigned long quotient = value;
+    /**************************************************************************************************/
 
-    do {
-        const unsigned long tmp = quotient / base;
-        *out = "0123456789abcdef"[quotient - (tmp * base)];
-        ++out;
-        quotient = tmp;
-    } while(quotient);
-
-    reverse(result, out);
-    *out = 0;
-    return result;
-}
-
-String(unsigned long value, unsigned char base) {
-     char buf[1 + 8 * sizeof(unsigned long)];
-    ultoa(value, buf, base);
-    *this = buf;
-}
-
-bool isEmpty()
-{
-    bool isEmpty = false;
-
-    if(length() == 0)
+    /**
+    *   Conversion of an uint32_t into a String
+    */
+    String(unsigned long value, unsigned char base)
     {
-        isEmpty = true;
+        char buf[1 + 8 * sizeof(unsigned long)];
+        ultoa(value, buf, base);
+        *this = buf;
     }
 
-    return isEmpty;
-}
+    /**************************************************************************************************/
 
+    /**
+    *  Checks if a String is empty
+    * @return True 
+    */
+    bool isEmpty() const { return 0 != length(); }
 
 private:
     size_t m_size;  /**< String buffer size */
