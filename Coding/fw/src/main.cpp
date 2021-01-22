@@ -34,7 +34,7 @@ SerialAdapter serialAdapter;
 CANAdapter sja1000Adapter;
 NVMAdapter flashAdapter;
 WSAdapter websocketadapter;
-//Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
+
 Lawicel protocolLawicel(websocketadapter, sja1000Adapter, flashAdapter);
 
 /* PUBLIC METHODES ********************************************************************************/
