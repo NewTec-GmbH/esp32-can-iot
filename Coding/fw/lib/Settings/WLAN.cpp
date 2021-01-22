@@ -48,8 +48,8 @@ static bool readWiFiMode();
 static bool connectWiFi();
 
 /* VARIABLES **************************************************************************************/
-IPAddress m_serverIP; /**< Stores the IP Address of the ESP32 */
-static bool m_APMode = true;
+static IPAddress serverIP; /**< Stores the IP Address of the ESP32 */
+static bool APMode = true; /**< Defines True if AP Mode should be activated; or False for STA Mode */
 
 /* PUBLIC METHODES ********************************************************************************/
 /**************************************************************************************************/
@@ -78,7 +78,7 @@ const String &wlan::getAP_PASS()
 /**************************************************************************************************/
 bool wlan::getAP_MODE()
 {
-    return m_APMode;
+    return APMode;
 }
 
 
@@ -97,8 +97,8 @@ bool wlan::begin()
     Settings::get(DIRECTORY, "STA_SSID", STA_SSID, "");
     Settings::get(DIRECTORY, "STA_Password", STA_PASSWORD, "");
 
-    m_APMode = readWiFiMode();
-    if (m_APMode)
+    APMode = readWiFiMode();
+    if (APMode)
     {
         Board::staLED.write(LOW);
         if (!WiFi.softAP(AP_SSID.c_str(), AP_PASSWORD.c_str()))
@@ -106,7 +106,7 @@ bool wlan::begin()
             success = false;
         }
 
-        m_serverIP = WiFi.softAPIP();
+        serverIP = WiFi.softAPIP();
     }
     else
     {
@@ -124,7 +124,7 @@ bool wlan::begin()
             success = false;
         }
 
-        m_serverIP = WiFi.localIP();
+        serverIP = WiFi.localIP();
     }
     return success;
 }
@@ -150,7 +150,7 @@ bool wlan::checkConnection()
 /**************************************************************************************************/
 const IPAddress &wlan::getIPAddress()
 {
-    return m_serverIP;
+    return serverIP;
 }
 
 /**************************************************************************************************/
@@ -227,7 +227,7 @@ bool connectWiFi()
     }
     else
     {
-        m_serverIP = WiFi.localIP();
+        serverIP = WiFi.localIP();
     }
 
     return success;
