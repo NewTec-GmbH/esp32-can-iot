@@ -8,11 +8,12 @@ All the specified Commands specified in the Document are implemented and work as
 
 **D[CR]** 
 Display System Information 
-Returns: Dwxyz
+Returns: Dwxyz[CR]
 * D: Display Settings Command
 * w: Auto-start Status. 0=Deactivated, 1=Normal, 2=Listen Only
 * x: CAN Baudrate. Follows same numeration as Sn[CR] Command
 * y: Timestamp Status: 0=Deactivated, 1=Activated
 * z: Channel Status. 0=Closed, 1=Normal, 2=Listen Only
+* [CR]: Command Termination
 
  
