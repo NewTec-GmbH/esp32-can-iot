@@ -229,80 +229,40 @@ void test_tx_std(void)
 
     testingCANAdapter.clearOutputFrame();
     runProtocolExecute(testingSerialAdapter.writeInput("t0010"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x001, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x001, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     runProtocolExecute(testingSerialAdapter.writeInput("t1FF81122334455667788"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x1FF, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(8, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x11, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x22, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x33, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x44, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x55, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x66, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x77, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x88, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x1FF, false, false, 8, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     runProtocolExecute(testingSerialAdapter.writeInput("t1234AABBCCDD"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x123, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(4, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0xAA, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0xBB, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0xCC, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0xDD, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x123, false, false, 4, 0xAA, 0xBB, 0xCC, 0xDD, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
     runProtocolExecute(testingSerialAdapter.writeInput("t1234AABBCCDD"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
     runProtocolExecute(testingSerialAdapter.writeInput("t1234AABBCCDD"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 }
 
 /**************************************************************************************************/
@@ -318,82 +278,42 @@ void test_tx_ext(void)
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("T000000000"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x0000000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, true, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("T1FFFFFFF81122334455667788"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x1FFFFFFF, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(8, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x11, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x22, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x33, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x44, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x55, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x66, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x77, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x88, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x1FFFFFFF, false, true, 8,0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("T0000ABCD411223344"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x0000ABCD, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(4, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x11, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x22, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x33, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0x44, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x0000ABCD, false, true, 4,0x11, 0x22, 0x33, 0x44, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
     runProtocolExecute(testingSerialAdapter.writeInput("T0000ABCD411223344"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x00000000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
     runProtocolExecute(testingSerialAdapter.writeInput("T0000ABCD411223344"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x00000000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 }
 
 /**************************************************************************************************/
@@ -406,98 +326,50 @@ void test_tx_std_rtr(void)
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("r0000"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, true, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("r00081122334455667788"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("r1FF8"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x1FF, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(8, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x1FF, true, false, 8, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("r1234"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x123, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(4, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x123, true, false, 4, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
     runProtocolExecute(testingSerialAdapter.writeInput("r1234AABBCCDD"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
     runProtocolExecute(testingSerialAdapter.writeInput("r1234AABBCCDD"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 }
 
 /**************************************************************************************************/
@@ -511,97 +383,50 @@ void test_tx_ext_rtr(void)
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("R000000000"));
     TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x0000000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x0000000, true, true, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("R1FFFFFFF8"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x1FFFFFFF, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(8, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x1FFFFFFF, true, true, 8, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("R0000ABCD4"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x0000ABCD, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(4, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x0000ABCD, true, true, 4, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     runProtocolExecute(testingSerialAdapter.writeInput("R0000ABCD412233187"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x00000000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
     runProtocolExecute(testingSerialAdapter.writeInput("R0000ABCD4"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x00000000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
     runProtocolExecute(testingSerialAdapter.writeInput("R0000ABCD4"));
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x00000000, testingCANAdapter.m_outputFrame.m_id, "ID");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_dlc, "DLC");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_extended, "Extended");
-    TEST_ASSERT_FALSE_MESSAGE(testingCANAdapter.m_outputFrame.m_rtr, "RTR");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[0], "DATA0");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[1], "DATA1");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[2], "DATA2");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[3], "DATA3");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[4], "DATA4");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[5], "DATA5");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[6], "DATA6");
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_outputFrame.m_data[7], "DATA7");
+    testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
+                                                            testingCANAdapter.m_outputFrame), 
+                                                            "Frame Compare");
 }
 
 /**************************************************************************************************/

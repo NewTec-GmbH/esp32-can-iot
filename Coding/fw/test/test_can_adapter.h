@@ -135,19 +135,19 @@ public:
     {
         bool success = true;
 
-        if (frame1.m_id == frame2.m_id)
+        if (frame1.m_id != frame2.m_id)
         {
             success = false;
         }
-        else if (frame1.m_rtr == frame2.m_rtr)
+        else if (frame1.m_rtr != frame2.m_rtr)
         {
             success = false;
         }
-        else if (frame1.m_extended == frame2.m_extended)
+        else if (frame1.m_extended != frame2.m_extended)
         {
             success = false;
         }
-        else if (frame1.m_dlc == frame2.m_dlc)
+        else if (frame1.m_dlc != frame2.m_dlc)
         {
             success = false;
         }
