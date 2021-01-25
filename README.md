@@ -64,3 +64,4 @@ The use case for this project is based on the direct connection to a CAN Bus, in
 		* [CAN](./Coding/fw/lib/CAN/README.md)
 	* [Application](./Coding/fw/src/README.md)
 	* [Unit Test](./Coding/fw/test/README.md)
+* [Glosary](./Coding/fw/doc/Glosary.md)
