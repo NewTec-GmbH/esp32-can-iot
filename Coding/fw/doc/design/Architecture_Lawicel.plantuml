@@ -124,7 +124,7 @@ Class NVMAdapter{
     +NVMAdapter() : NVMInterface()
 }
 
-Class WSAdapter{
+Class WebSocketAdapter{
     -WSAdapter() : SerialInterface()
 }
 
