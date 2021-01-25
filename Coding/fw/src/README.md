@@ -1,5 +1,8 @@
 # Main Application
 
+
+![EnvironmentContext](../doc/Media/EnvironmentDiagram.png)
+
 - [Main Loop](#Main-Loop)
 - [Adapters](#Adapters)
     - [CAN Adapter](#CAN-Adapter)
