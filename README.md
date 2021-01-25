@@ -7,6 +7,7 @@ This project has the main objective of interfacing a CAN Bus with the user throu
 	- [Software Requirements](#Software-Requirements)
 	- [Hardware Requirements](#Hardware-Requirements)
 	- [Extra/Optional Requirements](#Extra/Optional-Requirements)
+- [Context](#Context)
 - [Use Case](#Use-Case)
 
 # Technical Specifications 
@@ -41,6 +42,11 @@ This project has the main objective of interfacing a CAN Bus with the user throu
 * Reset through Webserver (Save and Restart)
 * View OBD Messages (.dbc file?)
 * LAWICEL over websocket/mqtt (to nodejs/node-red)
+
+# Context
+![DataFlow](./Coding/fw/doc/Media/DataFlow.png)
+
+Based on the Lawicel Protocol, this project connects any standard CAN Bus to the user-end system. One example is its use on the Automotive Environment, where the CAN Bus is acquired through the DSUB-9 connector. The Frames are parsed through Lawicel into an ASCII String and sent through Serial to the Users Laptop. There is a second option, which is sending this String through a Websocket to the user. This enables the use of other IoT tools on the user's side, for example, Node-Red.
 
 # Use Case
 ![UseCaseAnalyzer](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/UseCaseAnalyzer.plantuml)
