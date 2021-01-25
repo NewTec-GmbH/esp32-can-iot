@@ -1,7 +1,5 @@
 # Main Application
-
-
-![EnvironmentContext](../doc/Media/EnvironmentDiagram.png)
+The ESP32 CAN-Analyzer main application is composed of the Main Loop, and the Adapters corresponding to the Lawicel Interfaces for Serial, NVM and CAN Modules. These Adapters are specific to the platform, hardware and libraries being used.
 
 - [Main Loop](#Main-Loop)
 - [Adapters](#Adapters)
@@ -32,4 +30,6 @@ This file contains the methods for saving and retrieving data from the non-volat
 As there are some parameters that need to be saved between power cycles, such as the wireless credentials, this adapter simplifies and centralizes the access to the saved data. This is achieved using keys and directories to order and store the data, as well as the easy retrieval when requested.
 
 ## Serial Adapter
-Here is the interface between the Device and Humans found. The Serial Adapter trasmits the output of the Lawicel Protocol, as well as the user input into Lawicel. For the project, two versions of the Serial Adapter have been developed: serialAdapter and WSAdapter. SerialAdapter interfaces with the Arduino Serial (UART) interface, while the WSAdapter connects to the WebSocket, so the system can be used through a Wireless network. By default, the WSAdapter is configured.
+Here is the interface between the Device and Humans found. The Serial Adapter trasmits the output of the Lawicel Protocol, as well as the user input into Lawicel. For the project, two versions of the Serial Adapter have been developed: serialAdapter and WebSocketAdapter. 
+
+SerialAdapter interfaces with the Arduino Serial (UART) interface, while the WebSocketAdapter connects to the WebSocket, so the system can be used through a Wireless network. By default, the WebSocketAdapter is configured.
