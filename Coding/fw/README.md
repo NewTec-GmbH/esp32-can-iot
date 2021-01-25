@@ -9,10 +9,6 @@
 	- [Lawicel](#Lawicel)
 	- [Web Server](#Web-Server)
 	- [Web Socket](#Web-Socket)
-- [Implementation](#Implementation)
-	- [Lawicel](#Lawicel)
-	- [Web Server](#Web-Server)
-	- [Web Socket](#Web-Socket)
 
 # Use-Case
 ![UseCaseSoftware](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/UseCaseSoftware.plantuml)
@@ -44,7 +40,7 @@ The system follows the following procedure during the module setup:
 
 ![Setup](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/SetUpProcess.plantuml)
 
-it is important to note that the Error LED can alo be set during the looped programm if the wireless connection is lost and was not possible to reconnect after a pre-defined time. The states of the system can be seen in the next diagram.
+it is important to note that the Error LED can also be set during the looped programm if the wireless connection is lost and was not possible to reconnect after a pre-defined time. The states of the system can be seen in the next diagram.
 
 ![StateMachine](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/StateMachine.plantuml)
 
@@ -71,10 +67,3 @@ The server uses 3 service classes: WebConfig to store the credentials on the fla
 
 ## Web Socket
 ![Arch_Websocket](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/Architecture_Websocket.plantuml)
-
-# Implementation
-## Lawicel
-
-## Web Server
-
-## Web Socket
