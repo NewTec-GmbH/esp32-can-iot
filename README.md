@@ -59,7 +59,7 @@ The use case for this project is based on the direct connection to a CAN Bus, in
 * [Hardware](./Hardware/README.md)
 * [Firmware](./Coding/fw/README.md)
 	* [Documentation](./Coding/fw/doc/README.md)
-	* [Libraries](./Coding/fw/lib/README.me)
+	* [Libraries](./Coding/fw/lib/README.md)
 		* [Lawicel Protocol](./Codign/fw/lib/Lawicel/README.md)
 		* [CAN](./Coding/fw/lib/CAN/README.md)
 	* [Application](./Coding/fw/src/README.md)
