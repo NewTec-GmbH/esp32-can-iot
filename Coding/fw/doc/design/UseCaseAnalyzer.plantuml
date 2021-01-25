@@ -10,7 +10,6 @@ package ESP_CAN_Analyzer{
     usecase "Receive CAN Frame" as UC2
     usecase "Set Up CAN-Bus" as UC3
     usecase "Set up Credentials" as UC4
-    usecase "Set Up CAN Mode" as UC5
 }
 
 user <--> UC1
@@ -20,7 +19,5 @@ user --> UC4
 
 UC1 <--> bus
 UC2 <--> bus
-UC5 <-- bus
-
 
 @enduml
