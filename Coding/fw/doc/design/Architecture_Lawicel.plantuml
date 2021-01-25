@@ -6,37 +6,100 @@ Class Application
 
 package Lawicel_Library <<Folder>>{
     Class Lawicel{
+        +static const uint16_t MAX_TIMESTAMP
+        +static const String X_VERSION
+        +static const String X_SERIAL_NUMBER
+        +static const char CR
+        +static const char BELL
+        +static const uint8_t MAX_COMMAND_LENGTH
+        +Lawicel(SerialInterface &serialInt, CANInterface &canInt, NVMInterface &nvmInt)
+        +~Lawicel()
+        +bool executeCycle()
+        +bool begin()
+        +bool end()
         -enum ASCII_COMMANDS
-        -uint8_t charToByte(char MSB, char LSB)
-        -uint8_t charToInt(char symbol)
-        -uint32_t IdDecode(bool extended)
-        -uint8_t receiveCommand()
-        -uint8_t CMD_...()
-        -CANInterface* m_CANInterfaces[MAX_CANS]
-        -CANInterface* m_selectedCAN
-        -SerialInterface* m_SerialInterfaces[MAX_SERIALS]
-        -SerialInterface* m_selectedSerial
-        -char buffer[32]
-        -uint8_t _length
-        -bool timestamp
-        -uint8_t _autostart
-        +bool registerCANInterface(CANInterface *_can);
-        +void unregisterCANInterface(CANInterface *_can);
-        +bool selectCANInterface(const String &name);
-        +bool registerSerialInterface(SerialInterface *_serial);
-        +void unregisterSerialInterface(SerialInterface *_serial);
-        +bool selectSerialinterface(const String &name);
-
-
+        -bool charToByte(char msb, char lsb, uint8_t &result)
+        -bool charToInt(char symbol, uint8_t &result)
+        -bool decodeId(bool extended, const String &lawicelCMD, uint32_t &result)
+        -bool receiveCommand(const String &lawicelCMD)
+        -bool ...Cmd(const String &lawicelCMD)
+        -bool autopoll()
+        -String getFormattedTimestamp()
+        -bool m_timestamp
+        -bool m_autoPolling
+        -String m_serialInput
+        -String m_serialReturn
+        -uint8_t m_autoStart
+        -SerialInterface *m_selectedSerial
+        -CANInterface *m_selectedCAN
+        -NVMInterface *m_selectedNVM
+        -Lawicel()
+        -Lawicel(const Lawicel &prot)
+        -Lawicel &operator=(const Lawicel &prot)
     }
+
+    note left  of Lawicel::...Cmd
+    Each individual Lawicel Command
+    is processed on a different method.
+    Example:
+    bool setBaudrateCmd(const String &lawicelCMD);
+    end note
+
     Application ..> Lawicel : <<use>>
 
-    Interface SerialInterface
+    Interface SerialInterface{
+        +SerialInterface()
+        +virtual ~SerialInterface()
+        +virtual bool begin() = 0
+        +virtual bool end() = 0
+        +virtual bool setBaudrate(uint32_t baudrate) = 0
+        +virtual bool read(char &c) = 0
+        +virtual void print(const String &string) = 0
+        +virtual void print(uint32_t num) = 0
+        +virtual void print(char c) = 0
+    }
+
     Interface CANInterface {
+        +static const uint8_t FRAME_DATA_SIZE = 8
+        +static const uint8_t FILTER_DATA_SIZE = 4
         +enum BUS_STATE
         +struct Frame
+        +struct Filter
+        +enum FILTER_MODE
+        +CANInterface()
+        +virtual ~CANInterface()
+        +virtual bool begin() = 0
+        +virtual bool end() = 0
+        +virtual bool send(const Frame &frame) = 0
+        +virtual bool setState(BUS_STATE state) = 0
+        +virtual bool setBaudrate(uint32_t baudrate) = 0
+        +virtual bool setBTR(uint8_t btr0, uint8_t btr1) = 0
+        +virtual bool setFilterMode(FILTER_MODE filter) = 0
+        +virtual bool setACn(const Filter &acn) = 0
+        +virtual bool setAMn(const Filter &acn) = 0
+        +virtual BUS_STATE getChannelState() = 0
+        +virtual uint8_t getStatusFlags() = 0
+        +virtual bool pollSingle(Frame &frame) = 0
     }
-    Interface NVMInterface
+
+    Interface NVMInterface{
+        +const String INIT_SERIAL_BAUD = "SerialBaud"
+        +const String INIT_TIMESTAMP = "ToggleTime"
+        +const String INIT_AUTO_START = "AutoStart"
+        +const String INIT_CAN_BAUD = "CanBaud"
+        +const String INIT_FILTER_MODE = "FilterMode"
+        +const String INIT_FILTER_ACN = "FilterACn"
+        +const String INIT_FILTER_AMN = "FilterAMn"
+        +NVMInterface()
+        +virtual ~NVMInterface()
+        +virtual bool begin() = 0
+        +virtual bool end() = 0
+        +virtual bool save(const String &name, int32_t value) = 0
+        +virtual bool save(const String &name, const String &value) = 0
+        +virtual uint32_t readInt(const String &name) = 0
+        +virtual String readString(const String &name) = 0
+        +virtual bool clearEntries() = 0
+    }
 
     Lawicel o--> SerialInterface : <<interface>>
     Lawicel o--> CANInterface : <<interface>>
@@ -44,45 +107,25 @@ package Lawicel_Library <<Folder>>{
 }
 
 Class SerialAdapter{
-    -String m_name
+    +SerialAdapter() : SerialInterface()
     -long m_baudrate
-    +SerialAdapter()
-    +~SerialAdapter()
-    +void send(char* str)
-    +void setBaudrate(long _baudrate)
-    +uint8_t read (char* Buffer)
+    -String currentCommand
 }
 
 Class CANAdapter{
-    -String m_name
-    -long m_baudrate
-    -BUS_STATE m_currentstate
-    +CANAdapter()
-    +~CANAdapter()
-    +uint8_t getChannelState()
-    +String getName()
-    +uint8_t getStatusFlags(bool*)
-    +uint8_t send(const Frame&)
-    +uint8_t setACn(const uint8_t*)
-    +uint8_t setAMn(const uint8_t*)
-    +uint8_t setBaudrate(const long)
-    +uint8_t setBTR(const uint8_t, const uint8_t)
-    +uint8_t setFiltermode(const bool)
-    +uint8_t set State(const int)
+    +CANAdapter() : CANInterface()
+    -uint32_t m_baudRate
+    -BUS_STATE m_currentState
+    -ESP32SJA1000Class &m_Can_Controller
 }
 
 Class NVMAdapter{
-    +bool save()
-    +bool getString()
-    +bool getInt()
+    +const String DIRECTORY = "Startup"
+    +NVMAdapter() : NVMInterface()
 }
 
 Class WSAdapter{
-    -String m_name
-    +WSAdapter()
-    +~WSAdapter()
-    +void send(char* str)
-    +uint8_t read (char* Buffer)
+    -WSAdapter() : SerialInterface()
 }
 
 NVMInterface <|.down. NVMAdapter : <<realize>>
@@ -138,7 +181,7 @@ package AsyncWebServer_Library <<Folder>>{
     AsyncWebSocket <.. AsyncWebServer : <<use>>
 }
 
-WSAdapter ..|> AsyncWebServer_Library : <<use>>
+WSAdapter ..|> AsyncWebSocket : <<use>>
 
 
 @enduml
