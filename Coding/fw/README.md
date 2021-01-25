@@ -37,17 +37,24 @@ The Board initialization sets up the HAL by defining which pins are going to be 
 The Lawicel Protocol in its initialization routine also configures each of the Adapters passed as arguments on its constructor. This means that here is the CAN Controller started, as well as the Web Server and Socket when the respective adapter is passed. In the case of having Auto-start configured in Lawicel, the saved parameters are retrieved from the NVM and set up accordingly. Each of these processes is expected to return a **True** value. 
 
 ### Loop
-As its name describes, the loop is called in a cyclic manner every time it finished its routine. Here is the Lawicel Cycle called, where the communication from/to the user occurs. The Loop is also constantly checking on the Wireless connection to the configure network to ensure no data-loss. And finally, it checks if a system restart is called from the Captive Portal. 
+As its name describes, the loop is called in a cyclic manner every time it finished its routine. 
+Here is the Lawicel Cycle called, where the communication from/to the user occurs. In this case a **False** response does *NOT* call a System Halt, but only a blink on the Error LED as this means the user entered an invalid command. 
+
+The Loop is also constantly checking on the Wireless connection to the configure network to ensure no data-loss. 
+
+Finally, it checks if a system restart is called from the Captive Portal. If this is the case, all modules are halted and the OS is restarted.  
 
 
 # Detailed Design
 ## Main Application
-
 The system follows the following procedure during the Setup:
 
 ![Setup](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/SetUpProcess.plantuml)
 
-it is important to note that the Error LED can also be set during the looped programm if the wireless connection is lost and was not possible to reconnect after a pre-defined time. The states of the system can be seen in the next diagram.
+As mentioned on the Software Architecture, during the Setup Process, any error or **False** return value will call a System Halt, as the configuration of each module is critical for the correct operation of the whole system. 
+
+## State Machine
+The ESP CAN-Analyzer has two main modes, AP-Mode and STA-Mode. AP refers to Access Point, where the ESP creates its own Wireless Network and serves only a Captive Portal to work as a Configuration Portal for the STA Credentials. On the other side, STA is the abbreviation for Station, which is the normal mode for the system. The Station Mode uses the user's WiFi credentials to connect to the wireless local network. This mode works as a server through which the Lawicel Protocol can communicate using a websocket.
 
 ![StateMachine](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/StateMachine.plantuml)
 
