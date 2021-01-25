@@ -29,7 +29,7 @@ extern "C"
 /**
 *  ESP-32 Adapter as implementation of SerialInterface for the Lawicel Protocol.
 */
-class WSAdapter : public SerialInterface
+class WebSocketAdapter : public SerialInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
@@ -40,14 +40,14 @@ public:
     *  Default constructor creates instance of the class using default values.
     * @param m_baudrate     Sets the Default baudrate to the Serial Channel.
     */
-    WSAdapter() : SerialInterface()
+    WebSocketAdapter() : SerialInterface()
     {
     }
 
     /**
     * Default destructor deletes instance of the class.
     */
-    ~WSAdapter()
+    ~WebSocketAdapter()
     {
     }
 
