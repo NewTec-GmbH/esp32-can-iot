@@ -2,18 +2,25 @@
 
 Title Webpages Navigation
 
-STACredentials : GUI to input new STA Credentials
-SetCredentials : Inform the user of\n the success of their request
+STACredentials : Page to input new STA Credentials
+SetCredentials : Inform the user of the \n success of their request
 Index : Shows the basic information of the device
 Index : Links to the Lawicel_Communication
 Lawicel_Communication : Hosts the Websocket to use Lawicel \n to comunicate with CAN Bus
 
-[*] --> STACredentials : AP_Mode
+[*] --> STACredentials : AP_Mode.
+note on link 
+    Captive Portal Initiated
+end note
+
 STACredentials --> SetCredentials : New Credentials set
 SetCredentials --> [*] : Restart
 
 
 [*] --> Index : STA_Mode
+note on link 
+    Pages Initiated
+end note
 Index --> Lawicel_Communication
 
 @enduml
