@@ -40,31 +40,34 @@ Lawicel protocolLawicel(websocketadapter, sja1000Adapter, flashAdapter);
 /* PUBLIC METHODES ********************************************************************************/
 void setup()
 {
-  Board::init();
-  if (!protocolLawicel.begin())
-  {
-    Board::haltSystem();
-  }
-  else
-  {
-    Serial.println(wlan::getIPAddress());
-  }
+    Board::init();
+    if (!protocolLawicel.begin())
+    {
+        Board::haltSystem();
+    }
+    else
+    {
+        Serial.println(wlan::getIPAddress());
+    }
 }
 
 void loop()
 {
-  if (!protocolLawicel.executeCycle())
-  {
-    Board::blinkError(250);
-  }
-  if (!wlan::checkConnection())
-  {
-    Board::haltSystem();
-  }
-  if (ESPServer::isRestartRequested())
-  {
-    Board::reset();
-  }
+    if (!wlan::getAP_MODE())
+    {
+        if (!protocolLawicel.executeCycle())
+        {
+            Board::blinkError(250);
+        }
+        if (!wlan::checkConnection())
+        {
+            Board::haltSystem();
+        }
+    }
+    if (ESPServer::isRestartRequested())
+    {
+        Board::reset();
+    }
 }
 
 /* PROTECTED METHODES *****************************************************************************/

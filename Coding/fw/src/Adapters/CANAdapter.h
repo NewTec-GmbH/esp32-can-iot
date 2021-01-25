@@ -72,7 +72,6 @@ public:
         }
         else
         {
-            m_Can_Controller.filter(0x7DF);
             m_Can_Controller.sleep();
         }
 

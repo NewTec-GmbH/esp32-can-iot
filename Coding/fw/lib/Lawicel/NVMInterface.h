@@ -33,6 +33,17 @@ class NVMInterface
 public:
     /* CONSTANTS ******************************************************************************/
 
+    /**
+    * Key Definition (Addresses) to be read by NVM Adapter for initialization
+    */
+    const String INIT_SERIAL_BAUD = "SerialBaud"; /**< Initial Serial Baudrate*/
+    const String INIT_TIMESTAMP = "ToggleTime";   /**< Initial State of Timestamp*/
+    const String INIT_AUTO_START = "AutoStart";   /**< Initial State of Autostart*/
+    const String INIT_CAN_BAUD = "CanBaud";       /**< Initial CAN Baudrate*/
+    const String INIT_FILTER_MODE = "FilterMode"; /**< Initial Filter Mode*/
+    const String INIT_FILTER_ACN = "FilterACn";   /**< Initial Filter Address*/
+    const String INIT_FILTER_AMN = "FilterAMn";   /**< Initial Filter Mask*/
+
     /* TYPES **********************************************************************************/
 
     /**

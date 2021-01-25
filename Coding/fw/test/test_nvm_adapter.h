@@ -1,107 +1,160 @@
+/***************************************************************************************************
+  (c) NewTec GmbH 2020   -   www.newtec.de
+  $URL: https://github.com/NewTec-GmbH/esp32-can-iot $
+***************************************************************************************************/
+/**
+@addtogroup Test
+@{
+@file       test_nvm_adapter.h
+
+Native Test NVM Adapter for Lawicel Protocol
+
+* @}
+***************************************************************************************************/
 #ifndef TEST_NVM_ADAPTER_H_
 #define TEST_NVM_ADAPTER_H_
 
-#include <NVMInterface.h>
-#include <WString.h>
+/* INCLUDES ***************************************************************************************/
+#include "NVMInterface.h"
+#include <stdint.h>
+#include "WString.h"
 
-class testNVM : public NVMInterface
+/* C-Interface ************************************************************************************/
+extern "C"
+{
+}
+
+/* FORWARD DECLARATIONS ***************************************************************************/
+
+/**
+*  Native Adapter as implementation of NVMInterface for the Lawicel Protocol.
+*/
+class TestNVMAdapter : public NVMInterface
 {
 public:
-    testNVM() : NVMInterface()
+    /* CONSTANTS ******************************************************************************/
+
+    /* TYPES **********************************************************************************/
+
+    /**
+    * Default constructor creates instance of the class using default values.
+    */
+    TestNVMAdapter() : NVMInterface()
     {
     }
 
-    ~testNVM()
+    /**
+    *Default destructor deletes instance of the class.
+    */
+    ~TestNVMAdapter()
     {
     }
 
-    uint8_t begin()
+    /**
+    * Configures and starts the NVM Controller to use the user values.
+    */
+    bool begin()
     {
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    uint8_t end()
+    /**
+    * Stops the NVM Module without destroying the instance.
+    */
+    bool end()
     {
-        return 0;
+        bool success = true;
+        return success;
     }
 
-    void save(const String &name, int32_t value)
+    /**
+    * Save Data in NVM
+    */
+    bool save(const String &name, int32_t value)
     {
+        bool success = true;
         m_outputInt = value;
+        return success;
     }
 
-    void save(const String &name, const String &value)
+    /**
+    * Save String in NVM
+    */
+    bool save(const String &name, const String &value)
     {
+        bool success = true;
         m_outputString = value;
+        return success;
     }
 
-    uint32_t readInt(String name)
+    /**
+    * Read Data from NVM
+    */
+    uint32_t readInt(const String &name)
     {
-        String str;
-        int counter = 0;
-        uint32_t out = 0;
+        uint32_t result = 0;
 
-        while (name[counter] != 0)
+        if( name == INIT_AUTO_START)
         {
-            str += name[counter];
-            counter++;
+            result = 0;
         }
 
-        if (str == "AutoStart")
+        if(name == INIT_TIMESTAMP)
         {
-            out = m_autostart;
+            result = 0;
         }
-
-        if (str == "ToggleTime")
-        {
-            out = m_toggletime;
-        }
-
-        return out;
+        return result;
     }
 
-    String readString(String name)
+    /**
+     * Read String from NVM
+    */
+    String readString(const String &name)
     {
-        String str;
-        String out;
-        int counter = 0;
+        String result = "";
 
-        while (name[counter] != 0)
+        if(name == INIT_SERIAL_BAUD)
         {
-            str += name[counter];
-            counter++;
+            result = "U2";
         }
-
-        if (str == "SerialBaud")
+        if(name == INIT_CAN_BAUD)
         {
-            out = "U5";
+            result = "S6";
         }
-        else if (str == "CanBaud")
+        if(name == INIT_FILTER_MODE)
         {
-            out = "S6";
+            result = "W0";
         }
-        else if (str == "FilterMode")
+        if(name == INIT_FILTER_ACN)
         {
-            out = "W0";
+            result = "M00000000";
         }
-        else if (str == "FilterACn")
+        if(name == INIT_FILTER_AMN)
         {
-            out = "M00000000";
-        }
-        else if (str == "FilterAMn")
-        {
-            out = "mFFFFFFFF";
+            result = "mFFFFFFFF";
         }
 
-        return out;
+        return result;
     }
 
-    String m_outputString;
-    uint32_t m_outputInt;
-    uint32_t m_toggletime = 0;
-    uint32_t m_autostart = 0;
+    /**
+     * Delete all NVM Entries.
+     */
+    bool clearEntries()
+    {
+        bool success = true;
+        return success;
+    }
+
+    String m_outputString = "";
+    uint32_t m_outputInt = 0;
 
 private:
 };
 
-#endif
+/* INLINE FUNCTIONS ***************************************************************************/
+
+/* PROTOTYPES *********************************************************************************/
+
+#endif /* TEST_NVM_ADAPTER_H */
