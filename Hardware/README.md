@@ -1,6 +1,5 @@
 # Hardware Description
 
-- [Use Case](#Use-Case)
 - [Architecture](#Architecture)
 - [Implementation](#Implementation)
     - [Components](#Components)
