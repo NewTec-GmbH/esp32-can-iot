@@ -131,7 +131,7 @@ Class WebSocketAdapter{
 NVMInterface <|.down. NVMAdapter : <<realize>>
 SerialInterface <|.down. SerialAdapter : <<realize>>
 CANInterface <|.down. CANAdapter : <<realize>>
-SerialInterface <|.down. WSAdapter : <<realize>>
+SerialInterface <|.down. WebSocketAdapter : <<realize>>
 
 package Espressif_ESP32_Library{
     Class Settings{
@@ -181,7 +181,7 @@ package AsyncWebServer_Library <<Folder>>{
     AsyncWebSocket <.. AsyncWebServer : <<use>>
 }
 
-WSAdapter ..|> AsyncWebSocket : <<use>>
+WebSocketAdapter ..|> AsyncWebSocket : <<use>>
 
 
 @enduml
