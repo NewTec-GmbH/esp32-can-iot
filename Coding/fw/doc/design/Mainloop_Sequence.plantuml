@@ -15,7 +15,7 @@ group Setup
         ESPServer --> WLAN : begin()
         WLAN --> Board : checkUserButton()
         Board --> WLAN : return bool buttonPressed
-        WLAN --> WLAN : Initialize selected WiFi Mode
+        WLAN --> WLAN : Initialize selected \nWiFi Mode
         WLAN --> ESPServer : return bool success
         ESPServer --> ESPServer : Set up Web Pages
         ESPServer --> Lawicel : return bool success
@@ -25,8 +25,8 @@ group Setup
 
     else Initialization returns false
 
-    Mainloop --> Board : set Error LED and System halt
-    Mainloop --> Mainloop : wait for error handling\nfrom user and restart
+    Mainloop --> Board : set Error LED \nand System halt
+    Board --> Board : wait for error handling\nfrom user and restart
 end
 
 group loop
