@@ -37,6 +37,9 @@ WebSocketAdapter wsadapter;
 
 Lawicel protocolLawicel(wsadapter, sja1000Adapter, flashAdapter);
 
+uint32_t lastSend = 0;
+uint32_t waitTime = 500;
+
 /* PUBLIC METHODES ********************************************************************************/
 void setup()
 {
@@ -67,6 +70,12 @@ void loop()
     if (ESPServer::isRestartRequested())
     {
         Board::reset();
+    }
+
+    if(millis()-lastSend > waitTime)
+    {
+        lastSend = millis();
+        websocket::actuallySend();
     }
 }
 
