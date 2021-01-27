@@ -34,11 +34,11 @@ package WebServer <<node>>{
         +bool receive(char &c)
     }
 
-    ESPServer 	*-- WebSocket : <<use>>
+    ESPServer 	o-- WebSocket : <<use>>
 }
 
-AsyncWebSocket --* AsyncWebServer : <<use>>
-WebSocket --|> AsyncWebSocket : <<use>>
-WebSocketAdapter --|> WebSocket : <<use>>
+AsyncWebSocket *-- AsyncWebServer : <<use>>
+WebSocket o-- AsyncWebSocket : <<use>>
+WebSocketAdapter o-- WebSocket : <<use>>
 
 @enduml

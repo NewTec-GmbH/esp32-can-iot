@@ -33,6 +33,6 @@ package ESPAsyncWebServer <<folder>>
     Class AsyncWebServer
 }
 
-WebServer 	*-- ESPAsyncWebServer : <<use>>
+WebServer 	o-- ESPAsyncWebServer : <<use>>
 
 @enduml
