@@ -66,7 +66,9 @@ static const IoPin *ioPinList[] =
         &gpio1,
         &gpio2,
         &gpio3,
-        &gpio4};
+        &gpio4,
+        &obdSwitch,
+        &obdSupply};
 
 /* PUBLIC METHODES ********************************************************************************/
 
