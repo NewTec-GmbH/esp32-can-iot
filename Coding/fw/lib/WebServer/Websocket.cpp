@@ -80,7 +80,6 @@ bool websocket::actuallySend()
     if (outputBuffer.length() != 0)
     {
         ws.textAll(outputBuffer);
-        //Serial.println(outputBuffer);
         outputBuffer = "";
     }
     return success;
