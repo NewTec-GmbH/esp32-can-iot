@@ -12,6 +12,11 @@ in the development cycle.
 More information about PIO Unit Testing:
 https://docs.platformio.org/page/plus/unit-testing.html
 
+# Test Environment
+In the [platformio.ini](../platformio.ini) file is the *native* environment defined in order to run these tests. This means that the unit tests are not run on the ESP32 but on Windows. 
+
+For this to work is necesary to install a [C++ Compiler](https://dev.to/gamegods3/how-to-install-gcc-in-windows-10-the-easier-way-422j) and use the [Test](../lib/Test) Library in order to emulate the Arduino native libraries.
+
 # Test Main
 In this page are located the Tests which are going to be executed. 
 The "main" function calls the individual tests between an UNITY_BEGIN() and UNITY_END() commands.
