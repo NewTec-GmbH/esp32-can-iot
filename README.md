@@ -3,6 +3,8 @@ An ESP32 based interface between CAN-Bus and IoT environments.
 
 This project has the main objective of interfacing a CAN Bus with the user through the use of the Lawicel Protocol (also known as SLCAN). Lawicel represents CAN Frames as strings of ASCII Symbols which can be easily interpreted by the user of by the numerous applications available online. 
 
+![Use_Environment](./Coding/fw/doc/Media/Use_Environment.png)
+
 - [Technical Specifications](#Technical-Specifications)
 	- [Software Requirements](#Software-Requirements)
 	- [Hardware Requirements](#Hardware-Requirements)
