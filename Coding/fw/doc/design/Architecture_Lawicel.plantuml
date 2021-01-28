@@ -45,7 +45,7 @@ package Lawicel_Library <<Folder>>{
     bool setBaudrateCmd(const String &lawicelCMD);
     end note
 
-    Application ..> Lawicel : <<use>>
+    Application *.. Lawicel
 
     Interface SerialInterface{
         +SerialInterface()
@@ -135,7 +135,6 @@ SerialInterface <|.down. WebSocketAdapter : <<realize>>
 
 package Espressif_ESP32_Library{
     Class Settings{
-
         -Preferences flashMemory
     }
 }
@@ -143,13 +142,13 @@ package Espressif_ESP32_Library{
 NVMAdapter ..|> Settings : <<use>>
 
 package Arduino_Library{
-    Class Arduino_h
-    Arduino_h  <|.up. SerialAdapter : <<use>>
+    Class Arduino
+    Arduino  <|.up. SerialAdapter : <<use>>
 }
 
 package CAN_Library <<Folder>>{
-    Class CAN_h
-    Class ESP32SJA1000_h{
+    Class CAN
+    Class ESP32SJA1000{
         +begin(long baudrate)
         +beginPacket(id,dlc,rtr)
         +beginExtendedPacket(id,dlc,rtr)
@@ -167,11 +166,11 @@ package CAN_Library <<Folder>>{
         +filterExtended(id,mask)
         +end()
     }
-    Class CANController_h
-    CAN_h  <|.up. CANAdapter: <<use>>
-    ESP32SJA1000_h  <|.up. CAN_h: <<use>>
-    CANController_h  <|.up. ESP32SJA1000_h: <<use>>
-    Arduino_h  <|.up. CANController_h: <<use>>
+    Class CANController
+    CAN  o.up. CANAdapter: <<use>>
+    ESP32SJA1000  <|.up. CAN: <<use>>
+    CANController  <|.up. ESP32SJA1000: <<use>>
+    Arduino <|.up. CANController: <<use>>
 }
 
 package AsyncWebServer_Library <<Folder>>{
@@ -181,7 +180,7 @@ package AsyncWebServer_Library <<Folder>>{
     AsyncWebSocket <.. AsyncWebServer : <<use>>
 }
 
-WebSocketAdapter ..|> AsyncWebSocket : <<use>>
+WebSocketAdapter ..o AsyncWebSocket : <<use>>
 
 
 @enduml

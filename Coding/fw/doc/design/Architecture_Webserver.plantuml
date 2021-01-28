@@ -9,7 +9,7 @@ package WebServer <<node>>
     Class Pages
     Class CaptivePortal
 
-    Application ..|> ESPServer : <<use>>
+    Application *.. ESPServer
     ESPServer 	*-- WebConfig : <<use>>
     ESPServer 	*-- Pages : <<use>>
     ESPServer 	*-- CaptivePortal : <<use>>
@@ -23,9 +23,9 @@ package Espressif_ESP32_Library{
     }
     Class SPIFFS
 
-    WebConfig ..|> Settings : <<use>>
-    Pages ..|> SPIFFS : <<use>>
-    CaptivePortal ..|> SPIFFS : <<use>>
+    WebConfig --> Settings : <<use>>
+    Pages o-- SPIFFS : <<use>>
+    CaptivePortal o-- SPIFFS : <<use>>
 }
 
 package ESPAsyncWebServer <<folder>>
