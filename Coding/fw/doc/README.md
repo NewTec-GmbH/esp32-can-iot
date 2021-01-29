@@ -17,3 +17,6 @@ It is possible to parse the Documentation using the [Doxywizard](https://www.dox
 
 ## Media
 This folder contains images of the project
+
+## Node-Red
+Here are the referencial images and Flows for the complementary Node-Red Flows
