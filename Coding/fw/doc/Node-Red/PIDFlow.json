@@ -1,330 +1,31 @@
 [
     {
-        "id": "b654eb4c.fe2ac8",
-        "type": "tab",
-        "label": "Data Request",
-        "disabled": false,
-        "info": ""
-    },
-    {
-        "id": "deacf3a8.2a43b",
+        "id": "964881da.8441d",
         "type": "tab",
         "label": "Data Collection",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "21bf67e5.fb46e8",
-        "type": "tab",
-        "label": "Supported PIDs",
-        "disabled": false,
-        "info": ""
-    },
-    {
-        "id": "c59c0a41.ba7928",
-        "type": "tab",
-        "label": "Dashboard",
-        "disabled": false,
-        "info": ""
-    },
-    {
-        "id": "c45903cf.3467b",
-        "type": "websocket-listener",
-        "path": "ws://192.168.43.148/ws",
-        "wholemsg": "false"
-    },
-    {
-        "id": "73ba227b.d4268c",
-        "type": "ui_tab",
-        "name": "Home",
-        "icon": "dashboard",
-        "disabled": false,
-        "hidden": false
-    },
-    {
-        "id": "59fa9cbf.d826e4",
-        "type": "ui_base",
-        "theme": {
-            "name": "theme-dark",
-            "lightTheme": {
-                "default": "#0094CE",
-                "baseColor": "#2d4149",
-                "baseFont": "Century Gothic,CenturyGothic,AppleGothic,sans-serif",
-                "edited": true,
-                "reset": false
-            },
-            "darkTheme": {
-                "default": "#097479",
-                "baseColor": "#097479",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": true,
-                "reset": false
-            },
-            "customTheme": {
-                "name": "Untitled Theme 1",
-                "default": "#4B7930",
-                "baseColor": "#4B7930",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
-            },
-            "themeState": {
-                "base-color": {
-                    "default": "#097479",
-                    "value": "#097479",
-                    "edited": true
-                },
-                "page-titlebar-backgroundColor": {
-                    "value": "#097479",
-                    "edited": false
-                },
-                "page-backgroundColor": {
-                    "value": "#111111",
-                    "edited": false
-                },
-                "page-sidebar-backgroundColor": {
-                    "value": "#333333",
-                    "edited": false
-                },
-                "group-textColor": {
-                    "value": "#0eb8c0",
-                    "edited": false
-                },
-                "group-borderColor": {
-                    "value": "#555555",
-                    "edited": false
-                },
-                "group-backgroundColor": {
-                    "value": "#333333",
-                    "edited": false
-                },
-                "widget-textColor": {
-                    "value": "#eeeeee",
-                    "edited": false
-                },
-                "widget-backgroundColor": {
-                    "value": "#097479",
-                    "edited": false
-                },
-                "widget-borderColor": {
-                    "value": "#333333",
-                    "edited": false
-                },
-                "base-font": {
-                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
-                }
-            },
-            "angularTheme": {
-                "primary": "indigo",
-                "accents": "blue",
-                "warn": "red",
-                "background": "grey"
-            }
-        },
-        "site": {
-            "name": "Node-RED Dashboard",
-            "hideToolbar": "false",
-            "allowSwipe": "false",
-            "lockMenu": "false",
-            "allowTempTheme": "true",
-            "dateFormat": "DD/MM/YYYY",
-            "sizes": {
-                "sx": 48,
-                "sy": 48,
-                "gx": 6,
-                "gy": 6,
-                "cx": 6,
-                "cy": 6,
-                "px": 0,
-                "py": 0
-            }
-        }
-    },
-    {
-        "id": "ca933f68.465ec",
-        "type": "ui_group",
-        "name": "Vehicle",
-        "tab": "73ba227b.d4268c",
-        "order": 1,
-        "disp": true,
-        "width": 8,
-        "collapse": false
-    },
-    {
-        "id": "a0787989.60ff68",
-        "type": "websocket-listener",
-        "path": "ws://192.168.4.19/ws",
-        "wholemsg": "false"
-    },
-    {
-        "id": "4955b274.f686fc",
-        "type": "ui_tab",
-        "name": "Supported PIDs",
-        "icon": "dashboard",
-        "order": 2,
-        "disabled": false,
-        "hidden": false
-    },
-    {
-        "id": "79773aa7.ee2b54",
-        "type": "ui_group",
-        "name": "First Block",
-        "tab": "4955b274.f686fc",
-        "order": 1,
-        "disp": true,
-        "width": 8,
-        "collapse": false
-    },
-    {
-        "id": "7205b3ec.ec834c",
-        "type": "ui_group",
-        "name": "Second Block",
-        "tab": "4955b274.f686fc",
-        "order": 2,
-        "disp": true,
-        "width": 8,
-        "collapse": false
-    },
-    {
-        "id": "4b9732f9.30b35c",
-        "type": "ui_group",
-        "name": "Engine",
-        "tab": "73ba227b.d4268c",
-        "order": 2,
-        "disp": true,
-        "width": 16,
-        "collapse": false
-    },
-    {
-        "id": "ca83533d.fddf4",
-        "type": "inject",
-        "z": "b654eb4c.fe2ac8",
-        "name": "PID 0D: GET Vehicle Speed",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "0D",
-        "payloadType": "str",
-        "x": 380,
-        "y": 220,
-        "wires": [
-            [
-                "d1ad7c05.76d71"
-            ]
-        ]
-    },
-    {
-        "id": "8aaed336.63d3c",
-        "type": "websocket out",
-        "z": "b654eb4c.fe2ac8",
-        "name": "WebSocket",
-        "server": "a0787989.60ff68",
-        "client": "",
-        "x": 910,
-        "y": 260,
-        "wires": []
-    },
-    {
-        "id": "d1ad7c05.76d71",
-        "type": "function",
-        "z": "b654eb4c.fe2ac8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\nnewMsg.payload = \"t7DF80201\" + msg.payload + \"0000000000\" + '\\r';\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 680,
-        "y": 260,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "7610914c.31c38",
-        "type": "ui_gauge",
-        "z": "c59c0a41.ba7928",
-        "name": "Speed Gauge",
-        "group": "ca933f68.465ec",
-        "order": 1,
-        "width": 8,
-        "height": 5,
-        "gtype": "gage",
-        "title": "Vehicle Speed",
-        "label": "km/h",
-        "format": "{{msg.SPEED}}",
-        "min": 0,
-        "max": "125",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "x": 560,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "f5c7372b.1b5638",
-        "type": "function",
-        "z": "c59c0a41.ba7928",
-        "name": "",
-        "func": "msg.SPEED = msg.BYTES[3]\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 380,
-        "y": 120,
-        "wires": [
-            [
-                "7610914c.31c38"
-            ]
-        ]
-    },
-    {
-        "id": "b1b50b1e.4a51b8",
-        "type": "link in",
-        "z": "c59c0a41.ba7928",
-        "name": "In: Vehicle Speed",
-        "links": [
-            "62643c81.ab6fb4",
-            "273b79f3.3ec406"
-        ],
-        "x": 255,
-        "y": 120,
-        "wires": [
-            [
-                "f5c7372b.1b5638"
-            ]
-        ]
-    },
-    {
-        "id": "2736fc14.619604",
+        "id": "ea1e9ad1.14c008",
         "type": "websocket in",
-        "z": "deacf3a8.2a43b",
+        "z": "964881da.8441d",
         "name": "WebSocket",
-        "server": "a0787989.60ff68",
+        "server": "c45903cf.3467b",
         "client": "",
         "x": 130,
         "y": 220,
         "wires": [
             [
-                "6f018a23.6e6924"
+                "ed00466e.9d28f8",
+                "83f9925c.6c81f"
             ]
         ]
     },
     {
-        "id": "741a25b8.be512c",
+        "id": "95d5423f.bd68a",
         "type": "function",
-        "z": "deacf3a8.2a43b",
+        "z": "964881da.8441d",
         "name": "",
         "func": "msg.TYPE = msg.payload[0];\n\nif(msg.TYPE == 't')\n{\nmsg.ID = msg.payload.substr(1,3);\nmsg.DLC = msg.payload[4];\nmsg.DATA = msg.payload.substr(5, msg.DLC * 2);\nmsg.BYTES = [\"-\", \"-\", \"-\", \"-\", \"-\", \"-\", \"-\", \"-\"];\nmsg.TIMESTAMP = msg.payload.substr(5 + msg.DLC * 2, 4);\nmsg.SYSTIME = msg.payload.substr(9 + msg.DLC * 2, 6);\n\nvar position = 0;\nvar byte = 0;\nmsg.DATA.toUpperCase();\n\nwhile (position < (msg.DLC * 2)) {\n    msg.BYTES[byte] = parseInt(msg.DATA.substr(position, 2),16);\n    byte++;\n    position = position + 2;\n}\n\nif (0x7E8 <= parseInt(msg.ID, 16) && parseInt(msg.ID, 16) <= 0x7EF) {\n            return msg;\n        }\n}\n\n",
         "outputs": 1,
@@ -335,469 +36,19 @@
         "y": 220,
         "wires": [
             [
-                "3c1381f1.221f6e",
-                "79bbe235.de1e7c"
+                "5c2ca080.255f4",
+                "9084b397.118a3"
             ]
         ]
     },
     {
-        "id": "5f296b82.d17144",
-        "type": "link in",
-        "z": "21bf67e5.fb46e8",
-        "name": "In: Supported PIDs [1]",
-        "links": [
-            "15510669.1bd45a",
-            "ba57cc60.da627"
-        ],
-        "x": 155,
-        "y": 180,
-        "wires": [
-            [
-                "390b6aa5.418d86",
-                "2131b89.f708d48",
-                "bf641317.407ec",
-                "8f5088fb.fb7dc8"
-            ]
-        ]
-    },
-    {
-        "id": "fe76df82.d40d5",
-        "type": "ui_table",
-        "z": "21bf67e5.fb46e8",
-        "group": "79773aa7.ee2b54",
-        "name": "Supported PIDs 0x00 - 0x08",
-        "order": 1,
-        "width": 4,
-        "height": 5,
-        "columns": [],
-        "outputs": 0,
-        "cts": false,
-        "x": 760,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "390b6aa5.418d86",
-        "type": "bitunloader",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "mode": "arrayBools",
-        "prop": "BYTES[3]",
-        "padding": "8",
-        "x": 330,
-        "y": 100,
-        "wires": [
-            [
-                "d29a003.b08cc"
-            ]
-        ]
-    },
-    {
-        "id": "d29a003.b08cc",
-        "type": "function",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\n\nnewMsg.payload = [\n    {\n        \"PID\": \"0x01\",\n        \"Supported\": msg.BYTES[3][7]\n    },\n    {\n        \"PID\": \"0x02\",\n        \"Supported\": msg.BYTES[3][6]\n    },\n    {\n        \"PID\": \"0x03\",\n        \"Supported\": msg.BYTES[3][5]\n    },\n    {\n        \"PID\": \"0x04\",\n        \"Supported\": msg.BYTES[3][4]\n    },\n    {\n        \"PID\": \"0x05\",\n        \"Supported\": msg.BYTES[3][3]\n    },\n    {\n        \"PID\": \"0x06\",\n        \"Supported\": msg.BYTES[3][2]\n    },\n    {\n        \"PID\": \"0x07\",\n        \"Supported\": msg.BYTES[3][1]\n    },\n    {\n        \"PID\": \"0x08\",\n        \"Supported\": msg.BYTES[3][0]\n    }\n]\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 520,
-        "y": 100,
-        "wires": [
-            [
-                "fe76df82.d40d5"
-            ]
-        ]
-    },
-    {
-        "id": "2131b89.f708d48",
-        "type": "bitunloader",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "mode": "arrayBools",
-        "prop": "BYTES[4]",
-        "padding": "8",
-        "x": 330,
-        "y": 160,
-        "wires": [
-            [
-                "c21a1980.0535d8"
-            ]
-        ]
-    },
-    {
-        "id": "c21a1980.0535d8",
-        "type": "function",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\n\nnewMsg.payload = [\n    {\n        \"PID\": \"0x09\",\n        \"Supported\": msg.BYTES[4][7]\n    },\n    {\n        \"PID\": \"0x0A\",\n        \"Supported\": msg.BYTES[4][6]\n    },\n    {\n        \"PID\": \"0x0B\",\n        \"Supported\": msg.BYTES[4][5]\n    },\n    {\n        \"PID\": \"0x0C\",\n        \"Supported\": msg.BYTES[4][4]\n    },\n    {\n        \"PID\": \"0x0D\",\n        \"Supported\": msg.BYTES[4][3]\n    },\n    {\n        \"PID\": \"0x0E\",\n        \"Supported\": msg.BYTES[4][2]\n    },\n    {\n        \"PID\": \"0x0F\",\n        \"Supported\": msg.BYTES[4][1]\n    },\n    {\n        \"PID\": \"0x10\",\n        \"Supported\": msg.BYTES[4][0]\n    }\n]\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 520,
-        "y": 160,
-        "wires": [
-            [
-                "1980f4ac.45274b"
-            ]
-        ]
-    },
-    {
-        "id": "bf641317.407ec",
-        "type": "bitunloader",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "mode": "arrayBools",
-        "prop": "BYTES[5]",
-        "padding": "8",
-        "x": 330,
-        "y": 220,
-        "wires": [
-            [
-                "4df18599.9db49c"
-            ]
-        ]
-    },
-    {
-        "id": "4df18599.9db49c",
-        "type": "function",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\n\nnewMsg.payload = [\n    {\n        \"PID\": \"0x11\",\n        \"Supported\": msg.BYTES[5][7]\n    },\n    {\n        \"PID\": \"0x12\",\n        \"Supported\": msg.BYTES[5][6]\n    },\n    {\n        \"PID\": \"0x13\",\n        \"Supported\": msg.BYTES[5][5]\n    },\n    {\n        \"PID\": \"0x14\",\n        \"Supported\": msg.BYTES[5][4]\n    },\n    {\n        \"PID\": \"0x15\",\n        \"Supported\": msg.BYTES[5][3]\n    },\n    {\n        \"PID\": \"0x16\",\n        \"Supported\": msg.BYTES[5][2]\n    },\n    {\n        \"PID\": \"0x17\",\n        \"Supported\": msg.BYTES[5][1]\n    },\n    {\n        \"PID\": \"0x18\",\n        \"Supported\": msg.BYTES[5][0]\n    }\n]\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 520,
-        "y": 220,
-        "wires": [
-            [
-                "9f4a9e7b.ff6bf"
-            ]
-        ]
-    },
-    {
-        "id": "8f5088fb.fb7dc8",
-        "type": "bitunloader",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "mode": "arrayBools",
-        "prop": "BYTES[6]",
-        "padding": "8",
-        "x": 330,
-        "y": 280,
-        "wires": [
-            [
-                "59a5cd36.af9c74"
-            ]
-        ]
-    },
-    {
-        "id": "59a5cd36.af9c74",
-        "type": "function",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\n\nnewMsg.payload = [\n    {\n        \"PID\": \"0x19\",\n        \"Supported\": msg.BYTES[6][7]\n    },\n    {\n        \"PID\": \"0x1A\",\n        \"Supported\": msg.BYTES[6][6]\n    },\n    {\n        \"PID\": \"0x1B\",\n        \"Supported\": msg.BYTES[6][5]\n    },\n    {\n        \"PID\": \"0x1C\",\n        \"Supported\": msg.BYTES[6][4]\n    },\n    {\n        \"PID\": \"0x1D\",\n        \"Supported\": msg.BYTES[6][3]\n    },\n    {\n        \"PID\": \"0x1E\",\n        \"Supported\": msg.BYTES[6][2]\n    },\n    {\n        \"PID\": \"0x1F\",\n        \"Supported\": msg.BYTES[6][1]\n    },\n    {\n        \"PID\": \"0x20\",\n        \"Supported\": msg.BYTES[6][0]\n    }\n]\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 520,
-        "y": 280,
-        "wires": [
-            [
-                "d6a84a.31b2d7b8"
-            ]
-        ]
-    },
-    {
-        "id": "1980f4ac.45274b",
-        "type": "ui_table",
-        "z": "21bf67e5.fb46e8",
-        "group": "79773aa7.ee2b54",
-        "name": "Supported PIDs 0x09 - 0x10",
-        "order": 3,
-        "width": 4,
-        "height": 5,
-        "columns": [],
-        "outputs": 0,
-        "cts": false,
-        "x": 760,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "9f4a9e7b.ff6bf",
-        "type": "ui_table",
-        "z": "21bf67e5.fb46e8",
-        "group": "79773aa7.ee2b54",
-        "name": "Supported PIDs 0x11 - 0x18",
-        "order": 2,
-        "width": 4,
-        "height": 5,
-        "columns": [],
-        "outputs": 0,
-        "cts": false,
-        "x": 760,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "d6a84a.31b2d7b8",
-        "type": "ui_table",
-        "z": "21bf67e5.fb46e8",
-        "group": "79773aa7.ee2b54",
-        "name": "Supported PIDs 0x19 - 0x20",
-        "order": 4,
-        "width": 4,
-        "height": 5,
-        "columns": [],
-        "outputs": 0,
-        "cts": false,
-        "x": 760,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "3cd14920.095296",
-        "type": "link in",
-        "z": "21bf67e5.fb46e8",
-        "name": "In: Supported PIDs [1]",
-        "links": [
-            "94b2084c.7f2808",
-            "645e2550.00775c"
-        ],
-        "x": 155,
-        "y": 440,
-        "wires": [
-            [
-                "763a2c1a.4645b4",
-                "8dc92b57.41f868",
-                "6dafff05.23bd8",
-                "b92c212e.e317"
-            ]
-        ]
-    },
-    {
-        "id": "46356796.10bbb8",
-        "type": "ui_table",
-        "z": "21bf67e5.fb46e8",
-        "group": "7205b3ec.ec834c",
-        "name": "Supported PIDs 0xA1 - 0xA8",
-        "order": 1,
-        "width": 4,
-        "height": 5,
-        "columns": [],
-        "outputs": 0,
-        "cts": false,
-        "x": 760,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "763a2c1a.4645b4",
-        "type": "bitunloader",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "mode": "arrayBools",
-        "prop": "BYTES[3]",
-        "padding": "8",
-        "x": 330,
-        "y": 360,
-        "wires": [
-            [
-                "5094f4c1.e6b9ac"
-            ]
-        ]
-    },
-    {
-        "id": "5094f4c1.e6b9ac",
-        "type": "function",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\n\nnewMsg.payload = [\n    {\n        \"PID\": \"0xA1\",\n        \"Supported\": msg.BYTES[3][7]\n    },\n    {\n        \"PID\": \"0xA2\",\n        \"Supported\": msg.BYTES[3][6]\n    },\n    {\n        \"PID\": \"0xA3\",\n        \"Supported\": msg.BYTES[3][5]\n    },\n    {\n        \"PID\": \"0xA4\",\n        \"Supported\": msg.BYTES[3][4]\n    },\n    {\n        \"PID\": \"0xA5\",\n        \"Supported\": msg.BYTES[3][3]\n    },\n    {\n        \"PID\": \"0xA6\",\n        \"Supported\": msg.BYTES[3][2]\n    },\n    {\n        \"PID\": \"0xA7\",\n        \"Supported\": msg.BYTES[3][1]\n    },\n    {\n        \"PID\": \"0xA8\",\n        \"Supported\": msg.BYTES[3][0]\n    }\n]\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 520,
-        "y": 360,
-        "wires": [
-            [
-                "46356796.10bbb8"
-            ]
-        ]
-    },
-    {
-        "id": "8dc92b57.41f868",
-        "type": "bitunloader",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "mode": "arrayBools",
-        "prop": "BYTES[4]",
-        "padding": "8",
-        "x": 330,
-        "y": 420,
-        "wires": [
-            [
-                "622e157f.851aac"
-            ]
-        ]
-    },
-    {
-        "id": "622e157f.851aac",
-        "type": "function",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\n\nnewMsg.payload = [\n    {\n        \"PID\": \"0xA9\",\n        \"Supported\": msg.BYTES[4][7]\n    },\n    {\n        \"PID\": \"0xAA\",\n        \"Supported\": msg.BYTES[4][6]\n    },\n    {\n        \"PID\": \"0xAB\",\n        \"Supported\": msg.BYTES[4][5]\n    },\n    {\n        \"PID\": \"0xAC\",\n        \"Supported\": msg.BYTES[4][4]\n    },\n    {\n        \"PID\": \"0xAD\",\n        \"Supported\": msg.BYTES[4][3]\n    },\n    {\n        \"PID\": \"0xAE\",\n        \"Supported\": msg.BYTES[4][2]\n    },\n    {\n        \"PID\": \"0xAF\",\n        \"Supported\": msg.BYTES[4][1]\n    },\n    {\n        \"PID\": \"0xB0\",\n        \"Supported\": msg.BYTES[4][0]\n    }\n]\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 520,
-        "y": 420,
-        "wires": [
-            [
-                "675cd60b.d4f388"
-            ]
-        ]
-    },
-    {
-        "id": "6dafff05.23bd8",
-        "type": "bitunloader",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "mode": "arrayBools",
-        "prop": "BYTES[5]",
-        "padding": "8",
-        "x": 330,
-        "y": 480,
-        "wires": [
-            [
-                "43cde899.543c88"
-            ]
-        ]
-    },
-    {
-        "id": "43cde899.543c88",
-        "type": "function",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\n\nnewMsg.payload = [\n    {\n        \"PID\": \"0xB1\",\n        \"Supported\": msg.BYTES[5][7]\n    },\n    {\n        \"PID\": \"0xB2\",\n        \"Supported\": msg.BYTES[5][6]\n    },\n    {\n        \"PID\": \"0xB3\",\n        \"Supported\": msg.BYTES[5][5]\n    },\n    {\n        \"PID\": \"0xB4\",\n        \"Supported\": msg.BYTES[5][4]\n    },\n    {\n        \"PID\": \"0xB5\",\n        \"Supported\": msg.BYTES[5][3]\n    },\n    {\n        \"PID\": \"0xB6\",\n        \"Supported\": msg.BYTES[5][2]\n    },\n    {\n        \"PID\": \"0xB7\",\n        \"Supported\": msg.BYTES[5][1]\n    },\n    {\n        \"PID\": \"0xB8\",\n        \"Supported\": msg.BYTES[5][0]\n    }\n]\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 520,
-        "y": 480,
-        "wires": [
-            [
-                "ad608c23.f873c"
-            ]
-        ]
-    },
-    {
-        "id": "b92c212e.e317",
-        "type": "bitunloader",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "mode": "arrayBools",
-        "prop": "BYTES[6]",
-        "padding": "8",
-        "x": 330,
-        "y": 540,
-        "wires": [
-            [
-                "dbeeee42.42c66"
-            ]
-        ]
-    },
-    {
-        "id": "dbeeee42.42c66",
-        "type": "function",
-        "z": "21bf67e5.fb46e8",
-        "name": "",
-        "func": "var newMsg = { payload: \"\" };\n\nnewMsg.payload = [\n    {\n        \"PID\": \"0xB9\",\n        \"Supported\": msg.BYTES[6][7]\n    },\n    {\n        \"PID\": \"0xBA\",\n        \"Supported\": msg.BYTES[6][6]\n    },\n    {\n        \"PID\": \"0xBB\",\n        \"Supported\": msg.BYTES[6][5]\n    },\n    {\n        \"PID\": \"0xBC\",\n        \"Supported\": msg.BYTES[6][4]\n    },\n    {\n        \"PID\": \"0xBD\",\n        \"Supported\": msg.BYTES[6][3]\n    },\n    {\n        \"PID\": \"0xBE\",\n        \"Supported\": msg.BYTES[6][2]\n    },\n    {\n        \"PID\": \"0xBF\",\n        \"Supported\": msg.BYTES[6][1]\n    },\n    {\n        \"PID\": \"0xC0\",\n        \"Supported\": msg.BYTES[6][0]\n    }\n]\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 520,
-        "y": 540,
-        "wires": [
-            [
-                "3000ebf5.49a8e4"
-            ]
-        ]
-    },
-    {
-        "id": "675cd60b.d4f388",
-        "type": "ui_table",
-        "z": "21bf67e5.fb46e8",
-        "group": "7205b3ec.ec834c",
-        "name": "Supported PIDs 0xA9 - 0xB0",
-        "order": 3,
-        "width": 4,
-        "height": 5,
-        "columns": [],
-        "outputs": 0,
-        "cts": false,
-        "x": 760,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "ad608c23.f873c",
-        "type": "ui_table",
-        "z": "21bf67e5.fb46e8",
-        "group": "7205b3ec.ec834c",
-        "name": "Supported PIDs 0xB1 - 0xB8",
-        "order": 2,
-        "width": 4,
-        "height": 5,
-        "columns": [],
-        "outputs": 0,
-        "cts": false,
-        "x": 760,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "3000ebf5.49a8e4",
-        "type": "ui_table",
-        "z": "21bf67e5.fb46e8",
-        "group": "7205b3ec.ec834c",
-        "name": "Supported PIDs 0xB9 - 0xC0",
-        "order": 4,
-        "width": 4,
-        "height": 5,
-        "columns": [],
-        "outputs": 0,
-        "cts": false,
-        "x": 760,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "79bbe235.de1e7c",
+        "id": "9084b397.118a3",
         "type": "switch",
-        "z": "deacf3a8.2a43b",
+        "z": "964881da.8441d",
         "name": "",
         "property": "BYTES[2]",
         "propertyType": "msg",
         "rules": [
-            {
-                "t": "eq",
-                "v": "0x00",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "0xA0",
-                "vt": "str"
-            },
             {
                 "t": "eq",
                 "v": "0x0D",
@@ -831,143 +82,111 @@
         ],
         "checkall": "false",
         "repair": false,
-        "outputs": 8,
+        "outputs": 6,
         "x": 650,
         "y": 220,
         "wires": [
             [
-                "ba57cc60.da627"
+                "747bc3a4.15c6dc"
             ],
             [
-                "645e2550.00775c"
+                "7a718c55.cf8a44"
             ],
             [
-                "273b79f3.3ec406"
+                "4c56de85.6cd5f"
             ],
             [
-                "107f06a7.247839"
+                "df948dd3.87f37"
             ],
             [
-                "5b8d3cda.372314"
+                "1d45b91d.f20177"
             ],
             [
-                "82c3bf92.e07c4"
-            ],
-            [
-                "544f531a.af2a4c"
-            ],
-            [
-                "6ba87a1.6546684"
+                "7ea9ed79.72c7c4"
             ]
         ]
     },
     {
-        "id": "ba57cc60.da627",
+        "id": "747bc3a4.15c6dc",
         "type": "link out",
-        "z": "deacf3a8.2a43b",
-        "name": "Out: Supported PIDs 0x00 - 0x20",
+        "z": "964881da.8441d",
+        "name": "Out: Vehicle speed",
         "links": [
-            "5f296b82.d17144"
-        ],
-        "x": 815,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "645e2550.00775c",
-        "type": "link out",
-        "z": "deacf3a8.2a43b",
-        "name": "Out: Supported PIDs 0xA1 - 0xC0",
-        "links": [
-            "caa426e8.5b0a88",
-            "6830363a.5e3738",
-            "3cd14920.095296"
+            "6062031c.f23fcc"
         ],
         "x": 815,
         "y": 120,
         "wires": []
     },
     {
-        "id": "273b79f3.3ec406",
+        "id": "7a718c55.cf8a44",
         "type": "link out",
-        "z": "deacf3a8.2a43b",
-        "name": "Out: Vehicle speed",
+        "z": "964881da.8441d",
+        "name": "Out: Odometer",
         "links": [
-            "b1b50b1e.4a51b8"
+            "b8f31ece.b2256",
+            "99472935.249fd8"
         ],
         "x": 815,
         "y": 160,
         "wires": []
     },
     {
-        "id": "107f06a7.247839",
+        "id": "4c56de85.6cd5f",
         "type": "link out",
-        "z": "deacf3a8.2a43b",
-        "name": "Out: Odometer",
+        "z": "964881da.8441d",
+        "name": "Out: Engine Speed",
         "links": [
-            "b8f31ece.b2256",
-            "57f63a4c.577f04"
+            "da244543.b82f18",
+            "dff5d374.ab48"
         ],
         "x": 815,
         "y": 200,
         "wires": []
     },
     {
-        "id": "5b8d3cda.372314",
+        "id": "df948dd3.87f37",
         "type": "link out",
-        "z": "deacf3a8.2a43b",
-        "name": "Out: Engine Speed",
+        "z": "964881da.8441d",
+        "name": "Out: Oil Temp",
         "links": [
-            "da244543.b82f18",
-            "b80ac1a.ef7254"
+            "ceabc31f.d86f3",
+            "33d5ac38.bbd8b4"
         ],
         "x": 815,
         "y": 240,
         "wires": []
     },
     {
-        "id": "82c3bf92.e07c4",
+        "id": "1d45b91d.f20177",
         "type": "link out",
-        "z": "deacf3a8.2a43b",
-        "name": "Out: Oil Temp",
+        "z": "964881da.8441d",
+        "name": "Out: Driver's Torque Demand",
         "links": [
-            "ceabc31f.d86f3",
-            "d24d5d29.d68cd"
+            "8765b5fd.b253b8",
+            "7bee38bf.05ecc8"
         ],
         "x": 815,
         "y": 280,
         "wires": []
     },
     {
-        "id": "544f531a.af2a4c",
+        "id": "7ea9ed79.72c7c4",
         "type": "link out",
-        "z": "deacf3a8.2a43b",
-        "name": "Out: Driver's Torque Demand",
+        "z": "964881da.8441d",
+        "name": "Out: Actual Torque",
         "links": [
-            "8765b5fd.b253b8",
-            "7e9ed85b.c627f8"
+            "2b7f8aba.8c0426",
+            "937bbe0e.c0db2"
         ],
         "x": 815,
         "y": 320,
         "wires": []
     },
     {
-        "id": "6ba87a1.6546684",
-        "type": "link out",
-        "z": "deacf3a8.2a43b",
-        "name": "Out: Actual Torque",
-        "links": [
-            "2b7f8aba.8c0426",
-            "ecee1cb6.1dd9e"
-        ],
-        "x": 815,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "3c1381f1.221f6e",
+        "id": "5c2ca080.255f4",
         "type": "debug",
-        "z": "deacf3a8.2a43b",
+        "z": "964881da.8441d",
         "name": "PIDs",
         "active": true,
         "tosidebar": true,
@@ -982,184 +201,9 @@
         "wires": []
     },
     {
-        "id": "65caa9b5.9b8b58",
-        "type": "inject",
-        "z": "b654eb4c.fe2ac8",
-        "name": "PID 00: GET Supported PIDs 0x01-0x20",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "5",
-        "topic": "",
-        "payload": "00",
-        "payloadType": "str",
-        "x": 340,
-        "y": 140,
-        "wires": [
-            [
-                "d1ad7c05.76d71"
-            ]
-        ]
-    },
-    {
-        "id": "39561498.67af0c",
-        "type": "inject",
-        "z": "b654eb4c.fe2ac8",
-        "name": "PID A0: GET Supported PIDs 0xA1-0xC0",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "5",
-        "topic": "",
-        "payload": "A0",
-        "payloadType": "str",
-        "x": 340,
-        "y": 180,
-        "wires": [
-            [
-                "d1ad7c05.76d71"
-            ]
-        ]
-    },
-    {
-        "id": "541c2f64.41a68",
-        "type": "inject",
-        "z": "b654eb4c.fe2ac8",
-        "name": "PID A6: GET Odometer",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "10",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "A6",
-        "payloadType": "str",
-        "x": 390,
-        "y": 260,
-        "wires": [
-            [
-                "d1ad7c05.76d71"
-            ]
-        ]
-    },
-    {
-        "id": "7ba3010c.61c0f",
-        "type": "inject",
-        "z": "b654eb4c.fe2ac8",
-        "name": "PID 0C: GET Engine speed",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "0C",
-        "payloadType": "str",
-        "x": 380,
-        "y": 300,
-        "wires": [
-            [
-                "d1ad7c05.76d71"
-            ]
-        ]
-    },
-    {
-        "id": "e3839675.cf11b8",
-        "type": "inject",
-        "z": "b654eb4c.fe2ac8",
-        "name": "PID 5C: GET Engine Oil Temperature",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "20",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "5C",
-        "payloadType": "str",
-        "x": 350,
-        "y": 340,
-        "wires": [
-            [
-                "d1ad7c05.76d71"
-            ]
-        ]
-    },
-    {
-        "id": "a1b14dd6.b9b3d",
-        "type": "inject",
-        "z": "b654eb4c.fe2ac8",
-        "name": "PID 61: GET Driver's Toque Demand",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "61",
-        "payloadType": "str",
-        "x": 350,
-        "y": 380,
-        "wires": [
-            [
-                "d1ad7c05.76d71"
-            ]
-        ]
-    },
-    {
-        "id": "aecdf40c.ffdd38",
-        "type": "inject",
-        "z": "b654eb4c.fe2ac8",
-        "name": "PID 62: GET Actual Torque",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "62",
-        "payloadType": "str",
-        "x": 380,
-        "y": 420,
-        "wires": [
-            [
-                "d1ad7c05.76d71"
-            ]
-        ]
-    },
-    {
-        "id": "6f018a23.6e6924",
+        "id": "ed00466e.9d28f8",
         "type": "split",
-        "z": "deacf3a8.2a43b",
+        "z": "964881da.8441d",
         "name": "",
         "splt": "[13]",
         "spltType": "bin",
@@ -1171,303 +215,49 @@
         "y": 220,
         "wires": [
             [
-                "741a25b8.be512c"
+                "95d5423f.bd68a",
+                "eefd720b.37b53"
             ]
         ]
     },
     {
-        "id": "57f63a4c.577f04",
-        "type": "link in",
-        "z": "c59c0a41.ba7928",
-        "name": "In:  Odometer",
-        "links": [
-            "4d0a0d33.3025a4",
-            "107f06a7.247839"
-        ],
-        "x": 255,
-        "y": 180,
-        "wires": [
-            [
-                "55cf735f.60c69c"
-            ]
-        ]
-    },
-    {
-        "id": "55cf735f.60c69c",
-        "type": "function",
-        "z": "c59c0a41.ba7928",
-        "name": "",
-        "func": "var A = msg.BYTES[3];\nvar B = msg.BYTES[4];\nvar C = msg.BYTES[5];\nvar D = msg.BYTES[6];\nmsg.ODO = A*(2^24) + B*(2^16) + C*(2^8) + D;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 380,
-        "y": 180,
-        "wires": [
-            [
-                "740810ec.eea9d"
-            ]
-        ]
-    },
-    {
-        "id": "740810ec.eea9d",
-        "type": "ui_text",
-        "z": "c59c0a41.ba7928",
-        "group": "ca933f68.465ec",
-        "order": 2,
-        "width": 8,
-        "height": 5,
-        "name": "",
-        "label": "Kilometerstand",
-        "format": "{{msg.ODO}} km",
-        "layout": "row-center",
-        "x": 560,
-        "y": 180,
+        "id": "83f9925c.6c81f",
+        "type": "debug",
+        "z": "964881da.8441d",
+        "name": "Incoming String",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 100,
         "wires": []
     },
     {
-        "id": "b80ac1a.ef7254",
-        "type": "link in",
-        "z": "c59c0a41.ba7928",
-        "name": "In: Engine Speed",
-        "links": [
-            "41d94b27.3a7d44",
-            "5b8d3cda.372314"
-        ],
-        "x": 255,
-        "y": 240,
-        "wires": [
-            [
-                "4fc527b5.e726f8"
-            ]
-        ]
-    },
-    {
-        "id": "4fc527b5.e726f8",
-        "type": "function",
-        "z": "c59c0a41.ba7928",
-        "name": "",
-        "func": "var A = msg.BYTES[3]\nvar B = msg.BYTES[4]\nmsg.ENGINE_SPEED = (256*A + B)/4;\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 380,
-        "y": 240,
-        "wires": [
-            [
-                "8497a582.1f8088"
-            ]
-        ]
-    },
-    {
-        "id": "8497a582.1f8088",
-        "type": "ui_gauge",
-        "z": "c59c0a41.ba7928",
-        "name": "Engine Speed Gauge",
-        "group": "4b9732f9.30b35c",
-        "order": 1,
-        "width": 8,
-        "height": 5,
-        "gtype": "gage",
-        "title": "Engine Speed",
-        "label": "rpm",
-        "format": "{{msg.ENGINE_SPEED}}",
-        "min": 0,
-        "max": "16383",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "x": 580,
-        "y": 240,
+        "id": "eefd720b.37b53",
+        "type": "debug",
+        "z": "964881da.8441d",
+        "name": "Parsed Frame",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 340,
         "wires": []
     },
     {
-        "id": "7e9ed85b.c627f8",
-        "type": "link in",
-        "z": "c59c0a41.ba7928",
-        "name": "In: Driver's Torque Demand",
-        "links": [
-            "7eb2794d.16b698",
-            "544f531a.af2a4c"
-        ],
-        "x": 255,
-        "y": 360,
-        "wires": [
-            [
-                "dd08329f.1476b"
-            ]
-        ]
-    },
-    {
-        "id": "ecee1cb6.1dd9e",
-        "type": "link in",
-        "z": "c59c0a41.ba7928",
-        "name": "In: Actual Torque",
-        "links": [
-            "daac7ee0.5526",
-            "6ba87a1.6546684"
-        ],
-        "x": 255,
-        "y": 420,
-        "wires": [
-            [
-                "414ed0e2.107d4"
-            ]
-        ]
-    },
-    {
-        "id": "dd08329f.1476b",
-        "type": "function",
-        "z": "c59c0a41.ba7928",
-        "name": "",
-        "func": "msg.TORQUE = msg.BYTES[3] - 125\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 380,
-        "y": 360,
-        "wires": [
-            [
-                "9e3dbc05.57e2d"
-            ]
-        ]
-    },
-    {
-        "id": "414ed0e2.107d4",
-        "type": "function",
-        "z": "c59c0a41.ba7928",
-        "name": "",
-        "func": "msg.TORQUE = msg.BYTES[3] - 125\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 380,
-        "y": 420,
-        "wires": [
-            [
-                "f51f1c54.e31f3"
-            ]
-        ]
-    },
-    {
-        "id": "9e3dbc05.57e2d",
-        "type": "ui_gauge",
-        "z": "c59c0a41.ba7928",
-        "name": "Driver's Torque Demand",
-        "group": "4b9732f9.30b35c",
-        "order": 3,
-        "width": 8,
-        "height": 5,
-        "gtype": "gage",
-        "title": "Driver's Torque Demand",
-        "label": "%",
-        "format": "{{msg.TORQUE}}",
-        "min": "-125",
-        "max": "130",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "x": 590,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "f51f1c54.e31f3",
-        "type": "ui_gauge",
-        "z": "c59c0a41.ba7928",
-        "name": "Actual Torque",
-        "group": "4b9732f9.30b35c",
-        "order": 4,
-        "width": 8,
-        "height": 5,
-        "gtype": "gage",
-        "title": "Actual Torque",
-        "label": "%",
-        "format": "{{msg.TORQUE}}",
-        "min": "-125",
-        "max": "130",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "x": 560,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "d24d5d29.d68cd",
-        "type": "link in",
-        "z": "c59c0a41.ba7928",
-        "name": "In: Oil Temp",
-        "links": [
-            "e3957dc2.45cdb",
-            "82c3bf92.e07c4"
-        ],
-        "x": 255,
-        "y": 300,
-        "wires": [
-            [
-                "cfeb26f2.7d5e88"
-            ]
-        ]
-    },
-    {
-        "id": "cfeb26f2.7d5e88",
-        "type": "function",
-        "z": "c59c0a41.ba7928",
-        "name": "",
-        "func": "msg.OIL_TEMP = msg.BYTES[3] - 40\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 380,
-        "y": 300,
-        "wires": [
-            [
-                "689496ea.fd3308"
-            ]
-        ]
-    },
-    {
-        "id": "689496ea.fd3308",
-        "type": "ui_gauge",
-        "z": "c59c0a41.ba7928",
-        "name": "Oil Temperature",
-        "group": "4b9732f9.30b35c",
-        "order": 2,
-        "width": 8,
-        "height": 5,
-        "gtype": "donut",
-        "title": "Oil Temperature",
-        "label": "°C",
-        "format": "{{msg.OIL_TEMP}}",
-        "min": "-40",
-        "max": "210",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "x": 560,
-        "y": 300,
-        "wires": []
+        "id": "c45903cf.3467b",
+        "type": "websocket-listener",
+        "path": "ws://192.168.43.148/ws",
+        "wholemsg": "false"
     }
 ]
