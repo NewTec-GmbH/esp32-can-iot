@@ -9,25 +9,25 @@ node {
 
     package Modules{
         component ESPAsyncServer
-        component Lawicel_h
-        component CAN_h
+        component Lawicel
+        component CAN
         component AsyncTCP
     }
 
     package Service{
         component IP_Stack
-        component ESP32SJA1000_h
+        component ESP32SJA1000
         component Board
     }
 
 
 
     package HAL {
-        component Arduino_h
-        component SoftwareSerial_h
-        component WiFi_h
-        component GPIO_h
-        component CANController_h
+        component Arduino
+        component SoftwareSerial
+        component WiFi
+        component GPIO
+        component CANController
     }
     package Hardware{
         component USB_Serial
@@ -55,28 +55,27 @@ Laptop --( USB
 CAN_BUS --( DSUB9
 
 
-Arduino_h --> SoftwareSerial_h
-Arduino_h --> WiFi_h
-Arduino_h --> GPIO_h
+Arduino --> SoftwareSerial
+Arduino --> WiFi
+Arduino --> GPIO
 
-SoftwareSerial_h --> USB_Serial
-WiFi_h --> Wifi_Antenna
-GPIO_h --> GPIO
+SoftwareSerial --> USB_Serial
+WiFi --> Wifi_Antenna
 
-Lawicel_h --> CAN_h
-IP_Stack --> Arduino_h
-CANController_h --> CAN_Transceiver
+Lawicel --> CAN
+IP_Stack --> Arduino
+CANController --> CAN_Transceiver
 
 ESPAsyncServer --> AsyncTCP
 AsyncTCP --> IP_Stack
-Arduino_h --> CANController_h
-ESP32SJA1000_h --> Arduino_h
+Arduino --> CANController
+ESP32SJA1000 --> Arduino
 
-CAN_h --> ESP32SJA1000_h
-Board --> Arduino_h
+CAN --> ESP32SJA1000
+Board --> Arduino
 ESP_CAN --> Board
 
-ESP_CAN --> Lawicel_h
+ESP_CAN --> Lawicel
 ESP_CAN --> ESPAsyncServer
 
 

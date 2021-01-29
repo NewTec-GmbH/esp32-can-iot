@@ -101,9 +101,9 @@ package Lawicel_Library <<Folder>>{
         +virtual bool clearEntries() = 0
     }
 
-    Lawicel o--> SerialInterface : <<interface>>
-    Lawicel o--> CANInterface : <<interface>>
-    Lawicel o--> NVMInterface : <<interface>>
+    Lawicel *--> SerialInterface : <<interface>>
+    Lawicel *--> CANInterface : <<interface>>
+    Lawicel *--> NVMInterface : <<interface>>
 }
 
 Class SerialAdapter{
@@ -128,10 +128,10 @@ Class WebSocketAdapter{
     -WSAdapter() : SerialInterface()
 }
 
-NVMInterface <|.down. NVMAdapter : <<realize>>
-SerialInterface <|.down. SerialAdapter : <<realize>>
-CANInterface <|.down. CANAdapter : <<realize>>
-SerialInterface <|.down. WebSocketAdapter : <<realize>>
+NVMInterface *.down. NVMAdapter : <<realize>>
+SerialInterface *.down. SerialAdapter : <<realize>>
+CANInterface *.down. CANAdapter : <<realize>>
+SerialInterface *.down. WebSocketAdapter : <<realize>>
 
 package Espressif_ESP32_Library{
     Class Settings{
@@ -139,11 +139,11 @@ package Espressif_ESP32_Library{
     }
 }
 
-NVMAdapter ..|> Settings : <<use>>
+NVMAdapter o.. Settings
 
 package Arduino_Library{
     Class Arduino
-    Arduino  <|.up. SerialAdapter : <<use>>
+    Arduino  .up.o SerialAdapter
 }
 
 package CAN_Library <<Folder>>{
@@ -167,20 +167,20 @@ package CAN_Library <<Folder>>{
         +end()
     }
     Class CANController
-    CAN  o.up. CANAdapter: <<use>>
-    ESP32SJA1000  <|.up. CAN: <<use>>
-    CANController  <|.up. ESP32SJA1000: <<use>>
-    Arduino <|.up. CANController: <<use>>
+    CAN  .up.o CANAdapter
+    ESP32SJA1000  .up.o CAN
+    CANController  .up.o ESP32SJA1000
+    Arduino .up.o CANController
 }
 
 package AsyncWebServer_Library <<Folder>>{
     class AsyncWebServer
     class AsyncWebSocket
 
-    AsyncWebSocket <.. AsyncWebServer : <<use>>
+    AsyncWebSocket <.. AsyncWebServer
 }
 
-WebSocketAdapter ..o AsyncWebSocket : <<use>>
+WebSocketAdapter o.. AsyncWebSocket
 
 
 @enduml
