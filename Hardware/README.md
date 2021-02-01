@@ -37,8 +37,8 @@ The following components were selected for this project's PCB. Smaller component
 | AST 045-08 | 8-position connector with latches for GPIO |
 
 ## Version 1.0
-![Version 1.0_Front](..\Coding\fw\doc\Media\PCB_Front.png) 
-![Version 1.0_Back](..\Coding\fw\doc\Media\PCB_Back.png)
+![Version 1.0_Front](../Coding/fw/doc/Media/PCB_Front.png) 
+![Version 1.0_Back](../Coding/fw/doc/Media/PCB_Back.png)
 
 ## Version 1.1
 2 Main Errors were found on Version 1.0:
