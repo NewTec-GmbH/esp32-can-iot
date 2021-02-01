@@ -34,10 +34,11 @@ The following components were selected for this project's PCB. Smaller component
 | SN65HVD233-HT | CAN Transceiver |
 | 744242220 | Toroid for CAN-Bus Filtering |
 | PESD1CAN | Diode for CAN-Bus Filtering |
+| AST 045-08 | 8-position connector with latches for GPIO |
 
 ## Version 1.0
-
-
+![Version 1.0_Front](..\Coding\fw\doc\Media\PCB_Front.png) 
+![Version 1.0_Back](..\Coding\fw\doc\Media\PCB_Back.png)
 
 ## Version 1.1
 2 Main Errors were found on Version 1.0:
@@ -45,3 +46,5 @@ The following components were selected for this project's PCB. Smaller component
 * The 5V Supply for the Relays was located after a diode, which prevented the use of the relays when connected only through USB Supply. 
 
 In the new version were these two changes made and after testing it resolved in success.
+
+Other minor errors were also repaired, such as the size of the holes for AST 045-08 Connector which were too small. 
