@@ -18,6 +18,23 @@ The Project was developed using KiCad and all its Toolchain. This includes Eesch
 
 ## Components
 
+The following components were selected for this project's PCB. Smaller components such as resistors and capacitors are not included in this list, but can be found on the [BOM](./010_Implementation/BOM.xlsx).
+
+| Component | Description |
+| :---------------: | :---------------: |
+| ESP32-DEVKITC-32D | Microprocessor used. Connected using socket strips |
+| SS24 | Safety diode for Microprocessor in case more than one power supply is being used |
+| TPS62160DGK | 12V 1A Step-down Converter |
+| R452002 | 12V Fuse |
+| SMAJ16A | Protective Diode at 12V input |
+| G5V-2-DC5 | Relay for "smart" switching between CAN and OBD Pinout |
+| BC817 | Transistor for Relay control |
+| 1N4148 | Diodes for Relay protection |
+| DSUB9 | Standard connector for CAN-Bus |
+| SN65HVD233-HT | CAN Transceiver |
+| 744242220 | Toroid for CAN-Bus Filtering |
+| PESD1CAN | Diode for CAN-Bus Filtering |
+
 ## Version 1.0
 
 
@@ -25,6 +42,6 @@ The Project was developed using KiCad and all its Toolchain. This includes Eesch
 ## Version 1.1
 2 Main Errors were found on Version 1.0:
 * Tx and Rx Signals from the CAN Transceiver were inverted
-* The 5V Supply for the Relays was located after a diode, which prevwnted the use of the relays when connected only through USB Supply. 
+* The 5V Supply for the Relays was located after a diode, which prevented the use of the relays when connected only through USB Supply. 
 
 In the new version were these two changes made and after testing it resolved in success.
