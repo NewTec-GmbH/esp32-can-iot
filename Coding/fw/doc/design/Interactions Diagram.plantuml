@@ -2,9 +2,7 @@
 
 Title Interaction Diagram
 
-mainloop --> Lawicel : executeCycle()
-Lawicel --> Lawicel : check if "autopoll == True"
-Lawicel --> Lawicel : autopoll()
+Mainloop --> Lawicel : executeCycle()
 Lawicel --> m_selectedCAN : getChannelState()
 m_selectedCAN --> Lawicel : return channelState
 Lawicel --> Lawicel : check if channelState == "CLOSED"
@@ -12,45 +10,25 @@ Lawicel --> Lawicel : Define "frame" as a new empty Frame
 Lawicel --> m_selectedCAN : pollSingle(&frame)
 
 
-m_Can_Controller --> m_selectedCAN  : parsePacket()
-m_selectedCAN --> m_Can_Controller : return Parsed DLC
-m_Can_Controller --> m_selectedCAN  : check if Parsed DLC != -1
-m_selectedCAN --> m_Can_Controller : m_Can_Controller.packetId()
-m_Can_Controller --> m_selectedCAN  : frame.id
-m_selectedCAN --> m_Can_Controller : m_Can_Controller.packetDlc();
-m_Can_Controller --> m_selectedCAN  : frame.dlc
-m_selectedCAN --> m_Can_Controller : m_Can_Controller.packetExtended();
-m_Can_Controller --> m_selectedCAN  : frame.m_extended
-m_selectedCAN --> m_Can_Controller : m_Can_Controller.packetRtr();
-m_Can_Controller --> m_selectedCAN  : frame.m_rtr
-group frame.rtr = False
-    loop for (int i = 0; i < frame.m_dlc; i++)
-        m_selectedCAN --> m_Can_Controller: m_Can_Controller.read();
-        m_Can_Controller --> m_selectedCAN : frame.data[i]
-    end
+m_selectedCAN --> m_selectedCAN  : parsePacket()
+
+group Asynchronous
+    m_selectedSerial <-- Client : Send Lawicel Command
+    m_selectedSerial --> m_selectedSerial : Save Lawicel \nCommand in \nByte-Queue
 end
+
 m_selectedCAN --> Lawicel : return success
 
-Lawicel --> Lawicel : Define char cmd = 't'
-Lawicel --> Lawicel : Define int idLength = 3
-Lawicel --> Lawicel : Define ID type and Length
+Lawicel --> Lawicel : Parse Lawicel String from Frame
+Lawicel --> Lawicel : Append Timestamp and Terminator
+Lawicel --> m_selectedSerial : Send Message
+m_selectedSerial --> Client : Send Websocket Message
 
-note right of Lawicel
-    if ((true == frame.m_extended) && (false == frame.m_rtr))
-    {
-    cmd = 'T';
-    idLength = 8;
-    }
-    else if ((false == frame.m_extended)&& (true == frame.m_rtr))
-    {
-    cmd = 'r';
-    }
-    else if ((true == frame.m_extended) && (true == frame.m_rtr))
-    {
-    cmd = 'R';
-    idLength = 8;
-    }
-end note
+
+Lawicel --> m_selectedSerial : Check for incoming Lawicel Command
+m_selectedSerial --> Lawicel : return Lawicel Command
+
+Lawicel --> Lawicel : Process Lawicel Command
 
 
 
