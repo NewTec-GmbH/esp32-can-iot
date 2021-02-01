@@ -65,6 +65,7 @@ Thisproject has the potential to be improved in many of its aspects, specially i
 * Use of Binary Lawicel Commands instead of Strings
 * Optimize the Websocket Buffering of Messages (in both directions)
 * Use of both Cores for Tasking
+* Send Cyclic Frames using a Lawicel Command
 
 # Specialized Pages
 
