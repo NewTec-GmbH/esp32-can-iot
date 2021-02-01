@@ -28,6 +28,7 @@ namespace websocket
     void init(AsyncWebServer &server); /**< Initializes the WebSocket Service */
     void send(const String &message);         /**< Sends a WebSocket Message */
     bool receive(char &c);             /**< Receives a WebSocket Message */
+    bool actuallySend();
 
 }; // namespace websocket
 

@@ -84,13 +84,13 @@ function onClose(event) {
 *   @param event     Message Received by Websocket (event.data)
 */
 function onMessage(event) {
-    var str = event.data.split("\n");
-    var counter
-    for (counter = 0; counter < str.length; counter++) {
+    var str = event.data.split("\r");
+    var pos
+    for (pos = 0; pos < str.length - 1; pos++) {
         if (logMessages.length >= maxLogs) {
             logMessages.shift();
         }
-        logMessages.push(str[counter]);
+        logMessages.push(str[pos]);
     }
 }
 
@@ -303,8 +303,7 @@ function displayMessages(lawicelFrame) {
             DLC: "",
             DATA: "",
             BYTES: ["-", "-", "-", "-", "-", "-", "-", "-"],
-            TIMESTAMP: "",
-            SYSTIME: ""
+            TIMESTAMP: ""
         };
 
         switch (lawicelFrame[0]) {
@@ -313,7 +312,6 @@ function displayMessages(lawicelFrame) {
                 frame.DLC = lawicelFrame[4];
                 frame.DATA = lawicelFrame.substr(5, frame.DLC * 2);
                 frame.TIMESTAMP = lawicelFrame.substr(5 + frame.DLC * 2, 4);
-                frame.SYSTIME = lawicelFrame.substr(9 + frame.DLC * 2, 6);
                 break;
 
             case "T":
@@ -321,7 +319,6 @@ function displayMessages(lawicelFrame) {
                 frame.DLC = lawicelFrame[9];
                 frame.DATA = lawicelFrame.substr(10, frame.DLC * 2);
                 frame.TIMESTAMP = lawicelFrame.substr(10 + frame.DLC * 2, 4);
-                frame.SYSTIME = lawicelFrame.substr(14 + frame.DLC * 2, 6);
                 break;
 
             case "r":
@@ -329,7 +326,6 @@ function displayMessages(lawicelFrame) {
                 frame.RTR = "Yes";
                 frame.DLC = lawicelFrame[4];
                 frame.TIMESTAMP = lawicelFrame.substr(5, 4);
-                frame.SYSTIME = lawicelFrame.substr(9, 6);
                 break;
 
             case "R":
@@ -337,7 +333,6 @@ function displayMessages(lawicelFrame) {
                 frame.RTR = "Yes";
                 frame.DLC = lawicelFrame[9];
                 frame.TIMESTAMP = lawicelFrame.substr(10, 4);
-                frame.SYSTIME = lawicelFrame.substr(14, 8);
                 break;
 
             default:
@@ -345,7 +340,6 @@ function displayMessages(lawicelFrame) {
                 frame.DLC = undefined;
                 frame.DATA = undefined;
                 frame.TIMESTAMP = undefined;
-                frame.SYSTIME = undefined;
                 break;
         }
 
@@ -403,8 +397,6 @@ function displayMessages(lawicelFrame) {
         cell.innerHTML = frame.BYTES[7];
         cell = row.insertCell(-1);
         cell.innerHTML = frame.TIMESTAMP.toUpperCase();
-        cell = row.insertCell(-1);
-        cell.innerHTML = frame.SYSTIME;
 
         counter++;
     }

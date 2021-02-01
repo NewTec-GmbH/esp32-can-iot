@@ -37,6 +37,7 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 /* VARIABLES **************************************************************************************/
 
 static QueueHandle_t inputQueue;
+static String outputBuffer = "";
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -63,8 +64,25 @@ void websocket::init(AsyncWebServer &server)
 */
 void websocket::send(const String &message)
 {
-    String systime = String(millis());
-    ws.textAll(message + systime);
+    outputBuffer += message;
+}
+
+/**************************************************************************************************/
+
+/**
+*   Sends the Websocket Buffer
+*   
+*/
+bool websocket::actuallySend()
+{
+    bool success = true;
+
+    if (outputBuffer.length() != 0)
+    {
+        ws.textAll(outputBuffer);
+        outputBuffer = "";
+    }
+    return success;
 }
 
 /**************************************************************************************************/
