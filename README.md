@@ -11,6 +11,7 @@ This project has the main objective of interfacing a CAN Bus with the user throu
 	- [Extra/Optional Requirements](#Extra/Optional-Requirements)
 - [Context](#Context)
 - [Use Case](#Use-Case)
+- [Potential Optimization](#Potential-Optimization)
 - [Specialized Pages](#Specialized-Pages)
 
 # Technical Specifications 
@@ -55,6 +56,14 @@ Based on the Lawicel Protocol, this project connects any standard CAN Bus to the
 ![UseCaseAnalyzer](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/UseCaseAnalyzer.plantuml)
 
 The use case for this project is based on the direct connection to a CAN Bus, in order to obtain the information being sent between the members of this bus. On the other side of this communication we find a Serial Interface or a Websocket Interface which presents the information to the user. The user has to provide the device with the characteristics of the Bus it is connected to, in order to correctly acquire the data.
+
+# Potential Optimization
+
+Thisproject has the potential to be improved in many of its aspects, specially its Firmware. These are some of the points that have been noted during the development, which can be improved in order to increase the performance:
+
+* Lawicel commands active during AP Mode
+* Use of Binary Lawicel Commands instead of Strings
+* Optimize the Websocket Buffering of Messages (in both directions)
 
 # Specialized Pages
 
