@@ -84,10 +84,14 @@ function onClose(event) {
 *   @param event     Message Received by Websocket (event.data)
 */
 function onMessage(event) {
-    if (logMessages.length >= maxLogs) {
-        logMessages.shift();
+    var str = event.data.split("\n");
+    var counter
+    for (counter = 0; counter < str.length; counter++) {
+        if (logMessages.length >= maxLogs) {
+            logMessages.shift();
+        }
+        logMessages.push(str[counter]);
     }
-    logMessages.push(event.data);
 }
 
 
