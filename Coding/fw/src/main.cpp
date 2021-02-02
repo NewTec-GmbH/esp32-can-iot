@@ -75,7 +75,7 @@ void loop()
     if(millis()-lastSend > waitTime)
     {
         lastSend = millis();
-        websocket::actuallySend();
+        websocket::sendBuffer();
     }
 }
 

@@ -73,7 +73,7 @@ void websocket::send(const String &message)
 *   Sends the Websocket Buffer
 *   
 */
-bool websocket::actuallySend()
+bool websocket::sendBuffer()
 {
     bool success = true;
 
