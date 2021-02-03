@@ -38,7 +38,7 @@ WebSocketAdapter wsadapter;
 Lawicel protocolLawicel(wsadapter, sja1000Adapter, flashAdapter);
 
 uint32_t lastSend = 0;
-uint32_t waitTime = 100;
+uint32_t waitTime = 50;
 
 /* PUBLIC METHODES ********************************************************************************/
 void setup()
