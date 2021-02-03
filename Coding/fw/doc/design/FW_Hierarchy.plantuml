@@ -19,7 +19,6 @@ node {
 
         component ESP32SJA1000
         component Board
-        component Lawicel_Interfaces
         component FlashMem
         component WLAN
         component AsyncWebServer
@@ -35,7 +34,6 @@ node {
 
     CAN --> ESP32SJA1000
     IO --> Board
-    Lawicel --> Lawicel_Interfaces
     Settings --> FlashMem
     Settings --> WLAN
     WebServer --> AsyncWebServer
