@@ -117,7 +117,6 @@ bool websocket::receive(char &c)
 */
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
-    String temp;
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
     if ((info->final) && (0 == info->index) && (len == info->len) && (WS_TEXT == info->opcode))
     {
