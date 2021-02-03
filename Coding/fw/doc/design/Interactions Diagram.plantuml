@@ -2,34 +2,48 @@
 
 Title Interaction Diagram
 
+participant Mainloop
+participant Lawicel
+participant m_selectedCAN
+participant Websocket_Output_Queue
+participant Websocket_Input_Queue
+participant Client
+
+
+group Asynchronous
+    Client --> Websocket_Input_Queue : Send Lawicel Command
+    Websocket_Input_Queue --> Websocket_Input_Queue : Save Lawicel \nCommand in \nByte-Queue
+    activate Websocket_Input_Queue
+end
+
 Mainloop --> Lawicel : executeCycle()
 Lawicel --> m_selectedCAN : getChannelState()
-m_selectedCAN --> Lawicel : return channelState
+m_selectedCAN --> Lawicel : Return channelState
 Lawicel --> Lawicel : check if channelState == "CLOSED"
 Lawicel --> Lawicel : Define "frame" as a new empty Frame
 Lawicel --> m_selectedCAN : pollSingle(&frame)
 
 
 m_selectedCAN --> m_selectedCAN  : parsePacket()
-
-group Asynchronous
-    m_selectedSerial <-- Client : Send Lawicel Command
-    m_selectedSerial --> m_selectedSerial : Save Lawicel \nCommand in \nByte-Queue
-end
-
-m_selectedCAN --> Lawicel : return success
+m_selectedCAN --> Lawicel : Return success
 
 Lawicel --> Lawicel : Parse Lawicel String from Frame
 Lawicel --> Lawicel : Append Timestamp and Terminator
-Lawicel --> m_selectedSerial : Send Message
-m_selectedSerial --> Client : Send Websocket Message
+Lawicel --> Websocket_Output_Queue : Send Message
+activate Websocket_Output_Queue
 
 
-Lawicel --> m_selectedSerial : Check for incoming Lawicel Command
-m_selectedSerial --> Lawicel : return Lawicel Command
+Lawicel --> Websocket_Input_Queue : Check for incoming Lawicel Command
+Websocket_Input_Queue --> Lawicel : Return Lawicel Command
+deactivate Websocket_Input_Queue
 
 Lawicel --> Lawicel : Process Lawicel Command
+Lawicel --> Mainloop : Return Success
 
-
+Mainloop --> Mainloop : Check if 50ms \nhave passed since last \nWebsocket Buffer sent
+Mainloop --> Websocket_Output_Queue : Send Buffer
+Websocket_Output_Queue --> Client : Send Buffer
+deactivate Websocket_Output_Queue
+Websocket_Output_Queue --> Mainloop : Return Success
 
 @enduml
