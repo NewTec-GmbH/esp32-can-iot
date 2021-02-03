@@ -339,7 +339,7 @@ F 0 "R20" H 7830 3841 50  0000 L CNN
 F 1 "180k" H 7830 3750 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 7690 3795 50  0001 C CNN
 F 3 "~" H 7760 3795 50  0001 C CNN
-F 4 "NP" H 7760 3795 50  0000 C CNN "NP"
+F 4 "NP" H 7760 3795 50  0001 C CNN "NP"
 	1    7760 3795
 	1    0    0    -1  
 $EndComp
@@ -348,10 +348,10 @@ L Device:R R19
 U 1 1 5FAC28BD
 P 7760 3395
 F 0 "R19" H 7830 3441 50  0000 L CNN
-F 1 "953k" H 7830 3350 50  0000 L CNN
+F 1 "910k" H 7830 3350 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" V 7690 3395 50  0001 C CNN
 F 3 "~" H 7760 3395 50  0001 C CNN
-F 4 "NP" H 7760 3395 50  0000 C CNN "NP"
+F 4 "NP" H 7760 3395 50  0001 C CNN "NP"
 	1    7760 3395
 	1    0    0    -1  
 $EndComp
@@ -462,7 +462,7 @@ Wire Wire Line
 Connection ~ 8835 4110
 Wire Wire Line
 	8835 4110 9150 4110
-Text Notes 7645 4455 0    50   ~ 0
+Text Notes 6005 4985 0    50   ~ 0
 180kOm for Adjustable Version. 0Ohm for fixed 5V\n
 $Comp
 L Board:TPS62170DGK U1
