@@ -143,7 +143,7 @@ NVMAdapter o.. Settings
 
 package Arduino_Library{
     Class Arduino
-    Arduino  .up.o SerialAdapter
+    Arduino  <.up. SerialAdapter
 }
 
 package CAN_Library <<Folder>>{
@@ -170,7 +170,7 @@ package CAN_Library <<Folder>>{
     CAN  .up.o CANAdapter
     ESP32SJA1000  .up.o CAN
     CANController  .up.o ESP32SJA1000
-    Arduino .up.o CANController
+    Arduino <.up. CANController
 }
 
 package AsyncWebServer_Library <<Folder>>{
