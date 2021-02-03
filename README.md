@@ -66,6 +66,7 @@ Thisproject has the potential to be improved in many of its aspects, specially i
 * Optimize the Websocket Buffering of Messages (in both directions)
 * Use of both Cores for Tasking
 * Send Cyclic Frames using a Lawicel Command
+* Prevent reset after car's start/stop
 
 # Specialized Pages
 
