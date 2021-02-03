@@ -42,7 +42,7 @@ const uint8_t Lawicel::MAX_COMMAND_LENGTH = 30;
 bool Lawicel::executeCycle()
 {
     bool success = true;
-    m_serialReturn = "";
+    m_serialReturn.clear();
 
     if (m_autoPolling)
     {
@@ -53,7 +53,7 @@ bool Lawicel::executeCycle()
         }
     }
 
-    m_serialReturn = "";
+    m_serialReturn.clear();
     char c = BELL;
 
     if (m_selectedSerial->read(c))
@@ -72,12 +72,12 @@ bool Lawicel::executeCycle()
                 m_selectedSerial->print(m_serialReturn);
             }
 
-            m_serialInput = "";
+            m_serialInput.clear();
         }
         else if (MAX_COMMAND_LENGTH < m_serialInput.length())
         {
             success = false;
-            m_serialInput = "";
+            m_serialInput.clear();
         }
         else if (BELL != c)
         {
@@ -874,7 +874,7 @@ bool Lawicel::allPollCmd(const String &lawicelCMD)
             {
                 m_serialReturn += (char)CR;
                 m_selectedSerial->print(m_serialReturn);
-                m_serialReturn = "";
+                m_serialReturn.clear();
             }
         }
 
