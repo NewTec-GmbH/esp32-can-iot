@@ -80,7 +80,7 @@ bool websocket::sendBuffer()
     if (outputBuffer.length() != 0)
     {
         ws.textAll(outputBuffer);
-        outputBuffer = "";
+        outputBuffer.clear();
     }
     return success;
 }
