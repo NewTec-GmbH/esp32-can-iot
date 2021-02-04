@@ -11,10 +11,11 @@ participant WebSocket_Adapter as m_selectedSerial
 participant AsyncWebSocket
 participant ESPAsyncWebServer as Server
 participant Client
+activate Client
 
 
 group Asynchronous
-    Client -> Server : Send Lawicel Command
+    Client ->> Server : Send Lawicel Command
     Server -> AsyncWebSocket : WebSocket Event
     AsyncWebSocket -> AsyncWebSocket : handle Text Message
     AsyncWebSocket -> AsyncWebSocket : Add Message to Input Queue
