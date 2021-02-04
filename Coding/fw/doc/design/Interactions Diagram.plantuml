@@ -1,0 +1,72 @@
+@startuml
+
+Title Interaction Diagram
+
+autoactivate on
+
+participant Mainloop
+participant Lawicel
+participant CAN_Adapter as m_selectedCAN
+participant WebSocket_Adapter as m_selectedSerial
+participant AsyncWebSocket
+participant ESPAsyncWebServer as Server
+participant Client
+activate Client
+
+
+group Asynchronous
+    Client ->> Server : Send Lawicel Command
+    Server -> AsyncWebSocket : WebSocket Event
+    AsyncWebSocket -> AsyncWebSocket : handle Text Message
+    AsyncWebSocket -> AsyncWebSocket : Add Message to Input Queue
+    return
+    return
+    return
+    return
+end
+
+Mainloop -> Lawicel #0055F0: executeCycle()
+
+== Read CAN ==
+
+Lawicel -> Lawicel #005500 : autopoll()
+Lawicel -> m_selectedCAN : getChannelState()
+return channelState
+Lawicel -> m_selectedCAN : pollSingle(&frame)
+m_selectedCAN -> m_selectedCAN  : parsePacket()
+return
+return
+Lawicel -> Lawicel : Parse Lawicel String from Frame
+return
+Lawicel -> m_selectedSerial : Print Message
+m_selectedSerial -> AsyncWebSocket : Send Message
+AsyncWebSocket -> AsyncWebSocket : Add Message to Output Queue
+return
+return
+return
+return success
+
+
+
+== Read Serial ==
+
+Lawicel -> m_selectedSerial : Read Incoming Chararacter
+m_selectedSerial -> AsyncWebSocket : Read Input Queue
+return c 
+return c
+Lawicel -> Lawicel : Process Lawicel Command
+return success
+return success
+
+== Write Serial ==
+
+Mainloop -> Mainloop : Check if 50ms \nhave passed since last \nWebsocket Buffer sent
+Mainloop -> AsyncWebSocket : Send Output Buffer
+AsyncWebSocket -> Server : Send Buffer
+Server -> Client : Send WebSocket Message
+return
+return
+return success
+return
+
+@enduml

@@ -2,18 +2,24 @@
 title Architecture Websocket
 
 package Lawicel <<folder>>{
-    Class SerialInterface
+    Interface SerialInterface{
+        +SerialInterface()
+        +virtual ~SerialInterface()
+        +virtual bool begin() = 0
+        +virtual bool end() = 0
+        +virtual bool setBaudrate(uint32_t baudrate) = 0
+        +virtual bool read(char &c) = 0
+        +virtual void print(const String &string) = 0
+        +virtual void print(uint32_t num) = 0
+        +virtual void print(char c) = 0
+    }
 }
 
-Class WSAdapter{
-    -String m_name
-    +WSAdapter()
-    +~WSAdapter()
-    +void send(char* str)
-    +uint8_t read (char* Buffer)
+Class WebSocketAdapter{
+    -WSAdapter() : SerialInterface()
 }
 
-SerialInterface <|.down. WSAdapter : <<realize>>
+SerialInterface <|.down. WebSocketAdapter : <<realize>>
 
 package AsyncWebServer <<folder>>{
     class AsyncWebServer
@@ -28,11 +34,11 @@ package WebServer <<node>>{
         +bool receive(char &c)
     }
 
-    ESPServer 	*-- WebSocket : <<use>>
+    ESPServer 	o-- WebSocket : <<use>>
 }
 
-AsyncWebSocket --* AsyncWebServer : <<use>>
-WebSocket --|> AsyncWebSocket : <<use>>
-WSAdapter --|> AsyncWebSocket : <<use>>
+AsyncWebSocket *-- AsyncWebServer : <<use>>
+WebSocket o-- AsyncWebSocket : <<use>>
+WebSocketAdapter o-- WebSocket : <<use>>
 
 @enduml

@@ -1,0 +1,786 @@
+[
+    {
+        "id": "964881da.8441d",
+        "type": "tab",
+        "label": "Data Collection",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "5dd3b91d.1dc5a8",
+        "type": "tab",
+        "label": "Vehicle Data",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "c45903cf.3467b",
+        "type": "websocket-listener",
+        "path": "ws://192.168.43.148/ws",
+        "wholemsg": "false"
+    },
+    {
+        "id": "a0787989.60ff68",
+        "type": "websocket-listener",
+        "path": "ws://192.168.4.19/ws",
+        "wholemsg": "false"
+    },
+    {
+        "id": "59fa9cbf.d826e4",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-dark",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#2d4149",
+                "baseFont": "Century Gothic,CenturyGothic,AppleGothic,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#097479",
+                    "value": "#097479",
+                    "edited": true
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#097479",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#0eb8c0",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#555555",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#eeeeee",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#097479",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "ca933f68.465ec",
+        "type": "ui_group",
+        "name": "Vehicle",
+        "tab": "73ba227b.d4268c",
+        "order": 1,
+        "disp": true,
+        "width": 8,
+        "collapse": false
+    },
+    {
+        "id": "79773aa7.ee2b54",
+        "type": "ui_group",
+        "name": "First Block",
+        "tab": "4955b274.f686fc",
+        "order": 1,
+        "disp": true,
+        "width": 8,
+        "collapse": false
+    },
+    {
+        "id": "7205b3ec.ec834c",
+        "type": "ui_group",
+        "name": "Second Block",
+        "tab": "4955b274.f686fc",
+        "order": 2,
+        "disp": true,
+        "width": 8,
+        "collapse": false
+    },
+    {
+        "id": "4b9732f9.30b35c",
+        "type": "ui_group",
+        "name": "Engine",
+        "tab": "73ba227b.d4268c",
+        "order": 2,
+        "disp": true,
+        "width": 16,
+        "collapse": false
+    },
+    {
+        "id": "73ba227b.d4268c",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "4955b274.f686fc",
+        "type": "ui_tab",
+        "name": "Supported PIDs",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "c48935a.47434c8",
+        "type": "ui_gauge",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "Speed Gauge",
+        "group": "ca933f68.465ec",
+        "order": 1,
+        "width": 8,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Vehicle Speed",
+        "label": "km/h",
+        "format": "{{msg.SPEED}}",
+        "min": 0,
+        "max": "125",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 560,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "e203b7b0.a139e8",
+        "type": "function",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "",
+        "func": "msg.SPEED = msg.BYTES[3]\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 120,
+        "wires": [
+            [
+                "c48935a.47434c8"
+            ]
+        ]
+    },
+    {
+        "id": "6062031c.f23fcc",
+        "type": "link in",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "In: Vehicle Speed",
+        "links": [
+            "62643c81.ab6fb4",
+            "747bc3a4.15c6dc"
+        ],
+        "x": 255,
+        "y": 120,
+        "wires": [
+            [
+                "e203b7b0.a139e8"
+            ]
+        ]
+    },
+    {
+        "id": "ea1e9ad1.14c008",
+        "type": "websocket in",
+        "z": "964881da.8441d",
+        "name": "WebSocket",
+        "server": "c45903cf.3467b",
+        "client": "",
+        "x": 130,
+        "y": 220,
+        "wires": [
+            [
+                "ed00466e.9d28f8",
+                "83f9925c.6c81f"
+            ]
+        ]
+    },
+    {
+        "id": "95d5423f.bd68a",
+        "type": "function",
+        "z": "964881da.8441d",
+        "name": "",
+        "func": "msg.TYPE = msg.payload[0];\n\nif(msg.TYPE == 't')\n{\nmsg.ID = msg.payload.substr(1,3);\nmsg.DLC = msg.payload[4];\nmsg.DATA = msg.payload.substr(5, msg.DLC * 2);\nmsg.BYTES = [\"-\", \"-\", \"-\", \"-\", \"-\", \"-\", \"-\", \"-\"];\nmsg.TIMESTAMP = msg.payload.substr(5 + msg.DLC * 2, 4);\nmsg.SYSTIME = msg.payload.substr(9 + msg.DLC * 2, 6);\n\nvar position = 0;\nvar byte = 0;\nmsg.DATA.toUpperCase();\n\nwhile (position < (msg.DLC * 2)) {\n    msg.BYTES[byte] = parseInt(msg.DATA.substr(position, 2),16);\n    byte++;\n    position = position + 2;\n}\n\nif (0x7E8 <= parseInt(msg.ID, 16) && parseInt(msg.ID, 16) <= 0x7EF) {\n            return msg;\n        }\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "5c2ca080.255f4",
+                "9084b397.118a3"
+            ]
+        ]
+    },
+    {
+        "id": "9084b397.118a3",
+        "type": "switch",
+        "z": "964881da.8441d",
+        "name": "",
+        "property": "BYTES[2]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0x0D",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "0xA6",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "0x0C",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "0x5C",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "0x61",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "0x62",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 6,
+        "x": 650,
+        "y": 220,
+        "wires": [
+            [
+                "747bc3a4.15c6dc"
+            ],
+            [
+                "7a718c55.cf8a44"
+            ],
+            [
+                "4c56de85.6cd5f"
+            ],
+            [
+                "df948dd3.87f37"
+            ],
+            [
+                "1d45b91d.f20177"
+            ],
+            [
+                "7ea9ed79.72c7c4"
+            ]
+        ]
+    },
+    {
+        "id": "747bc3a4.15c6dc",
+        "type": "link out",
+        "z": "964881da.8441d",
+        "name": "Out: Vehicle speed",
+        "links": [
+            "6062031c.f23fcc"
+        ],
+        "x": 815,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "7a718c55.cf8a44",
+        "type": "link out",
+        "z": "964881da.8441d",
+        "name": "Out: Odometer",
+        "links": [
+            "b8f31ece.b2256",
+            "99472935.249fd8"
+        ],
+        "x": 815,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "4c56de85.6cd5f",
+        "type": "link out",
+        "z": "964881da.8441d",
+        "name": "Out: Engine Speed",
+        "links": [
+            "da244543.b82f18",
+            "dff5d374.ab48"
+        ],
+        "x": 815,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "df948dd3.87f37",
+        "type": "link out",
+        "z": "964881da.8441d",
+        "name": "Out: Oil Temp",
+        "links": [
+            "ceabc31f.d86f3",
+            "33d5ac38.bbd8b4"
+        ],
+        "x": 815,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "1d45b91d.f20177",
+        "type": "link out",
+        "z": "964881da.8441d",
+        "name": "Out: Driver's Torque Demand",
+        "links": [
+            "8765b5fd.b253b8",
+            "7bee38bf.05ecc8"
+        ],
+        "x": 815,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "7ea9ed79.72c7c4",
+        "type": "link out",
+        "z": "964881da.8441d",
+        "name": "Out: Actual Torque",
+        "links": [
+            "2b7f8aba.8c0426",
+            "937bbe0e.c0db2"
+        ],
+        "x": 815,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "5c2ca080.255f4",
+        "type": "debug",
+        "z": "964881da.8441d",
+        "name": "PIDs",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "ed00466e.9d28f8",
+        "type": "split",
+        "z": "964881da.8441d",
+        "name": "",
+        "splt": "[13]",
+        "spltType": "bin",
+        "arraySplt": "1",
+        "arraySpltType": "len",
+        "stream": true,
+        "addname": "",
+        "x": 290,
+        "y": 220,
+        "wires": [
+            [
+                "95d5423f.bd68a",
+                "eefd720b.37b53"
+            ]
+        ]
+    },
+    {
+        "id": "99472935.249fd8",
+        "type": "link in",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "In:  Odometer",
+        "links": [
+            "4d0a0d33.3025a4",
+            "7a718c55.cf8a44"
+        ],
+        "x": 255,
+        "y": 180,
+        "wires": [
+            [
+                "224b40ac.f5e0a"
+            ]
+        ]
+    },
+    {
+        "id": "224b40ac.f5e0a",
+        "type": "function",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "",
+        "func": "var A = msg.BYTES[3];\nvar B = msg.BYTES[4];\nvar C = msg.BYTES[5];\nvar D = msg.BYTES[6];\nmsg.ODO = A*(2^24) + B*(2^16) + C*(2^8) + D;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 180,
+        "wires": [
+            [
+                "47fb3ffa.a61c9"
+            ]
+        ]
+    },
+    {
+        "id": "47fb3ffa.a61c9",
+        "type": "ui_text",
+        "z": "5dd3b91d.1dc5a8",
+        "group": "ca933f68.465ec",
+        "order": 2,
+        "width": 8,
+        "height": 5,
+        "name": "",
+        "label": "Kilometerstand",
+        "format": "{{msg.ODO}} km",
+        "layout": "row-center",
+        "x": 560,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "dff5d374.ab48",
+        "type": "link in",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "In: Engine Speed",
+        "links": [
+            "41d94b27.3a7d44",
+            "4c56de85.6cd5f"
+        ],
+        "x": 255,
+        "y": 240,
+        "wires": [
+            [
+                "cb1120a6.73ef1"
+            ]
+        ]
+    },
+    {
+        "id": "cb1120a6.73ef1",
+        "type": "function",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "",
+        "func": "var A = msg.BYTES[3]\nvar B = msg.BYTES[4]\nmsg.ENGINE_SPEED = (256*A + B)/4;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 240,
+        "wires": [
+            [
+                "efbfe7f6.c67cd8"
+            ]
+        ]
+    },
+    {
+        "id": "efbfe7f6.c67cd8",
+        "type": "ui_gauge",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "Engine Speed Gauge",
+        "group": "4b9732f9.30b35c",
+        "order": 1,
+        "width": 8,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Engine Speed",
+        "label": "rpm",
+        "format": "{{msg.ENGINE_SPEED}}",
+        "min": 0,
+        "max": "16383",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 580,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "7bee38bf.05ecc8",
+        "type": "link in",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "In: Driver's Torque Demand",
+        "links": [
+            "7eb2794d.16b698",
+            "1d45b91d.f20177"
+        ],
+        "x": 255,
+        "y": 360,
+        "wires": [
+            [
+                "c027b451.a46558"
+            ]
+        ]
+    },
+    {
+        "id": "937bbe0e.c0db2",
+        "type": "link in",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "In: Actual Torque",
+        "links": [
+            "daac7ee0.5526",
+            "7ea9ed79.72c7c4"
+        ],
+        "x": 255,
+        "y": 420,
+        "wires": [
+            [
+                "2c26c8ff.c9afa8"
+            ]
+        ]
+    },
+    {
+        "id": "c027b451.a46558",
+        "type": "function",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "",
+        "func": "msg.TORQUE = msg.BYTES[3] - 125\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 360,
+        "wires": [
+            [
+                "6a72170d.7bc938"
+            ]
+        ]
+    },
+    {
+        "id": "2c26c8ff.c9afa8",
+        "type": "function",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "",
+        "func": "msg.TORQUE = msg.BYTES[3] - 125\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 420,
+        "wires": [
+            [
+                "42507808.c6b918"
+            ]
+        ]
+    },
+    {
+        "id": "6a72170d.7bc938",
+        "type": "ui_gauge",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "Driver's Torque Demand",
+        "group": "4b9732f9.30b35c",
+        "order": 3,
+        "width": 8,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Driver's Torque Demand",
+        "label": "%",
+        "format": "{{msg.TORQUE}}",
+        "min": "-125",
+        "max": "130",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 590,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "42507808.c6b918",
+        "type": "ui_gauge",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "Actual Torque",
+        "group": "4b9732f9.30b35c",
+        "order": 4,
+        "width": 8,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Actual Torque",
+        "label": "%",
+        "format": "{{msg.TORQUE}}",
+        "min": "-125",
+        "max": "130",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 560,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "33d5ac38.bbd8b4",
+        "type": "link in",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "In: Oil Temp",
+        "links": [
+            "e3957dc2.45cdb",
+            "df948dd3.87f37"
+        ],
+        "x": 255,
+        "y": 300,
+        "wires": [
+            [
+                "a97f6f7.199c09"
+            ]
+        ]
+    },
+    {
+        "id": "a97f6f7.199c09",
+        "type": "function",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "",
+        "func": "msg.OIL_TEMP = msg.BYTES[3] - 40\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 300,
+        "wires": [
+            [
+                "b4182d1b.00bec"
+            ]
+        ]
+    },
+    {
+        "id": "b4182d1b.00bec",
+        "type": "ui_gauge",
+        "z": "5dd3b91d.1dc5a8",
+        "name": "Oil Temperature",
+        "group": "4b9732f9.30b35c",
+        "order": 2,
+        "width": 8,
+        "height": 5,
+        "gtype": "donut",
+        "title": "Oil Temperature",
+        "label": "°C",
+        "format": "{{msg.OIL_TEMP}}",
+        "min": "-40",
+        "max": "210",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 560,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "83f9925c.6c81f",
+        "type": "debug",
+        "z": "964881da.8441d",
+        "name": "Incoming String",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "eefd720b.37b53",
+        "type": "debug",
+        "z": "964881da.8441d",
+        "name": "Parsed Frame",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 340,
+        "wires": []
+    }
+]

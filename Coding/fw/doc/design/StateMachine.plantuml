@@ -2,38 +2,34 @@
 
 title System State Machine
 
-InitState: /entry: Initialize Modules.
-InitState: /do: Get button state.
+InitState: /entry: Initialize Board.
+InitState: /do: Get "WiFi _Mode" Button state.
+InitState: /do: Initialize Lawicel and its Adapters.
 
-APState: /entry: Setup access point.
-APState: /entry: Setup Captive Portal.
-APState: /entry: Start server.
-APState: /do: Handle client requests.
-APState: /do: Save new Credentials when given by user.
-APState: /exit: Stop server.
-APState: /exit: Shutdown access point.
+AP_Mode: /entry: Setup Access Point.
+AP_Mode: /entry: Setup Captive Portal.
+AP_Mode: /entry: Start server.
+AP_Mode: /do: Handle client requests.
+AP_Mode: /do: Save new Credentials when given by user.
+AP_Mode: /exit: Stop server.
+AP_Mode: /exit: Shutdown access point.
 
-ConnectingState: /entry: Get Access Point SSID and Password.
-ConnectingState: /do: Connect to Network.
-
-STAState: /entry: Setup Webpages.
-STAState: /entry: Setup Websocket.
-STAState: /entry: Start server.
-STAState: /do: Handle client requests.
-STAState: /do: Handle CAN-Controller
-STAState: /exit: Stop CAN-Controller
-STAState: /exit: Stop server.
+STA_Mode: /entry: Retrieve Access Point SSID and Password from NVM.
+STA_Mode: /entry: Connect to Network.
+STA_Mode: /entry: Setup Webpages.
+STA_Mode: /entry: Setup Websocket.
+STA_Mode: /entry: Start server.
+STA_Mode: /do: Handle client requests.
+STA_Mode: /do: Handle Lawicel Cycle.
 
 ErrorState: /do: Wait for manual reset.
 
 
 [*] --> InitState: Power up
-InitState --> APState: [Button pressed]
-InitState -> ConnectingState: [Button released]
-APState --> ErrorState: [Failed to start\nwifi access point]
-STAState --> ErrorState: [Remote wifi SSID or\npassword missing]
-ConnectingState --> STAState: [Connection successful established]
-STAState --> ConnectingState: [Connection lost]
-ConnectingState --> ErrorState : [Timeout]
+InitState --> AP_Mode: [Button is pressed]
+InitState --> STA_Mode: [Button is released]
+AP_Mode --> ErrorState: [Failed to start\nwifi access point]
+STA_Mode --> ErrorState: [Failed to connect \nto user's Network]
 ErrorState --> [*]: [Restart]
+AP_Mode --> [*]: [Restart]
 @enduml

@@ -37,6 +37,7 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 /* VARIABLES **************************************************************************************/
 
 static QueueHandle_t inputQueue;
+static String outputBuffer = "";
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -63,8 +64,25 @@ void websocket::init(AsyncWebServer &server)
 */
 void websocket::send(const String &message)
 {
-    String systime = String(millis());
-    ws.textAll(message + systime);
+    outputBuffer += message;
+}
+
+/**************************************************************************************************/
+
+/**
+*   Sends the Websocket Buffer
+*   
+*/
+bool websocket::sendBuffer()
+{
+    bool success = true;
+
+    if (outputBuffer.length() != 0)
+    {
+        ws.textAll(outputBuffer);
+        outputBuffer.clear();
+    }
+    return success;
 }
 
 /**************************************************************************************************/
@@ -99,7 +117,6 @@ bool websocket::receive(char &c)
 */
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
-    String temp;
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
     if ((info->final) && (0 == info->index) && (len == info->len) && (WS_TEXT == info->opcode))
     {

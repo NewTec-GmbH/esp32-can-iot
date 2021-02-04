@@ -3,81 +3,91 @@
 title Hierarchy Diagram
 
 node {
-    package Application{
-        component ESP_CAN_Analyzer as ESP_CAN
+    package src{
+        component Main
+        component Adapters
     }
 
-    package Modules{
-        component ESPAsyncServer
-        component Lawicel_h
-        component CAN_h
+    Main -right-> Adapters
+
+    package lib{
+        component CAN
+        component IO
+        component Lawicel
+        component Settings
+        component WebServer
+
+        component ESP32SJA1000
+        component Board
+        component FlashMem
+        component WLAN
+        component AsyncWebServer
+    }
+
+    Main --> Lawicel
+    Main --> Settings
+    Main --> IO
+
+    Adapters --> Lawicel
+    Adapters --> CAN
+    Adapters --> WebServer
+
+    CAN --> ESP32SJA1000
+    IO --> Board
+    Settings --> FlashMem
+    Settings --> WLAN
+    WebServer --> AsyncWebServer
+
+    package Service{
+        component CANController
+        component GPIO
+        component WiFi
+        component Preferences
         component AsyncTCP
     }
 
-    package Service{
-        component IP_Stack
-        component ESP32SJA1000_h
-        component Board
-    }
-
-
+    ESP32SJA1000 --> CANController
+    Board --> GPIO
+    FlashMem --> Preferences
+    WLAN --> WiFi
+    AsyncWebServer --> AsyncTCP
 
     package HAL {
-        component Arduino_h
-        component SoftwareSerial_h
-        component WiFi_h
-        component GPIO_h
-        component CANController_h
+        component Arduino
     }
+
+    CANController --> Arduino
+    GPIO --> Arduino
+    Preferences --> Arduino
+    WiFi --> Arduino
+    AsyncTCP --> Arduino
+
     package Hardware{
-        component USB_Serial
-        component GPIO
-        component Wifi_Antenna
-        component CAN_Transceiver
+        interface WiFi_Anthena
+        interface USB
+        interface CAN_Transceiver
+        interface Button
+        interface LEDs
     }
+
+    Arduino --> WiFi_Anthena
+    Arduino --> USB
+    Arduino --> CAN_Transceiver
+    Arduino --> Button
+    Arduino --> LEDs
 }
-interface Webserver
-interface USB
-interface DSUB9
-interface Button
-interface LEDs
+
 component Laptop
 component CAN_BUS
+component User
+
+LEDs --> User
+Button --> User
+CAN_Transceiver --> CAN_BUS
+USB --> Laptop
+WiFi_Anthena --> Laptop
 
 
-USB_Serial --> USB
-GPIO --> Button
-GPIO --> LEDs
-Wifi_Antenna --> Webserver
-CAN_Transceiver --> DSUB9
-Laptop --( Webserver
-Laptop --( USB
-CAN_BUS --( DSUB9
-
-
-Arduino_h --> SoftwareSerial_h
-Arduino_h --> WiFi_h
-Arduino_h --> GPIO_h
-
-SoftwareSerial_h --> USB_Serial
-WiFi_h --> Wifi_Antenna
-GPIO_h --> GPIO
-
-Lawicel_h --> CAN_h
-IP_Stack --> Arduino_h
-CANController_h --> CAN_Transceiver
-
-ESPAsyncServer --> AsyncTCP
-AsyncTCP --> IP_Stack
-Arduino_h --> CANController_h
-ESP32SJA1000_h --> Arduino_h
-
-CAN_h --> ESP32SJA1000_h
-Board --> Arduino_h
-ESP_CAN --> Board
-
-ESP_CAN --> Lawicel_h
-ESP_CAN --> ESPAsyncServer
 
 
 @enduml

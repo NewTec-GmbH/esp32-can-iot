@@ -17,7 +17,7 @@ Main Application
 #include "SerialAdapter.h"
 #include "CANAdapter.h"
 #include "NVMAdapter.h"
-#include "WSAdapter.h"
+#include "WebSocketAdapter.h"
 #include "Board.h"
 #include "WLAN.h"
 
@@ -33,9 +33,12 @@ Main Application
 SerialAdapter serialAdapter;
 CANAdapter sja1000Adapter;
 NVMAdapter flashAdapter;
-WSAdapter websocketadapter;
-//Lawicel protocolLawicel(serialAdapter, sja1000Adapter, flashAdapter);
-Lawicel protocolLawicel(websocketadapter, sja1000Adapter, flashAdapter);
+WebSocketAdapter wsadapter;
+
+Lawicel protocolLawicel(wsadapter, sja1000Adapter, flashAdapter);
+
+uint32_t lastSend = 0;
+uint32_t waitTime = 50;
 
 /* PUBLIC METHODES ********************************************************************************/
 void setup()
@@ -67,6 +70,12 @@ void loop()
     if (ESPServer::isRestartRequested())
     {
         Board::reset();
+    }
+
+    if(millis()-lastSend > waitTime)
+    {
+        lastSend = millis();
+        websocket::sendBuffer();
     }
 }
 

@@ -2,29 +2,39 @@
 
 Title Mainloop Sequence
 
-group Setup 
+group Setup
     Mainloop --> Board : init()
+    Board --> Mainloop
     Mainloop --> Lawicel : begin()
+    Lawicel --> Lawicel : Set up Adapters
+
+    alt WebSocket Adapter Configured
+        Lawicel --> ESPServer : begin()
+        ESPServer --> WebConfig : importSettings()
+        WebConfig --> ESPServer : return bool success
+        ESPServer --> WLAN : begin()
+        WLAN --> Board : checkUserButton()
+        Board --> WLAN : return bool buttonPressed
+        WLAN --> WLAN : Initialize selected \nWiFi Mode
+        WLAN --> ESPServer : return bool success
+        ESPServer --> ESPServer : Set up Web Pages
+        ESPServer --> Lawicel : return bool success
+    end
+
     Lawicel --> Mainloop : return bool success
-    Mainloop --> ESPServer : begin()
-    ESPServer --> WebConfig : importSettings()
-    WebConfig --> ESPServer : return bool success
-    ESPServer --> ESPServer : Setup WiFi and Web Pages
-    ESPServer --> Mainloop : return bool success
+
     else Initialization returns false
-    Mainloop --> Board : set Error LED
-    Mainloop --> Mainloop : wait for error handling\nfrom user and restart
+
+    Mainloop --> Board : set Error LED \nand System halt
+    Board --> Board : wait for error handling\nfrom user and restart
 end
 
 group loop
     Mainloop --> Lawicel : executeCycle()
     Lawicel --> Mainloop : return bool success
-    Mainloop --> ESPServer : handleRequest()
-    note right
-        Process next request to DNS Server
-        and restarts the ESP32 in case
-        settings were changed
-    end note
+
+    Mainloop --> WLAN : Check Connection Status
+    WLAN --> Mainloop : return bool success
 
     else Restart requested
     ESPServer --> Mainloop : restart()
