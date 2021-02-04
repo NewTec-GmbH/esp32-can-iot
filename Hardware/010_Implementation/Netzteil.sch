@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 5 5
 Title "CAN_Bus Analyzer - Power Supply"
-Date "2020-09-07"
-Rev "1.0"
+Date "2021-02-04"
+Rev "1.1"
 Comp "NewTec Gmbh."
 Comment1 "Reyes, Gabryel"
 Comment2 ""

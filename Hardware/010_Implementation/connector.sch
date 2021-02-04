@@ -4,11 +4,11 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 4 5
-Title ""
-Date ""
-Rev ""
-Comp ""
-Comment1 ""
+Title "CAN_Bus Analyzer - Connector"
+Date "2021-02-04"
+Rev "1.1"
+Comp "NewTec Gmbh."
+Comment1 "Reyes, Gabryel"
 Comment2 ""
 Comment3 ""
 Comment4 ""

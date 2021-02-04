@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 5 5
 Title "CAN_Bus Analyzer - Power Supply"
-Date "2020-09-07"
-Rev "1.0"
+Date "2021-02-04"
+Rev "1.1"
 Comp "NewTec Gmbh."
 Comment1 "Reyes, Gabryel"
 Comment2 ""
@@ -462,7 +462,7 @@ Wire Wire Line
 Connection ~ 8835 4110
 Wire Wire Line
 	8835 4110 9150 4110
-Text Notes 7645 4455 0    50   ~ 0
+Text Notes 6005 4985 0    50   ~ 0
 180kOm for Adjustable Version. 0Ohm for fixed 5V\n
 $Comp
 L Board:TPS62170DGK U1
