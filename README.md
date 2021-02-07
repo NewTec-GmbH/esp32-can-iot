@@ -53,7 +53,7 @@ This project has the main objective of interfacing a CAN Bus with the user throu
 Based on the Lawicel Protocol, this project connects any standard CAN Bus to the user-end system. One example is its use on the Automotive Environment, where the CAN Bus is acquired through the DSUB-9 connector. The Frames are parsed through Lawicel into an ASCII String and sent through Serial to the Users Laptop. There is a second option, which is sending this String through a Websocket to the user. This enables the use of other IoT tools on the user's side, for example, Node-Red.
 
 # Use Case
-![UseCaseAnalyzer](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/Playground/Coding/fw/doc/design/UseCaseAnalyzer.plantuml)
+![UseCaseAnalyzer](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NewTec-GmbH/esp32-can-iot/master/Coding/fw/doc/design/UseCaseAnalyzer.plantuml)
 
 The use case for this project is based on the direct connection to a CAN Bus, in order to obtain the information being sent between the members of this bus. On the other side of this communication we find a Serial Interface or a Websocket Interface which presents the information to the user. The user has to provide the device with the characteristics of the Bus it is connected to, in order to correctly acquire the data.
 
