@@ -56,6 +56,9 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
+/**
+ *  Handler of Web Socket
+ */
 namespace websocket
 {
     void init(AsyncWebServer &server); /**< Initializes the WebSocket Service */
@@ -63,7 +66,7 @@ namespace websocket
     bool receive(char &c);             /**< Receives a WebSocket Message */
     bool sendBuffer();                 /**< Sends the Buffered Websocket Messages */
 
-}; // namespace websocket
+}; /** namespace websocket */
 
 /* FORWARD DECLARATIONS **************************************************************************/
 

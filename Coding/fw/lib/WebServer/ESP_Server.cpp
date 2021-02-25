@@ -65,14 +65,17 @@ extern "C"
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+
 /**
-* Registers the handlers on the server, depending on the WiFi Mode chosen
-* @param bool apModeRequested  determines if AP Mode or STA Mode are requested, to choose the correct handlers
-* return success
-*/
+ *  Registers the handlers on the server, depending on the WiFi Mode chosen
+ * 
+ *  @param[in] apModeRequested  True if device is in AP Mode. False otherwise.
+ *  @return success
+ */
 static bool initPages(bool apModeRequested);
 
 /* VARIABLES **************************************************************************************/
+
 static AsyncWebServer gWebServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
 
 /* PUBLIC METHODES ********************************************************************************/
@@ -80,9 +83,10 @@ static AsyncWebServer gWebServer(WebConfig::WEBSERVER_PORT); /**< Instance of As
 /**************************************************************************************************/
 
 /**
-*   Initializing of AsyncWebServer, DNS and WiFi capabilities. 
-*   return success
-*/
+ *  Initialization of AsyncWebServer, DNS and WiFi capabilities.
+ * 
+ *  @return success
+ */
 bool ESPServer::begin()
 {
     bool success = true;
@@ -119,8 +123,10 @@ bool ESPServer::begin()
 /**************************************************************************************************/
 
 /**
-*   Disconnects and disables the WebServer
-*/
+ *  Disconnects and disables the WebServer
+ *
+ *  @return success
+ */
 bool ESPServer::end()
 {
     gWebServer.end();
@@ -128,12 +134,13 @@ bool ESPServer::end()
     return WiFi.disconnect(true, true);
 }
 
-
 /**************************************************************************************************/
 
-/*
-*   Returns True is Restart is requested by the Captive Portal
-*/
+/**
+ *  Verify if restart has been requested.
+ *  
+ *  @return True is restart is requested by the Captive Portal. False otherwise.
+ */
 bool ESPServer::isRestartRequested()
 {
     return CaptivePortal::isRestartRequested();
@@ -149,9 +156,11 @@ bool ESPServer::isRestartRequested()
 
 /**************************************************************************************************/
 
-/*
-*   Initializes the corresponding Webpages, depending on the WiFi Mode specified by user
-*/
+/**
+ *  Initializes the corresponding Webpages, depending on the WiFi Mode specified by user.
+ * 
+ *  @return success
+ */
 static bool initPages(bool apModeRequested)
 {
     bool success = true;
@@ -162,7 +171,7 @@ static bool initPages(bool apModeRequested)
     }
     else
     {
-        Pages::init(gWebServer);     
+        Pages::init(gWebServer);
     }
 
     return success;

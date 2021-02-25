@@ -60,14 +60,14 @@ extern "C"
 /* FORWARD DECLARATIONS ***************************************************************************/
 
 /**
-* namespace for Methods in Async Server
-*/
+ *  Abstraction of the ESPAsyncWebServer Library
+ */
 namespace ESPServer
 {
-  bool begin(void);              /**< Initializing of AsyncWebServer, DNS and WiFi capabilities.  */
-  bool end(void);                /**< Disconnects and disables the WebServer */
-  bool isRestartRequested(void); /**< Returns true if restart requested by Web Server */
-} // namespace ESPServer
+   bool begin(void);              /**< Initialization of AsyncWebServer, DNS and WiFi capabilities.  */
+   bool end(void);                /**< Disconnects and disables the WebServer */
+   bool isRestartRequested(void); /**< Returns true if restart requested by Web Server */
+} /** namespace ESPServer */
 
 /* INLINE FUNCTIONS ***************************************************************************/
 

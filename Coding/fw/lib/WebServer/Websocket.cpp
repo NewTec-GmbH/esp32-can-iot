@@ -62,7 +62,26 @@ extern "C"
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+
+/**
+ *  Handler for incoming Web Socket Message
+ * 
+ *  @param[in] arg Information of Web Socket Message
+ *  @param[in] data Data of Web Socket Message
+ *  @param[in] len Length of Data of Web Socket Message
+ */
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len);
+
+/**
+ *  Handler for Web Socket Event
+ * 
+ *  @param[in] server Instance of ESPAsyncWebServer
+ *  @param[in] client Instance of Web Client
+ *  @param[in] type Type of Web Socket Event
+ *  @param[in] arg Information of Web Socket Event
+ *  @param[in] data Data of Web Socket Event
+ *  @param[in] len Length of Data of Web Socket Event
+ */
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len);
 
@@ -76,9 +95,11 @@ static String gOutputBuffer = ""; /**< WebSocket output Buffer */
 
 /**************************************************************************************************/
 
-/*
-*   Initializes the WebSocket Service
-*/
+/**
+ *  Initializes the WebSocket Service
+ * 
+ *  @param[in] server AsyncWeb Server Instance
+ */
 void websocket::init(AsyncWebServer &server)
 {
     server.on("/communication", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -92,9 +113,11 @@ void websocket::init(AsyncWebServer &server)
 
 /**************************************************************************************************/
 
-/*
-*   Send WebSocket Message
-*/
+/**
+ *  Send WebSocket Message
+ * 
+ *  @param[in] message Message to be sent to client through WebSocket
+ */
 void websocket::send(const String &message)
 {
     gOutputBuffer += message;
@@ -103,9 +126,10 @@ void websocket::send(const String &message)
 /**************************************************************************************************/
 
 /**
-*   Sends the Websocket Buffer
-*   
-*/
+ *  Sends the Websocket Buffer
+ *   
+ *  @return success
+ */
 bool websocket::sendBuffer()
 {
     bool success = true;
@@ -120,9 +144,12 @@ bool websocket::sendBuffer()
 
 /**************************************************************************************************/
 
-/*
-*   Receive WebSocket Message
-*/
+/**
+ *  Receive character from WebSocket Message
+ * 
+ *  @param[in,out] c Character to be received
+ *  @return success
+ */
 bool websocket::receive(char &c)
 {
     bool success = false;
@@ -145,9 +172,13 @@ bool websocket::receive(char &c)
 
 /**************************************************************************************************/
 
-/*
-*   Handler for incoming Web Socket Message
-*/
+/**
+ *  Handler for incoming Web Socket Message
+ * 
+ *  @param[in] arg Information of Web Socket Event
+ *  @param[in] data Data of Web Socket Event
+ *  @param[in] len Length of Data of Web Socket Event
+ */
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
@@ -167,9 +198,16 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 
 /**************************************************************************************************/
 
-/*
-*   Handler for Web Socket Event
-*/
+/**
+ *  Handler for Web Socket Event
+ * 
+ *  @param[in] server Instance of ESPAsyncWebServer
+ *  @param[in] client Instance of Web Client
+ *  @param[in] type Type of Web Socket Event
+ *  @param[in] arg Information of Web Socket Event
+ *  @param[in] data Data of Web Socket Event
+ *  @param[in] len Length of Data of Web Socket Event
+ */
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len)
 {

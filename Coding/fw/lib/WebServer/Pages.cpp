@@ -63,28 +63,41 @@ extern "C"
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+
 /**
-*   Processor for the Webpages, in order to replace the Templates in HTML (%TEMPLATE%) with their correct value.
-*   Function given by the AsyncWebServer Library
-*   @param [in] var: Webpage to be displayed before replacing the Templates
-*   return Webpage with replaced Templates
-*/
+ *  Processor for the Webpages, in order to replace the Templates in HTML (%TEMPLATE%) with their correct value.
+ *  Function given by the AsyncWebServer Library
+ * 
+ *  @param[in] var Webpage to be displayed before replacing the Templates
+ *  @return Webpage with replaced Templates
+ */
 static String pageProcessor(const String &var);
 
 /**
-* Handles the request when the index page is requested
-*/
+ *  Handles the request when the index page is requested
+ * 
+ *  @param[in] request Server Request
+ */
 static void indexPage(AsyncWebServerRequest *request);
 
 /**
-* Handles the request when the error page is requested
-*/
+ *  Handles the request when the error page is requested
+ * 
+ *  @param[in] request Server Request
+ */
 static void errorPage(AsyncWebServerRequest *request);
 
 /* VARIABLES **************************************************************************************/
 
 /* PUBLIC METHODES ********************************************************************************/
+
 /**************************************************************************************************/
+
+/**
+ *  Initialize all web pages and register them on the web server.
+ * 
+ *  @param[in] server   Web server
+ */
 void Pages::init(AsyncWebServer &webServer)
 {
     webServer.on("/", HTTP_GET, indexPage);
@@ -102,6 +115,14 @@ void Pages::init(AsyncWebServer &webServer)
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
+
+/**
+ *  Processor for the Webpages, in order to replace the Templates in HTML (%TEMPLATE%) with their correct value.
+ *  Function given by the AsyncWebServer Library
+ * 
+ *  @param[in] var Webpage to be displayed before replacing the Templates
+ *  @return Webpage with replaced Templates
+ */
 static String pageProcessor(const String &var)
 {
     String temp;
@@ -129,6 +150,11 @@ static String pageProcessor(const String &var)
     return temp;
 }
 
+/**
+ *  Handles the request when the index page is requested
+ * 
+ *  @param[in] request Server Request
+ */
 static void indexPage(AsyncWebServerRequest *request)
 {
     if (nullptr == request)
@@ -144,6 +170,11 @@ static void indexPage(AsyncWebServerRequest *request)
     return request->send(SPIFFS, "/index.html", String(), false, pageProcessor);
 }
 
+/**
+ *  Handles the request when the error page is requested
+ * 
+ *  @param[in] request Server Request
+ */
 static void errorPage(AsyncWebServerRequest *request)
 {
     if (nullptr == request)

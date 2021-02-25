@@ -58,21 +58,27 @@ extern "C"
 /* CONSTANTS **************************************************************************************/
 
 /* FORWARD DECLARATIONS **************************************************************************/
+
+/**
+ *  Captive Portal Handler 
+ */
 namespace CaptivePortal
 {
     /**
-    * Initialize Captive Portal and register it on the web server.
-    * @param[in] server   Web server
-    */
+     *  Registers the Captive Portal handler on the Server.
+     * 
+     *  @param[in] server   AsyncWebserver Instance to register to.
+     */
     void init(AsyncWebServer &server);
 
     /**
-    * Is restart requested by captive portal?
-    * @return If restart is requested it will return true otherwise false.
-    */
+     *  Verify if restart has been requested
+     * 
+     *  @return True if restart has been requested. False otherwise.
+     */
     bool isRestartRequested();
 
-} // namespace CaptivePortal
+} /** namespace CaptivePortal */
 
 /* INLINE FUNCTIONS ******************************************************************************/
 
