@@ -78,6 +78,11 @@ static const IoPin *ioPinList[] =
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
+/**************************************************************************************************/
+
+/**
+ *   Initialize all i/o pins
+ */
 extern void Board::init()
 {
     uint8_t index = 0U;
@@ -95,6 +100,11 @@ extern void Board::init()
     return;
 }
 
+/**************************************************************************************************/
+
+/**
+ *   Execute a hard reset!
+ */
 extern void Board::reset()
 {
     esp_task_wdt_init(1, true);
@@ -109,14 +119,26 @@ extern void Board::reset()
     return;
 }
 
+/**************************************************************************************************/
+
+/**
+ *   Turn on Error LED and halt system until manual reset
+ */
 extern void Board::haltSystem()
 {
     errorLED.write(HIGH);
     while (true)
     {
+        /* Wait for reset */
     }
 }
 
+/**************************************************************************************************/
+
+/**
+ *   Turn on Error LED for a period of time
+ *   @param[in] duration    Milliseconds to keep Error LED ON.
+ */
 extern void Board::blinkError(uint32_t duration)
 {
     errorLED.write(HIGH);
@@ -134,9 +156,8 @@ extern void Board::blinkError(uint32_t duration)
 /**************************************************************************************************/
 
 /**
-* @brief Switch between CAN or OBD Modes
-* @author Gabryel Reyes
-*/
+ *   Switch between CAN or OBD Modes
+ */
 static void setBusMode()
 {
     uint16_t supplyVoltage = obdSupply.read();
