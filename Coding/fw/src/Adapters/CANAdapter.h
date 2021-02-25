@@ -233,6 +233,7 @@ public:
 
     /**
      *  Sent the BTR Registers of the CAN Channel.
+     * 
      *  @param BTR0             Register 0 to set a Channel Baudrate directly
      *  @param BTR1             Register 1 to set a Channel Baudrate directly
      *  @return success
@@ -244,6 +245,7 @@ public:
 
     /**
      *  Set the Filter Mode of the CAN Channel.
+     * 
      *  @param[in] filter       Defines Filter based on FILTER_MODE Enum.
      *  @return success
      */
@@ -254,6 +256,7 @@ public:
 
     /**
      *  Set the Acceptance Code Register.
+     * 
      *  @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
      *  @return success 
      */
@@ -264,6 +267,7 @@ public:
 
     /**
      *  Set the Acceptance Mask Register.
+     * 
      *  @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
      *  @return success
      */
@@ -274,6 +278,7 @@ public:
 
     /**
      *  Gets the Channel State from the CAN Controller.
+     * 
      *  @return BUS_STATE m_currentState of the CAN-Bus Channel.
      */
     BUS_STATE getChannelState()
@@ -283,6 +288,7 @@ public:
 
     /**
      *  Gets the Status and Error Flags from the CAN Controller.
+     * 
      *  @return  One Byte BCD hex value
      */
     uint8_t getStatusFlags()
@@ -292,6 +298,7 @@ public:
 
     /**
      *  Polls one Message from the FIFO Buffer.
+     * 
      *  @param[in,out] frame  Received frame from CAN Bus
      *  @return success  
      */

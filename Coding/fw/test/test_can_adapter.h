@@ -59,8 +59,8 @@ extern "C"
 /* FORWARD DECLARATIONS ***************************************************************************/
 
 /**
-*  Native Adapter as implementation of CANInterface for the Lawicel Protocol.
-*/
+ *  Native Adapter as implementation of CANInterface for the Lawicel Protocol.
+ */
 class TestCANAdapter : public CANInterface
 {
 public:
@@ -70,13 +70,27 @@ public:
     /**************************************************************************************************/
 
     /**
-    *   Edit input Frame for Testing
-    */
-    bool enterInputFrame(uint32_t id,   /**< CAN ID */
-                         bool rtr,      /**< Identifies a RTR Frame */
-                         bool extended, /**< Identifies an Extended Frame */
-                         uint8_t dlc,   /**< Data Length */
-                         uint8_t byte0, /**< Data of the Frame */
+     *  Write information on simulated Input Frame 
+     * 
+     *  @param id Frame ID
+     *  @param rtr True if Frame is RTR. False otherwise.
+     *  @param extended True if Frame is Extended. False otherwise.
+     *  @param dlc Frame DLC
+     *  @param byte0 Frame Data Byte 0
+     *  @param byte1 Frame Data Byte 1
+     *  @param byte2 Frame Data Byte 2
+     *  @param byte3 Frame Data Byte 3
+     *  @param byte4 Frame Data Byte 4
+     *  @param byte5 Frame Data Byte 5
+     *  @param byte6 Frame Data Byte 6
+     *  @param byte7 Frame Data Byte 7
+     *  @return success
+     */
+    bool enterInputFrame(uint32_t id,
+                         bool rtr,
+                         bool extended,
+                         uint8_t dlc,
+                         uint8_t byte0,
                          uint8_t byte1,
                          uint8_t byte2,
                          uint8_t byte3,
@@ -106,13 +120,27 @@ public:
     /**************************************************************************************************/
 
     /**
-    *   Edit output (expected) Frame for Testing
-    */
-    bool enterOutputFrame(uint32_t id,   /**< CAN ID */
-                          bool rtr,      /**< Identifies a RTR Frame */
-                          bool extended, /**< Identifies an Extended Frame */
-                          uint8_t dlc,   /**< Data Length */
-                          uint8_t byte0, /**< Data of the Frame */
+     *  Write information on simulated Output Frame
+     * 
+     *  @param[in] id Frame ID
+     *  @param[in] rtr True if Frame is RTR. False otherwise.
+     *  @param[in] extended True if Frame is Extended. False otherwise.
+     *  @param[in] dlc Frame DLC
+     *  @param[in] byte0 Frame Data Byte 0
+     *  @param[in] byte1 Frame Data Byte 1
+     *  @param[in] byte2 Frame Data Byte 2
+     *  @param[in] byte3 Frame Data Byte 3
+     *  @param[in] byte4 Frame Data Byte 4
+     *  @param[in] byte5 Frame Data Byte 5
+     *  @param[in] byte6 Frame Data Byte 6
+     *  @param[in] byte7 Frame Data Byte 7
+     *  @return success
+     */
+    bool enterOutputFrame(uint32_t id,
+                          bool rtr,
+                          bool extended,
+                          uint8_t dlc,
+                          uint8_t byte0,
                           uint8_t byte1,
                           uint8_t byte2,
                           uint8_t byte3,
@@ -142,8 +170,10 @@ public:
     /**************************************************************************************************/
 
     /**
-    *   Clears input Frame
-    */
+     *  Clears input Frame
+     * 
+     *  @return success
+     */
     bool clearInputFrame()
     {
         return enterInputFrame(0, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -152,8 +182,10 @@ public:
     /**************************************************************************************************/
 
     /**
-    *   Clears output Frame
-    */
+     *  Clears output Frame
+     * 
+     *  @return success
+     */
     bool clearOutputFrame()
     {
         return enterOutputFrame(0, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -162,8 +194,12 @@ public:
     /**************************************************************************************************/
 
     /**
-    *   Compare Frames
-    */
+     *  Compare Frames
+     * 
+     *  @param[in] frame1 First Frame to compare
+     *  @param[in] frame2 Second Frame to compare
+     *  @return success
+     */
     bool compareFrames(const Frame &frame1, const Frame &frame2)
     {
         bool success = true;
@@ -202,8 +238,11 @@ public:
     /**************************************************************************************************/
 
     /**
-    *   Copies CAN Frames
-    */
+     *  Copies CAN Frames
+     * 
+     *  @param[in] input Frame to be copied
+     *  @param[in,out] output Copied Frame
+     */
     void copyFrames(const Frame &input, Frame &output)
     {
         output.m_id = input.m_id;
@@ -218,44 +257,46 @@ public:
     }
 
     /**
-    * Default constructor creates instance of the class using default values.
-    * Uses CANInterface constructor as its the implementation of an Interface.
-    * @param m_baudrate         Defines the Default baudrate of the CAN Channel
-    */
+     *  Default constructor creates instance of the class using default values.
+     *  Uses CANInterface constructor as its the implementation of an Interface.
+     */
     TestCANAdapter() : CANInterface()
     {
     }
 
     /**
-    * Default destructor deletes instance of the class.
-    */
+     *  Default destructor deletes instance of the class.
+     */
     ~TestCANAdapter()
     {
     }
 
     /** 
-    * Configures and starts the CAN Controller to use the user values.
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Configures and starts the CAN Controller to use the user values.
+     * 
+     *  @return success
+     */
     bool begin()
     {
         return true;
     }
 
     /** 
-    * Stops the Controller Module without destroying the instance.
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Stops the Controller Module without destroying the instance.
+     * 
+     *  @return success 
+     */
     bool end()
     {
         return true;
     }
 
     /**
-    * Send a Frame from Serial to CAN Channel
-    * @param &Frame     Reference to the Frame to be sended
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Send a Frame from Serial to CAN Channel
+     * 
+     *  @param[in] frame     Reference to the Frame to be sended
+     *  @return success 
+     */
     bool send(const Frame &frame)
     {
         copyFrames(frame, m_outputFrame);
@@ -263,10 +304,11 @@ public:
     }
 
     /**
-    * Set the State of the CAN Channel.
-    * @param state          BUS_STATE to be set to the CAN Channel
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Set the State of the CAN Channel.
+     * 
+     *  @param[in] state          BUS_STATE to be set to the CAN Channel
+     *  @return success
+     */
     bool setState(BUS_STATE state)
     {
         bool success = true;
@@ -293,9 +335,11 @@ public:
     }
 
     /**
-    * Set the Baudrate of the CAN Channel.
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Set the Baudrate of the CAN Channel.
+     * 
+     *  @param[in] baudrate Baudrate of the CAN Channel
+     *  @return success
+     */
     bool setBaudrate(uint32_t baudrate)
     {
         bool success = true;
@@ -304,9 +348,12 @@ public:
     }
 
     /**
-    * Sent the BTR Registers of the CAN Channel.
-    * @return 0 for OK, 1 for Error 
-    */
+     *  Sent the BTR Registers of the CAN Channel.
+     * 
+     *  @param BTR0             Register 0 to set a Channel Baudrate directly
+     *  @param BTR1             Register 1 to set a Channel Baudrate directly
+     *  @return success
+     */
     bool setBTR(uint8_t btr0, uint8_t btr1)
     {
         bool success = true;
@@ -316,10 +363,11 @@ public:
     }
 
     /**
-    * Set the Filter Mode of the CAN Channel.
-    * @param filter       Defines Filter based on FILTER_MODE Enum.
-    * @return 0 for OK, 1 for Error 
-    */
+     *  Set the Filter Mode of the CAN Channel.
+     * 
+     *  @param[in] filter       Defines Filter based on FILTER_MODE Enum.
+     *  @return success
+     */
     bool setFilterMode(FILTER_MODE filter)
     {
         bool success = true;
@@ -340,8 +388,11 @@ public:
     }
 
     /**
-    * Set the Acceptance Code Register.
-    */
+     *  Set the Acceptance Code Register.
+     * 
+     *  @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
+     *  @return success 
+     */
     bool setACn(const Filter &acn)
     {
         bool success = true;
@@ -355,8 +406,11 @@ public:
     }
 
     /**
-    * Set the Acceptance Mask Register.
-    */
+     *  Set the Acceptance Mask Register.
+     * 
+     *  @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
+     *  @return success
+     */
     bool setAMn(const Filter &amn)
     {
         bool success = true;
@@ -370,27 +424,31 @@ public:
     }
 
     /**
-    * Gets the Channel State from the CAN Controller.
-    * @return BUS_STATE m_currentState stores the state of the CAN Channel.
-    */
+     *  Gets the Channel State from the CAN Controller.
+     * 
+     *  @return BUS_STATE m_currentState of the CAN-Bus Channel.
+     */
     BUS_STATE getChannelState()
     {
         return m_currentState;
     }
 
     /**
-    * Gets the Status and Error Flags from the CAN Controller.
-    * @return 0 for OK, 1 for Error 
-    */
+     *  Gets the Status and Error Flags from the CAN Controller.
+     * 
+     *  @return  One Byte BCD hex value
+     */
     uint8_t getStatusFlags()
     {
         return 0;
     }
 
     /**
-    * Polls one Message from the FIFO Buffer.
-    * @return availableFrames. 0 for No new Frames.
-    */
+     *  Polls one Message from the FIFO Buffer.
+     * 
+     *  @param[in,out] frame  Received frame from CAN Bus
+     *  @return success  
+     */
     bool pollSingle(Frame &frame)
     {
         bool success = false;
@@ -400,20 +458,25 @@ public:
         return success;
     }
 
+    /**
+     *  Get CAN Channel Baudrate
+     * 
+     *  @return m_baudrate
+     */
     uint32_t getBaudrate()
     {
         return m_baudRate;
     }
 
-    uint32_t m_baudRate;
-    uint8_t m_btr0;
-    uint8_t m_btr1;
-    uint8_t m_filterMode;
-    BUS_STATE m_currentState;
-    Frame m_inputFrame;
-    Frame m_outputFrame;
-    Filter m_ACRn;
-    Filter m_AMRn;
+    uint32_t m_baudRate;      /**< CAN Channel Baudrate */
+    uint8_t m_btr0;           /**< BTR0 Byte */
+    uint8_t m_btr1;           /**< BTR1 Byte */
+    uint8_t m_filterMode;     /**< Filter Mode */
+    BUS_STATE m_currentState; /**< CAN Channel State */
+    Frame m_inputFrame;       /**< Simulated Input Frame */
+    Frame m_outputFrame;      /**< Simulated Output Frame */
+    Filter m_ACRn;            /**< ACRn Filter Bytes */
+    Filter m_AMRn;            /**< AMRn FIlter Bytes */
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/
