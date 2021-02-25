@@ -59,8 +59,8 @@ extern "C"
 /* FORWARD DECLARATIONS ***************************************************************************/
 
 /**
-*  ESP-32 Adapter as implementation of CANInterface for the Lawicel Protocol.
-*/
+ *  ESP-32 Adapter as implementation of CANInterface for the Lawicel Protocol.
+ */
 class CANAdapter : public CANInterface
 {
 public:
@@ -69,10 +69,9 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-    * Default constructor creates instance of the class using default values.
-    * Uses CANInterface constructor as its the implementation of an Interface.
-    * @param m_baudrate         Defines the Default baudrate of the CAN Channel
-    */
+     *  Default constructor creates instance of the class using default values.
+     *  Uses CANInterface constructor as its the implementation of an Interface.
+     */
     CANAdapter() : CANInterface(),
                    m_baudRate(500000),
                    m_currentState(CLOSED),
@@ -81,22 +80,23 @@ public:
     }
 
     /**
-    * Default destructor deletes instance of the class.
-    */
+     *  Default destructor deletes instance of the class.
+     */
     ~CANAdapter()
     {
     }
 
     /** 
-    * Configures and starts the CAN Controller to use the user values.
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Configures and starts the CAN Controller to use the user values.
+     * 
+     *  @return success
+     */
     bool begin()
     {
         bool success = true;
-        if(0x0100 == HARDWARE_VERSION)
+        if (0x0100 == HARDWARE_VERSION)
         {
-         m_Can_Controller.setPins(5, 4);  /* Fix for Hardware version 1.0. Fixed for Version 1.1 */
+            m_Can_Controller.setPins(5, 4); /**< Fix for Hardware version 1.0. Fixed for Version 1.1 */
         }
 
         if (0 == m_Can_Controller.begin(m_baudRate)) /**< Starts CAN channel with 500kbps Baudrate */
@@ -112,9 +112,10 @@ public:
     }
 
     /** 
-    * Stops the Controller Module without destroying the instance.
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Stops the Controller Module without destroying the instance.
+     * 
+     *  @return success 
+     */
     bool end()
     {
         m_Can_Controller.end();
@@ -122,10 +123,11 @@ public:
     }
 
     /**
-    * Send a Frame from Serial to CAN Channel
-    * @param &Frame     Reference to the Frame to be sended
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Send a Frame from Serial to CAN Channel
+     * 
+     *  @param[in] frame     Reference to the Frame to be sended
+     *  @return success 
+     */
     bool send(const Frame &frame)
     {
         bool success = true;
@@ -163,10 +165,11 @@ public:
     }
 
     /**
-    * Set the State of the CAN Channel.
-    * @param state          BUS_STATE to be set to the CAN Channel
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Set the State of the CAN Channel.
+     * 
+     *  @param[in] state          BUS_STATE to be set to the CAN Channel
+     *  @return success
+     */
     bool setState(BUS_STATE state)
     {
         bool success = true;
@@ -210,9 +213,11 @@ public:
     }
 
     /**
-    * Set the Baudrate of the CAN Channel.
-    * @return isError = 0 for OK, 1 for Error 
-    */
+     *  Set the Baudrate of the CAN Channel.
+     * 
+     *  @param[in] baudrate Baudrate of the CAN Channel
+     *  @return success
+     */
     bool setBaudrate(uint32_t baudrate)
     {
         bool success = true;
@@ -227,62 +232,69 @@ public:
     }
 
     /**
-    * Sent the BTR Registers of the CAN Channel.
-    * @return 0 for OK, 1 for Error 
-    */
+     *  Sent the BTR Registers of the CAN Channel.
+     *  @param BTR0             Register 0 to set a Channel Baudrate directly
+     *  @param BTR1             Register 1 to set a Channel Baudrate directly
+     *  @return success
+     */
     bool setBTR(uint8_t btr0, uint8_t btr1)
     {
         return false; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
     }
 
     /**
-    * Set the Filter Mode of the CAN Channel.
-    * @param filter       Defines Filter based on FILTER_MODE Enum.
-    * @return 0 for OK, 1 for Error 
-    */
+     *  Set the Filter Mode of the CAN Channel.
+     *  @param[in] filter       Defines Filter based on FILTER_MODE Enum.
+     *  @return success
+     */
     bool setFilterMode(FILTER_MODE filter)
     {
         return m_Can_Controller.setFilterMode(filter);
     }
 
     /**
-    * Set the Acceptance Code Register.
-    */
+     *  Set the Acceptance Code Register.
+     *  @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
+     *  @return success 
+     */
     bool setACn(const Filter &acn)
     {
         return m_Can_Controller.setACRn(acn.m_filterBytes);
     }
 
     /**
-    * Set the Acceptance Mask Register.
-    */
+     *  Set the Acceptance Mask Register.
+     *  @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
+     *  @return success
+     */
     bool setAMn(const Filter &amn)
     {
         return m_Can_Controller.setAMRn(amn.m_filterBytes);
     }
 
     /**
-    * Gets the Channel State from the CAN Controller.
-    * @return BUS_STATE m_currentState stores the state of the CAN Channel.
-    */
+     *  Gets the Channel State from the CAN Controller.
+     *  @return BUS_STATE m_currentState of the CAN-Bus Channel.
+     */
     BUS_STATE getChannelState()
     {
         return m_currentState;
     }
 
     /**
-    * Gets the Status and Error Flags from the CAN Controller.
-    * @return 0 for OK, 1 for Error 
-    */
+     *  Gets the Status and Error Flags from the CAN Controller.
+     *  @return  One Byte BCD hex value
+     */
     uint8_t getStatusFlags()
     {
         return 0; /**< Must read register. It returns error as the Controller does not allow it */
     }
 
     /**
-    * Polls one Message from the FIFO Buffer.
-    * @return availableFrames. 0 for No new Frames.
-    */
+     *  Polls one Message from the FIFO Buffer.
+     *  @param[in,out] frame  Received frame from CAN Bus
+     *  @return success  
+     */
     bool pollSingle(Frame &frame)
     {
         bool success = false;
@@ -305,9 +317,9 @@ public:
     }
 
 private:
-    uint32_t m_baudRate;
-    BUS_STATE m_currentState;
-    ESP32SJA1000Class &m_Can_Controller;
+    uint32_t m_baudRate;                 /**< Baudrate of CAN Channel */
+    BUS_STATE m_currentState;            /**< Current Channel State */
+    ESP32SJA1000Class &m_Can_Controller; /**< Instance of CAN Controller */
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

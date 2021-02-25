@@ -84,18 +84,21 @@ public:
 
     /** 
      *  Configures and starts the Serial Controller to use the user values.
+     * 
      *  @return success
      */
     virtual bool begin() = 0;
 
     /** 
      *  Stops the Serial Module without destroying the instance.
+     * 
      *  @return success
      */
     virtual bool end() = 0;
 
     /** 
      *  Sets the Baudrate for Serial Communication.
+     * 
      *  @param[in] baudrate      Baudrate for Serial Communication
      *  @return success
      */
@@ -103,6 +106,7 @@ public:
 
     /** 
      *  Reads the Serial Adapter into a buffer.
+     * 
      *  @param[in,out] c   Character received on the Serial Interface
      *  @return success
      */
@@ -110,18 +114,21 @@ public:
 
     /** 
      *  Prints a String to Serial Adapter.
+     * 
      *  @param[in] string     String to be printed
      */
     virtual void print(const String &string) = 0;
 
     /** 
      *  Prints an Integer to Serial Adapter.
+     * 
      *  @param[in] num     Integer to be printed
      */
     virtual void print(uint32_t num) = 0;
 
     /** 
      *  Prints a Character to Serial Adapter.
+     * 
      *  @param[in] c     Character to be printed
      */
     virtual void print(char c) = 0;

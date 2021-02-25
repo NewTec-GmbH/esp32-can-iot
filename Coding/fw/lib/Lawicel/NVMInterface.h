@@ -95,42 +95,55 @@ public:
 
     /**
      *  Configures and starts the NVM Controller to use the user values.
+     * 
      *  @return success
      */
     virtual bool begin() = 0;
 
     /**
      *  Stops the NVM Module without destroying the instance.
+     * 
      *  @return success
      */
     virtual bool end() = 0;
 
     /**
      *  Save Data in NVM
+     * 
+     *  @param[in] name Key of Parameter to save
+     *  @param[in] value Integer to save
      *  @return success
      */
     virtual bool save(const String &name, int32_t value) = 0;
 
     /**
      *  Save String in NVM
+     * 
+     *  @param[in] name Key of Parameter to save
+     *  @param[in] value String to save
      *  @return success
      */
     virtual bool save(const String &name, const String &value) = 0;
 
     /**
      *  Read Data from NVM
-     *  @return Saved Integer
+     * 
+     *  @param[in] name Key of Parameter to retrieve
+     *  @return Integer corresponding to the Key, if existent. Zero otherwise
      */
     virtual uint32_t readInt(const String &name) = 0;
 
     /**
      *  Read String from NVM
-     *  @return Saved string
+     * 
+     *  @param[in] name Key of Parameter to retrieve
+     *  @return String corresponding to the Key, if existent. Empty String otherwise
      */
     virtual String readString(const String &name) = 0;
 
     /**
      *  Delete all NVM Entries.
+     * 
      *  @return success
      */
     virtual bool clearEntries() = 0;
