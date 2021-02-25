@@ -60,7 +60,6 @@ const char Lawicel::CR = 13;
 const char Lawicel::BELL = 7;
 const uint8_t Lawicel::MAX_COMMAND_LENGTH = 30;
 
-
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
@@ -205,19 +204,20 @@ bool Lawicel::end()
 bool Lawicel::charToByte(char msb, char lsb, uint8_t &result)
 {
     bool success = true;
-    uint8_t var = 0;
-    if (charToInt(msb, var))
-    {
-        result = var * 16;
-    }
-    else
-    {
-        success = false;
-    }
+    uint8_t msbInteger = 0;
+    uint8_t lsbInteger = 0;
 
-    if (charToInt(lsb, var))
+    if (charToInt(msb, msbInteger))
     {
-        result += var;
+        if (charToInt(lsb, lsbInteger))
+        {
+            result = msbInteger * 16;
+            result += lsbInteger;
+        }
+        else
+        {
+            success = false;
+        }
     }
     else
     {
@@ -1288,7 +1288,7 @@ bool Lawicel::autopoll()
                 cmd = 'T';
                 idLength = 8;
             }
-            else if ((false == frame.m_extended)&& (true == frame.m_rtr))
+            else if ((false == frame.m_extended) && (true == frame.m_rtr))
             {
                 cmd = 'r';
             }
