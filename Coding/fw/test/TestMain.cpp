@@ -103,8 +103,8 @@ static Lawicel ProtocolTest(testingSerialAdapter, testingCANAdapter, testingNVMA
 /**************************************************************************************************/
 
 /**
-*   Main Testing Programm. Runs the Different Unity Tests
-*/
+ *  Main Testing Programm. Runs the Different Unity Tests
+ */
 int main(int argc, char **argv)
 {
     UNITY_BEGIN();
@@ -135,8 +135,8 @@ int main(int argc, char **argv)
 /**************************************************************************************************/
 
 /**
-*   Test set CAN Baudrate
-*/
+ *  Test set CAN Baudrate
+ */
 static void testCanBaudrate(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -173,8 +173,8 @@ static void testCanBaudrate(void)
 /**************************************************************************************************/
 
 /**
-*   Test set CAN BTR Registers
-*/
+ *  Test set CAN BTR Registers
+ */
 static void testCanBtr(void)
 {
     executeProtocolCycle(testingSerialAdapter.writeInput("s0000"));
@@ -193,8 +193,8 @@ static void testCanBtr(void)
 /**************************************************************************************************/
 
 /**
-*   Test Open Normal CAN Channel
-*/
+ *  Test Open Normal CAN Channel
+ */
 static void testCanOpenNormal(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -213,8 +213,8 @@ static void testCanOpenNormal(void)
 /**************************************************************************************************/
 
 /**
-*   Test Open Listen Only CAN Channel
-*/
+ *  Test Open Listen Only CAN Channel
+ */
 static void testCanOpenListenOnly(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -237,8 +237,8 @@ static void testCanOpenListenOnly(void)
 /**************************************************************************************************/
 
 /**
-*   Test Close CAN Channel
-*/
+ * Test Close CAN Channel
+ */
 static void testCanClose(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
@@ -253,8 +253,8 @@ static void testCanClose(void)
 /**************************************************************************************************/
 
 /**
-*   Test Send STD Frame
-*/
+ * Test Send STD Frame
+ */
 static void testTxStd(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
@@ -301,8 +301,8 @@ static void testTxStd(void)
 /**************************************************************************************************/
 
 /**
-*   Test Send EXT Frame
-*/
+ *  Test Send EXT Frame
+ */
 static void testTxExt(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
@@ -352,8 +352,8 @@ static void testTxExt(void)
 /**************************************************************************************************/
 
 /**
-*   Test Send STD RTR Frame
-*/
+ *  Test Send STD RTR Frame
+ */
 static void testTxStdRtr(void)
 {
     testingCANAdapter.clearOutputFrame();
@@ -408,8 +408,8 @@ static void testTxStdRtr(void)
 /**************************************************************************************************/
 
 /**
-*   Test Send EXT RTR Frame
-*/
+ * Test Send EXT RTR Frame
+ */
 static void testTxExtRtr(void)
 {
     testingCANAdapter.clearOutputFrame();
@@ -465,8 +465,8 @@ static void testTxExtRtr(void)
 /**************************************************************************************************/
 
 /**
-*   Test set Filter Mode
-*/
+ * Test set Filter Mode
+ */
 static void testFilterMode(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -499,8 +499,8 @@ static void testFilterMode(void)
 /**************************************************************************************************/
 
 /**
-*   Test set ACRn
-*/
+ *  Test set ACRn
+ */
 static void testAcnRegister(void)
 {
     for (int i = 0; i < 4; i++)
@@ -529,8 +529,8 @@ static void testAcnRegister(void)
 /**************************************************************************************************/
 
 /**
-*   Test set AMRn
-*/
+ *  Test set AMRn
+ */
 static void testAmnRegister(void)
 {
     for (int i = 0; i < 4; i++)
@@ -559,8 +559,8 @@ static void testAmnRegister(void)
 /**************************************************************************************************/
 
 /**
-*   Test set Serial Baudrate
-*/
+ *  Test set Serial Baudrate
+ */
 static void testSerialBaudrate(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
@@ -601,8 +601,8 @@ static void testSerialBaudrate(void)
 /**************************************************************************************************/
 
 /**
-*   Test get Version
-*/
+ *  Test get Version
+ */
 static void testVersion(void)
 {
     executeProtocolCycle(testingSerialAdapter.writeInput("V"));
@@ -612,8 +612,8 @@ static void testVersion(void)
 /**************************************************************************************************/
 
 /**
-*   Test get Serial number
-*/
+ *  Test get Serial number
+ */
 static void testSerialNumber(void)
 {
     executeProtocolCycle(testingSerialAdapter.writeInput("N"));
@@ -623,8 +623,8 @@ static void testSerialNumber(void)
 /**************************************************************************************************/
 
 /**
-*   Test set Timestamp mode
-*/
+ *  Test set Timestamp mode
+ */
 static void testTimestamp(void)
 {
     executeProtocolCycle(testingSerialAdapter.writeInput("Z0"));
@@ -640,8 +640,8 @@ static void testTimestamp(void)
 /**************************************************************************************************/
 
 /**
-*   Test set Autostart Mode
-*/
+ *  Test set Autostart Mode
+ */
 static void testAutostart(void)
 {
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
@@ -665,8 +665,10 @@ static void testAutostart(void)
 /**************************************************************************************************/
 
 /**
-*   Runs Lawicel Cycle the amount of times specified
-*/
+ *  Runs Lawicel Cycle the amount of times specified
+ * 
+ *  @param[in] cycles Amount of Lawicel cycles to run/Simulate
+ */
 static void executeProtocolCycle(uint8_t cycles)
 {
     for (uint8_t i = 0; i < cycles; i++)
