@@ -152,7 +152,7 @@ bool ESPServer::isRestartRequested()
 /*
 *   Initializes the corresponding Webpages, depending on the WiFi Mode specified by user
 */
-bool initPages(bool apModeRequested)
+static bool initPages(bool apModeRequested)
 {
     bool success = true;
 

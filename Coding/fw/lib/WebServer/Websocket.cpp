@@ -56,7 +56,6 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-AsyncWebSocket ws("/ws");
 
 /* MACROS *****************************************************************************************/
 
@@ -69,8 +68,9 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 
 /* VARIABLES **************************************************************************************/
 
-static QueueHandle_t inputQueue;
-static String outputBuffer = "";
+static AsyncWebSocket ws("/ws"); /**< Instance of Web Socket Handler */
+static QueueHandle_t inputQueue; /**< WebSocket input Queue */
+static String outputBuffer = ""; /**< WebSocket output Buffer */
 
 /* PUBLIC METHODES ********************************************************************************/
 

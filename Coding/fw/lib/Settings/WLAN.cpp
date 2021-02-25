@@ -56,12 +56,10 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-static const uint16_t WIFI_TIMEOUT_MS = 20000; /**< Maximum wait time to establish the WiFi connection */
-static const String DIRECTORY = "WLAN";
-static String STA_SSID = "";
-static String STA_PASSWORD = "";
-static String AP_SSID = "ESP32";
-static String AP_PASSWORD = "hochschuleulm";
+static const uint16_t WIFI_TIMEOUT_MS = 20000;     /**< Maximum wait time to establish the WiFi connection */
+static const String DIRECTORY = "WLAN";            /**< NVM Directory for STA Credentials */
+static const String AP_SSID = "ESP32";             /**< SSID of ESP Access Point. */
+static const String AP_PASSWORD = "hochschuleulm"; /**< Password of ESP Access Point. */
 
 /* MACROS *****************************************************************************************/
 
@@ -81,6 +79,10 @@ static bool readWiFiMode();
 static bool connectWiFi();
 
 /* VARIABLES **************************************************************************************/
+
+static String STA_SSID = "";     /**< SSID of user-configured network. */
+static String STA_PASSWORD = ""; /**< Password of user-configured network. */
+
 static IPAddress serverIP; /**< Stores the IP Address of the ESP32 */
 static bool APMode = true; /**< Defines True if AP Mode should be activated; or False for STA Mode */
 
@@ -113,7 +115,6 @@ bool wlan::getAP_MODE()
 {
     return APMode;
 }
-
 
 /**************************************************************************************************/
 
@@ -227,7 +228,7 @@ static bool readWiFiMode()
 
         if (btnState1 == btnState2)
         {
-            if(LOW == btnState1)
+            if (LOW == btnState1)
             {
                 pressedButton = true;
             }
@@ -235,16 +236,14 @@ static bool readWiFiMode()
             {
                 pressedButton = false;
             }
-            
         }
-
     }
 
     return pressedButton;
 }
 
 /**************************************************************************************************/
-bool connectWiFi()
+static bool connectWiFi()
 {
     bool success = true;
 

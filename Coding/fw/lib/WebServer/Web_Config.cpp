@@ -54,8 +54,8 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 static const String DIRECTORY = "Server";
-static String WEB_USER = "admin";
-static String WEB_PASSWORD = "admin";
+static const String WEB_USER = "admin";
+static const String WEB_PASSWORD = "admin";
 
 /* MACROS *****************************************************************************************/
 

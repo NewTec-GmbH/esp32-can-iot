@@ -63,15 +63,15 @@ Main Application
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-SerialAdapter serialAdapter;
-CANAdapter sja1000Adapter;
-NVMAdapter flashAdapter;
-WebSocketAdapter wsadapter;
+static SerialAdapter serialAdapter;
+static CANAdapter sja1000Adapter;
+static NVMAdapter flashAdapter;
+static WebSocketAdapter wsadapter;
 
-Lawicel protocolLawicel(wsadapter, sja1000Adapter, flashAdapter);
+static Lawicel protocolLawicel(wsadapter, sja1000Adapter, flashAdapter);
 
-uint32_t lastSend = 0;
-uint32_t waitTime = 50;
+static uint32_t lastSend = 0;
+static uint32_t waitTime = 50;
 
 /* PUBLIC METHODES ********************************************************************************/
 void setup()

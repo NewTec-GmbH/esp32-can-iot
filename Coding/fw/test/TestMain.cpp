@@ -66,11 +66,6 @@ Main Test entry point
 
 /* CONSTANTS **************************************************************************************/
 
-TestSerialAdapter testingSerialAdapter;                                           /**< Serial Adapter */
-TestCANAdapter testingCANAdapter;                                                 /**< CAN Adapter */
-TestNVMAdapter testingNVMAdapter;                                                 /**< NVM Adapter */
-Lawicel ProtocolTest(testingSerialAdapter, testingCANAdapter, testingNVMAdapter); /**< Lawicel Protocol Instance */
-
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
@@ -97,6 +92,11 @@ static void testTimestamp(void);                  /**< Test set Timestamp mode *
 static void testAutostart(void);                  /**< Test set Autostart Mode */
 
 /* VARIABLES **************************************************************************************/
+
+static TestSerialAdapter testingSerialAdapter;                                           /**< Serial Adapter */
+static TestCANAdapter testingCANAdapter;                                                 /**< CAN Adapter */
+static TestNVMAdapter testingNVMAdapter;                                                 /**< NVM Adapter */
+static Lawicel ProtocolTest(testingSerialAdapter, testingCANAdapter, testingNVMAdapter); /**< Lawicel Protocol Instance */
 
 /* PUBLIC METHODES ********************************************************************************/
 

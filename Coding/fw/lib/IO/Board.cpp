@@ -52,7 +52,7 @@ static const uint16_t OBD_SUPPLY_THRESHOLD = 800; /**< Voltage [mv] measured to 
 
 /* PROTOTYPES *************************************************************************************/
 
-void setBusMode(); /**< Switch between CAN or OBD Modes */
+static void setBusMode(); /**< Switch between CAN or OBD Modes */
 
 /* VARIABLES **************************************************************************************/
 
@@ -137,7 +137,7 @@ extern void Board::blinkError(uint32_t duration)
 * @brief Switch between CAN or OBD Modes
 * @author Gabryel Reyes
 */
-void setBusMode()
+static void setBusMode()
 {
     uint16_t supplyVoltage = obdSupply.read();
     const uint16_t threshold = (OBD_SUPPLY_THRESHOLD * (adcResolution - 1U)) / adcRefVoltage;
