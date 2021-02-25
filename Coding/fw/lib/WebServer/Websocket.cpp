@@ -68,9 +68,9 @@ static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEve
 
 /* VARIABLES **************************************************************************************/
 
-static AsyncWebSocket ws("/ws"); /**< Instance of Web Socket Handler */
-static QueueHandle_t inputQueue; /**< WebSocket input Queue */
-static String outputBuffer = ""; /**< WebSocket output Buffer */
+static AsyncWebSocket gWs("/ws"); /**< Instance of Web Socket Handler */
+static QueueHandle_t gInputQueue; /**< WebSocket input Queue */
+static String gOutputBuffer = ""; /**< WebSocket output Buffer */
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -85,9 +85,9 @@ void websocket::init(AsyncWebServer &server)
         request->send(SPIFFS, "/ws.html");
     });
 
-    ws.onEvent(onEvent);
-    server.addHandler(&ws);
-    inputQueue = xQueueCreate(100, sizeof(char));
+    gWs.onEvent(onEvent);
+    server.addHandler(&gWs);
+    gInputQueue = xQueueCreate(100, sizeof(char));
 }
 
 /**************************************************************************************************/
@@ -97,7 +97,7 @@ void websocket::init(AsyncWebServer &server)
 */
 void websocket::send(const String &message)
 {
-    outputBuffer += message;
+    gOutputBuffer += message;
 }
 
 /**************************************************************************************************/
@@ -110,10 +110,10 @@ bool websocket::sendBuffer()
 {
     bool success = true;
 
-    if (outputBuffer.length() != 0)
+    if (gOutputBuffer.length() != 0)
     {
-        ws.textAll(outputBuffer);
-        outputBuffer.clear();
+        gWs.textAll(gOutputBuffer);
+        gOutputBuffer.clear();
     }
     return success;
 }
@@ -127,7 +127,7 @@ bool websocket::receive(char &c)
 {
     bool success = false;
 
-    if (xQueueReceive(inputQueue, &c, 0) == pdTRUE)
+    if (xQueueReceive(gInputQueue, &c, 0) == pdTRUE)
     {
         success = true;
     }
@@ -155,7 +155,7 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
     {
         for (int i = 0; i < len; i++)
         {
-            if (errQUEUE_FULL == xQueueSendToBack(inputQueue, &data[i], 0))
+            if (errQUEUE_FULL == xQueueSendToBack(gInputQueue, &data[i], 0))
             {
                 Serial.println("Queue Full");
                 Board::blinkError(250);

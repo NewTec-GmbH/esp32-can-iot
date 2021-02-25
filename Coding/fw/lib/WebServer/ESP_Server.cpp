@@ -73,7 +73,7 @@ extern "C"
 static bool initPages(bool apModeRequested);
 
 /* VARIABLES **************************************************************************************/
-static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
+static AsyncWebServer gWebServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -111,7 +111,7 @@ bool ESPServer::begin()
         success = false;
     }
 
-    webServer.begin();
+    gWebServer.begin();
 
     return success;
 }
@@ -123,7 +123,7 @@ bool ESPServer::begin()
 */
 bool ESPServer::end()
 {
-    webServer.end();
+    gWebServer.end();
     SPIFFS.end();
     return WiFi.disconnect(true, true);
 }
@@ -158,11 +158,11 @@ static bool initPages(bool apModeRequested)
 
     if (apModeRequested)
     {
-        CaptivePortal::init(webServer);
+        CaptivePortal::init(gWebServer);
     }
     else
     {
-        Pages::init(webServer);     
+        Pages::init(gWebServer);     
     }
 
     return success;

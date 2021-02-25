@@ -80,22 +80,22 @@ static bool connectWiFi();
 
 /* VARIABLES **************************************************************************************/
 
-static String STA_SSID = "";     /**< SSID of user-configured network. */
-static String STA_PASSWORD = ""; /**< Password of user-configured network. */
+static String gStaSsid = "";     /**< SSID of user-configured network. */
+static String gStaPassword = ""; /**< Password of user-configured network. */
 
-static IPAddress serverIP; /**< Stores the IP Address of the ESP32 */
-static bool APMode = true; /**< Defines True if AP Mode should be activated; or False for STA Mode */
+static IPAddress gServerIP; /**< Stores the IP Address of the ESP32 */
+static bool gAPMode = true; /**< Defines True if AP Mode should be activated; or False for STA Mode */
 
 /* PUBLIC METHODES ********************************************************************************/
 /**************************************************************************************************/
 const String &wlan::getSTA_SSID()
 {
-    return STA_SSID;
+    return gStaSsid;
 }
 /**************************************************************************************************/
 const String &wlan::getSTA_PASS()
 {
-    return STA_PASSWORD;
+    return gStaPassword;
 }
 
 /**************************************************************************************************/
@@ -113,7 +113,7 @@ const String &wlan::getAP_PASS()
 /**************************************************************************************************/
 bool wlan::getAP_MODE()
 {
-    return APMode;
+    return gAPMode;
 }
 
 /**************************************************************************************************/
@@ -128,11 +128,11 @@ bool wlan::begin()
     Board::apLED.write(HIGH);
     Board::staLED.write(HIGH);
 
-    Settings::get(DIRECTORY, "STA_SSID", STA_SSID, "");
-    Settings::get(DIRECTORY, "STA_Password", STA_PASSWORD, "");
+    Settings::get(DIRECTORY, "STA_SSID", gStaSsid, "");
+    Settings::get(DIRECTORY, "STA_Password", gStaPassword, "");
 
-    APMode = readWiFiMode();
-    if (APMode)
+    gAPMode = readWiFiMode();
+    if (gAPMode)
     {
         Board::staLED.write(LOW);
         if (!WiFi.softAP(AP_SSID.c_str(), AP_PASSWORD.c_str()))
@@ -140,7 +140,7 @@ bool wlan::begin()
             success = false;
         }
 
-        serverIP = WiFi.softAPIP();
+        gServerIP = WiFi.softAPIP();
     }
     else
     {
@@ -149,7 +149,7 @@ bool wlan::begin()
         {
             success = false;
         }
-        else if (WiFi.begin(STA_SSID.c_str(), STA_PASSWORD.c_str()) == WL_CONNECT_FAILED)
+        else if (WiFi.begin(gStaSsid.c_str(), gStaPassword.c_str()) == WL_CONNECT_FAILED)
         {
             success = false;
         }
@@ -158,7 +158,7 @@ bool wlan::begin()
             success = false;
         }
 
-        serverIP = WiFi.localIP();
+        gServerIP = WiFi.localIP();
     }
     return success;
 }
@@ -184,7 +184,7 @@ bool wlan::checkConnection()
 /**************************************************************************************************/
 const IPAddress &wlan::getIPAddress()
 {
-    return serverIP;
+    return gServerIP;
 }
 
 /**************************************************************************************************/
@@ -259,7 +259,7 @@ static bool connectWiFi()
     }
     else
     {
-        serverIP = WiFi.localIP();
+        gServerIP = WiFi.localIP();
     }
 
     return success;

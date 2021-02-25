@@ -63,21 +63,21 @@ Main Application
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-static SerialAdapter serialAdapter;
-static CANAdapter sja1000Adapter;
-static NVMAdapter flashAdapter;
-static WebSocketAdapter wsadapter;
+static SerialAdapter gSerialAdapter;
+static CANAdapter gSja1000Adapter;
+static NVMAdapter gFlashAdapter;
+static WebSocketAdapter gWsadapter;
 
-static Lawicel protocolLawicel(wsadapter, sja1000Adapter, flashAdapter);
+static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
 
-static uint32_t lastSend = 0;
-static uint32_t waitTime = 50;
+static uint32_t gLastSend = 0;
+static uint32_t gWaitTime = 50;
 
 /* PUBLIC METHODES ********************************************************************************/
 void setup()
 {
     Board::init();
-    if (!protocolLawicel.begin())
+    if (!gProtocolLawicel.begin())
     {
         Board::haltSystem();
     }
@@ -91,7 +91,7 @@ void loop()
 {
     if (!wlan::getAP_MODE())
     {
-        if (!protocolLawicel.executeCycle())
+        if (!gProtocolLawicel.executeCycle())
         {
             Board::blinkError(250);
         }
@@ -105,9 +105,9 @@ void loop()
         Board::reset();
     }
 
-    if(millis()-lastSend > waitTime)
+    if(millis()-gLastSend > gWaitTime)
     {
-        lastSend = millis();
+        gLastSend = millis();
         websocket::sendBuffer();
     }
 }

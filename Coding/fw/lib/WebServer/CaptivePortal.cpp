@@ -166,7 +166,7 @@ private:
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler */
+static CaptiveRequestHandler gCaptivePortalReqHandler; /**< Instance of Handler */
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 /**
@@ -179,7 +179,7 @@ void CaptivePortal::init(AsyncWebServer &webServer)
     webServer.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
     webServer.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
     webServer.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
-    webServer.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
+    webServer.addHandler(&gCaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 }
 
 /**
