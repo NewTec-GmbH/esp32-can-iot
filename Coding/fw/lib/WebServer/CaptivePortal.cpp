@@ -67,7 +67,7 @@ static bool restartRequested = false; /**<  Variable to call Restart */
 * @param name Name of the parameter
 * @param value Value of the parameter 
 */
-static void credentialsProcessor(String name, String value);
+static void credentialsProcessor(const String &name, const String &value);
 
 /**
 * Captive portal request handler.
@@ -195,10 +195,10 @@ bool CaptivePortal::isRestartRequested()
 /**
  * @brief Saves the Credentials given by the user to the Flash Memory
  * 
- * @param name Key to store the Data
- * @param value Data to be stored
+ * @param name Name of Argument from Web POST Submit
+ * @param value Value of Argument from Web POST Submit
  */
-static void credentialsProcessor(String name, String value)
+static void credentialsProcessor(const String &name, const String &value)
 {
     if ((name == "STA_SSID") || (name == "STA_Password"))
     {
