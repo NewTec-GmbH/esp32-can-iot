@@ -77,24 +77,24 @@ Lawicel ProtocolTest(testingSerialAdapter, testingCANAdapter, testingNVMAdapter)
 
 /* PROTOTYPES *************************************************************************************/
 
-void runProtocolExecute(uint8_t cycles); /**< Runs Lawicel Cycle the amount of times specified */
-void test_can_baudrate(void);            /**< Test set CAN Baudrate */
-void test_can_btr(void);                 /**< Test set CAN BTR Registers */
-void test_can_open_normal(void);         /**< Test Open Normal CAN Channel */
-void test_can_open_listen_only(void);    /**< Test Open Listen Only CAN Channel */
-void test_can_close(void);               /**< Test Close CAN Channel */
-void test_tx_std(void);                  /**< Test Send STD Frame */
-void test_tx_ext(void);                  /**< Test Send EXT Frame */
-void test_tx_std_rtr(void);              /**< Test Send STD RTR Frame */
-void test_tx_ext_rtr(void);              /**< Test Send EXT RTR Frame */
-void test_filter_mode(void);             /**< Test set Filter Mode */
-void test_acn_register(void);            /**< Test set ACRn */
-void test_amn_register(void);            /**< Test set AMRn */
-void test_serial_baudrate(void);         /**< Test set Serial Baudrate */
-void test_version(void);                 /**< Test get Version */
-void test_serialnumber(void);            /**< Test get Serial number */
-void test_timestamp(void);               /**< Test set Timestamp mode */
-void test_autostart(void);               /**< Test set Autostart Mode */
+static void executeProtocolCycle(uint8_t cycles); /**< Runs Lawicel Cycle the amount of times specified */
+static void testCanBaudrate(void);                /**< Test set CAN Baudrate */
+static void testCanBtr(void);                     /**< Test set CAN BTR Registers */
+static void testCanOpenNormal(void);              /**< Test Open Normal CAN Channel */
+static void testCanOpenListenOnly(void);          /**< Test Open Listen Only CAN Channel */
+static void testCanClose(void);                   /**< Test Close CAN Channel */
+static void testTxStd(void);                      /**< Test Send STD Frame */
+static void testTxExt(void);                      /**< Test Send EXT Frame */
+static void testTxStdRtr(void);                   /**< Test Send STD RTR Frame */
+static void testTxExtRtr(void);                   /**< Test Send EXT RTR Frame */
+static void testFilterMode(void);                 /**< Test set Filter Mode */
+static void testAcnRegister(void);                /**< Test set ACRn */
+static void testAmnRegister(void);                /**< Test set AMRn */
+static void testSerialBaudrate(void);             /**< Test set Serial Baudrate */
+static void testVersion(void);                    /**< Test get Version */
+static void testSerialNumber(void);               /**< Test get Serial number */
+static void testTimestamp(void);                  /**< Test set Timestamp mode */
+static void testAutostart(void);                  /**< Test set Autostart Mode */
 
 /* VARIABLES **************************************************************************************/
 
@@ -108,23 +108,23 @@ void test_autostart(void);               /**< Test set Autostart Mode */
 int main(int argc, char **argv)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_can_baudrate);
-    RUN_TEST(test_can_btr);
-    RUN_TEST(test_can_open_normal);
-    RUN_TEST(test_can_open_listen_only);
-    RUN_TEST(test_can_close);
-    RUN_TEST(test_tx_std);
-    RUN_TEST(test_tx_ext);
-    RUN_TEST(test_tx_std_rtr);
-    RUN_TEST(test_tx_ext_rtr);
-    RUN_TEST(test_filter_mode);
-    RUN_TEST(test_acn_register);
-    RUN_TEST(test_amn_register);
-    RUN_TEST(test_serial_baudrate);
-    RUN_TEST(test_version);
-    RUN_TEST(test_serialnumber);
-    RUN_TEST(test_timestamp);
-    RUN_TEST(test_autostart);
+    RUN_TEST(testCanBaudrate);
+    RUN_TEST(testCanBtr);
+    RUN_TEST(testCanOpenNormal);
+    RUN_TEST(testCanOpenListenOnly);
+    RUN_TEST(testCanClose);
+    RUN_TEST(testTxStd);
+    RUN_TEST(testTxExt);
+    RUN_TEST(testTxStdRtr);
+    RUN_TEST(testTxExtRtr);
+    RUN_TEST(testFilterMode);
+    RUN_TEST(testAcnRegister);
+    RUN_TEST(testAmnRegister);
+    RUN_TEST(testSerialBaudrate);
+    RUN_TEST(testVersion);
+    RUN_TEST(testSerialNumber);
+    RUN_TEST(testTimestamp);
+    RUN_TEST(testAutostart);
     return UNITY_END();
 }
 
@@ -137,36 +137,36 @@ int main(int argc, char **argv)
 /**
 *   Test set CAN Baudrate
 */
-void test_can_baudrate(void)
+static void testCanBaudrate(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
     testingCANAdapter.m_baudRate = 0;
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S0"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S0"));
     TEST_ASSERT_EQUAL(10E3, testingCANAdapter.m_baudRate);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S1"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S1"));
     TEST_ASSERT_EQUAL(20E3, testingCANAdapter.m_baudRate);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S2"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S2"));
     TEST_ASSERT_EQUAL(50E3, testingCANAdapter.m_baudRate);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S3"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S3"));
     TEST_ASSERT_EQUAL(100E3, testingCANAdapter.m_baudRate);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S4"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S4"));
     TEST_ASSERT_EQUAL(125E3, testingCANAdapter.m_baudRate);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S5"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S5"));
     TEST_ASSERT_EQUAL(250E3, testingCANAdapter.m_baudRate);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S6"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S6"));
     TEST_ASSERT_EQUAL(500E3, testingCANAdapter.m_baudRate);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S7"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S7"));
     TEST_ASSERT_EQUAL(800E3, testingCANAdapter.m_baudRate);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("S8"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("S8"));
     TEST_ASSERT_EQUAL(1000E3, testingCANAdapter.m_baudRate);
 }
 
@@ -175,17 +175,17 @@ void test_can_baudrate(void)
 /**
 *   Test set CAN BTR Registers
 */
-void test_can_btr(void)
+static void testCanBtr(void)
 {
-    runProtocolExecute(testingSerialAdapter.writeInput("s0000"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("s0000"));
     TEST_ASSERT_EQUAL(0x00, testingCANAdapter.m_btr0);
     TEST_ASSERT_EQUAL(0x00, testingCANAdapter.m_btr1);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("s031C"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("s031C"));
     TEST_ASSERT_EQUAL(0x03, testingCANAdapter.m_btr0);
     TEST_ASSERT_EQUAL(0x1C, testingCANAdapter.m_btr1);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("sFFFF"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("sFFFF"));
     TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_btr0);
     TEST_ASSERT_EQUAL(0xFF, testingCANAdapter.m_btr1);
 }
@@ -195,18 +195,18 @@ void test_can_btr(void)
 /**
 *   Test Open Normal CAN Channel
 */
-void test_can_open_normal(void)
+static void testCanOpenNormal(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("O"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("O"));
     TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
 
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("O"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("O"));
     TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
 
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
-    runProtocolExecute(testingSerialAdapter.writeInput("O"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("O"));
     TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
 
@@ -215,22 +215,22 @@ void test_can_open_normal(void)
 /**
 *   Test Open Listen Only CAN Channel
 */
-void test_can_open_listen_only(void)
+static void testCanOpenListenOnly(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("L"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("L"));
     TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("L0"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("L0"));
     TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
 
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("L"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("L"));
     TEST_ASSERT_EQUAL(1, testingCANAdapter.getChannelState());
 
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
-    runProtocolExecute(testingSerialAdapter.writeInput("L"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("L"));
     TEST_ASSERT_EQUAL(2, testingCANAdapter.getChannelState());
 }
 
@@ -239,14 +239,14 @@ void test_can_open_listen_only(void)
 /**
 *   Test Close CAN Channel
 */
-void test_can_close(void)
+static void testCanClose(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
-    runProtocolExecute(testingSerialAdapter.writeInput("C"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("C"));
     TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
 
     testingCANAdapter.setState(CANInterface::LISTEN_ONLY);
-    runProtocolExecute(testingSerialAdapter.writeInput("C"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("C"));
     TEST_ASSERT_EQUAL(0, testingCANAdapter.getChannelState());
 }
 
@@ -255,47 +255,47 @@ void test_can_close(void)
 /**
 *   Test Send STD Frame
 */
-void test_tx_std(void)
+static void testTxStd(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
     testingCANAdapter.setBaudrate(500E3);
 
     testingCANAdapter.clearOutputFrame();
-    runProtocolExecute(testingSerialAdapter.writeInput("t0010"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("t0010"));
     testingCANAdapter.enterInputFrame(0x001, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
-    runProtocolExecute(testingSerialAdapter.writeInput("t1FF81122334455667788"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("t1FF81122334455667788"));
     testingCANAdapter.enterInputFrame(0x1FF, false, false, 8, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
-    runProtocolExecute(testingSerialAdapter.writeInput("t1234AABBCCDD"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("t1234AABBCCDD"));
     testingCANAdapter.enterInputFrame(0x123, false, false, 4, 0xAA, 0xBB, 0xCC, 0xDD, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("t1234AABBCCDD"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("t1234AABBCCDD"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
-    runProtocolExecute(testingSerialAdapter.writeInput("t1234AABBCCDD"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("t1234AABBCCDD"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 }
 
 /**************************************************************************************************/
@@ -303,50 +303,50 @@ void test_tx_std(void)
 /**
 *   Test Send EXT Frame
 */
-void test_tx_ext(void)
+static void testTxExt(void)
 {
     testingCANAdapter.setState(CANInterface::NORMAL);
     testingCANAdapter.setBaudrate(500E3);
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("T000000000"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("T000000000"));
     testingCANAdapter.enterInputFrame(0x000, false, true, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("T1FFFFFFF81122334455667788"));
-    testingCANAdapter.enterInputFrame(0x1FFFFFFF, false, true, 8,0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    executeProtocolCycle(testingSerialAdapter.writeInput("T1FFFFFFF81122334455667788"));
+    testingCANAdapter.enterInputFrame(0x1FFFFFFF, false, true, 8, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("T0000ABCD411223344"));
-    testingCANAdapter.enterInputFrame(0x0000ABCD, false, true, 4,0x11, 0x22, 0x33, 0x44, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    executeProtocolCycle(testingSerialAdapter.writeInput("T0000ABCD411223344"));
+    testingCANAdapter.enterInputFrame(0x0000ABCD, false, true, 4, 0x11, 0x22, 0x33, 0x44, 0, 0, 0, 0);
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("T0000ABCD411223344"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("T0000ABCD411223344"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
-    runProtocolExecute(testingSerialAdapter.writeInput("T0000ABCD411223344"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("T0000ABCD411223344"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 }
 
 /**************************************************************************************************/
@@ -354,55 +354,55 @@ void test_tx_ext(void)
 /**
 *   Test Send STD RTR Frame
 */
-void test_tx_std_rtr(void)
+static void testTxStdRtr(void)
 {
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("r0000"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("r0000"));
     testingCANAdapter.enterInputFrame(0x000, true, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("r00081122334455667788"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("r00081122334455667788"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("r1FF8"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("r1FF8"));
     testingCANAdapter.enterInputFrame(0x1FF, true, false, 8, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("r1234"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("r1234"));
     testingCANAdapter.enterInputFrame(0x123, true, false, 4, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("r1234AABBCCDD"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("r1234AABBCCDD"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
-    runProtocolExecute(testingSerialAdapter.writeInput("r1234AABBCCDD"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("r1234AABBCCDD"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 }
 
 /**************************************************************************************************/
@@ -410,56 +410,56 @@ void test_tx_std_rtr(void)
 /**
 *   Test Send EXT RTR Frame
 */
-void test_tx_ext_rtr(void)
+static void testTxExtRtr(void)
 {
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("R000000000"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("R000000000"));
     TEST_ASSERT_EQUAL_UINT32_MESSAGE(0x0000000, testingCANAdapter.m_outputFrame.m_id, "ID");
     testingCANAdapter.enterInputFrame(0x0000000, true, true, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("R1FFFFFFF8"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("R1FFFFFFF8"));
     testingCANAdapter.enterInputFrame(0x1FFFFFFF, true, true, 8, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("R0000ABCD4"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("R0000ABCD4"));
     testingCANAdapter.enterInputFrame(0x0000ABCD, true, true, 4, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("R0000ABCD412233187"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("R0000ABCD412233187"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("R0000ABCD4"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("R0000ABCD4"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 
     testingCANAdapter.clearOutputFrame();
     testingCANAdapter.m_currentState = CANInterface::LISTEN_ONLY;
-    runProtocolExecute(testingSerialAdapter.writeInput("R0000ABCD4"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("R0000ABCD4"));
     testingCANAdapter.enterInputFrame(0x000, false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame, 
-                                                            testingCANAdapter.m_outputFrame), 
-                                                            "Frame Compare");
+    TEST_ASSERT_TRUE_MESSAGE(testingCANAdapter.compareFrames(testingCANAdapter.m_inputFrame,
+                                                             testingCANAdapter.m_outputFrame),
+                             "Frame Compare");
 }
 
 /**************************************************************************************************/
@@ -467,32 +467,32 @@ void test_tx_ext_rtr(void)
 /**
 *   Test set Filter Mode
 */
-void test_filter_mode(void)
+static void testFilterMode(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
     testingCANAdapter.m_filterMode = 0;
-    runProtocolExecute(testingSerialAdapter.writeInput("W0"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("W0"));
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_filterMode, "FilterMode Dual");
 
     testingCANAdapter.m_filterMode = 0;
-    runProtocolExecute(testingSerialAdapter.writeInput("W1"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("W1"));
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(1, testingCANAdapter.m_filterMode, "FilterMode Dual");
 
     testingCANAdapter.m_filterMode = 0;
-    runProtocolExecute(testingSerialAdapter.writeInput("W"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("W"));
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_filterMode, "FilterMode Dual");
 
     testingCANAdapter.m_filterMode = 0;
-    runProtocolExecute(testingSerialAdapter.writeInput("W2"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("W2"));
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_filterMode, "FilterMode Dual");
 
     testingCANAdapter.m_filterMode = 1;
-    runProtocolExecute(testingSerialAdapter.writeInput("W0"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("W0"));
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(0, testingCANAdapter.m_filterMode, "FilterMode Dual");
 
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
     testingCANAdapter.m_filterMode = 1;
-    runProtocolExecute(testingSerialAdapter.writeInput("W0"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("W0"));
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(1, testingCANAdapter.m_filterMode, "FilterMode Dual");
 }
 
@@ -501,14 +501,14 @@ void test_filter_mode(void)
 /**
 *   Test set ACRn
 */
-void test_acn_register(void)
+static void testAcnRegister(void)
 {
     for (int i = 0; i < 4; i++)
     {
         testingCANAdapter.m_ACRn.m_filterBytes[i] = 0;
     }
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("MFFFFFFFF"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("MFFFFFFFF"));
     for (int i = 0; i < 4; i++)
     {
         TEST_ASSERT_EQUAL_UINT8(0xFF, testingCANAdapter.m_ACRn.m_filterBytes[i]);
@@ -519,7 +519,7 @@ void test_acn_register(void)
         testingCANAdapter.m_ACRn.m_filterBytes[i] = 0;
     }
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("MABCDEF01"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("MABCDEF01"));
     TEST_ASSERT_EQUAL_UINT8(0xAB, testingCANAdapter.m_ACRn.m_filterBytes[0]);
     TEST_ASSERT_EQUAL_UINT8(0xCD, testingCANAdapter.m_ACRn.m_filterBytes[1]);
     TEST_ASSERT_EQUAL_UINT8(0xEF, testingCANAdapter.m_ACRn.m_filterBytes[2]);
@@ -531,14 +531,14 @@ void test_acn_register(void)
 /**
 *   Test set AMRn
 */
-void test_amn_register(void)
+static void testAmnRegister(void)
 {
     for (int i = 0; i < 4; i++)
     {
         testingCANAdapter.m_AMRn.m_filterBytes[i] = 0;
     }
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("mFFFFFFFF"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("mFFFFFFFF"));
     for (int i = 0; i < 4; i++)
     {
         TEST_ASSERT_EQUAL_UINT8(0xFF, testingCANAdapter.m_AMRn.m_filterBytes[i]);
@@ -549,7 +549,7 @@ void test_amn_register(void)
         testingCANAdapter.m_AMRn.m_filterBytes[i] = 0;
     }
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("mABCDEF01"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("mABCDEF01"));
     TEST_ASSERT_EQUAL_UINT8(0xAB, testingCANAdapter.m_AMRn.m_filterBytes[0]);
     TEST_ASSERT_EQUAL_UINT8(0xCD, testingCANAdapter.m_AMRn.m_filterBytes[1]);
     TEST_ASSERT_EQUAL_UINT8(0xEF, testingCANAdapter.m_AMRn.m_filterBytes[2]);
@@ -561,39 +561,39 @@ void test_amn_register(void)
 /**
 *   Test set Serial Baudrate
 */
-void test_serial_baudrate(void)
+static void testSerialBaudrate(void)
 {
     testingCANAdapter.m_currentState = CANInterface::CLOSED;
-    runProtocolExecute(testingSerialAdapter.writeInput("U0"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("U0"));
     TEST_ASSERT_EQUAL_UINT32(230400, testingSerialAdapter.m_serialBaudrate);
     TEST_ASSERT_EQUAL_STRING("U0", testingNVMAdapter.m_outputString.c_str());
 
     testingSerialAdapter.m_serialBaudrate = 115200;
-    runProtocolExecute(testingSerialAdapter.writeInput("U1"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("U1"));
     TEST_ASSERT_EQUAL_UINT32(115200, testingSerialAdapter.m_serialBaudrate);
     TEST_ASSERT_EQUAL_STRING("U1", testingNVMAdapter.m_outputString.c_str());
 
     testingSerialAdapter.m_serialBaudrate = 115200;
 
-    runProtocolExecute(testingSerialAdapter.writeInput("U2"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("U2"));
     TEST_ASSERT_EQUAL_UINT32(57600, testingSerialAdapter.m_serialBaudrate);
     testingSerialAdapter.m_serialBaudrate = 115200;
     TEST_ASSERT_EQUAL_STRING("U2", testingNVMAdapter.m_outputString.c_str());
 
-    runProtocolExecute(testingSerialAdapter.writeInput("U3"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("U3"));
     TEST_ASSERT_EQUAL_UINT32(38400, testingSerialAdapter.m_serialBaudrate);
     testingSerialAdapter.m_serialBaudrate = 115200;
     TEST_ASSERT_EQUAL_STRING("U3", testingNVMAdapter.m_outputString.c_str());
 
-    runProtocolExecute(testingSerialAdapter.writeInput("U4"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("U4"));
     TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_serialBaudrate);
     TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
 
-    runProtocolExecute(testingSerialAdapter.writeInput("U"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("U"));
     TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_serialBaudrate);
     TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
 
-    runProtocolExecute(testingSerialAdapter.writeInput("'U54'"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("'U54'"));
     TEST_ASSERT_EQUAL_UINT32(19200, testingSerialAdapter.m_serialBaudrate);
     TEST_ASSERT_EQUAL_STRING("U4", testingNVMAdapter.m_outputString.c_str());
 }
@@ -603,9 +603,9 @@ void test_serial_baudrate(void)
 /**
 *   Test get Version
 */
-void test_version(void)
+static void testVersion(void)
 {
-    runProtocolExecute(testingSerialAdapter.writeInput("V"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("V"));
     TEST_ASSERT_EQUAL_STRING("V0101\r", testingSerialAdapter.m_outputString.c_str());
 }
 
@@ -614,9 +614,9 @@ void test_version(void)
 /**
 *   Test get Serial number
 */
-void test_serialnumber(void)
+static void testSerialNumber(void)
 {
-    runProtocolExecute(testingSerialAdapter.writeInput("N"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("N"));
     TEST_ASSERT_EQUAL_STRING("NNT32\r", testingSerialAdapter.m_outputString.c_str());
 }
 
@@ -625,15 +625,15 @@ void test_serialnumber(void)
 /**
 *   Test set Timestamp mode
 */
-void test_timestamp(void)
+static void testTimestamp(void)
 {
-    runProtocolExecute(testingSerialAdapter.writeInput("Z0"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("Z0"));
     TEST_ASSERT_EQUAL_UINT32(0, testingNVMAdapter.m_outputInt);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("Z1"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("Z1"));
     TEST_ASSERT_EQUAL_UINT32(1, testingNVMAdapter.m_outputInt);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("Z2"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("Z2"));
     TEST_ASSERT_EQUAL_UINT32(1, testingNVMAdapter.m_outputInt);
 }
 
@@ -642,19 +642,19 @@ void test_timestamp(void)
 /**
 *   Test set Autostart Mode
 */
-void test_autostart(void)
+static void testAutostart(void)
 {
     testingCANAdapter.m_currentState = CANInterface::NORMAL;
-    runProtocolExecute(testingSerialAdapter.writeInput("Q0"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("Q0"));
     TEST_ASSERT_EQUAL_UINT32(0, testingNVMAdapter.m_outputInt);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("Q1"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("Q1"));
     TEST_ASSERT_EQUAL_UINT32(1, testingNVMAdapter.m_outputInt);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("Q2"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("Q2"));
     TEST_ASSERT_EQUAL_UINT32(2, testingNVMAdapter.m_outputInt);
 
-    runProtocolExecute(testingSerialAdapter.writeInput("Q3"));
+    executeProtocolCycle(testingSerialAdapter.writeInput("Q3"));
     TEST_ASSERT_EQUAL_UINT32(2, testingNVMAdapter.m_outputInt);
 }
 
@@ -667,7 +667,7 @@ void test_autostart(void)
 /**
 *   Runs Lawicel Cycle the amount of times specified
 */
-void runProtocolExecute(uint8_t cycles)
+static void executeProtocolCycle(uint8_t cycles)
 {
     for (uint8_t i = 0; i < cycles; i++)
     {
