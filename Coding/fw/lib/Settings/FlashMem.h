@@ -56,36 +56,64 @@ extern "C"
 }
 
 /* FORWARD DECLARATIONS ***************************************************************************/
+
 /*
 * Implementation of the Preferences Library for the project. Initial values and commands are
 * saved and called through this class.
 */
 namespace Settings
 {
-    bool save(                         /**< Saves uint32_t value to Flash memory */
-              const String &directory, /**< Directory where information is stored */
-              const String &key,       /**< Name of Memory Location */
-              const uint32_t &value);  /**< Value to be stored */
+    /**
+     *  Saves uint32_t value to Flash memory
+     * 
+     *  @param[in] directory Directory where information is stored
+     *  @param[in] key Name of Memory Location
+     *  @param[in] value Value to be stored
+     *  @return success
+     */
+    bool save(const String &directory, const String &key, const uint32_t &value);
 
-    bool save(                         /**< Saves uint32_t value to Flash memory */
-              const String &directory, /**< Directory where information is stored */
-              const String &key,       /**< Name of Memory Location */
-              const String &value);    /**< String to be stored */
+    /**
+     *  Saves String to Flash memory
+     * 
+     *  @param[in] directory Directory where information is stored
+     *  @param[in] key Name of Memory Location
+     *  @param[in] value String to be stored
+     *  @return success
+     */
+    bool save(const String &directory, const String &key, const String &value);
 
-    bool get(                                   /**< Gets uint32_t value from Flash memory */
-             const String &directory,           /**< Directory where information is stored */
-             const String &key,                 /**< Name of Memory Location */
-             uint32_t &value,                   /**< Variable to write the value to */
-             const uint32_t &defaultValue = 0U); /**< Default value returned if no value stored in memory */
+    /**
+     *  Gets uint32_t value from Flash memory
+     * 
+     *  @param[in] directory Directory where information is stored
+     *  @param[in] key Name of Memory Location
+     *  @param[in] value Variable to write the value to
+     *  @param[in] defaultValue Default value returned if no value stored in memory
+     *  @return success
+     */
+    bool get(const String &directory, const String &key, uint32_t &value, const uint32_t &defaultValue = 0U);
 
-    bool get(                                 /**< Gets uint32_t value from Flash memory */
-             const String &directory,         /**< Directory where information is stored */
-             const String &key,               /**< Name of Memory Location */
-             String &value,                   /**< Variable to write the String to */
-             const String &defaultValue = ""); /**< Default String returned if no String stored in memory */
+    /**
+     *  Gets String from Flash memory
+     * 
+     *  @param[in] directory Directory where information is stored
+     *  @param[in] key Name of Memory Location
+     *  @param[in] value Variable to write the value to
+     *  @param[in] defaultValue Default value returned if no value stored in memory
+     *  @return success
+     */
+    bool get(const String &directory, const String &key, String &value, const String &defaultValue = "");
 
-    bool clear(const String &directory); /**< Clears all entries on a directory */
-};                                       // namespace Settings
+    /**
+     *  Clears all entries on a directory
+     * 
+     *  @param[in] directory Directory to clear
+     *  @return success
+     */
+    bool clear(const String &directory);
+
+}; /** namespace Settings */
 
     /* INLINE FUNCTIONS ***************************************************************************/
 

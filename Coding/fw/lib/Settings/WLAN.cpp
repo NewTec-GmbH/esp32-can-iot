@@ -56,6 +56,7 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
+
 static const uint16_t WIFI_TIMEOUT_MS = 20000;     /**< Maximum wait time to establish the WiFi connection */
 static const String DIRECTORY = "WLAN";            /**< NVM Directory for STA Credentials */
 static const String AP_SSID = "ESP32";             /**< SSID of ESP Access Point. */
@@ -67,15 +68,15 @@ static const String AP_PASSWORD = "hochschuleulm"; /**< Password of ESP Access P
 
 /* PROTOTYPES *************************************************************************************/
 /**
-*   Determines the state of the WiFiModeSelect Button to enter AP Mode
-*   @return bool AP Mode. If true, will request the AP mode. If false, requests STA Mode
-*/
+ *  Determines the state of the WiFiModeSelect Button to enter AP Mode
+ *  @return True if AP mode requested. False otherwise.
+ */
 static bool readWiFiMode();
 
 /**
-* Connects to the WiFi AP when requested
-* @return true when succesfully connected. False otherwise.
-*/
+ *  Connects to the WiFi AP when requested
+ *  @return true when succesfully connected. False otherwise.
+ */
 static bool connectWiFi();
 
 /* VARIABLES **************************************************************************************/
@@ -87,30 +88,62 @@ static IPAddress gServerIP; /**< Stores the IP Address of the ESP32 */
 static bool gAPMode = true; /**< Defines True if AP Mode should be activated; or False for STA Mode */
 
 /* PUBLIC METHODES ********************************************************************************/
+
 /**************************************************************************************************/
+
+/**
+ *  Get saved Station SSID
+ * 
+ *  @return Saved Station SSID 
+ */
 const String &wlan::getSTA_SSID()
 {
     return gStaSsid;
 }
+
 /**************************************************************************************************/
+
+/**
+ *  Get saved Station Password
+ * 
+ *  @return Saved Station Password 
+ */
 const String &wlan::getSTA_PASS()
 {
     return gStaPassword;
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Get saved Access Point SSID
+ * 
+ *  @return Saved Access Point SSID
+ */
 const String &wlan::getAP_SSID()
 {
     return AP_SSID;
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Get saved Access Point Password
+ * 
+ *  @return Saved Access Point Password
+ */
 const String &wlan::getAP_PASS()
 {
     return AP_PASSWORD;
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Get Access Point Mode Status
+ * 
+ *  @return True if AP Mode should be activated; or False for STA Mode
+ */
 bool wlan::getAP_MODE()
 {
     return gAPMode;
@@ -119,9 +152,10 @@ bool wlan::getAP_MODE()
 /**************************************************************************************************/
 
 /**
-*   Start the WiFi Conenction
-*   @return bool success
-*/
+ *  Start the WiFi Conenction
+ * 
+ *  @return success
+ */
 bool wlan::begin()
 {
     bool success = true;
@@ -164,10 +198,12 @@ bool wlan::begin()
 }
 
 /**************************************************************************************************/
+
 /**
-*   Checks WiFi Connection
-*   return true if a restart is requested
-*/
+ *   Checks WiFi Connection
+ * 
+ *   @return true if a restart is requested
+ */
 bool wlan::checkConnection()
 {
     bool success = true;
@@ -182,12 +218,25 @@ bool wlan::checkConnection()
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Get the IP Address of the ESP
+ * 
+ *  @return IPAddress
+ */
 const IPAddress &wlan::getIPAddress()
 {
     return gServerIP;
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Saves the desired value in the memory "key"
+ * 
+ *  @param key  Memory Address to store information to
+ *  @param value String to be stored
+ */
 void wlan::saveConfig(const String &key, const String &value)
 {
     Settings::save(DIRECTORY, key, value);
@@ -204,9 +253,10 @@ void wlan::saveConfig(const String &key, const String &value)
 /**************************************************************************************************/
 
 /**
-*   Read Button State and return it to define WiFi Mode
-*   @return  bool pressedButton
-*/
+ *  Read Button State
+ * 
+ *  @return  True if Button is pressed
+ */
 static bool readWiFiMode()
 {
     bool pressedButton = false;
@@ -243,6 +293,11 @@ static bool readWiFiMode()
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Connects to the WiFi AP when requested
+ *  @return true when succesfully connected. False otherwise.
+ */
 static bool connectWiFi()
 {
     bool success = true;

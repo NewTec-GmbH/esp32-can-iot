@@ -62,10 +62,20 @@ extern "C"
 
 /* VARIABLES **************************************************************************************/
 
-static Preferences gMemory;
+static Preferences gMemory; /**< Instances of Preferences Library to save information in NVM */
 
 /* PUBLIC METHODES ********************************************************************************/
+
 /**************************************************************************************************/
+
+/**
+ *  Saves uint32_t value to Flash memory
+ * 
+ *  @param[in] directory Directory where information is stored
+ *  @param[in] key Name of Memory Location
+ *  @param[in] value Value to be stored
+ *  @return success
+ */
 bool Settings::save(const String &directory, const String &key, const uint32_t &value)
 {
     bool success = false;
@@ -79,6 +89,15 @@ bool Settings::save(const String &directory, const String &key, const uint32_t &
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Saves uint32_t value to Flash memory
+ * 
+ *  @param[in] directory Directory where information is stored
+ *  @param[in] key Name of Memory Location
+ *  @param[in] value String to be stored
+ *  @return success
+ */
 bool Settings::save(const String &directory, const String &key, const String &value)
 {
     bool success = false;
@@ -92,6 +111,16 @@ bool Settings::save(const String &directory, const String &key, const String &va
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Gets uint32_t value from Flash memory
+ * 
+ *  @param[in] directory Directory where information is stored
+ *  @param[in] key Name of Memory Location
+ *  @param[in] value Variable to write the value to
+ *  @param[in] defaultValue Default value returned if no value stored in memory
+ *  @return success
+ */
 bool Settings::get(const String &directory, const String &key, uint32_t &value, const uint32_t &defaultValue)
 {
     bool success = false;
@@ -105,6 +134,16 @@ bool Settings::get(const String &directory, const String &key, uint32_t &value, 
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Gets String from Flash memory
+ * 
+ *  @param[in] directory Directory where information is stored
+ *  @param[in] key Name of Memory Location
+ *  @param[in] value Variable to write the value to
+ *  @param[in] defaultValue Default value returned if no value stored in memory
+ *  @return success
+ */
 bool Settings::get(const String &directory, const String &key, String &value, const String &defaultValue)
 {
     bool success = false;
@@ -118,6 +157,12 @@ bool Settings::get(const String &directory, const String &key, String &value, co
 }
 
 /**************************************************************************************************/
+/**
+ *  Clears all entries on a directory
+ * 
+ *  @param[in] directory Directory to clear
+ *  @return success
+ */
 bool Settings::clear(const String &directory)
 {
     bool success = false;
