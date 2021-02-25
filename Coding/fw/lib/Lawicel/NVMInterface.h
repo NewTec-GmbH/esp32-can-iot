@@ -58,17 +58,17 @@ extern "C"
 /* FORWARD DECLARATIONS ***************************************************************************/
 
 /*
-* Interface of the Lawicel Protocol to the NVM of the board. Defines the Methods to save and fetch  
-* the initial parameters of the system.
-*/
+ *  Interface of the Lawicel Protocol to the NVM of the board. Defines the Methods to save and fetch  
+ *  the initial parameters of the system.
+ */
 class NVMInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
 
     /**
-    * Key Definition (Addresses) to be read by NVM Adapter for initialization
-    */
+     *  Key Definition (Addresses) to be read by NVM Adapter for initialization
+     */
     const String INIT_SERIAL_BAUD = "SerialBaud"; /**< Initial Serial Baudrate*/
     const String INIT_TIMESTAMP = "ToggleTime";   /**< Initial State of Timestamp*/
     const String INIT_AUTO_START = "AutoStart";   /**< Initial State of Autostart*/
@@ -80,51 +80,58 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-    * Default constructor creates instance of the class using default values.
-    */
+     *  Default constructor creates instance of the class using default values.
+     */
     NVMInterface()
     {
     }
 
     /**
-    * Default destructor deletes instance of the class.
-    */
+     *  Default destructor deletes instance of the class.
+     */
     virtual ~NVMInterface()
     {
     }
 
     /**
-    * Configures and starts the NVM Controller to use the user values.
-    */
+     *  Configures and starts the NVM Controller to use the user values.
+     *  @return success
+     */
     virtual bool begin() = 0;
 
     /**
-    * Stops the NVM Module without destroying the instance.
-    */
+     *  Stops the NVM Module without destroying the instance.
+     *  @return success
+     */
     virtual bool end() = 0;
 
     /**
-    * Save Data in NVM
-    */
+     *  Save Data in NVM
+     *  @return success
+     */
     virtual bool save(const String &name, int32_t value) = 0;
 
     /**
-    * Save String in NVM
-    */
+     *  Save String in NVM
+     *  @return success
+     */
     virtual bool save(const String &name, const String &value) = 0;
 
     /**
-    * Read Data from NVM
-    */
+     *  Read Data from NVM
+     *  @return Saved Integer
+     */
     virtual uint32_t readInt(const String &name) = 0;
 
     /**
-    * Read String from NVM
-    */
+     *  Read String from NVM
+     *  @return Saved string
+     */
     virtual String readString(const String &name) = 0;
 
     /**
-     * Delete all NVM Entries.
+     *  Delete all NVM Entries.
+     *  @return success
      */
     virtual bool clearEntries() = 0;
 
