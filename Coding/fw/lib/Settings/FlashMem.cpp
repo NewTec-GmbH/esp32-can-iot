@@ -92,7 +92,7 @@ bool Settings::save(const String &directory, const String &key, const String &va
 }
 
 /**************************************************************************************************/
-bool Settings::get(const String &directory, const String &key, uint32_t &value, const uint32_t defaultValue)
+bool Settings::get(const String &directory, const String &key, uint32_t &value, const uint32_t &defaultValue)
 {
     bool success = false;
     if (gMemory.begin(directory.c_str(), false))
@@ -105,7 +105,7 @@ bool Settings::get(const String &directory, const String &key, uint32_t &value, 
 }
 
 /**************************************************************************************************/
-bool Settings::get(const String &directory, const String &key, String &value, const String defaultValue)
+bool Settings::get(const String &directory, const String &key, String &value, const String &defaultValue)
 {
     bool success = false;
     if (gMemory.begin(directory.c_str(), false))

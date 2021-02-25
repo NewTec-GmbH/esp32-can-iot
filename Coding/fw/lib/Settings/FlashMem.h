@@ -76,13 +76,13 @@ namespace Settings
              const String &directory,           /**< Directory where information is stored */
              const String &key,                 /**< Name of Memory Location */
              uint32_t &value,                   /**< Variable to write the value to */
-             const uint32_t defaultValue = 0U); /**< Default value returned if no value stored in memory */
+             const uint32_t &defaultValue = 0U); /**< Default value returned if no value stored in memory */
 
     bool get(                                 /**< Gets uint32_t value from Flash memory */
              const String &directory,         /**< Directory where information is stored */
              const String &key,               /**< Name of Memory Location */
              String &value,                   /**< Variable to write the String to */
-             const String defaultValue = ""); /**< Default String returned if no String stored in memory */
+             const String &defaultValue = ""); /**< Default String returned if no String stored in memory */
 
     bool clear(const String &directory); /**< Clears all entries on a directory */
 };                                       // namespace Settings
