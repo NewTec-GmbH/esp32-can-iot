@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
 @addtogroup Webserver
 @{
-@file       Websocketg.h
+@file       Websocket.h
 
 Configuration of ESP32 WebSocket
 

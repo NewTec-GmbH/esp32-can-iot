@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
 @addtogroup Webserver
 @{
-@file       ESPServer.h
+@file       ESP_Server.h
 
 Handler for ESP32 WebServer
 

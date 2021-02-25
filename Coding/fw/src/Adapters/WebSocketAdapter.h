@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
 @addtogroup Adapters
 @{
-@file       WSAdapter.h
+@file       WebSocketAdapter.h
 
 ESP32 WebSocket Adapter for Lawicel Protocol
 
