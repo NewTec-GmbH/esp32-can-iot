@@ -63,17 +63,25 @@ Main Application
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-static SerialAdapter gSerialAdapter;
-static CANAdapter gSja1000Adapter;
-static NVMAdapter gFlashAdapter;
-static WebSocketAdapter gWsadapter;
 
+static SerialAdapter gSerialAdapter; /**< Serial Adapter Instance */
+static CANAdapter gSja1000Adapter;   /**< CAN Adapter Instance */
+static NVMAdapter gFlashAdapter;     /**< NVM Adapter Instance */
+static WebSocketAdapter gWsadapter;  /**< WebSocket Adapter Instance */
+
+/** Lawicel Protocol Instance */
 static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
 
-static uint32_t gLastSend = 0;
-static uint32_t gWaitTime = 50;
+static uint32_t gLastSend = 0;  /**< Timestamp of last sent WebSocket Buffer */
+static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send */
 
 /* PUBLIC METHODES ********************************************************************************/
+
+/**************************************************************************************************/
+
+/**
+ *  Initialization of Application
+ */
 void setup()
 {
     Board::init();
@@ -87,6 +95,11 @@ void setup()
     }
 }
 
+/**************************************************************************************************/
+
+/**
+ *  Application Loop
+ */
 void loop()
 {
     if (!wlan::getAP_MODE())
@@ -105,7 +118,7 @@ void loop()
         Board::reset();
     }
 
-    if(millis()-gLastSend > gWaitTime)
+    if (millis() - gLastSend > gWaitTime)
     {
         gLastSend = millis();
         websocket::sendBuffer();
