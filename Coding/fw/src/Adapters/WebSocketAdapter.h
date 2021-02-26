@@ -113,11 +113,11 @@ public:
         return true;
     }
 
-    /**
-     *  Read String from NVM
+    /** 
+     *  Sets the Baudrate for Serial Communication.
      * 
-     *  @param[in] name Key of Parameter to retrieve
-     *  @return String corresponding to the Key, if existent. Empty String otherwise
+     *  @param[in] baudrate      Baudrate for Serial Communication
+     *  @return success
      */
     bool setBaudrate(uint32_t baudrate)
     {

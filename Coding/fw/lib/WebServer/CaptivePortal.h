@@ -67,9 +67,9 @@ namespace CaptivePortal
     /**
      *  Registers the Captive Portal handler on the Server.
      * 
-     *  @param[in] server   AsyncWebserver Instance to register to.
+     *  @param[in] webServer   AsyncWebserver Instance to register to.
      */
-    void init(AsyncWebServer &server);
+    void init(AsyncWebServer &webServer);
 
     /**
      *  Verify if restart has been requested

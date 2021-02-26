@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 WiFi configuration of ESP32
 
-* @}
 ***************************************************************************************************/
 #ifndef WLAN_H_
 #define WLAN_H_
@@ -78,3 +77,5 @@ namespace wlan
 
 /* PROTOTYPES ************************************************************************************/
 #endif /* WEB_CONFIG_H_ */
+
+/** @} */

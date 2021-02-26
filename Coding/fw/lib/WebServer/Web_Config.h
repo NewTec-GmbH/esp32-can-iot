@@ -68,6 +68,9 @@ namespace WebConfig
     const String &getWEB_USER(); /**< Get saved Webserver Username */
     const String &getWEB_PASS(); /**< Get saved Webserver Password */
 
+    /**
+     *  HTTP Status Codes for as Responses for Client Requests 
+     */
     enum StatusCodes
     {
         HTTP_OK = 200,           /**< OK */

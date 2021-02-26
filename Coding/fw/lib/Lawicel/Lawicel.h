@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Driver for Lawicel Protocol
 
-* @}
 ***************************************************************************************************/
 #ifndef LAWICEL_H_
 #define LAWICEL_H_
@@ -60,7 +59,7 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-/*
+/**
  *  Lawicel Class contains the protocol to communicate between a Serial connection and a CAN Controller using ASCII symbols.
  */
 class Lawicel
@@ -78,12 +77,12 @@ public:
 
     /**
      *   Default Constructor for a Lawicel Instance. This is the only Constructor available. 
-     *   @ref http://www.can232.com/docs/can232_v3.pdf
+     *   http://www.can232.com/docs/can232_v3.pdf
      *   @param[in,out] serialInt             Serial Adapter (from abstract class SerialInterface) that 
      *                                          connects the Serial capabilities of the board to the protocol.
      *   @param[in,out] canInt                CAN Adapter (from abstract class CANInterface) that
      *                                          connects the CAN Controller of the board to the protocol.
-     *   @param[in,out] nvmint                Non-Volatile Memory Adapter (from abstract class NVMInterface) that
+     *   @param[in,out] nvmInt                Non-Volatile Memory Adapter (from abstract class NVMInterface) that
      *                                          connects the NVM capability of the board to the protocol.
      */
     Lawicel(SerialInterface &serialInt, CANInterface &canInt, NVMInterface &nvmInt) : m_selectedSerial(&serialInt),
@@ -176,11 +175,13 @@ private:
     NVMInterface *m_selectedNVM;       /**< Active NVM Adapter */
 
 private:
-    /**
-     *  Preventing copying, assigning and using an empty constructor
-     */
+    /** Preventing using an empty constructor */
     Lawicel();
+
+    /** An instance shall not be copied. */
     Lawicel(const Lawicel &prot);
+
+    /** An instance shall not assigned. */
     Lawicel &operator=(const Lawicel &prot);
 };
 
@@ -189,3 +190,5 @@ private:
 /* PROTOTYPES *********************************************************************************/
 
 #endif /* LAWICEL_H */
+
+/** @} */

@@ -234,8 +234,8 @@ public:
     /**
      *  Sent the BTR Registers of the CAN Channel.
      * 
-     *  @param BTR0             Register 0 to set a Channel Baudrate directly
-     *  @param BTR1             Register 1 to set a Channel Baudrate directly
+     *  @param btr0             Register 0 to set a Channel Baudrate directly
+     *  @param btr1             Register 1 to set a Channel Baudrate directly
      *  @return success
      */
     bool setBTR(uint8_t btr0, uint8_t btr1)
@@ -257,7 +257,7 @@ public:
     /**
      *  Set the Acceptance Code Register.
      * 
-     *  @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
+     *  @param[in] acn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
      *  @return success 
      */
     bool setACn(const Filter &acn)
@@ -268,7 +268,7 @@ public:
     /**
      *  Set the Acceptance Mask Register.
      * 
-     *  @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
+     *  @param[in] amn        Byte Array of 4 Registers that define the Filter Mask Register
      *  @return success
      */
     bool setAMn(const Filter &amn)

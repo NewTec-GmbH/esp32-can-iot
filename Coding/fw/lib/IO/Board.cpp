@@ -31,7 +31,7 @@
 
 @ref io.h
 
-* @}
+
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include "Board.h"
@@ -46,6 +46,8 @@ using namespace Board;
 static const uint16_t OBD_SUPPLY_THRESHOLD = 800; /**< Voltage [mv] measured to change to OBD Mode */
 
 /* MACROS *****************************************************************************************/
+
+/** Determine number of elements in an Array */
 #define UTIL_ARRAY_NUM(__arr) (sizeof(__arr) / sizeof((__arr)[0]))
 
 /* TYPES ******************************************************************************************/
@@ -177,3 +179,5 @@ static void setBusMode()
         obdSwitch.write(HIGH); /**< In CAN Mode, the Relays should be in a Closed State */
     }
 }
+
+/** @} */

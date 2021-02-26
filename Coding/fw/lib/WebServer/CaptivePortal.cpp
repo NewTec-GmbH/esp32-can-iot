@@ -179,7 +179,7 @@ static CaptiveRequestHandler gCaptivePortalReqHandler; /**< Instance of Captive 
 /**
  *  Registers the Captive Portal handler on the Server.
  * 
- *  @param[in] server AsyncWebserver Instance to register to.
+ *  @param[in] webServer AsyncWebserver Instance to register to.
  */
 void CaptivePortal::init(AsyncWebServer &webServer)
 {

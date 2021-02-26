@@ -29,7 +29,6 @@
 @{
 @file       io.h
 
-* @}
 ***************************************************************************************************/
 #ifndef __IO_H__
 #define __IO_H__
@@ -105,8 +104,10 @@ private:
     const uint8_t m_pinNo;   /**< Arduino pin number */
     const uint8_t m_pinMode; /**< Arduino pin mode */
 
-    /* An instance shall not be copied. */
+    /** An instance shall not be copied. */
     IoPin(const IoPin &ioPin);
+
+    /** An instance shall not assigned. */
     IoPin &operator=(const IoPin &ioPin);
 };
 
@@ -153,8 +154,10 @@ public:
     }
 
 private:
-    /* An instance shall not be copied. */
+    /** An instance shall not be copied. */
     DOutPin(const DOutPin &dOutPin);
+
+    /** An instance shall not assigned. */
     DOutPin &operator=(const DOutPin &dOutPin);
 };
 
@@ -180,8 +183,10 @@ private:
     {
     }
 
-    /* An instance shall not be copied. */
+    /** An instance shall not be copied. */
     DInPin(const DInPin &dInPin);
+
+    /** An instance shall not assigned. */
     DInPin &operator=(const DInPin &dInPin);
 };
 
@@ -217,8 +222,10 @@ public:
     }
 
 private:
-    /* An instance shall not be copied. */
+    /** An instance shall not be copied. */
     DInPin(const DInPin &dInPin);
+
+    /** An instance shall not assigned. */
     DInPin &operator=(const DInPin &dInPin);
 };
 
@@ -254,8 +261,10 @@ public:
     }
 
 private:
-    /* An instance shall not be copied. */
+    /** An instance shall not be copied. */
     DInPin(const DInPin &dInPin);
+
+    /** An instance shall not assigned. */
     DInPin &operator=(const DInPin &dInPin);
 };
 
@@ -291,8 +300,10 @@ public:
     }
 
 private:
-    /* An instance shall not be copied. */
+    /** An instance shall not be copied. */
     DInPin(const DInPin &dInPin);
+
+    /** An instance shall not assigned. */
     DInPin &operator=(const DInPin &dInPin);
 };
 
@@ -328,8 +339,10 @@ public:
     }
 
 private:
-    /* An instance shall not be copied. */
+    /** An instance shall not be copied. */
     AnalogPin(const AnalogPin &analogPin);
+
+    /** An instance shall not assigned. */
     AnalogPin &operator=(const AnalogPin &analogPin);
 };
 

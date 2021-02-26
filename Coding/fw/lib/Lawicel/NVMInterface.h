@@ -43,7 +43,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 NVM Interface for Lawicel Protocol
 
-* @}
 ***************************************************************************************************/
 #ifndef NVM_INTERFACE_H
 #define NVM_INTERFACE_H
@@ -57,7 +56,7 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-/*
+/**
  *  Interface of the Lawicel Protocol to the NVM of the board. Defines the Methods to save and fetch  
  *  the initial parameters of the system.
  */
@@ -156,3 +155,5 @@ private:
 /* PROTOTYPES *********************************************************************************/
 
 #endif /* NVM_INTERFACE_H */
+
+/** @} */

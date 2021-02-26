@@ -43,7 +43,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 CAN interface for Lawicel Protocol
 
-* @}
 ***************************************************************************************************/
 #ifndef CAN_INTERFACE_H
 #define CAN_INTERFACE_H
@@ -108,11 +107,11 @@ public:
     };
 
     /** 
-     *  Array for the Definition of Filter Registers ACn and AMn
+     *  Structure of a SJA1000 Filter
      */
     struct Filter
     {
-        uint8_t m_filterBytes[FILTER_DATA_SIZE];
+        uint8_t m_filterBytes[FILTER_DATA_SIZE]; /**< Array for the Definition of Filter Registers ACn and AMn */
     };
 
     /** 
@@ -155,7 +154,7 @@ public:
     /**
      *  Send a CAN Frame to the CAN Bus.
      * 
-     *  @param[in] Frame         Frame to be sended.
+     *  @param[in] frame         Frame to be sended.
      *  @return success
      */
     virtual bool send(const Frame &frame) = 0;
@@ -179,8 +178,8 @@ public:
     /**
      *  Sent the BTR Registers of the CAN Channel.
      * 
-     *  @param BTR0             Register 0 to set a Channel Baudrate directly
-     *  @param BTR1             Register 1 to set a Channel Baudrate directly
+     *  @param btr0             Register 0 to set a Channel Baudrate directly
+     *  @param btr1             Register 1 to set a Channel Baudrate directly
      *  @return success
      */
     virtual bool setBTR(uint8_t btr0, uint8_t btr1) = 0;
@@ -196,7 +195,7 @@ public:
     /**
      *  Set the Acceptance Code Register.
      * 
-     *  @param[in] ACn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
+     *  @param[in] acn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
      *  @return success 
      */
     virtual bool setACn(const Filter &acn) = 0;
@@ -204,10 +203,10 @@ public:
     /**
      *  Set the Acceptance Mask Register.
      * 
-     *  @param[in] AMn        Byte Array of 4 Registers that define the Filter Mask Register
+     *  @param[in] amn        Byte Array of 4 Registers that define the Filter Mask Register
      *  @return success
      */
-    virtual bool setAMn(const Filter &acn) = 0;
+    virtual bool setAMn(const Filter &amn) = 0;
 
     /**
      *  Gets the Channel State from the CAN Controller.

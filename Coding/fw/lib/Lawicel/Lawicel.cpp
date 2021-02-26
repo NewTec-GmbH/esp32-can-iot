@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Driver for Lawicel Protocol @ref Lawicel.h
 
-* @}
+
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include "Lawicel.h"
@@ -1591,3 +1591,5 @@ String Lawicel::getFormattedTimestamp()
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
+
+/** @} */

@@ -65,9 +65,9 @@ namespace Pages
     /**
      *  Initialize all web pages and register them on the web server.
      * 
-     *  @param[in] server   Web server
+     *  @param[in] webServer   Web server
      */
-    void init(AsyncWebServer &server);
+    void init(AsyncWebServer &webServer);
 
     /**
      *  Error web page used in case a requested path was not found.

@@ -96,7 +96,7 @@ static void errorPage(AsyncWebServerRequest *request);
 /**
  *  Initialize all web pages and register them on the web server.
  * 
- *  @param[in] server   Web server
+ *  @param[in] webServer   Web server
  */
 void Pages::init(AsyncWebServer &webServer)
 {

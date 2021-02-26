@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Handler for ESP32 Preferences in Flash Memory
 
-* @}
 ***************************************************************************************************/
 #ifndef FLASH_MEM_H_
 #define FLASH_MEM_H_
@@ -120,3 +119,5 @@ namespace Settings
     /* PROTOTYPES *********************************************************************************/
 
 #endif /* FLASH_MEM_H_ */
+
+/** @} */

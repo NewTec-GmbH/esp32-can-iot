@@ -43,7 +43,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 SerialInterface for Lawicel Protocol
 
-* @}
 ***************************************************************************************************/
 #ifndef SERIAL_INTERFACE_H
 #define SERIAL_INTERFACE_H
@@ -57,7 +56,7 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-/*
+/**
  *  Interface of the Lawicel Protocol to the Serial Port of the board. Defines the Methods to read 
  *  and write to the Serial Port, in ordert o communicate with other devices.
  */
@@ -141,3 +140,5 @@ private:
 /* PROTOTYPES *********************************************************************************/
 
 #endif /* SERIAL_INTERFACE_H */
+
+/** @} */

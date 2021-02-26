@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 WiFi configuration of ESP32
 
-* @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include "FlashMem.h"
@@ -319,3 +318,5 @@ static bool connectWiFi()
 
     return success;
 }
+
+/** @} */
