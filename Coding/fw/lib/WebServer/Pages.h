@@ -68,14 +68,7 @@ namespace Pages
      *  @param[in] webServer   Web server
      */
     void init(AsyncWebServer &webServer);
-
-    /**
-     *  Error web page used in case a requested path was not found.
-     * 
-     *  @param[in] request   Web request
-     */
-    void error(AsyncWebServerRequest *request);
-
+    
 } /** namespace Pages */
 
 /* FORWARD DECLARATIONS **************************************************************************/
