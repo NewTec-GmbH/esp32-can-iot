@@ -69,7 +69,7 @@ namespace Pages
      */
     void init(AsyncWebServer &webServer);
     
-} /** namespace Pages */
+} /* namespace Pages */
 
 /* FORWARD DECLARATIONS **************************************************************************/
 

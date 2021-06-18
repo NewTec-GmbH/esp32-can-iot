@@ -48,32 +48,32 @@ extern "C"
 /* TYPES ******************************************************************************************/
 
 /**
-* Standard i/o pin. 
+  * Standard i/o pin. 
 */
 class IoPin
 {
 public:
     /**
-    * Constructs an i/o pin instance.
-    * 
-    * @param[in] pinNo     Arduino pin number
-    * @param[in] pinMode   Arduino pin mode
-    */
+     *  Constructs an i/o pin instance.
+     * 
+     *  @param[in] pinNo     Arduino pin number
+     *  @param[in] pinMode   Arduino pin mode
+     */
     IoPin(uint8_t pinNo, uint8_t pinMode) : m_pinNo(pinNo),
                                             m_pinMode(pinMode)
     {
     }
 
     /**
-    * Destroys the i/o pin instance.
-    */
+     *  Destroys the i/o pin instance.
+     */
     ~IoPin()
     {
     }
 
     /**
-    * Initialize pin, which sets the mode.
-    */
+     *  Initialize pin, which sets the mode.
+     */
     void init() const
     {
         pinMode(m_pinNo, m_pinMode);
@@ -81,20 +81,20 @@ public:
     }
 
     /**
-    * Get pin number.
-    * 
-    * @return Arduino pin number
-    */
+     *  Get pin number.
+     * 
+     *  @return Arduino pin number
+     */
     uint8_t getPinNo() const
     {
         return m_pinNo;
     }
 
     /**
-    * Get pin mode.
-    * 
-    * @return Arduino pin mode
-    */
+     *  Get pin mode.
+     * 
+     *  @return Arduino pin mode
+     */
     uint8_t getPinMode() const
     {
         return m_pinMode;
@@ -104,49 +104,53 @@ private:
     const uint8_t m_pinNo;   /**< Arduino pin number */
     const uint8_t m_pinMode; /**< Arduino pin mode */
 
-    /** An instance shall not be copied. */
+    /**
+     *  An instance shall not be copied. 
+     */
     IoPin(const IoPin &ioPin);
 
-    /** An instance shall not assigned. */
+    /**
+     *  An instance shall not assigned. 
+     */
     IoPin &operator=(const IoPin &ioPin);
 };
 
 /**
-* Digital output pin.
-*/
+ *  Digital output pin.
+ */
 template <uint8_t pinNo>
 class DOutPin : public IoPin
 {
 public:
     /**
-    * Constructs an digital output pin instance.
-    */
+     *  Constructs an digital output pin instance.
+     */
     DOutPin() : IoPin(pinNo, OUTPUT)
     {
     }
 
     /**
-    * Destroys the digital output pin instance.
-    */
+     *  Destroys the digital output pin instance.
+     */
     ~DOutPin()
     {
     }
 
     /**
-    * Read from digital output pin.
-    * 
-    * @return Ditial output pin value.
-    */
+     *  Read from digital output pin.
+     * 
+     *  @return Ditial output pin value.
+     */
     int read() const
     {
         return digitalRead(pinNo);
     }
 
     /**
-    * Write to digital output pin.
-    * 
-    * @param[in] value Digital output pin value (LOW, HIGH).
-    */
+     *  Write to digital output pin.
+     * 
+     *  @param[in] value Digital output pin value (LOW, HIGH).
+     */
     void write(uint8_t value) const
     {
         digitalWrite(pinNo, value);
@@ -154,195 +158,219 @@ public:
     }
 
 private:
-    /** An instance shall not be copied. */
+    /** 
+     *  An instance shall not be copied. 
+     */
     DOutPin(const DOutPin &dOutPin);
 
-    /** An instance shall not assigned. */
+    /** 
+     * An instance shall not assigned. 
+     */
     DOutPin &operator=(const DOutPin &dOutPin);
 };
 
 /**
-* Digital input pin with not supported pin mode.
-*/
+ *  Digital input pin with not supported pin mode.
+ */
 template <uint8_t pinNo, uint8_t pinMode>
 class DInPin : public IoPin
 {
 public:
 private:
     /**
-    * Constructs an digital output pin instance.
-    */
+     *  Constructs an digital output pin instance.
+     */
     DInPin() : IoPin(pinNo, pinMode)
     {
     }
 
     /**
-    * Destroys the digital output pin instance.
-    */
+     *  Destroys the digital output pin instance.
+     */
     ~DInPin()
     {
     }
 
-    /** An instance shall not be copied. */
+    /** 
+     *  An instance shall not be copied. 
+     */
     DInPin(const DInPin &dInPin);
 
-    /** An instance shall not assigned. */
+    /** 
+     * An instance shall not assigned. 
+     */
     DInPin &operator=(const DInPin &dInPin);
 };
 
 /**
-* Digital input pin without pull-up or pull-down.
-*/
+ *  Digital input pin without pull-up or pull-down.
+ */
 template <uint8_t pinNo>
 class DInPin<pinNo, INPUT> : public IoPin
 {
 public:
     /**
-    * Constructs an digital output pin instance.
-    */
+     *  Constructs an digital output pin instance.
+     */
     DInPin() : IoPin(pinNo, pinMode)
     {
     }
 
     /**
-    * Destroys the digital output pin instance.
-    */
+     *  Destroys the digital output pin instance.
+     */
     ~DInPin()
     {
     }
 
     /**
-    * Read from digital input pin.
-    * 
-    * @return Ditial input pin value.
-    */
+     *  Read from digital input pin.
+     * 
+     *  @return Ditial input pin value.
+     */
     int read() const
     {
         return digitalRead(pinNo);
     }
 
 private:
-    /** An instance shall not be copied. */
+    /** 
+     *  An instance shall not be copied. 
+     */
     DInPin(const DInPin &dInPin);
 
-    /** An instance shall not assigned. */
+    /** 
+     *  An instance shall not assigned. 
+     */
     DInPin &operator=(const DInPin &dInPin);
 };
 
 /**
-* Digital input pin with pull-up.
-*/
+ *  Digital input pin with pull-up.
+ */
 template <uint8_t pinNo>
 class DInPin<pinNo, INPUT_PULLUP> : public IoPin
 {
 public:
     /**
-    * Constructs an digital output pin instance.
-    */
+     *  Constructs an digital output pin instance.
+     */
     DInPin() : IoPin(pinNo, INPUT_PULLUP)
     {
     }
 
     /**
-    * Destroys the digital output pin instance.
-    */
+     *  Destroys the digital output pin instance.
+     */
     ~DInPin()
     {
     }
 
     /**
-    * Read from digital input pin.
-    * 
-    * @return Ditial input pin value.
-    */
+     *  Read from digital input pin.
+     * 
+     *  @return Ditial input pin value.
+     */
     int read() const
     {
         return digitalRead(pinNo);
     }
 
 private:
-    /** An instance shall not be copied. */
+    /**
+     * An instance shall not be copied. 
+     */
     DInPin(const DInPin &dInPin);
 
-    /** An instance shall not assigned. */
+    /** 
+     *  An instance shall not assigned. 
+     */
     DInPin &operator=(const DInPin &dInPin);
 };
 
 /**
-* Digital input pin with pull-down.
-*/
+ *  Digital input pin with pull-down.
+ */
 template <uint8_t pinNo>
 class DInPin<pinNo, INPUT_PULLDOWN> : public IoPin
 {
 public:
     /**
-    * Constructs an digital output pin instance.
-    */
+     *  Constructs an digital output pin instance.
+     */
     DInPin() : IoPin(pinNo, INPUT_PULLDOWN)
     {
     }
 
     /**
-    * Destroys the digital output pin instance.
-    */
+     *  Destroys the digital output pin instance.
+     */
     ~DInPin()
     {
     }
 
     /**
-    * Read from digital input pin.
-    * 
-    * @return Ditial input pin value.
-    */
+     *  Read from digital input pin.
+     * 
+     *  @return Ditial input pin value.
+     */
     int read() const
     {
         return digitalRead(pinNo);
     }
 
 private:
-    /** An instance shall not be copied. */
+    /** 
+     *  An instance shall not be copied. 
+     */
     DInPin(const DInPin &dInPin);
 
-    /** An instance shall not assigned. */
+    /** 
+     *  An instance shall not assigned. 
+     */
     DInPin &operator=(const DInPin &dInPin);
 };
 
 /**
-* Analog pin.
-*/
+ *  Analog pin.
+ */
 template <uint8_t pinNo>
 class AnalogPin : public IoPin
 {
 public:
     /**
-    * Constructs an analog input pin instance.
-    */
+     *  Constructs an analog input pin instance.
+     */
     AnalogPin() : IoPin(pinNo, ANALOG)
     {
     }
 
     /**
-    * Destroys the analog input pin instance.
-    */
+     *  Destroys the analog input pin instance.
+     */
     ~AnalogPin()
     {
     }
 
     /**
-    * Read from analog input pin.
-    * 
-    * @return Value in ADC digits.
-    */
+     *  Read from analog input pin.
+     * 
+     *  @return Value in ADC digits.
+     */
     uint16_t read() const
     {
         return analogRead(pinNo);
     }
 
 private:
-    /** An instance shall not be copied. */
+    /** 
+     *  An instance shall not be copied. 
+     */
     AnalogPin(const AnalogPin &analogPin);
 
-    /** An instance shall not assigned. */
+    /** 
+     *  An instance shall not assigned. 
+     */
     AnalogPin &operator=(const AnalogPin &analogPin);
 };
 

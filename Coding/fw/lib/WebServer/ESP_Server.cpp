@@ -67,9 +67,8 @@ extern "C"
 /* PROTOTYPES *************************************************************************************/
 
 /**
- *  Registers the handlers on the server, depending on the WiFi Mode chosen
- * 
- *  @param[in] apModeRequested  True if device is in AP Mode. False otherwise.
+ *  @param[in] apModeRequested If true, the webpages for AP mode are initialized. 
+ *                              Otherwise are the Station Mode Pages initialized.
  *  @return success
  */
 static bool initPages(bool apModeRequested);
@@ -154,13 +153,6 @@ bool ESPServer::isRestartRequested()
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
 
-/**************************************************************************************************/
-
-/**
- *  Initializes the corresponding Webpages, depending on the WiFi Mode specified by user.
- * 
- *  @return success
- */
 static bool initPages(bool apModeRequested)
 {
     bool success = true;

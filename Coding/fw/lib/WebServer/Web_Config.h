@@ -79,7 +79,7 @@ namespace WebConfig
         HTTP_NOT_FOUND = 404     /**< Not Found */
     };
 
-} /** namespace WebConfig */
+} /* namespace WebConfig */
 
 /* FORWARD DECLARATIONS **************************************************************************/
 

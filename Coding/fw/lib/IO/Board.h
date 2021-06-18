@@ -78,7 +78,7 @@ namespace Board
         /** Pin number of OBD Supply in */
         static const uint8_t analogSupplyCheck = 35U;
 
-    }; /** namespace Pin */
+    }; /* namespace Pin */
 
     /** Digital output pin: Error Indicator */
     static const DOutPin<Pin::indicatorError> errorLED;
@@ -125,10 +125,13 @@ namespace Board
     /** Turn on Error LED and halt system until manual reset */
     extern void haltSystem();
 
-    /** Turn on Error LED for a period of time */
+    /**
+     *  Turn on Error LED for a period of time
+     *  @param[in] duration    Milliseconds to keep Error LED ON.
+     */
     extern void blinkError(uint32_t duration);
 
-}; /** namespace Board */
+}; /* namespace Board */
 
     /* INLINE FUNCTIONS *******************************************************************************/
 

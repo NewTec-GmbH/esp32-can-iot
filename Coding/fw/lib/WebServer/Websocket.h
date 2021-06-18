@@ -66,7 +66,7 @@ namespace websocket
     bool receive(char &c);             /**< Receives a WebSocket Message */
     bool sendBuffer();                 /**< Sends the Buffered Websocket Messages */
 
-}; /** namespace websocket */
+}; /* namespace websocket */
 
 /* FORWARD DECLARATIONS **************************************************************************/
 

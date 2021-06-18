@@ -336,7 +336,7 @@ bool Lawicel::charToInt(char num_symbol, uint8_t &result)
  *  Translates char ID into its corresponding integer value 
  * 
  *  @param[in] extended True if Frame is Extended, false otherwise
- *  @param[in,out] lawicelCMD Frame in Lawicel Format
+ *  @param[in] lawicelCMD Frame in Lawicel Format
  *  @param[in,out] result Resulting ID
  *  @return success
  */
@@ -377,7 +377,7 @@ bool Lawicel::decodeId(bool extended, const String &lawicelCMD, uint32_t &result
 /**
  *  Receives and Interprets Buffer with Serial Command 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::receiveCommand(const String &lawicelCMD)
@@ -486,7 +486,7 @@ bool Lawicel::receiveCommand(const String &lawicelCMD)
 /**
  *  Sets Baudrate through presets 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::setBaudrateCmd(const String &lawicelCMD)
@@ -563,7 +563,7 @@ bool Lawicel::setBaudrateCmd(const String &lawicelCMD)
 /**
  *  Sets Baudrate through Registers 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::setBTRCmd(const String &lawicelCMD)
@@ -607,7 +607,7 @@ bool Lawicel::setBTRCmd(const String &lawicelCMD)
 /**
  *  Opens CAN Channel in Normal Mode 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::openNormalCmd(const String &lawicelCMD)
@@ -635,7 +635,7 @@ bool Lawicel::openNormalCmd(const String &lawicelCMD)
 /**
  *  Opens CAN Channel in Listen-Only Mode 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::openListenOnlyCmd(const String &lawicelCMD)
@@ -663,7 +663,7 @@ bool Lawicel::openListenOnlyCmd(const String &lawicelCMD)
 /**
  *  Closes CAN Channel 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::closeCmd(const String &lawicelCMD)
@@ -692,7 +692,7 @@ bool Lawicel::closeCmd(const String &lawicelCMD)
 /**
  *  Transmits standard CAN Frame (11-bit ID)
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::stdTxCmd(const String &lawicelCMD)
@@ -765,7 +765,7 @@ bool Lawicel::stdTxCmd(const String &lawicelCMD)
 /**
  *  Transmits extended CAN Frame (29-bit ID) 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::extTxCmd(const String &lawicelCMD)
@@ -838,7 +838,7 @@ bool Lawicel::extTxCmd(const String &lawicelCMD)
 /**
  *  Transmits standard RTR CAN Frame (11-bit ID) 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::stdRtrTxCmd(const String &lawicelCMD)
@@ -886,7 +886,7 @@ bool Lawicel::stdRtrTxCmd(const String &lawicelCMD)
 /**
  *  Transmits extended RTR CAN Frame (29-bit ID) 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::extRtrTxCmd(const String &lawicelCMD)
@@ -934,7 +934,7 @@ bool Lawicel::extRtrTxCmd(const String &lawicelCMD)
 /**
  *  Poll incomming FIFO for CAN frames (single poll) 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::singlePollCmd(const String &lawicelCMD)
@@ -1008,7 +1008,7 @@ bool Lawicel::singlePollCmd(const String &lawicelCMD)
 /**
  *  Polls incomming FIFO for CAN frames (all pending frames) 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::allPollCmd(const String &lawicelCMD)
@@ -1050,7 +1050,7 @@ bool Lawicel::allPollCmd(const String &lawicelCMD)
 /**
  *  Toggles Auto Poll for inconming Frames 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::toggleAutoPollCmd(const String &lawicelCMD)
@@ -1090,7 +1090,7 @@ bool Lawicel::toggleAutoPollCmd(const String &lawicelCMD)
 /**
  *  Read Status Flags
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::getFlagsCmd(const String &lawicelCMD)
@@ -1116,7 +1116,7 @@ bool Lawicel::getFlagsCmd(const String &lawicelCMD)
 /**
  *  Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
@@ -1162,7 +1162,7 @@ bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
 /**
  *  Sets Acceptance Code Register 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::setACnCmd(const String &lawicelCMD)
@@ -1212,7 +1212,7 @@ bool Lawicel::setACnCmd(const String &lawicelCMD)
 /**
  *  Sets Acceptance Mask Register
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::setAMnCmd(const String &lawicelCMD)
@@ -1263,7 +1263,7 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
 /**
  *  Sets UART Baudrate (and saves setting on EEPROM) 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::setSerialBaudrateCmd(const String &lawicelCMD)
@@ -1331,7 +1331,7 @@ bool Lawicel::setSerialBaudrateCmd(const String &lawicelCMD)
 /**
  * Sends Hardware and Software Version 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::getVersionCmd(const String &lawicelCMD)
@@ -1355,7 +1355,7 @@ bool Lawicel::getVersionCmd(const String &lawicelCMD)
 /**
  *  Sends Serial Number of Hardware 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::getSerialNumberCmd(const String &lawicelCMD)
@@ -1379,7 +1379,7 @@ bool Lawicel::getSerialNumberCmd(const String &lawicelCMD)
 /**
  *  Toggles Timestamp (and saves setting on EEPROM) 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::toggleTimeStampCmd(const String &lawicelCMD)
@@ -1422,7 +1422,7 @@ bool Lawicel::toggleTimeStampCmd(const String &lawicelCMD)
 /**
  *  Auto Startup feature (from power on) 
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::toggleAutoStartCmd(const String &lawicelCMD)
@@ -1470,7 +1470,7 @@ bool Lawicel::toggleAutoStartCmd(const String &lawicelCMD)
 /**
  *  Sends the current configuration of the CAN Bus to the Client
  * 
- *  @param[in,out] lawicelCMD Lawicel-formatted String
+ *  @param[in] lawicelCMD Lawicel-formatted String
  *  @return success
  */
 bool Lawicel::getCurrentParams(const String &lawicelCMD)

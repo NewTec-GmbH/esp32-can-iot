@@ -78,7 +78,7 @@ namespace CaptivePortal
      */
     bool isRestartRequested();
 
-} /** namespace CaptivePortal */
+} /* namespace CaptivePortal */
 
 /* INLINE FUNCTIONS ******************************************************************************/
 
