@@ -104,7 +104,7 @@ bool Settings::save(const String &directory, const String &key, const String &va
 /**
  *  Gets uint32_t value from Flash memory
  */
-bool Settings::get(const String &directory, const String &key, uint32_t &value, const uint32_t &defaultValue)
+bool Settings::get(const String &directory, const String &key, uint32_t &value, const uint32_t defaultValue)
 {
     bool success = false;
     if (gMemory.begin(directory.c_str(), false))

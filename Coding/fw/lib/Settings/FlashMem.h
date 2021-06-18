@@ -87,18 +87,18 @@ namespace Settings
      * 
      *  @param[in] directory Directory where information is stored
      *  @param[in] key Name of Memory Location
-     *  @param[in] value Variable to write the value to
+     *  @param[out] value Variable to write the value to
      *  @param[in] defaultValue Default value returned if no value stored in memory
      *  @return success
      */
-    bool get(const String &directory, const String &key, uint32_t &value, const uint32_t &defaultValue = 0U);
+    bool get(const String &directory, const String &key, uint32_t &value, const uint32_t defaultValue = 0U);
 
     /**
      *  Gets String from Flash memory
      * 
      *  @param[in] directory Directory where information is stored
      *  @param[in] key Name of Memory Location
-     *  @param[in] value Variable to write the value to
+     *  @param[out] value Variable to write the string to
      *  @param[in] defaultValue Default value returned if no value stored in memory
      *  @return success
      */
