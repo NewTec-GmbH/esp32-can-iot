@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Handler for ESP32 Preferences in Flash Memory. @ref FlashMem.h
 
-* @}
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include "FlashMem.h"
@@ -53,7 +52,6 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-Preferences m_memory;
 
 /* MACROS *****************************************************************************************/
 
@@ -63,66 +61,88 @@ Preferences m_memory;
 
 /* VARIABLES **************************************************************************************/
 
+static Preferences gMemory; /**< Instances of Preferences Library to save information in NVM */
+
 /* PUBLIC METHODES ********************************************************************************/
+
 /**************************************************************************************************/
+
+/**
+ *  Saves uint32_t value to Flash memory
+ */
 bool Settings::save(const String &directory, const String &key, const uint32_t &value)
 {
     bool success = false;
-    if (m_memory.begin(directory.c_str(), false))
+    if (gMemory.begin(directory.c_str(), false))
     {
-        m_memory.putULong(key.c_str(), value);
-        m_memory.end();
+        gMemory.putULong(key.c_str(), value);
+        gMemory.end();
         success = true;
     }
     return success;
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Saves String value to Flash memory
+ */
 bool Settings::save(const String &directory, const String &key, const String &value)
 {
     bool success = false;
-    if (m_memory.begin(directory.c_str(), false))
+    if (gMemory.begin(directory.c_str(), false))
     {
-        m_memory.putString(key.c_str(), value);
-        m_memory.end();
+        gMemory.putString(key.c_str(), value);
+        gMemory.end();
         success = true;
     }
     return success;
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Gets uint32_t value from Flash memory
+ */
 bool Settings::get(const String &directory, const String &key, uint32_t &value, const uint32_t defaultValue)
 {
     bool success = false;
-    if (m_memory.begin(directory.c_str(), false))
+    if (gMemory.begin(directory.c_str(), false))
     {
-        value = m_memory.getULong(key.c_str(), defaultValue);
-        m_memory.end();
+        value = gMemory.getULong(key.c_str(), defaultValue);
+        gMemory.end();
         success = true;
     }
     return success;
 }
 
 /**************************************************************************************************/
-bool Settings::get(const String &directory, const String &key, String &value, const String defaultValue)
+
+/**
+ *  Gets String from Flash memory
+ */
+bool Settings::get(const String &directory, const String &key, String &value, const String &defaultValue)
 {
     bool success = false;
-    if (m_memory.begin(directory.c_str(), false))
+    if (gMemory.begin(directory.c_str(), false))
     {
-        value = m_memory.getString(key.c_str(), defaultValue);
-        m_memory.end();
+        value = gMemory.getString(key.c_str(), defaultValue);
+        gMemory.end();
         success = true;
     }
     return success;
 }
 
 /**************************************************************************************************/
+/**
+ *  Clears all entries on a directory
+ */
 bool Settings::clear(const String &directory)
 {
     bool success = false;
-    if (m_memory.begin(directory.c_str(), false))
+    if (gMemory.begin(directory.c_str(), false))
     {
-        success = m_memory.clear();
+        success = gMemory.clear();
     }
 
     return success;
@@ -135,3 +155,5 @@ bool Settings::clear(const String &directory)
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
+
+/** @} */

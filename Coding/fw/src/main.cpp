@@ -63,21 +63,29 @@ Main Application
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-SerialAdapter serialAdapter;
-CANAdapter sja1000Adapter;
-NVMAdapter flashAdapter;
-WebSocketAdapter wsadapter;
 
-Lawicel protocolLawicel(wsadapter, sja1000Adapter, flashAdapter);
+static SerialAdapter gSerialAdapter; /**< Serial Adapter Instance */
+static CANAdapter gSja1000Adapter;   /**< CAN Adapter Instance */
+static NVMAdapter gFlashAdapter;     /**< NVM Adapter Instance */
+static WebSocketAdapter gWsadapter;  /**< WebSocket Adapter Instance */
 
-uint32_t lastSend = 0;
-uint32_t waitTime = 50;
+/** Lawicel Protocol Instance */
+static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
+
+static uint32_t gLastSend = 0;  /**< Timestamp of last sent WebSocket Buffer */
+static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send */
 
 /* PUBLIC METHODES ********************************************************************************/
+
+/**************************************************************************************************/
+
+/**
+ *  Initialization of Application
+ */
 void setup()
 {
     Board::init();
-    if (!protocolLawicel.begin())
+    if (!gProtocolLawicel.begin())
     {
         Board::haltSystem();
     }
@@ -87,11 +95,16 @@ void setup()
     }
 }
 
+/**************************************************************************************************/
+
+/**
+ *  Application Loop
+ */
 void loop()
 {
     if (!wlan::getAP_MODE())
     {
-        if (!protocolLawicel.executeCycle())
+        if (!gProtocolLawicel.executeCycle())
         {
             Board::blinkError(250);
         }
@@ -105,9 +118,9 @@ void loop()
         Board::reset();
     }
 
-    if(millis()-lastSend > waitTime)
+    if (millis() - gLastSend > gWaitTime)
     {
-        lastSend = millis();
+        gLastSend = millis();
         websocket::sendBuffer();
     }
 }

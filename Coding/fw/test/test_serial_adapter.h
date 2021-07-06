@@ -60,8 +60,8 @@ extern "C"
 /* FORWARD DECLARATIONS ***************************************************************************/
 
 /**
-*  ESP-32 Adapter as implementation of SerialInterface for the Lawicel Protocol.
-*/
+ *  ESP-32 Adapter as implementation of SerialInterface for the Lawicel Protocol.
+ */
 class TestSerialAdapter : public SerialInterface
 {
 public:
@@ -69,46 +69,48 @@ public:
 
     /* TYPES **********************************************************************************/
 
-    /**
-    *  Default constructor creates instance of the class using default values.
-    * @param m_baudrate     Sets the Default baudrate to the Serial Channel.
-    */
+    /** 
+     *  Default constructor creates instance of the class using default values.
+     */
     TestSerialAdapter() : SerialInterface()
     {
     }
 
-    /**
-    * Default destructor deletes instance of the class.
-    */
+    /** 
+     *  Default destructor deletes instance of the class.
+     */
     ~TestSerialAdapter()
     {
     }
 
-    /**
-    * Configures and starts the Serial Controller to use the user values.
-    * @return 0 for OK, 1 for Error
-    */
+    /** 
+     *  Configures and starts the Serial Controller to use the user values.
+     * 
+     *  @return success
+     */
     bool begin()
     {
         bool success = true;
         return success;
     }
 
-    /**
-    * Stops the Serial Module without destroying the instance.
-    * @return 0 for OK, 1 for Error
-    */
+    /** 
+     *  Stops the Serial Module without destroying the instance.
+     * 
+     *  @return success
+     */
     bool end()
     {
         bool success = true;
         return success;
     }
 
-    /**
-    * Sets the Baudrate for Serial Communication.
-    * @param[in] baudrate      Baudrate for Serial Communication
-    * @return 0 for OK, 1 for Error
-    */
+    /** 
+     *  Sets the Baudrate for Serial Communication.
+     * 
+     *  @param[in] baudrate      Baudrate for Serial Communication
+     *  @return success
+     */
     bool setBaudrate(uint32_t baudrate)
     {
         bool success = true;
@@ -116,10 +118,11 @@ public:
         return success;
     }
 
-    /**
-    * Reads the Serial Adapter into a buffer.
-    * @return isError: 0 for OK, 1 for Error
-    */
+    /** 
+     *  Prints a String to Serial Adapter.
+     * 
+     *  @param[in] string     String to be printed
+     */
     bool read(char &c)
     {
         bool available = false;
@@ -129,14 +132,15 @@ public:
             c = m_inputString[position];
             position++;
         }
-        
+
         return available;
     }
 
-    /**
-    * Prints a Line to Serial Adapter.
-    * @param[in] string     String to be printed
-    */
+    /** 
+     *  Prints an Integer to Serial Adapter.
+     * 
+     *  @param[in] num     Integer to be printed
+     */
     void print(const String &string)
     {
         m_outputString = string;
@@ -151,15 +155,22 @@ public:
         m_outputString = String(num);
     }
 
-    /**
-    * Prints a Character to Serial Adapter.
-    * @param[in] c     Character to be printed
-    */
+    /** 
+     *  Prints a Character to Serial Adapter.
+     * 
+     *  @param[in] c     Character to be printed
+     */
     void print(char c)
     {
         m_outputString = String(c);
     }
 
+    /**
+     *  Edit Input Lawicel-Formatted String
+     * 
+     * @param input Lawicel-Formatted String
+     * @return Input length 
+     */
     int writeInput(String input)
     {
         m_inputString = "";
@@ -168,11 +179,10 @@ public:
         return input.length() + 1;
     }
 
-
-    String m_inputString;
-    String m_outputString;
-    uint32_t m_serialBaudrate;
-    uint8_t position = 0;
+    String m_inputString;      /**< Simulated Input String */
+    String m_outputString;     /**< Simulated Output String */
+    uint32_t m_serialBaudrate; /**< Serial Baudrate */
+    uint8_t position = 0;      /**< Position Marker */
 };
 
 /* INLINE FUNCTIONS ***************************************************************************/

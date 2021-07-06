@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Driver for Lawicel Protocol
 
-* @}
 ***************************************************************************************************/
 #ifndef LAWICEL_H_
 #define LAWICEL_H_
@@ -53,10 +52,6 @@ Driver for Lawicel Protocol
 #include "SerialInterface.h"
 #include "NVMInterface.h"
 
-/**
-* Key Definition (Adresses) to be read by NVM Adapter for initialization
-*/
-
 /* C-Interface ************************************************************************************/
 extern "C"
 {
@@ -64,9 +59,9 @@ extern "C"
 
 /* FORWARD DECLARATIONS ***************************************************************************/
 
-/*
-* Lawicel Class contains the protocol to communicate between a Serial connection and a CAN Controller using ASCII symbols.
-*/
+/**
+ *  Lawicel Class contains the protocol to communicate between a Serial connection and a CAN Controller using ASCII symbols.
+ */
 class Lawicel
 {
 public:
@@ -74,22 +69,22 @@ public:
     static const uint16_t MAX_TIMESTAMP;     /**< Maximum value of a Timestamp, representing 1 Minute. */
     static const String X_VERSION;           /**< Hardware and Software Version. */
     static const String X_SERIAL_NUMBER;     /**< Hardware Serial Number. */
-    static const char CR;                    /**< CR Character as OK Line Terminator */
-    static const char BELL;                  /**< BEL Character as ERROR Line Terminator */
-    static const uint8_t MAX_COMMAND_LENGTH; /**< Maximum Length of a Lawicel Command */
+    static const char CR;                    /**< CR Character as OK Line Terminator. */
+    static const char BELL;                  /**< BEL Character as ERROR Line Terminator. */
+    static const uint8_t MAX_COMMAND_LENGTH; /**< Maximum Length of a Lawicel Command. */
 
     /* TYPES **********************************************************************************/
 
     /**
-    * Default Constructor for a Lawicel Instance. This is the only Constructor available. 
-    * @ref http://www.can232.com/docs/can232_v3.pdf
-    * @param serialInt             Serial Adapter (from abstract class SerialInterface) that 
-    *                              connects the Serial capabilities of the board to the protocol.
-    * @param canInt                CAN Adapter (from abstract class CANInterface) that
-    *                              connects the CAN Controller of the board to the protocol.
-    * @param nvmint                Non-Volatile Memory Adapter (from abstract class NVMInterface) that
-    *                              connects the NVM capability of the board to the protocol.
-    */
+     *   Default Constructor for a Lawicel Instance. This is the only Constructor available. 
+     *   http://www.can232.com/docs/can232_v3.pdf
+     *   @param[in,out] serialInt             Serial Adapter (from abstract class SerialInterface) that 
+     *                                          connects the Serial capabilities of the board to the protocol.
+     *   @param[in,out] canInt                CAN Adapter (from abstract class CANInterface) that
+     *                                          connects the CAN Controller of the board to the protocol.
+     *   @param[in,out] nvmInt                Non-Volatile Memory Adapter (from abstract class NVMInterface) that
+     *                                          connects the NVM capability of the board to the protocol.
+     */
     Lawicel(SerialInterface &serialInt, CANInterface &canInt, NVMInterface &nvmInt) : m_selectedSerial(&serialInt),
                                                                                       m_selectedCAN(&canInt),
                                                                                       m_selectedNVM(&nvmInt)
@@ -103,7 +98,7 @@ public:
     {
     }
 
-    bool executeCycle(); /**< Handles the Serial Messages */
+    bool executeCycle(); /**< Handles the Lawicel Protocol */
     bool begin();        /**< Initializes Module */
     bool end();          /**< Terminates Module */
 
@@ -140,7 +135,7 @@ private:
 
     bool charToByte(char msb, char lsb, uint8_t &result);                     /**< Translates char symbols of a Byte into hex values */
     bool charToInt(char symbol, uint8_t &result);                             /**< Translates char symbols of numbers into int values */
-    bool decodeId(bool extended, const String &lawicelCMD, uint32_t &result); /**< Translates char ID into value */
+    bool decodeId(bool extended, const String &lawicelCMD, uint32_t &result); /**< Translates char ID into its corresponding integer value */
 
     bool receiveCommand(const String &lawicelCMD);       /**< Receives and Interprets Buffer with Serial Command */
     bool setBaudrateCmd(const String &lawicelCMD);       /**< Sets Baudrate through presets */
@@ -164,10 +159,10 @@ private:
     bool getSerialNumberCmd(const String &lawicelCMD);   /**< Sends Serial Number of Hardware */
     bool toggleTimeStampCmd(const String &lawicelCMD);   /**< Toggles Timestamp (and saves setting on EEPROM) */
     bool toggleAutoStartCmd(const String &lawicelCMD);   /**< Auto Startup feature (from power on) */
-    bool getCurrentParams(const String &lawicelCMD);     /**< Returns the current configuration of the CAN Bus */
+    bool getCurrentParams(const String &lawicelCMD);     /**< Sends the current configuration of the CAN Bus to the Client*/
 
     bool autopoll();                /**< Frame Polling without any extra tags */
-    String getFormattedTimestamp(); /**< Returns Timestamp */
+    String getFormattedTimestamp(); /**< Returns formatted Timestamp */
 
     bool m_timestamp = false;   /**< Toggle timestamp */
     bool m_autoPolling = true;  /**< Toggle Auto-Polling */
@@ -180,11 +175,13 @@ private:
     NVMInterface *m_selectedNVM;       /**< Active NVM Adapter */
 
 private:
-    /**
-     *  Preventing copying, assigning and using an empty constructor
-     */
+    /** Preventing using an empty constructor */
     Lawicel();
+
+    /** An instance shall not be copied. */
     Lawicel(const Lawicel &prot);
+
+    /** An instance shall not assigned. */
     Lawicel &operator=(const Lawicel &prot);
 };
 
@@ -193,3 +190,5 @@ private:
 /* PROTOTYPES *********************************************************************************/
 
 #endif /* LAWICEL_H */
+
+/** @} */

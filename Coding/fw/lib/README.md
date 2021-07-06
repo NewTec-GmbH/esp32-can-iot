@@ -14,7 +14,7 @@ This folder contains an adaptation of the [Arduino-CAN](https://github.com/sande
 Here is the Hardware Abstraction Layer (HAL) of the Project, providing an implementation of the Arduino and ESP32 GPIO functions. 
 
 # Lawicel
-The Lawicel Protocol can be found here, as well as the 3 Interfaces needed for the correct operation of the protocol. The Procotol description is found [here](./Lawicel/ReadMe.md)
+The Lawicel Protocol can be found here, as well as the 3 Interfaces needed for the correct operation of the protocol. The Procotol description is found [here](./Lawicel/README.md)
 
 # Settings
 The FlashMem Module interfaces directly with the Preferences Library, native to the ESP32 System.

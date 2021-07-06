@@ -31,7 +31,7 @@
 
 @ref io.h
 
-* @}
+
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include "Board.h"
@@ -46,13 +46,18 @@ using namespace Board;
 static const uint16_t OBD_SUPPLY_THRESHOLD = 800; /**< Voltage [mv] measured to change to OBD Mode */
 
 /* MACROS *****************************************************************************************/
+
+/** Determine number of elements in an Array */
 #define UTIL_ARRAY_NUM(__arr) (sizeof(__arr) / sizeof((__arr)[0]))
 
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
 
-void setBusMode(); /**< Switch between CAN or OBD Modes */
+/**
+ *  Sets the Bus Mode between CAN or OBD, depending on the supply voltage
+ */
+static void setBusMode();
 
 /* VARIABLES **************************************************************************************/
 
@@ -95,6 +100,7 @@ extern void Board::init()
     return;
 }
 
+
 extern void Board::reset()
 {
     esp_task_wdt_init(1, true);
@@ -109,11 +115,13 @@ extern void Board::reset()
     return;
 }
 
+
 extern void Board::haltSystem()
 {
     errorLED.write(HIGH);
     while (true)
     {
+        /* Wait for reset */
     }
 }
 
@@ -131,13 +139,7 @@ extern void Board::blinkError(uint32_t duration)
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
 
-/**************************************************************************************************/
-
-/**
-* @brief Switch between CAN or OBD Modes
-* @author Gabryel Reyes
-*/
-void setBusMode()
+static void setBusMode()
 {
     uint16_t supplyVoltage = obdSupply.read();
     const uint16_t threshold = (OBD_SUPPLY_THRESHOLD * (adcResolution - 1U)) / adcRefVoltage;
@@ -156,3 +158,5 @@ void setBusMode()
         obdSwitch.write(HIGH); /**< In CAN Mode, the Relays should be in a Closed State */
     }
 }
+
+/** @} */

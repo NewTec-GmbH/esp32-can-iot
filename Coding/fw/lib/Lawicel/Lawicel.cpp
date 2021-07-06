@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Driver for Lawicel Protocol @ref Lawicel.h
 
-* @}
+
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include "Lawicel.h"
@@ -53,13 +53,13 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-const uint16_t Lawicel::MAX_TIMESTAMP = 0xEA5F;
-const String Lawicel::X_VERSION = "V0101";
-const String Lawicel::X_SERIAL_NUMBER = "NNT32";
-const char Lawicel::CR = 13;
-const char Lawicel::BELL = 7;
-const uint8_t Lawicel::MAX_COMMAND_LENGTH = 30;
 
+const uint16_t Lawicel::MAX_TIMESTAMP = 0xEA5F;  /**< Maximum value of a Timestamp, representing 1 Minute. */
+const String Lawicel::X_VERSION = "V0101";       /**< Hardware and Software Version. */
+const String Lawicel::X_SERIAL_NUMBER = "NNT32"; /**< Hardware Serial Number. */
+const char Lawicel::CR = 13;                     /**< CR Character as OK Line Terminator. */
+const char Lawicel::BELL = 7;                    /**< BEL Character as ERROR Line Terminator. */
+const uint8_t Lawicel::MAX_COMMAND_LENGTH = 30;  /**< Maximum Length of a Lawicel Command. */
 
 /* MACROS *****************************************************************************************/
 
@@ -72,6 +72,12 @@ const uint8_t Lawicel::MAX_COMMAND_LENGTH = 30;
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
+
+/**
+ *  Handles the Lawicel Protocol 
+ * 
+ *  @return  success
+ */
 bool Lawicel::executeCycle()
 {
     bool success = true;
@@ -122,6 +128,12 @@ bool Lawicel::executeCycle()
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Initializes Module 
+ * 
+ *  @return  success
+ */
 bool Lawicel::begin()
 {
     bool success = true;
@@ -177,6 +189,12 @@ bool Lawicel::begin()
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Terminates Module 
+ * 
+ *  @return  success
+ */
 bool Lawicel::end()
 {
     bool success = true;
@@ -202,22 +220,32 @@ bool Lawicel::end()
 /* PRIVATE METHODES *******************************************************************************/
 
 /**************************************************************************************************/
+
+/**
+ *  Translates char symbols of a Byte into hex values
+ * 
+ *  @param[in] msb  Most Significant bits of resulting Byte
+ *  @param[in] lsb  Least Significant bits of resulting Byte
+ *  @param[in,out] result   Resulting Byte
+ *  @return success 
+ */
 bool Lawicel::charToByte(char msb, char lsb, uint8_t &result)
 {
     bool success = true;
-    uint8_t var = 0;
-    if (charToInt(msb, var))
-    {
-        result = var * 16;
-    }
-    else
-    {
-        success = false;
-    }
+    uint8_t msbInteger = 0;
+    uint8_t lsbInteger = 0;
 
-    if (charToInt(lsb, var))
+    if (charToInt(msb, msbInteger))
     {
-        result += var;
+        if (charToInt(lsb, lsbInteger))
+        {
+            result = msbInteger * 16;
+            result += lsbInteger;
+        }
+        else
+        {
+            success = false;
+        }
     }
     else
     {
@@ -228,6 +256,13 @@ bool Lawicel::charToByte(char msb, char lsb, uint8_t &result)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Translates char symbols of numbers into int values
+ *  @param[in] num_symbol   Char to convert
+ *  @param[in,out] result   Resulting integer
+ *  @return success
+ */
 bool Lawicel::charToInt(char num_symbol, uint8_t &result)
 {
     bool success = true;
@@ -296,6 +331,15 @@ bool Lawicel::charToInt(char num_symbol, uint8_t &result)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Translates char ID into its corresponding integer value 
+ * 
+ *  @param[in] extended True if Frame is Extended, false otherwise
+ *  @param[in] lawicelCMD Frame in Lawicel Format
+ *  @param[in,out] result Resulting ID
+ *  @return success
+ */
 bool Lawicel::decodeId(bool extended, const String &lawicelCMD, uint32_t &result)
 {
     bool success = true;
@@ -329,6 +373,13 @@ bool Lawicel::decodeId(bool extended, const String &lawicelCMD, uint32_t &result
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Receives and Interprets Buffer with Serial Command 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::receiveCommand(const String &lawicelCMD)
 {
     bool success = true;
@@ -431,6 +482,13 @@ bool Lawicel::receiveCommand(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Sets Baudrate through presets 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::setBaudrateCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -501,6 +559,13 @@ bool Lawicel::setBaudrateCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Sets Baudrate through Registers 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::setBTRCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -538,6 +603,13 @@ bool Lawicel::setBTRCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Opens CAN Channel in Normal Mode 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::openNormalCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -559,6 +631,13 @@ bool Lawicel::openNormalCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Opens CAN Channel in Listen-Only Mode 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::openListenOnlyCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -580,6 +659,13 @@ bool Lawicel::openListenOnlyCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Closes CAN Channel 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::closeCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -602,6 +688,13 @@ bool Lawicel::closeCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Transmits standard CAN Frame (11-bit ID)
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::stdTxCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -668,6 +761,13 @@ bool Lawicel::stdTxCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Transmits extended CAN Frame (29-bit ID) 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::extTxCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -734,6 +834,13 @@ bool Lawicel::extTxCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Transmits standard RTR CAN Frame (11-bit ID) 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::stdRtrTxCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -775,6 +882,13 @@ bool Lawicel::stdRtrTxCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Transmits extended RTR CAN Frame (29-bit ID) 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::extRtrTxCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -816,6 +930,13 @@ bool Lawicel::extRtrTxCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Poll incomming FIFO for CAN frames (single poll) 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::singlePollCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -883,6 +1004,13 @@ bool Lawicel::singlePollCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Polls incomming FIFO for CAN frames (all pending frames) 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::allPollCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -918,6 +1046,13 @@ bool Lawicel::allPollCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Toggles Auto Poll for inconming Frames 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::toggleAutoPollCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -951,6 +1086,13 @@ bool Lawicel::toggleAutoPollCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Read Status Flags
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::getFlagsCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -970,6 +1112,13 @@ bool Lawicel::getFlagsCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Sets Filter Mode 0 = Dual-Filter, 1 = Single-Filter 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -1009,6 +1158,13 @@ bool Lawicel::setFilterModeCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Sets Acceptance Code Register 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::setACnCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -1052,6 +1208,13 @@ bool Lawicel::setACnCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Sets Acceptance Mask Register
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::setAMnCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -1096,6 +1259,13 @@ bool Lawicel::setAMnCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Sets UART Baudrate (and saves setting on EEPROM) 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::setSerialBaudrateCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -1157,6 +1327,13 @@ bool Lawicel::setSerialBaudrateCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ * Sends Hardware and Software Version 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::getVersionCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -1174,6 +1351,13 @@ bool Lawicel::getVersionCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Sends Serial Number of Hardware 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::getSerialNumberCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -1191,6 +1375,13 @@ bool Lawicel::getSerialNumberCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Toggles Timestamp (and saves setting on EEPROM) 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::toggleTimeStampCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -1227,6 +1418,13 @@ bool Lawicel::toggleTimeStampCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Auto Startup feature (from power on) 
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
 bool Lawicel::toggleAutoStartCmd(const String &lawicelCMD)
 {
     bool success = true;
@@ -1268,6 +1466,40 @@ bool Lawicel::toggleAutoStartCmd(const String &lawicelCMD)
 }
 
 /**************************************************************************************************/
+
+/**
+ *  Sends the current configuration of the CAN Bus to the Client
+ * 
+ *  @param[in] lawicelCMD Lawicel-formatted String
+ *  @return success
+ */
+bool Lawicel::getCurrentParams(const String &lawicelCMD)
+{
+    bool success = true;
+
+    if (1 != lawicelCMD.length())
+    {
+        success = false;
+    }
+    else
+    {
+        m_serialReturn += 'D';
+        m_serialReturn += m_selectedNVM->readInt(m_selectedNVM->INIT_AUTO_START);
+        m_serialReturn += m_selectedNVM->readString(m_selectedNVM->INIT_CAN_BAUD);
+        m_serialReturn += m_selectedNVM->readInt(m_selectedNVM->INIT_TIMESTAMP);
+        m_serialReturn += (uint8_t)m_selectedCAN->getChannelState();
+    }
+
+    return success;
+}
+
+/**************************************************************************************************/
+
+/**
+ *  Frame Polling without any extra tags
+ * 
+ *  @return success
+ */
 bool Lawicel::autopoll()
 {
     bool success = true;
@@ -1288,7 +1520,7 @@ bool Lawicel::autopoll()
                 cmd = 'T';
                 idLength = 8;
             }
-            else if ((false == frame.m_extended)&& (true == frame.m_rtr))
+            else if ((false == frame.m_extended) && (true == frame.m_rtr))
             {
                 cmd = 'r';
             }
@@ -1335,27 +1567,12 @@ bool Lawicel::autopoll()
 }
 
 /**************************************************************************************************/
-bool Lawicel::getCurrentParams(const String &lawicelCMD)
-{
-    bool success = true;
 
-    if (1 != lawicelCMD.length())
-    {
-        success = false;
-    }
-    else
-    {
-        m_serialReturn += 'D';
-        m_serialReturn += m_selectedNVM->readInt(m_selectedNVM->INIT_AUTO_START);
-        m_serialReturn += m_selectedNVM->readString(m_selectedNVM->INIT_CAN_BAUD);
-        m_serialReturn += m_selectedNVM->readInt(m_selectedNVM->INIT_TIMESTAMP);
-        m_serialReturn += (uint8_t)m_selectedCAN->getChannelState();
-    }
-
-    return success;
-}
-
-/**************************************************************************************************/
+/**
+ *  Returns formatted Timestamp
+ * 
+ * @return timestamp 
+ */
 String Lawicel::getFormattedTimestamp()
 {
     String timestamp;
@@ -1374,3 +1591,5 @@ String Lawicel::getFormattedTimestamp()
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
+
+/** @} */

@@ -60,40 +60,45 @@ extern "C"
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
-static bool restartRequested = false; /**<  Variable to call Restart */
+
+static bool restartRequested = false; /**<  True if restart has been requested by user */
+
 /**************************************************************************************************/
-/**
-*  Processor to save the required credentials incoming from the Webpage
-* @param name Name of the parameter
-* @param value Value of the parameter 
-*/
-static void credentialsProcessor(String name, String value);
 
 /**
-* Captive portal request handler.
-*/
+ *  Processor to save the required credentials incoming from the Webpage
+ * 
+ *  @param[in] name Name of the parameter
+ *  @param[in] value Value of the parameter 
+ */
+static void credentialsProcessor(const String &name, const String &value);
+
+/**
+ *  Captive portal request handler.
+ */
 class CaptiveRequestHandler : public AsyncWebHandler
 {
 public:
     /**
-    * Constructs the captive portal request handler.
-    */
+     *  Constructs the captive portal request handler.
+     */
     CaptiveRequestHandler()
     {
     }
 
     /**
-    * Destroys the captive portal request handler.
-    */
+     *  Destroys the captive portal request handler.
+     */
     ~CaptiveRequestHandler()
     {
     }
 
     /**
-    * Checks whether the request can be handled.
-    * @param[in] request   Web request
-    * @return If request can be handled, it will return true otherwise false.
-    */
+     *  Checks whether the request can be handled.
+     * 
+     *  @param[in] request   Web request
+     *  @return If request can be handled, it will return true otherwise false.
+     */
     bool canHandle(AsyncWebServerRequest *request) override
     {
         /* The captive portal handles every request. */
@@ -101,9 +106,10 @@ public:
     }
 
     /**
-    * Handles the request.
-    * @param[in] request   Web request, which to handle.
-    */
+     *  Handles the request.
+     * 
+     *  @param[in] request   Web request, which to handle.
+     */
     void handleRequest(AsyncWebServerRequest *request) override
     {
         if (nullptr == request)
@@ -144,11 +150,10 @@ public:
     }
 
     /**
-* @brief Function tells the server if the Body of the request has to be parsed too. As this website uses a POST Request, body must be parsed.
-* 
-* @return true The Body is trivial and will not be parsed.
-* @return false The Body is important/not trivial and must be parsed.
-*/
+     *  Function tells the server if the Body of the request has to be parsed too. As this website uses a POST Request, body must be parsed.
+     * 
+     *  @return True if the Body of the request is trivial and should not be parsed. False otherwise.
+     */
     bool isRequestHandlerTrivial() override
     {
         return false;
@@ -166,24 +171,28 @@ private:
 /* PROTOTYPES *************************************************************************************/
 
 /* VARIABLES **************************************************************************************/
-static CaptiveRequestHandler CaptivePortalReqHandler; /**< Instance of Handler */
+
+static CaptiveRequestHandler gCaptivePortalReqHandler; /**< Instance of Captive Portal Handler */
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
+
 /**
- * @brief Links the Captive Portal handler to the Server
+ *  Registers the Captive Portal handler on the Server.
  * 
- * @param server AsyncWebserver Instance to initialize to
+ *  @param[in] webServer AsyncWebserver Instance to register to.
  */
 void CaptivePortal::init(AsyncWebServer &webServer)
 {
     webServer.serveStatic("/js/", SPIFFS, "/js/", "max-age=120");
     webServer.serveStatic("/css/", SPIFFS, "/css/", "max-age=120");
     webServer.serveStatic("/pictures/", SPIFFS, "/pictures/", "max-age = 120");
-    webServer.addHandler(&CaptivePortalReqHandler).setFilter(ON_AP_FILTER);
+    webServer.addHandler(&gCaptivePortalReqHandler).setFilter(ON_AP_FILTER);
 }
 
 /**
- * @brief return true if restart has been requested 
+ *  Verify if restart has been requested
+ *
+ *  @return True if restart has been requested. False otherwise.
  */
 bool CaptivePortal::isRestartRequested()
 {
@@ -193,12 +202,12 @@ bool CaptivePortal::isRestartRequested()
 /* INTERNAL FUNCTIONS *****************************************************************************/
 
 /**
- * @brief Saves the Credentials given by the user to the Flash Memory
+ *  Saves the Credentials given by the user to the Flash Memory
  * 
- * @param name Key to store the Data
- * @param value Data to be stored
+ *  @param[in] name Name of Argument from Web POST Submit
+ *  @param[in] value Value of Argument from Web POST Submit
  */
-static void credentialsProcessor(String name, String value)
+static void credentialsProcessor(const String &name, const String &value)
 {
     if ((name == "STA_SSID") || (name == "STA_Password"))
     {

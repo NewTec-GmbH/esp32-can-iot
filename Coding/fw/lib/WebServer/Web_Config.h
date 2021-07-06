@@ -57,23 +57,29 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
+/**
+ *  Handler of Web Configuration and HTML Responses
+ */
 namespace WebConfig
 {
-  static const uint32_t DNS_PORT = 53U;          /**< DNS Port */
-  static const uint32_t WEBSERVER_PORT = 80U;    /**< HTTP Port */
-  
-  const String &getWEB_USER(); /**< Returns saved Webserver Username */
-  const String &getWEB_PASS(); /**< Returns saved Webserver Password */
+    static const uint32_t DNS_PORT = 53U;       /**< DNS Port */
+    static const uint32_t WEBSERVER_PORT = 80U; /**< HTTP Port */
 
-  enum StatusCodes
-  {
-    HTTP_OK = 200,           /**< OK */
-    HTTP_BAD_REQUEST = 400,  /**< Bad Request */
-    HTTP_UNAUTHORIZED = 401, /**< Unauthorized */
-    HTTP_NOT_FOUND = 404     /**< Not Found */
-  };
+    const String &getWEB_USER(); /**< Get saved Webserver Username */
+    const String &getWEB_PASS(); /**< Get saved Webserver Password */
 
-} // namespace WebConfig
+    /**
+     *  HTTP Status Codes for as Responses for Client Requests 
+     */
+    enum StatusCodes
+    {
+        HTTP_OK = 200,           /**< OK */
+        HTTP_BAD_REQUEST = 400,  /**< Bad Request */
+        HTTP_UNAUTHORIZED = 401, /**< Unauthorized */
+        HTTP_NOT_FOUND = 404     /**< Not Found */
+    };
+
+} /* namespace WebConfig */
 
 /* FORWARD DECLARATIONS **************************************************************************/
 

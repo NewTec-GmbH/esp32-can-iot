@@ -53,9 +53,10 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-static const String DIRECTORY = "Server";
-static String WEB_USER = "admin";
-static String WEB_PASSWORD = "admin";
+
+static const String DIRECTORY = "Server";   /**< Directory to which information is saved */
+static const String WEB_USER = "admin";     /**< Web Username */
+static const String WEB_PASSWORD = "admin"; /**< Web Password */
 
 /* MACROS *****************************************************************************************/
 
@@ -69,9 +70,11 @@ static String WEB_PASSWORD = "admin";
 
 /**************************************************************************************************/
 
-/*
-*   Returns Username for Authentification of Webpages
-*/
+/**
+ *  Get Username for Authentification of Webpages
+ * 
+ *  @return Web Username
+ */
 const String &WebConfig::getWEB_USER()
 {
     return WEB_USER;
@@ -79,9 +82,11 @@ const String &WebConfig::getWEB_USER()
 
 /**************************************************************************************************/
 
-/*
-*   Returns Password for Authentification of Webpages
-*/
+/**
+ *  Get Password for Authentification of Webpages
+ * 
+ *  @return Web Password
+ */
 const String &WebConfig::getWEB_PASS()
 {
     return WEB_PASSWORD;

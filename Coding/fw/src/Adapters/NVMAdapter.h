@@ -65,58 +65,74 @@ class NVMAdapter : public NVMInterface
 {
 public:
     /* CONSTANTS ******************************************************************************/
-    const String DIRECTORY = "Startup";
+
+    const String DIRECTORY = "Startup"; /**< Directory to store information in NVM */
+
     /* TYPES **********************************************************************************/
 
     /**
-    * Default constructor creates instance of the class using default values.
-    */
+     *  Default constructor creates instance of the class using default values.
+     */
     NVMAdapter() : NVMInterface()
     {
     }
 
     /**
-    *Default destructor deletes instance of the class.
-    */
+     *  Default destructor deletes instance of the class.
+     */
     ~NVMAdapter()
     {
     }
 
     /**
-    * Configures and starts the NVM Controller to use the user values.
-    */
+     *  Configures and starts the NVM Controller to use the user values.
+     *  @return success
+     */
     bool begin()
     {
         return true;
     }
 
     /**
-    * Stops the NVM Module without destroying the instance.
-    */
+     *  Stops the NVM Module without destroying the instance.
+     * 
+     *  @return success 
+     */
     bool end()
     {
         return true;
     }
 
     /**
-    * Save Data in NVM
-    */
+     *  Save Data in NVM
+     * 
+     *  @param[in] name Key of Parameter to save
+     *  @param[in] value Integer to save
+     *  @return success
+     */
     bool save(const String &name, int32_t value)
     {
         return Settings::save(DIRECTORY, name, value);
     }
 
     /**
-    * Save String in NVM
-    */
+     *  Save String in NVM
+     * 
+     *  @param[in] name Key of Parameter to save
+     *  @param[in] value String to save
+     *  @return success
+     */
     bool save(const String &name, const String &value)
     {
         return Settings::save(DIRECTORY, name, value);
     }
 
     /**
-    * Read Data from NVM
-    */
+     *  Read Data from NVM
+     * 
+     *  @param[in] name Key of Parameter to retrieve
+     *  @return Integer corresponding to the Key, if existent. Zero otherwise
+     */
     uint32_t readInt(const String &name)
     {
         uint32_t result;
@@ -128,8 +144,11 @@ public:
     }
 
     /**
-     * Read String from NVM
-    */
+     *  Read String from NVM
+     * 
+     *  @param[in] name Key of Parameter to retrieve
+     *  @return String corresponding to the Key, if existent. Empty String otherwise
+     */
     String readString(const String &name)
     {
         String result;
@@ -141,7 +160,9 @@ public:
     }
 
     /**
-     * Delete all NVM Entries.
+     *  Delete all NVM Entries.
+     * 
+     *  @return success
      */
     bool clearEntries()
     {

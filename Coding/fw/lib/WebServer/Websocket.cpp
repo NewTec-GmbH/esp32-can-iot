@@ -56,78 +56,105 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
-AsyncWebSocket ws("/ws");
 
 /* MACROS *****************************************************************************************/
 
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+
+/**
+ *  Handler for incoming Web Socket Message
+ * 
+ *  @param[in] arg Information of Web Socket Message
+ *  @param[in] data Data of Web Socket Message
+ *  @param[in] len Length of Data of Web Socket Message
+ */
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len);
+
+/**
+ *  Handler for Web Socket Event
+ * 
+ *  @param[in] server Instance of ESPAsyncWebServer
+ *  @param[in] client Instance of Web Client
+ *  @param[in] type Type of Web Socket Event
+ *  @param[in] arg Information of Web Socket Event
+ *  @param[in] data Data of Web Socket Event
+ *  @param[in] len Length of Data of Web Socket Event
+ */
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len);
 
 /* VARIABLES **************************************************************************************/
 
-static QueueHandle_t inputQueue;
-static String outputBuffer = "";
+static AsyncWebSocket gWs("/ws"); /**< Instance of Web Socket Handler */
+static QueueHandle_t gInputQueue; /**< WebSocket input Queue */
+static String gOutputBuffer = ""; /**< WebSocket output Buffer */
 
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
 
-/*
-*   Initializes the WebSocket Service
-*/
+/**
+ *  Initializes the WebSocket Service
+ * 
+ *  @param[in] server AsyncWeb Server Instance
+ */
 void websocket::init(AsyncWebServer &server)
 {
     server.on("/communication", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(SPIFFS, "/ws.html");
     });
 
-    ws.onEvent(onEvent);
-    server.addHandler(&ws);
-    inputQueue = xQueueCreate(100, sizeof(char));
-}
-
-/**************************************************************************************************/
-
-/*
-*   Send WebSocket Message
-*/
-void websocket::send(const String &message)
-{
-    outputBuffer += message;
+    gWs.onEvent(onEvent);
+    server.addHandler(&gWs);
+    gInputQueue = xQueueCreate(100, sizeof(char));
 }
 
 /**************************************************************************************************/
 
 /**
-*   Sends the Websocket Buffer
-*   
-*/
+ *  Send WebSocket Message
+ * 
+ *  @param[in] message Message to be sent to client through WebSocket
+ */
+void websocket::send(const String &message)
+{
+    gOutputBuffer += message;
+}
+
+/**************************************************************************************************/
+
+/**
+ *  Sends the Websocket Buffer
+ *   
+ *  @return success
+ */
 bool websocket::sendBuffer()
 {
     bool success = true;
 
-    if (outputBuffer.length() != 0)
+    if (gOutputBuffer.length() != 0)
     {
-        ws.textAll(outputBuffer);
-        outputBuffer.clear();
+        gWs.textAll(gOutputBuffer);
+        gOutputBuffer.clear();
     }
     return success;
 }
 
 /**************************************************************************************************/
 
-/*
-*   Receive WebSocket Message
-*/
+/**
+ *  Receive character from WebSocket Message
+ * 
+ *  @param[in,out] c Character to be received
+ *  @return success
+ */
 bool websocket::receive(char &c)
 {
     bool success = false;
 
-    if (xQueueReceive(inputQueue, &c, 0) == pdTRUE)
+    if (xQueueReceive(gInputQueue, &c, 0) == pdTRUE)
     {
         success = true;
     }
@@ -145,9 +172,13 @@ bool websocket::receive(char &c)
 
 /**************************************************************************************************/
 
-/*
-*   Handler for incoming Web Socket Message
-*/
+/**
+ *  Handler for incoming Web Socket Message
+ * 
+ *  @param[in] arg Information of Web Socket Event
+ *  @param[in] data Data of Web Socket Event
+ *  @param[in] len Length of Data of Web Socket Event
+ */
 static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
     AwsFrameInfo *info = (AwsFrameInfo *)arg;
@@ -155,7 +186,7 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
     {
         for (int i = 0; i < len; i++)
         {
-            if (errQUEUE_FULL == xQueueSendToBack(inputQueue, &data[i], 0))
+            if (errQUEUE_FULL == xQueueSendToBack(gInputQueue, &data[i], 0))
             {
                 Serial.println("Queue Full");
                 Board::blinkError(250);
@@ -167,9 +198,16 @@ static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 
 /**************************************************************************************************/
 
-/*
-*   Handler for Web Socket Event
-*/
+/**
+ *  Handler for Web Socket Event
+ * 
+ *  @param[in] server Instance of ESPAsyncWebServer
+ *  @param[in] client Instance of Web Client
+ *  @param[in] type Type of Web Socket Event
+ *  @param[in] arg Information of Web Socket Event
+ *  @param[in] data Data of Web Socket Event
+ *  @param[in] len Length of Data of Web Socket Event
+ */
 static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                     void *arg, uint8_t *data, size_t len)
 {

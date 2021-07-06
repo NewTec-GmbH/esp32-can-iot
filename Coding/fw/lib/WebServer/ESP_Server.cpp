@@ -38,9 +38,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
 @addtogroup Webserver
 @{
-@file       ESPServer.cpp
+@file       ESP_Server.cpp
 
-Handler for ESP32 WebServer. @ref ESPServer.h
+Handler for ESP32 WebServer. @ref ESP_Server.h
 
 * @}
 ***************************************************************************************************/
@@ -65,24 +65,27 @@ extern "C"
 /* TYPES ******************************************************************************************/
 
 /* PROTOTYPES *************************************************************************************/
+
 /**
-* Registers the handlers on the server, depending on the WiFi Mode chosen
-* @param bool apModeRequested  determines if AP Mode or STA Mode are requested, to choose the correct handlers
-* return success
-*/
+ *  @param[in] apModeRequested If true, the webpages for AP mode are initialized. 
+ *                              Otherwise are the Station Mode Pages initialized.
+ *  @return success
+ */
 static bool initPages(bool apModeRequested);
 
 /* VARIABLES **************************************************************************************/
-static AsyncWebServer webServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
+
+static AsyncWebServer gWebServer(WebConfig::WEBSERVER_PORT); /**< Instance of AsyncWebServer*/
 
 /* PUBLIC METHODES ********************************************************************************/
 
 /**************************************************************************************************/
 
 /**
-*   Initializing of AsyncWebServer, DNS and WiFi capabilities. 
-*   return success
-*/
+ *  Initialization of AsyncWebServer, DNS and WiFi capabilities.
+ * 
+ *  @return success
+ */
 bool ESPServer::begin()
 {
     bool success = true;
@@ -111,7 +114,7 @@ bool ESPServer::begin()
         success = false;
     }
 
-    webServer.begin();
+    gWebServer.begin();
 
     return success;
 }
@@ -119,21 +122,24 @@ bool ESPServer::begin()
 /**************************************************************************************************/
 
 /**
-*   Disconnects and disables the WebServer
-*/
+ *  Disconnects and disables the WebServer
+ *
+ *  @return success
+ */
 bool ESPServer::end()
 {
-    webServer.end();
+    gWebServer.end();
     SPIFFS.end();
     return WiFi.disconnect(true, true);
 }
 
-
 /**************************************************************************************************/
 
-/*
-*   Returns True is Restart is requested by the Captive Portal
-*/
+/**
+ *  Verify if restart has been requested.
+ *  
+ *  @return True is restart is requested by the Captive Portal. False otherwise.
+ */
 bool ESPServer::isRestartRequested()
 {
     return CaptivePortal::isRestartRequested();
@@ -147,22 +153,17 @@ bool ESPServer::isRestartRequested()
 
 /* INTERNAL FUNCTIONS *****************************************************************************/
 
-/**************************************************************************************************/
-
-/*
-*   Initializes the corresponding Webpages, depending on the WiFi Mode specified by user
-*/
-bool initPages(bool apModeRequested)
+static bool initPages(bool apModeRequested)
 {
     bool success = true;
 
     if (apModeRequested)
     {
-        CaptivePortal::init(webServer);
+        CaptivePortal::init(gWebServer);
     }
     else
     {
-        Pages::init(webServer);     
+        Pages::init(gWebServer);
     }
 
     return success;

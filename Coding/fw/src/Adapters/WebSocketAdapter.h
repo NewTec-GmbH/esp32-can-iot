@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
 @addtogroup Adapters
 @{
-@file       WSAdapter.h
+@file       WebSocketAdapter.h
 
 ESP32 WebSocket Adapter for Lawicel Protocol
 
@@ -60,8 +60,8 @@ extern "C"
 /* FORWARD DECLARATIONS ***************************************************************************/
 
 /**
-*  ESP-32 Adapter as implementation of SerialInterface for the Lawicel Protocol.
-*/
+ *  ESP-32 Adapter as implementation of SerialInterface for the Lawicel Protocol.
+ */
 class WebSocketAdapter : public SerialInterface
 {
 public:
@@ -70,24 +70,26 @@ public:
     /* TYPES **********************************************************************************/
 
     /**
-    *  Default constructor creates instance of the class using default values.
-    * @param m_baudrate     Sets the Default baudrate to the Serial Channel.
-    */
+     *  Default constructor creates instance of the class using default values.
+     * 
+     *  @param m_baudrate     Sets the Default baudrate to the Serial Channel.
+     */
     WebSocketAdapter() : SerialInterface()
     {
     }
 
     /**
-    * Default destructor deletes instance of the class.
-    */
+     *  Default destructor deletes instance of the class.
+     */
     ~WebSocketAdapter()
     {
     }
 
     /**
-    * Configures and starts the Serial Controller to use the user values.
-    * @return 0 for OK, 1 for Error
-    */
+     *  Configures and starts the Serial Controller to use the user values.
+     * 
+     *  @return success
+     */
     bool begin()
     {
         bool success = true;
@@ -102,28 +104,32 @@ public:
     }
 
     /**
-    * Stops the Serial Module without destroying the instance.
-    * @return 0 for OK, 1 for Error
-    */
+     *  Stops the Serial Module without destroying the instance.
+     * 
+     *  @return success
+     */
     bool end()
     {
         return true;
     }
 
-    /**
-    * Sets the Baudrate for Serial Communication.
-    * @param[in] baudrate      Baudrate for Serial Communication
-    * @return 0 for OK, 1 for Error
-    */
+    /** 
+     *  Sets the Baudrate for Serial Communication.
+     * 
+     *  @param[in] baudrate      Baudrate for Serial Communication
+     *  @return success
+     */
     bool setBaudrate(uint32_t baudrate)
     {
         return true;
     }
 
-    /**
-    * Reads the Serial Adapter into a buffer.
-    * @return isError: 0 for OK, 1 for Error
-    */
+    /** 
+     *  Reads the Serial Adapter into a buffer.
+     * 
+     *  @param[in,out] c   Character received on the Serial Interface
+     *  @return success
+     */
     bool read(char &c)
     {
         bool success = false;
@@ -136,29 +142,32 @@ public:
         return success;
     }
 
-    /**
-    * Prints a Line to Serial Adapter.
-    * @param[in] string     String to be printed
-    */
+    /** 
+     *  Prints a String to Serial Adapter.
+     * 
+     *  @param[in] string     String to be printed
+     */
     void print(const String &string)
     {
         websocket::send(string);
     }
 
-    /**
-    * Prints an Integer to Serial Adapter.
-    * @param[in] num     Integer to be printed
-    */
+    /** 
+     *  Prints an Integer to Serial Adapter.
+     * 
+     *  @param[in] num     Integer to be printed
+     */
     void print(uint32_t num)
     {
         String tmp(num);
         websocket::send(tmp);
     }
 
-    /**
-    * Prints a Character to Serial Adapter.
-    * @param[in] c     Character to be printed
-    */
+    /** 
+     *  Prints a Character to Serial Adapter.
+     * 
+     *  @param[in] c     Character to be printed
+     */
     void print(char c)
     {
         String tmp(c);

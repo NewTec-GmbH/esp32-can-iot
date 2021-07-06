@@ -56,21 +56,20 @@ extern "C"
 }
 
 /* CONSTANTS **************************************************************************************/
+
+/**
+ *  Handler of available Web Pages
+ */
 namespace Pages
 {
     /**
-    * Initialize all web pages and register them on the web server.
-    * @param[in] server   Web server
-    */
-    void init(AsyncWebServer &server);
-
-    /**
-    * Error web page used in case a requested path was not found.
-    * @param[in] request   Web request
-    */
-    void error(AsyncWebServerRequest *request);
-
-} // namespace Pages
+     *  Initialize all web pages and register them on the web server.
+     * 
+     *  @param[in] webServer   Web server
+     */
+    void init(AsyncWebServer &webServer);
+    
+} /* namespace Pages */
 
 /* FORWARD DECLARATIONS **************************************************************************/
 

@@ -29,7 +29,6 @@
 @{
 @file       Board.h
 
-* @}
 ***************************************************************************************************/
 #ifndef __BOARD_H__
 #define __BOARD_H__
@@ -79,7 +78,7 @@ namespace Board
         /** Pin number of OBD Supply in */
         static const uint8_t analogSupplyCheck = 35U;
 
-    }; // namespace Pin
+    }; /* namespace Pin */
 
     /** Digital output pin: Error Indicator */
     static const DOutPin<Pin::indicatorError> errorLED;
@@ -117,29 +116,22 @@ namespace Board
     /** ADC reference voltage in mV */
     static const uint16_t adcRefVoltage = 3300U;
 
-    /**
-    * Initialize all i/o pins.
-    */
+    /** Initialize all i/o pins */
     extern void init();
 
-    /**
-    * Execute a hard reset!
-    */
+    /** Execute a hard reset! */
     extern void reset();
 
-    /**
-    * @brief Stops the runnung programm and sets the Error LED
-    * @author Gabryel Reyes
-    */
+    /** Turn on Error LED and halt system until manual reset */
     extern void haltSystem();
 
     /**
-    * @brief Blinks the Error LED without stoping the programm
-    * @author Gabryel Reyes
-    */
+     *  Turn on Error LED for a period of time
+     *  @param[in] duration    Milliseconds to keep Error LED ON.
+     */
     extern void blinkError(uint32_t duration);
 
-}; // namespace Board
+}; /* namespace Board */
 
     /* INLINE FUNCTIONS *******************************************************************************/
 

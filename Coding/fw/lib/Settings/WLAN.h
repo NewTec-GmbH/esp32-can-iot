@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 WiFi configuration of ESP32
 
-* @}
 ***************************************************************************************************/
 #ifndef WLAN_H_
 #define WLAN_H_
@@ -55,18 +54,22 @@ extern "C"
 
 /* CONSTANTS **************************************************************************************/
 
+/**
+ *  Handler Class for WiFi Connection
+ */
 namespace wlan
 {
-  const String &getSTA_SSID();                             /**< Returns saved Station SSID */
-  const String &getSTA_PASS();                             /**< Returns saved Station Password */
-  const String &getAP_SSID();                              /**< Returns saved Access Point SSID */
-  const String &getAP_PASS();                              /**< Returns saved Access Point Password */
-  bool getAP_MODE();                                       /**< Returns Access Point Mode Status */
-  bool checkConnection(void);                              /**< Calls next request on DNS Server */
-  const IPAddress &getIPAddress(void);                     /**< Returns the IP Address of the ESP */
-  void saveConfig(const String &key, const String &value); /**< Saves the desired value in the memory "key" */
-  bool begin();                                            /**< Starts the WiFi Connection */
-} // namespace wlan
+    const String &getSTA_SSID();                             /**< Get saved Station SSID */
+    const String &getSTA_PASS();                             /**< Get saved Station Password */
+    const String &getAP_SSID();                              /**< Get saved Access Point SSID */
+    const String &getAP_PASS();                              /**< Get saved Access Point Password */
+    bool getAP_MODE();                                       /**< Get Access Point Mode Status */
+    bool checkConnection(void);                              /**< Checks WiFi Connection */
+    const IPAddress &getIPAddress(void);                     /**< Get the IP Address of the ESP */
+    void saveConfig(const String &key, const String &value); /**< Saves the desired value in the memory "key" */
+    bool begin();                                            /**< Starts the WiFi Connection */
+
+} /** namespace wlan */
 
 /* FORWARD DECLARATIONS **************************************************************************/
 
@@ -74,3 +77,5 @@ namespace wlan
 
 /* PROTOTYPES ************************************************************************************/
 #endif /* WEB_CONFIG_H_ */
+
+/** @} */
