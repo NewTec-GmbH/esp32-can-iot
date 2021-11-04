@@ -53,6 +53,7 @@ Main Application
 #include "WebSocketAdapter.h"
 #include "Board.h"
 #include "WLAN.h"
+#include "ota.h"
 
 /* CONSTANTS **************************************************************************************/
 
@@ -92,6 +93,7 @@ void setup()
     else
     {
         Serial.println(wlan::getIPAddress());
+        esp_OTA::setup();
     }
 }
 
