@@ -164,6 +164,7 @@ bool wlan::begin()
     Settings::get(DIRECTORY, "STA_SSID", gStaSsid, "");
     Settings::get(DIRECTORY, "STA_Password", gStaPassword, "");
 
+#ifdef esp32_HW_Ver_1_1
     gAPMode = readWiFiMode();
     if (gAPMode)
     {
@@ -193,6 +194,45 @@ bool wlan::begin()
 
         gServerIP = WiFi.localIP();
     }
+#elif esp32_HW_Ver_2_0
+
+    if (!WiFi.mode(WIFI_STA))
+    {
+        success = false;
+    }
+    else if (WiFi.begin(gStaSsid.c_str(), gStaPassword.c_str()) == WL_CONNECT_FAILED)
+    {
+        success = false;
+    }
+    else if (!connectWiFi())
+    {
+        success = false;
+    }
+    else
+    {
+        gAPMode = false;
+        gServerIP = WiFi.localIP();
+    }
+
+    if(false == success)
+    {
+        if (!WiFi.mode(WIFI_AP))
+        {
+            success = false;
+        }
+        else if (!WiFi.softAP(AP_SSID.c_str(), AP_PASSWORD.c_str()))
+        {
+            success = false;
+        }
+        else
+        {
+            success = true;
+            gAPMode = true;
+            gServerIP = WiFi.softAPIP();
+        }        
+    }
+
+#endif 
     return success;
 }
 
