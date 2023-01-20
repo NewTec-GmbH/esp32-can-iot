@@ -1,0 +1,20 @@
+{
+    "name": "WebServer",
+    "version": "0.1.0",
+    "description": "...",
+    "authors": [{
+        "name": "NewTec GmbH",
+        "url": "https://github.com/NewTec-GmbH/esp32-can-iot",
+        "maintainer": true
+    }],
+    "license": "BSD-3",
+    "dependencies": [{
+        "owner": "me-no-dev",
+        "name": "ESP Async WebServer",
+        "version": "^1.2.3"
+    }, {
+        "name": "DNSServer"
+    }],
+    "frameworks": "*",
+    "platforms": "*"
+}

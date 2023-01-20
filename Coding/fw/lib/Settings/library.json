@@ -1,0 +1,14 @@
+{
+    "name": "Settings",
+    "version": "0.1.0",
+    "description": "...",
+    "authors": [{
+        "name": "NewTec GmbH",
+        "url": "https://github.com/NewTec-GmbH/esp32-can-iot",
+        "maintainer": true
+    }],
+    "license": "BSD-3",
+    "dependencies": [],
+    "frameworks": "*",
+    "platforms": "*"
+}

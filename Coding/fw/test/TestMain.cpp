@@ -660,6 +660,24 @@ static void testAutostart(void)
 
 /* EXTERNAL FUNCTIONS *****************************************************************************/
 
+/**
+ * Setup a test. This function will be called before every test by unity.
+ */
+extern void setUp(void)
+{
+    /* Not used. */
+}
+
+/**************************************************************************************************/
+
+/**
+ * Clean up test. This function will be called after every test by unity.
+ */
+extern void tearDown(void)
+{
+    /* Not used. */
+}
+
 /* INTERNAL FUNCTIONS *****************************************************************************/
 
 /**************************************************************************************************/
