@@ -47,12 +47,9 @@ Main Application
 /* INCLUDES ***************************************************************************************/
 #include <Arduino.h>
 #include "Lawicel.h"
-#include "SerialAdapter.h"
 #include "CANAdapter.h"
 #include "NVMAdapter.h"
-#include "WebSocketAdapter.h"
 #include "Board.h"
-#include "WLAN.h"
 
 /* CONSTANTS **************************************************************************************/
 
@@ -64,16 +61,22 @@ Main Application
 
 /* VARIABLES **************************************************************************************/
 
-static SerialAdapter gSerialAdapter; /**< Serial Adapter Instance */
 static CANAdapter gSja1000Adapter;   /**< CAN Adapter Instance */
 static NVMAdapter gFlashAdapter;     /**< NVM Adapter Instance */
-static WebSocketAdapter gWsadapter;  /**< WebSocket Adapter Instance */
 
-/** Lawicel Protocol Instance */
-static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
+#ifdef USE_SERIAL_ADAPTER_WS
+    #include "WebSocketAdapter.h"
+    #include "WLAN.h"
+    static WebSocketAdapter gWsadapter;  /**< WebSocket Adapter Instance */
+    static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
+    static uint32_t gLastSend = 0;  /**< Timestamp of last sent WebSocket Buffer */
+    static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send */
+#else
+    #include "SerialAdapter.h"
+    static SerialAdapter gSerialAdapter; /**< Serial Adapter Instance */
+    static Lawicel gProtocolLawicel(gSerialAdapter, gSja1000Adapter, gFlashAdapter);
+#endif
 
-static uint32_t gLastSend = 0;  /**< Timestamp of last sent WebSocket Buffer */
-static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send */
 
 /* PUBLIC METHODES ********************************************************************************/
 
@@ -89,10 +92,13 @@ void setup()
     {
         Board::haltSystem();
     }
+
+#ifdef USE_SERIAL_ADAPTER_WS
     else
     {
         Serial.println(wlan::getIPAddress());
     }
+#endif
 }
 
 /**************************************************************************************************/
@@ -102,12 +108,16 @@ void setup()
  */
 void loop()
 {
+#ifdef USE_SERIAL_ADAPTER_WS
     if (!wlan::getAP_MODE())
     {
+#endif
         if (!gProtocolLawicel.executeCycle())
         {
             Board::blinkError(250);
         }
+
+#ifdef USE_SERIAL_ADAPTER_WS
         if (!wlan::checkConnection())
         {
             Board::haltSystem();
@@ -123,6 +133,7 @@ void loop()
         gLastSend = millis();
         websocket::sendBuffer();
     }
+#endif
 }
 
 /* PROTECTED METHODES *****************************************************************************/
