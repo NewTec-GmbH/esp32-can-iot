@@ -48,7 +48,7 @@ ESP32SJA1000 Adapter for Lawicel Protocol
 #define CAN_ADAPTER_H
 
 /* INCLUDES ***************************************************************************************/
-#include "CANInterface.h"
+#include <CANInterface.h>
 #include <CAN.h>
 
 /* C-Interface ************************************************************************************/
@@ -247,7 +247,8 @@ public:
      */
     bool setFilterMode(FILTER_MODE filter)
     {
-        return m_Can_Controller.setFilterMode(filter);
+        // return m_Can_Controller.setFilterMode(filter);
+        return false;
     }
 
     /**
@@ -258,7 +259,8 @@ public:
      */
     bool setACn(const Filter &acn)
     {
-        return m_Can_Controller.setACRn(acn.m_filterBytes);
+        // return m_Can_Controller.setACRn(acn.m_filterBytes);
+        return false;
     }
 
     /**
@@ -269,7 +271,8 @@ public:
      */
     bool setAMn(const Filter &amn)
     {
-        return m_Can_Controller.setAMRn(amn.m_filterBytes);
+        // return m_Can_Controller.setAMRn(amn.m_filterBytes);
+        return false;
     }
 
     /**
