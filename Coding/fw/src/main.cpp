@@ -46,7 +46,7 @@ Main Application
 ***************************************************************************************************/
 /* INCLUDES ***************************************************************************************/
 #include <Arduino.h>
-#include "Lawicel.h"
+#include <Lawicel.h>
 #include "CANAdapter.h"
 #include "NVMAdapter.h"
 #include "Board.h"

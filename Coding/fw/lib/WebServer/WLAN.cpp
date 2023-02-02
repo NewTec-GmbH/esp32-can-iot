@@ -46,7 +46,6 @@ WiFi configuration of ESP32
 /* INCLUDES ***************************************************************************************/
 #include "FlashMem.h"
 #include "WLAN.h"
-#include <WiFi.h>
 #include "Board.h"
 
 /* C-Interface ************************************************************************************/

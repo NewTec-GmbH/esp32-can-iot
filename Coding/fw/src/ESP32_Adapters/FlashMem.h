@@ -47,7 +47,7 @@ Handler for ESP32 Preferences in Flash Memory
 #define FLASH_MEM_H_
 
 /* INCLUDES ***************************************************************************************/
-#include <Preferences.h>
+#include <WString.h>
 
 /* C-Interface ************************************************************************************/
 extern "C"
