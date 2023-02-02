@@ -71,10 +71,15 @@ static NVMAdapter gFlashAdapter;     /**< NVM Adapter Instance */
     static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
     static uint32_t gLastSend = 0;  /**< Timestamp of last sent WebSocket Buffer */
     static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send */
-#else
+#elif USE_SERIAL_ADAPTER_UART
     #include "SerialAdapter.h"
     static SerialAdapter gSerialAdapter; /**< Serial Adapter Instance */
     static Lawicel gProtocolLawicel(gSerialAdapter, gSja1000Adapter, gFlashAdapter);
+
+#elif USE_SERIAL_ADAPTER_TELNET
+    #include "TelnetAdapter.h"
+    static TelnetAdapter gTelnetAdapter;
+    static Lawicel gProtocolLawicel(gTelnetAdapter, gSja1000Adapter, gFlashAdapter); 
 #endif
 
 
@@ -93,9 +98,10 @@ void setup()
         Board::haltSystem();
     }
 
-#ifdef USE_SERIAL_ADAPTER_WS
+#ifndef USE_SERIAL_ADAPTER_UART
     else
     {
+        Serial.begin(115200);
         Serial.println(wlan::getIPAddress());
     }
 #endif
