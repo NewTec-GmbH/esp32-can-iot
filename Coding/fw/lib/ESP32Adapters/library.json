@@ -1,0 +1,14 @@
+{
+    "name": "ESP32Adapters",
+    "version": "0.1.0",
+    "description": "Lawicel Adapters for the ESP32",
+    "authors": [{
+        "name": "NewTec GmbH",
+        "url": "https://github.com/NewTec-GmbH/esp32-can-iot",
+        "maintainer": true
+    }],
+    "license": "BSD-3",
+    "dependencies": [],
+    "frameworks": "arduino",
+    "platforms": "espressfi32"
+}
