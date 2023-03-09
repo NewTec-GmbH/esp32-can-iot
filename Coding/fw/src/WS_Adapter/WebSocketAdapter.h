@@ -81,7 +81,7 @@ public:
     /**
      *  Default destructor deletes instance of the class.
      */
-    ~WebSocketAdapter()
+    ~WebSocketAdapter() override
     {
     }
 
@@ -90,7 +90,7 @@ public:
      * 
      *  @return success
      */
-    bool begin()
+    bool begin() override
     {
         bool success = true;
         Serial.begin(115200);
@@ -108,7 +108,7 @@ public:
      * 
      *  @return success
      */
-    bool end()
+    bool end() override
     {
         return true;
     }
@@ -119,7 +119,7 @@ public:
      *  @param[in] baudrate      Baudrate for Serial Communication
      *  @return success
      */
-    bool setBaudrate(uint32_t baudrate)
+    bool setBaudrate(uint32_t baudrate) override
     {
         return true;
     }
@@ -130,7 +130,7 @@ public:
      *  @param[in,out] c   Character received on the Serial Interface
      *  @return success
      */
-    bool read(char &c)
+    bool read(char &c) override
     {
         bool success = false;
         char input;
@@ -147,7 +147,7 @@ public:
      * 
      *  @param[in] string     String to be printed
      */
-    void print(const String &string)
+    void print(const String &string) override
     {
         websocket::send(string);
     }
@@ -157,7 +157,7 @@ public:
      * 
      *  @param[in] num     Integer to be printed
      */
-    void print(uint32_t num)
+    void print(uint32_t num) override
     {
         String tmp(num);
         websocket::send(tmp);
@@ -168,7 +168,7 @@ public:
      * 
      *  @param[in] c     Character to be printed
      */
-    void print(char c)
+    void print(char c) override
     {
         String tmp(c);
         websocket::send(tmp);

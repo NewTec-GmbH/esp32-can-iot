@@ -80,7 +80,7 @@ public:
     /**
      *  Default destructor deletes instance of the class.
      */
-    ~NVMAdapter()
+    ~NVMAdapter() override
     {
     }
 
@@ -88,7 +88,7 @@ public:
      *  Configures and starts the NVM Controller to use the user values.
      *  @return success
      */
-    bool begin()
+    bool begin() override
     {
         return true;
     }
@@ -98,7 +98,7 @@ public:
      * 
      *  @return success 
      */
-    bool end()
+    bool end() override
     {
         return true;
     }
@@ -110,7 +110,7 @@ public:
      *  @param[in] value Integer to save
      *  @return success
      */
-    bool save(const String &name, int32_t value)
+    bool save(const String &name, int32_t value) override
     {
         return Settings::save(DIRECTORY, name, value);
     }
@@ -122,7 +122,7 @@ public:
      *  @param[in] value String to save
      *  @return success
      */
-    bool save(const String &name, const String &value)
+    bool save(const String &name, const String &value) override
     {
         return Settings::save(DIRECTORY, name, value);
     }
@@ -133,7 +133,7 @@ public:
      *  @param[in] name Key of Parameter to retrieve
      *  @return Integer corresponding to the Key, if existent. Zero otherwise
      */
-    uint32_t readInt(const String &name)
+    uint32_t readInt(const String &name) override
     {
         uint32_t result;
         if (!Settings::get(DIRECTORY, name, result))
@@ -149,7 +149,7 @@ public:
      *  @param[in] name Key of Parameter to retrieve
      *  @return String corresponding to the Key, if existent. Empty String otherwise
      */
-    String readString(const String &name)
+    String readString(const String &name) override
     {
         String result;
         if (!Settings::get(DIRECTORY, name, result))
@@ -164,7 +164,7 @@ public:
      * 
      *  @return success
      */
-    bool clearEntries()
+    bool clearEntries() override
     {
         return Settings::clear(DIRECTORY);
     }

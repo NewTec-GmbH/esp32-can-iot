@@ -78,7 +78,7 @@ public:
     /**
      *  Default destructor deletes instance of the class.
      */
-    ~SerialAdapter()
+    ~SerialAdapter() override
     {
     }
 
@@ -87,7 +87,7 @@ public:
      * 
      *  @return success
      */
-    bool begin()
+    bool begin() override
     {
         Serial.begin(m_baudrate);
         return true;
@@ -98,7 +98,7 @@ public:
      * 
      *  @return success
      */
-    bool end()
+    bool end() override
     {
         Serial.end();
         return true;
@@ -110,7 +110,7 @@ public:
      *  @param[in] baudrate      Baudrate for Serial Communication
      *  @return success
      */
-    bool setBaudrate(uint32_t baudrate)
+    bool setBaudrate(uint32_t baudrate) override
     {
         m_baudrate = baudrate;
         Serial.updateBaudRate(m_baudrate);
@@ -123,7 +123,7 @@ public:
      *  @param[in,out] c   Character received on the Serial Interface
      *  @return success
      */
-    bool read(char &c)
+    bool read(char &c) override
     {
         bool success = false;
         if (0 < Serial.available())
@@ -140,7 +140,7 @@ public:
      * 
      *  @param[in] string     String to be printed
      */
-    void print(const String &string)
+    void print(const String &string) override
     {
         Serial.print(string);
     }
@@ -150,7 +150,7 @@ public:
      * 
      *  @param[in] num     Integer to be printed
      */
-    void print(uint32_t num)
+    void print(uint32_t num) override
     {
         Serial.println(num);
     }
@@ -160,7 +160,7 @@ public:
      * 
      *  @param[in] c     Character to be printed
      */
-    void print(char c)
+    void print(char c) override
     {
         Serial.println(c);
     }

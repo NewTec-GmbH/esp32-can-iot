@@ -83,7 +83,7 @@ public:
     /**
      *  Default destructor deletes instance of the class.
      */
-    ~TelnetAdapter()
+    ~TelnetAdapter() override
     {
     }
 
@@ -92,7 +92,7 @@ public:
      * 
      *  @return success
      */
-    bool begin()
+    bool begin() override
     {
         bool success = true;
         gInputQueue = xQueueCreate(100, sizeof(char));
@@ -133,7 +133,7 @@ public:
      * 
      *  @return success
      */
-    bool end()
+    bool end() override
     {
         telnet.stop();
         return true;
@@ -145,7 +145,7 @@ public:
      *  @param[in] baudrate      Baudrate for Serial Communication
      *  @return success
      */
-    bool setBaudrate(uint32_t baudrate)
+    bool setBaudrate(uint32_t baudrate) override
     {
         return true;
     }
@@ -156,7 +156,7 @@ public:
      *  @param[in,out] c   Character received on the Serial Interface
      *  @return success
      */
-    bool read(char &c)
+    bool read(char &c) override
     {
         bool success = false;
         telnet.loop();
@@ -174,7 +174,7 @@ public:
      * 
      *  @param[in] string     String to be printed
      */
-    void print(const String &string)
+    void print(const String &string) override
     {
         // Implementation here
         telnet.print(string);
@@ -185,7 +185,7 @@ public:
      * 
      *  @param[in] num     Integer to be printed
      */
-    void print(uint32_t num)
+    void print(uint32_t num) override
     {
         telnet.print(num);
     }
@@ -195,7 +195,7 @@ public:
      * 
      *  @param[in] c     Character to be printed
      */
-    void print(char c)
+    void print(char c) override
     {
         telnet.print(c);
     }

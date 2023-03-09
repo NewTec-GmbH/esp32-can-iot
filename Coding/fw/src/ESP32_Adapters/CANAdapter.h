@@ -82,7 +82,7 @@ public:
     /**
      *  Default destructor deletes instance of the class.
      */
-    ~CANAdapter()
+    ~CANAdapter() override
     {
     }
 
@@ -91,7 +91,7 @@ public:
      * 
      *  @return success
      */
-    bool begin()
+    bool begin() override
     {
         bool success = true;
 
@@ -112,7 +112,7 @@ public:
      * 
      *  @return success 
      */
-    bool end()
+    bool end() override
     {
         m_Can_Controller.end();
         return true;
@@ -124,7 +124,7 @@ public:
      *  @param[in] frame     Reference to the Frame to be sended
      *  @return success 
      */
-    bool send(const Frame &frame)
+    bool send(const Frame &frame) override
     {
         bool success = true;
         if (frame.m_extended)
@@ -166,7 +166,7 @@ public:
      *  @param[in] state          BUS_STATE to be set to the CAN Channel
      *  @return success
      */
-    bool setState(BUS_STATE state)
+    bool setState(BUS_STATE state) override
     {
         bool success = true;
         switch (state)
@@ -214,7 +214,7 @@ public:
      *  @param[in] baudrate Baudrate of the CAN Channel
      *  @return success
      */
-    bool setBaudrate(uint32_t baudrate)
+    bool setBaudrate(uint32_t baudrate) override
     {
         bool success = true;
         m_baudRate = baudrate;
@@ -234,7 +234,7 @@ public:
      *  @param btr1             Register 1 to set a Channel Baudrate directly
      *  @return success
      */
-    bool setBTR(uint8_t btr0, uint8_t btr1)
+    bool setBTR(uint8_t btr0, uint8_t btr1) override
     {
         return false; // Must write to register. It returns error as the Controller does not allow it. Not possible to implement it.
     }
@@ -245,7 +245,7 @@ public:
      *  @param[in] filter       Defines Filter based on FILTER_MODE Enum.
      *  @return success
      */
-    bool setFilterMode(FILTER_MODE filter)
+    bool setFilterMode(FILTER_MODE filter) override
     {
         return false;
     }
@@ -256,7 +256,7 @@ public:
      *  @param[in] acn        Byte Array of 4 Registers that define the Filter Aceptance Code Register
      *  @return success 
      */
-    bool setACn(const Filter &acn)
+    bool setACn(const Filter &acn) override
     {
         return false;
     }
@@ -267,7 +267,7 @@ public:
      *  @param[in] amn        Byte Array of 4 Registers that define the Filter Mask Register
      *  @return success
      */
-    bool setAMn(const Filter &amn)
+    bool setAMn(const Filter &amn) override
     {
         return false;
     }
@@ -277,7 +277,7 @@ public:
      * 
      *  @return BUS_STATE m_currentState of the CAN-Bus Channel.
      */
-    BUS_STATE getChannelState()
+    BUS_STATE getChannelState() override
     {
         return m_currentState;
     }
@@ -287,7 +287,7 @@ public:
      * 
      *  @return  One Byte BCD hex value
      */
-    uint8_t getStatusFlags()
+    uint8_t getStatusFlags() override
     {
         return 0; // Must read register. It returns error as the Controller does not allow it.
     }
@@ -298,7 +298,7 @@ public:
      *  @param[in,out] frame  Received frame from CAN Bus
      *  @return success  
      */
-    bool pollSingle(Frame &frame)
+    bool pollSingle(Frame &frame) override
     {
         bool success = false;
 
