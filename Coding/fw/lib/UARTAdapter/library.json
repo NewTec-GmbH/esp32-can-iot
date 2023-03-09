@@ -1,0 +1,14 @@
+{
+    "name": "UARTAdapter",
+    "version": "0.1.0",
+    "description": "UART Lawicel Adapter",
+    "authors": [{
+        "name": "NewTec GmbH",
+        "url": "https://github.com/NewTec-GmbH/esp32-can-iot",
+        "maintainer": true
+    }],
+    "license": "BSD-3",
+    "dependencies": [],
+    "frameworks": "arduino",
+    "platforms": ""
+}
