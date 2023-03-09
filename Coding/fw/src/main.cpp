@@ -51,6 +51,15 @@ Main Application
 #include "NVMAdapter.h"
 #include "Board.h"
 
+#ifdef USE_SERIAL_ADAPTER_WS
+    #include "WebSocketAdapter.h"
+    #include "WLAN.h"
+#elif USE_SERIAL_ADAPTER_UART
+    #include "SerialAdapter.h"
+#elif USE_SERIAL_ADAPTER_TELNET
+    #include "TelnetAdapter.h"
+#endif
+
 /* CONSTANTS **************************************************************************************/
 
 /* MACROS *****************************************************************************************/
@@ -65,19 +74,14 @@ static CANAdapter gSja1000Adapter;   /**< CAN Adapter Instance */
 static NVMAdapter gFlashAdapter;     /**< NVM Adapter Instance */
 
 #ifdef USE_SERIAL_ADAPTER_WS
-    #include "WebSocketAdapter.h"
-    #include "WLAN.h"
     static WebSocketAdapter gWsadapter;  /**< WebSocket Adapter Instance */
     static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
     static uint32_t gLastSend = 0;  /**< Timestamp of last sent WebSocket Buffer */
     static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send */
 #elif USE_SERIAL_ADAPTER_UART
-    #include "SerialAdapter.h"
     static SerialAdapter gSerialAdapter; /**< Serial Adapter Instance */
     static Lawicel gProtocolLawicel(gSerialAdapter, gSja1000Adapter, gFlashAdapter);
-
 #elif USE_SERIAL_ADAPTER_TELNET
-    #include "TelnetAdapter.h"
     static TelnetAdapter gTelnetAdapter;
     static Lawicel gProtocolLawicel(gTelnetAdapter, gSja1000Adapter, gFlashAdapter); 
 #endif
