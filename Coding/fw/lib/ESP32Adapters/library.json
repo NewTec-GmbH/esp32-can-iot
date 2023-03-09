@@ -8,7 +8,11 @@
         "maintainer": true
     }],
     "license": "BSD-3",
-    "dependencies": [],
+    "dependencies": [
+        {
+            "name": "Preferences"
+        }
+    ],
     "frameworks": "arduino",
     "platforms": "espressfi32"
 }
