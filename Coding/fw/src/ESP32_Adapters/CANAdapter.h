@@ -277,7 +277,7 @@ public:
      * 
      *  @return BUS_STATE m_currentState of the CAN-Bus Channel.
      */
-    BUS_STATE getChannelState() override
+    BUS_STATE getChannelState() const override
     {
         return m_currentState;
     }
@@ -287,7 +287,7 @@ public:
      * 
      *  @return  One Byte BCD hex value
      */
-    uint8_t getStatusFlags() override
+    uint8_t getStatusFlags() const override
     {
         return 0; // Must read register. It returns error as the Controller does not allow it.
     }
