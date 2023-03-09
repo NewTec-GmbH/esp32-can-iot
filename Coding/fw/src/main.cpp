@@ -107,14 +107,6 @@ void setup()
     {
         Board::haltSystem();
     }
-
-#ifndef USE_SERIAL_ADAPTER_UART
-    else
-    {
-        Serial.begin(115200);
-        Serial.println(wlan::getIPAddress());
-    }
-#endif
 }
 
 /**************************************************************************************************/
