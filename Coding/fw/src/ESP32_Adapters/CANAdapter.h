@@ -95,7 +95,7 @@ public:
     {
         bool success = true;
 
-        if (0 == m_Can_Controller.begin(m_baudRate)) /**< Starts CAN channel with 500kbps Baudrate */
+        if (0 == m_Can_Controller.begin(m_baudRate))
         {
             success = false;
         }
@@ -236,7 +236,7 @@ public:
      */
     bool setBTR(uint8_t btr0, uint8_t btr1)
     {
-        return false; /**< Must write to register. It returns error as the Controller does not allow it. Not possible to implement it. */
+        return false; // Must write to register. It returns error as the Controller does not allow it. Not possible to implement it.
     }
 
     /**
@@ -247,7 +247,6 @@ public:
      */
     bool setFilterMode(FILTER_MODE filter)
     {
-        // return m_Can_Controller.setFilterMode(filter);
         return false;
     }
 
@@ -259,7 +258,6 @@ public:
      */
     bool setACn(const Filter &acn)
     {
-        // return m_Can_Controller.setACRn(acn.m_filterBytes);
         return false;
     }
 
@@ -271,7 +269,6 @@ public:
      */
     bool setAMn(const Filter &amn)
     {
-        // return m_Can_Controller.setAMRn(amn.m_filterBytes);
         return false;
     }
 
@@ -292,7 +289,7 @@ public:
      */
     uint8_t getStatusFlags()
     {
-        return 0; /**< Must read register. It returns error as the Controller does not allow it */
+        return 0; // Must read register. It returns error as the Controller does not allow it.
     }
 
     /**
@@ -305,7 +302,7 @@ public:
     {
         bool success = false;
 
-        if (-1 != m_Can_Controller.parsePacket()) /**< Return changed to -1 to differenciate from DLC = 0 */
+        if (-1 != m_Can_Controller.parsePacket())
         {
             frame.m_id = m_Can_Controller.packetId();
             frame.m_dlc = m_Can_Controller.packetDlc();
