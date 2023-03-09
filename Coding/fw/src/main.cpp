@@ -75,14 +75,20 @@ static NVMAdapter gFlashAdapter;     /**< NVM Adapter Instance */
 
 #ifdef USE_SERIAL_ADAPTER_WS
     static WebSocketAdapter gWsadapter;  /**< WebSocket Adapter Instance */
-    static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
     static uint32_t gLastSend = 0;  /**< Timestamp of last sent WebSocket Buffer */
-    static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send */
+    static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send in milliseconds*/
+    
+    /** Instance of Lawicel Protocol */
+    static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
 #elif USE_SERIAL_ADAPTER_UART
     static SerialAdapter gSerialAdapter; /**< Serial Adapter Instance */
+
+    /** Instance of Lawicel Protocol */
     static Lawicel gProtocolLawicel(gSerialAdapter, gSja1000Adapter, gFlashAdapter);
 #elif USE_SERIAL_ADAPTER_TELNET
-    static TelnetAdapter gTelnetAdapter;
+    static TelnetAdapter gTelnetAdapter; /**< Telnet Adapter Instance */
+
+    /** Instance of Lawicel Protocol */
     static Lawicel gProtocolLawicel(gTelnetAdapter, gSja1000Adapter, gFlashAdapter); 
 #endif
 
