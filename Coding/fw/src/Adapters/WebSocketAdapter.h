@@ -48,7 +48,7 @@ ESP32 WebSocket Adapter for Lawicel Protocol
 #define WS_ADAPTER_H
 
 /* INCLUDES ***************************************************************************************/
-#include <Serialinterface.h>
+#include "SerialInterface.h"
 #include "Websocket.h"
 #include "ESP_Server.h"
 
