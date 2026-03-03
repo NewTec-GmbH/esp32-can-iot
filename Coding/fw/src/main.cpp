@@ -50,7 +50,6 @@ Main Application
 #include "SerialAdapter.h"
 #include "CANAdapter.h"
 #include "NVMAdapter.h"
-#include "WebSocketAdapter.h"
 #include "Board.h"
 #include "WLAN.h"
 
@@ -67,10 +66,9 @@ Main Application
 static SerialAdapter gSerialAdapter; /**< Serial Adapter Instance */
 static CANAdapter gSja1000Adapter;   /**< CAN Adapter Instance */
 static NVMAdapter gFlashAdapter;     /**< NVM Adapter Instance */
-static WebSocketAdapter gWsadapter;  /**< WebSocket Adapter Instance */
 
 /** Lawicel Protocol Instance */
-static Lawicel gProtocolLawicel(gWsadapter, gSja1000Adapter, gFlashAdapter);
+static Lawicel gProtocolLawicel(gSerialAdapter, gSja1000Adapter, gFlashAdapter);
 
 static uint32_t gLastSend = 0;  /**< Timestamp of last sent WebSocket Buffer */
 static uint32_t gWaitTime = 50; /**< Delay between WebSocket Buffer send */
@@ -102,26 +100,9 @@ void setup()
  */
 void loop()
 {
-    if (!wlan::getAP_MODE())
+    if (!gProtocolLawicel.executeCycle())
     {
-        if (!gProtocolLawicel.executeCycle())
-        {
-            Board::blinkError(250);
-        }
-        if (!wlan::checkConnection())
-        {
-            Board::haltSystem();
-        }
-    }
-    if (ESPServer::isRestartRequested())
-    {
-        Board::reset();
-    }
-
-    if (millis() - gLastSend > gWaitTime)
-    {
-        gLastSend = millis();
-        websocket::sendBuffer();
+        Board::blinkError(250);
     }
 }
 
