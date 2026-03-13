@@ -1,5 +1,5 @@
 {
-    "name": "WebServer",
+    "name": "Web",
     "version": "0.1.0",
     "description": "...",
     "authors": [{
@@ -9,11 +9,13 @@
     }],
     "license": "BSD-3",
     "dependencies": [{
-        "owner": "me-no-dev",
-        "name": "ESP Async WebServer",
-        "version": "^1.2.3"
+        "owner": "ESP32Async",
+        "name": "ESPAsyncWebServer",
+        "version": "^3.8.1"
     }, {
         "name": "DNSServer"
+    }, {
+        "name": "WiFi"
     }],
     "frameworks": "*",
     "platforms": "*"

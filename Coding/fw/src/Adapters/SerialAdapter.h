@@ -48,7 +48,7 @@ ESP32 Serial Adapter for Lawicel Protocol
 #define SERIAL_ADAPTER_H
 
 /* INCLUDES ***************************************************************************************/
-#include "Serialinterface.h"
+#include "SerialInterface.h"
 
 /* C-Interface ************************************************************************************/
 extern "C"

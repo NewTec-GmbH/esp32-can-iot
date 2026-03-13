@@ -237,6 +237,6 @@ private:
 
 /* PROTOTYPES *********************************************************************************/
 
-#endif /* SERIAL_INTERFACE_H */
+#endif /* CAN_INTERFACE_H */
 
 /** @} */

@@ -99,7 +99,7 @@ public:
      *  @param[in] request   Web request
      *  @return If request can be handled, it will return true otherwise false.
      */
-    bool canHandle(AsyncWebServerRequest *request) override
+    bool canHandle(AsyncWebServerRequest *request) const override
     {
         /* The captive portal handles every request. */
         return true;
@@ -129,7 +129,7 @@ public:
                 int params = request->params();
                 for (int i = 0; i < params; i++)
                 {
-                    AsyncWebParameter *p = request->getParam(i);
+                    const AsyncWebParameter *p = request->getParam(i);
                     if (nullptr != p)
                     {
                         credentialsProcessor(p->name(), p->value());
@@ -154,7 +154,7 @@ public:
      * 
      *  @return True if the Body of the request is trivial and should not be parsed. False otherwise.
      */
-    bool isRequestHandlerTrivial() override
+    bool isRequestHandlerTrivial() const override
     {
         return false;
     }
